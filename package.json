@@ -27,9 +27,7 @@
     "xcode": "open ios/RNApp.xcworkspace",
     "androidstudio": "open -a /Applications/Android\\ Studio.app ./android",
     "androidrectotronconnect": "adb reverse tcp:9090 tcp:9090",
-    "playground": "graphql playground",
     "storybook": "storybook start -p 7007",
-    "codegen": "apollo client:codegen --target typescript",
     "prepush": "npm run lint:css && npm run eslint"
   },
   "dependencies": {
