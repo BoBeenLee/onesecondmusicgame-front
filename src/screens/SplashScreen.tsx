@@ -58,9 +58,7 @@ class SplashScreen extends React.Component<IProps> {
   public render() {
     return (
       <Container>
-        <Name>
-          123
-        </Name>
+        <Name>123</Name>
         <LottieView
           style={{
             backgroundColor: "#eee",
@@ -77,16 +75,13 @@ class SplashScreen extends React.Component<IProps> {
   }
 
   private initializeApp = async () => {
-    const {
-      codePushStore,
-      pushNotificationStore
-    } = this.props;
+    const { codePushStore, pushNotificationStore } = this.props;
 
     await initializeRemoteConfig();
     codePushStore.initialize();
     pushNotificationStore.initialize();
     initializeRequestAPI();
-  }
+  };
 
   private navigateTo = () => {
     const { componentId } = this.props;
@@ -94,9 +89,9 @@ class SplashScreen extends React.Component<IProps> {
     setStackRoot({
       animtaions: fadeTransition,
       componentId,
-      nextComponentId: SCREEN_IDS.SignInScreen,
+      nextComponentId: SCREEN_IDS.SignInScreen
     });
-  }
+  };
 }
 
 export default SplashScreen;

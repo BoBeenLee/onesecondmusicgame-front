@@ -66,9 +66,13 @@ const AuthStore = types
       }
     });
 
-    const emailSignIn = () => {};
+    const emailSignIn = () => {
+      // TODO
+    };
 
-    const signOut = () => {};
+    const signOut = () => {
+      // TODO
+    };
 
     return {
       kakaoSignIn,

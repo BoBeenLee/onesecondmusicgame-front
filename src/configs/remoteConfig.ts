@@ -1,19 +1,12 @@
 import _ from "lodash";
 import firebase from "react-native-firebase";
 
-import env from "src/configs/env";
+import { isProduction } from "src/configs/env";
 import { isJSON } from "src/utils/common";
-
-export interface IReviewFilterItem {
-  key: string;
-  name: string;
-}
-
-interface IRemoteConfig {}
 
 const initialize = async () => {
   try {
-    if (env.isDev) {
+    if (!isProduction()) {
       firebase.config().enableDeveloperMode();
     }
     firebase.config().setDefaults({});
@@ -24,10 +17,7 @@ const initialize = async () => {
   }
 };
 
-const getStringValue = async (
-  key: keyof IRemoteConfig,
-  defaultValue: string
-) => {
+const getStringValue = async (key: string, defaultValue: string) => {
   try {
     const value = await firebase.config().getValue(key);
     return value.val();
@@ -36,10 +26,7 @@ const getStringValue = async (
   }
 };
 
-const getBooleanValue = async (
-  key: keyof IRemoteConfig,
-  defaultValue: boolean
-) => {
+const getBooleanValue = async (key: string, defaultValue: boolean) => {
   try {
     const value = await firebase.config().getValue(key);
     return value.val() ? Boolean(value.val()) : false;
@@ -63,7 +50,7 @@ const getJSONValue = async <T>(key: string, defaultValue: T) => {
   return defaultValue;
 };
 
-const getRemoteConfig = async (key: keyof IRemoteConfig, defaultValue: any) => {
+const getRemoteConfig = async (key: string, defaultValue: any) => {
   try {
     await firebase.config().fetch(0);
     await firebase.config().activateFetched();

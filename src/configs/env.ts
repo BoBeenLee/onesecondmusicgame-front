@@ -40,4 +40,6 @@ const env: IEnvironment = {
 
 export const isStorybook = () => REACT_ENV === "storybook";
 
+export const isProduction = () => REACT_ENV === "production";
+
 export default env[REACT_ENV] || ({} as IEnvironmentEntry);

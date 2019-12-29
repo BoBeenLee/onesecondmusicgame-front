@@ -8,6 +8,7 @@ import { delay } from "src/utils/common";
 
 let isLoading = false;
 let currentComponentId: string | null = null;
+let currentComponentName: string | null = null;
 
 const start = () => {
   Navigation.setDefaultOptions({
@@ -39,6 +40,7 @@ const start = () => {
 
 const setCurrentComponent = (componentId: string, componentName: string) => {
   currentComponentId = componentId;
+  currentComponentName = componentName;
 };
 
 const getCurrentComponent = () => {

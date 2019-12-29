@@ -1,5 +1,5 @@
 import _ from "lodash";
-import React, { SFC } from "react";
+import React from "react";
 import { TextStyle, ViewProps } from "react-native";
 import styled from "styled-components/native";
 
@@ -40,7 +40,7 @@ const Title = styled(Bold15)`
   letter-spacing: -0.5px;
 `;
 
-const FMTopBar: SFC<ITopBarProps> = ({
+function FMTopBar({
   style: containerStyle,
   title,
   titleStyle,
@@ -48,7 +48,7 @@ const FMTopBar: SFC<ITopBarProps> = ({
   iconName,
   RightComponent,
   onBackPress
-}) => {
+}: ITopBarProps) {
   return (
     <Container style={containerStyle}>
       {!_.isEmpty(title) && (
@@ -65,7 +65,7 @@ const FMTopBar: SFC<ITopBarProps> = ({
       {RightComponent ? RightComponent : null}
     </Container>
   );
-};
+}
 
 export { TOP_BAR_HEIGHT };
 export default FMTopBar;
