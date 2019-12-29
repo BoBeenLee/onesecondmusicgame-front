@@ -8,14 +8,13 @@ import { Bold12, Bold20 } from "src/components/text/Typographies";
 import images from "src/images";
 import { IStore } from "src/stores/Store";
 import { iosStatusBarHeight } from "src/utils/device";
-import { setStackRoot } from "src/utils/navigator";
-import { SCREEN_IDS } from "src/screens/constant";
 import { initialize as initializeRequestAPI } from "src/configs/requestAPI";
-import { fadeTransition } from "src/screens/styles/animations";
 import { initialize as initializeRemoteConfig } from "src/configs/remoteConfig";
 import { ICodePushStore } from "src/stores/CodePushStore";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IPushNotificationStore } from "src/stores/PushNotificationStore";
+import MainScreen from "src/screens/MainScreen";
+import SignInScreen from "src/screens/SignInScreen";
 
 interface IInject {
   authStore: IAuthStore;
@@ -75,22 +74,23 @@ class SplashScreen extends React.Component<IProps> {
   }
 
   private initializeApp = async () => {
-    const { codePushStore, pushNotificationStore } = this.props;
+    const { authStore, codePushStore, pushNotificationStore } = this.props;
 
     await initializeRemoteConfig();
     codePushStore.initialize();
     pushNotificationStore.initialize();
+    authStore.initialize();
     initializeRequestAPI();
   };
 
   private navigateTo = () => {
     const { componentId } = this.props;
-    // If Not SignIn
-    setStackRoot({
-      animtaions: fadeTransition,
-      componentId,
-      nextComponentId: SCREEN_IDS.SignInScreen
-    });
+    const { isGuest } = this.props.authStore;
+    if (isGuest) {
+      SignInScreen.open(componentId);
+      return;
+    }
+    MainScreen.open(componentId);
   };
 }
 

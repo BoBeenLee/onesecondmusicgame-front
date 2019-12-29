@@ -2,7 +2,8 @@
 const SCREEN_IDS = {
   SplashScreen: "app.SplashScreen",
   SignUpScreen: "app.SignUpScreen",
-  SignInScreen: "app.SignInScreen"
+  SignInScreen: "app.SignInScreen",
+  MainScreen: "app.MainScreen"
 };
 
 export { SCREEN_IDS };

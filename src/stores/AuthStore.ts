@@ -17,8 +17,37 @@ const AuthStore = types
     accessToken: types.optional(types.string, ""),
     refreshToken: types.optional(types.string, "")
   })
+  .views(self => {
+    return {
+      get isGuest() {
+        return self.provider === "NONE";
+      }
+    };
+  })
   .actions(self => {
     const rootStore = getRootStore(self);
+
+    const clear = () => {
+      self.provider = "NONE";
+      self.accessId = "";
+      self.accessToken = "";
+      self.refreshToken = "";
+    };
+
+    const initialize = flow(function*() {
+      GoogleSignin.configure();
+
+      switch (self.provider) {
+        case "GOOGLE":
+          const isSignedIn = yield GoogleSignin.isSignedIn();
+          if (!isSignedIn) {
+            clear();
+          }
+          return;
+        case "KAKAO":
+          return;
+      }
+    });
 
     const kakaoSignIn = flow(function*() {
       try {
@@ -35,7 +64,6 @@ const AuthStore = types
 
     const googleSignIn = flow(function*() {
       try {
-        GoogleSignin.configure();
         const userInfo: RetrieveAsyncFunc<typeof GoogleSignin.signIn> = yield GoogleSignin.signIn();
         const tokenInfo: RetrieveAsyncFunc<typeof GoogleSignin.getTokens> = yield GoogleSignin.getTokens();
 
@@ -75,6 +103,7 @@ const AuthStore = types
     };
 
     return {
+      initialize,
       kakaoSignIn,
       googleSignIn,
       emailSignIn,
