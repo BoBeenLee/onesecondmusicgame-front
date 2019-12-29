@@ -11,6 +11,7 @@ import { iosStatusBarHeight } from "src/utils/device";
 import { setModalStackRoot } from "src/utils/navigator";
 import { SCREEN_IDS } from "src/screens/constant";
 import { initialize as initializeRequestAPI } from "src/configs/requestAPI";
+import { initialize as initializeGoogleAuth } from "src/configs/googleAuth";
 
 interface IInject {
   store: IStore;
@@ -65,7 +66,8 @@ class SplashScreen extends React.Component<IInject> {
   }
 
   private initializeApp = async () => {
-    await initializeRequestAPI();
+    initializeGoogleAuth();
+    initializeRequestAPI();
   }
 
   private navigateTo = () => {

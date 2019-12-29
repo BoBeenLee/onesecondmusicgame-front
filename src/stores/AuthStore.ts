@@ -1,7 +1,10 @@
 import _ from "lodash";
 import KakaoLogin from "@react-native-seoul/kakao-login";
 import { flow, getRoot, Instance, types } from "mobx-state-tree";
-import firebase from "react-native-firebase";
+import {
+  GoogleSignin,
+  statusCodes
+} from "@react-native-community/google-signin";
 
 import { getRootStore } from "src/stores/StoreHelper";
 export type AUTH_PROVIDER = "KAKAO" | "GOOGLE" | "EMAIL" | "NONE";
@@ -31,8 +34,23 @@ const AuthStore = types
 
     const googleSignIn = flow(function*() {
       try {
+        yield GoogleSignin.hasPlayServices();
+        const userInfo: RetrieveAsyncFunc<typeof GoogleSignin.signIn> = yield GoogleSignin.signIn();
+
+        self.accessId = userInfo.user.id;
+        self.accessToken = userInfo.idToken || "";
+        self.provider = "GOOGLE";
       } catch (error) {
         rootStore.toastStore.showToast(error.message);
+        if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+          // user cancelled the login flow
+        } else if (error.code === statusCodes.IN_PROGRESS) {
+          // operation (e.g. sign in) is in progress already
+        } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+          // play services not available or outdated
+        } else {
+          // some other error happened
+        }
       }
     });
 
