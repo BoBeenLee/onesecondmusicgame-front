@@ -23,20 +23,25 @@ const start = () => {
     topBar: topbars.emptyTopBar()
   });
 
-  Navigation.setRoot({
-    root: {
-      stack: {
-        children: [
-          {
-            component: {
-              name: SCREEN_IDS.SplashScreen
-            }
-          }
-        ]
-      }
-    }
-  });
+  setRoot({ nextComponentId: SCREEN_IDS.SplashScreen });
 };
+
+const setRoot = async ({ nextComponentId }: { nextComponentId: string }) =>
+  await protectedMultiClick(() => {
+    Navigation.setRoot({
+      root: {
+        stack: {
+          children: [
+            {
+              component: {
+                name: nextComponentId
+              }
+            }
+          ]
+        }
+      }
+    });
+  })();
 
 const setCurrentComponent = (componentId: string, componentName: string) => {
   currentComponentId = componentId;
@@ -232,6 +237,7 @@ export {
   dismissOverlay,
   setCurrentComponent,
   start,
+  setRoot,
   setStackRoot,
   setMainStackRoots,
   setModalStackRoot,

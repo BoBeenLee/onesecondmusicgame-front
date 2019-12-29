@@ -1,13 +1,13 @@
 import _ from "lodash";
 import KakaoLogin from "@react-native-seoul/kakao-login";
-import { flow, getRoot, Instance, types } from "mobx-state-tree";
+import { flow, types } from "mobx-state-tree";
 import {
   GoogleSignin,
   statusCodes
 } from "@react-native-community/google-signin";
 import firebase, { RNFirebase, AuthCredential } from "react-native-firebase";
+import { defaultItemToString, FIELD } from "src/utils/storage";
 
-import { getRootStore } from "src/stores/StoreHelper";
 export type AUTH_PROVIDER = "KAKAO" | "GOOGLE" | "EMAIL" | "NONE";
 
 const AuthStore = types
@@ -25,8 +25,6 @@ const AuthStore = types
     };
   })
   .actions(self => {
-    const rootStore = getRootStore(self);
-
     const clear = () => {
       self.provider = "NONE";
       self.accessId = "";
@@ -35,8 +33,11 @@ const AuthStore = types
     };
 
     const initialize = flow(function*() {
-      GoogleSignin.configure();
+      self.provider = yield defaultItemToString(FIELD.PROVIDER_TYPE, "NONE");
+      self.accessToken = yield defaultItemToString(FIELD.ACCESS_TOKEN, "");
+      self.refreshToken = yield defaultItemToString(FIELD.REFRESH_TOKEN, "");
 
+      GoogleSignin.configure();
       switch (self.provider) {
         case "GOOGLE":
           const isSignedIn = yield GoogleSignin.isSignedIn();
@@ -50,16 +51,12 @@ const AuthStore = types
     });
 
     const kakaoSignIn = flow(function*() {
-      try {
-        const tokenResponse: RetrieveAsyncFunc<typeof KakaoLogin.login> = yield KakaoLogin.login();
-        const profileResponse: RetrieveAsyncFunc<typeof KakaoLogin.getProfile> = yield KakaoLogin.getProfile();
+      const tokenResponse: RetrieveAsyncFunc<typeof KakaoLogin.login> = yield KakaoLogin.login();
+      const profileResponse: RetrieveAsyncFunc<typeof KakaoLogin.getProfile> = yield KakaoLogin.getProfile();
 
-        self.accessId = profileResponse.id;
-        self.accessToken = tokenResponse.accessToken;
-        self.provider = "KAKAO";
-      } catch (error) {
-        rootStore.toastStore.showToast(error.message);
-      }
+      self.accessId = profileResponse.id;
+      self.accessToken = tokenResponse.accessToken;
+      self.provider = "KAKAO";
     });
 
     const googleSignIn = flow(function*() {
@@ -81,15 +78,17 @@ const AuthStore = types
         self.accessToken = tokenInfo.accessToken;
         self.provider = "GOOGLE";
       } catch (error) {
-        rootStore.toastStore.showToast(error.message);
         if (error.code === statusCodes.SIGN_IN_CANCELLED) {
           // user cancelled the login flow
+          throw error;
         } else if (error.code === statusCodes.IN_PROGRESS) {
           // operation (e.g. sign in) is in progress already
+          throw error;
         } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
           // play services not available or outdated
+          throw error;
         } else {
-          // some other error happened
+          throw error;
         }
       }
     });
