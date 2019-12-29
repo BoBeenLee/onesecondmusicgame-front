@@ -44,6 +44,7 @@ import com.swmansion.reanimated.ReanimatedPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.bugsnag.BugsnagReactNative;
 import com.reactnativecommunity.rnpermissions.RNPermissionsPackage; 
+import co.apptailor.googlesignin.RNGoogleSigninPackage;
 
 public class MainApplication extends NavigationApplication {
     @Override
@@ -96,7 +97,8 @@ public class MainApplication extends NavigationApplication {
                 new ReanimatedPackage(),
                 new RNGestureHandlerPackage(),
                 BugsnagReactNative.getPackage(),
-                new RNPermissionsPackage()
+                new RNPermissionsPackage(),
+                new RNGoogleSigninPackage()
         );
     }
 

@@ -14,10 +14,7 @@
     "sourceMap": true,
     "strict": true,
     "target": "esnext",
-    "typeRoots": ["./typings", "./node_modules/@types"],
-    "paths": {
-      "@shared/*": ["../shared/lib/*"]
-    }
+    "typeRoots": ["./typings", "./node_modules/@types"]
   },
   "exclude": [
     "node_modules",

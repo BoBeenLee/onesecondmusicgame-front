@@ -8,6 +8,9 @@ import { Bold12, Bold20 } from "src/components/text/Typographies";
 import images from "src/images";
 import { IStore } from "src/stores/Store";
 import { iosStatusBarHeight } from "src/utils/device";
+import { setModalStackRoot } from "src/utils/navigator";
+import { SCREEN_IDS } from "src/screens/constant";
+import { initialize as initializeRequestAPI } from "src/configs/requestAPI";
 
 interface IInject {
   store: IStore;
@@ -34,6 +37,11 @@ const Name = styled(Bold20)`
 class SplashScreen extends React.Component<IInject> {
   public animation: any = null;
 
+  public async componentDidMount() {
+    await this.initializeApp();
+    this.navigateTo();
+  }
+
   public render() {
     const { todoTest } = this.props.store.todoStore;
     return (
@@ -54,6 +62,17 @@ class SplashScreen extends React.Component<IInject> {
         <XEIcon name="close" color="#800" size={50} />
       </Container>
     );
+  }
+
+  private initializeApp = async () => {
+    await initializeRequestAPI();
+  }
+
+  private navigateTo = () => {
+    // If Not SignIn
+    setModalStackRoot({
+      nextComponentId: SCREEN_IDS.SignInScreen
+    });
   }
 }
 

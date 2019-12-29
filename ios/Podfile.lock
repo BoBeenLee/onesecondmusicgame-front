@@ -1,4 +1,9 @@
 PODS:
+  - AppAuth (1.3.0):
+    - AppAuth/Core (= 1.3.0)
+    - AppAuth/ExternalUserAgent (= 1.3.0)
+  - AppAuth/Core (1.3.0)
+  - AppAuth/ExternalUserAgent (1.3.0)
   - Base64 (1.1.2)
   - boost-for-react-native (1.63.0)
   - BugsnagReactNative (2.23.3):
@@ -96,6 +101,10 @@ PODS:
     - "GoogleUtilities/NSData+zlib (~> 5.2)"
     - nanopb (~> 0.3)
   - GoogleIDFASupport (3.14.0)
+  - GoogleSignIn (5.0.2):
+    - AppAuth (~> 1.2)
+    - GTMAppAuth (~> 1.0)
+    - GTMSessionFetcher/Core (~> 1.1)
   - GoogleUtilities/AppDelegateSwizzler (5.8.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -114,6 +123,14 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (5.8.0):
     - GoogleUtilities/Logger
+  - GTMAppAuth (1.0.0):
+    - AppAuth/Core (~> 1.0)
+    - GTMSessionFetcher (~> 1.1)
+  - GTMSessionFetcher (1.3.0):
+    - GTMSessionFetcher/Full (= 1.3.0)
+  - GTMSessionFetcher/Core (1.3.0)
+  - GTMSessionFetcher/Full (1.3.0):
+    - GTMSessionFetcher/Core (= 1.3.0)
   - JWT (3.0.0-beta.12):
     - Base64 (~> 1.1.2)
   - kakao-login (2.1.2):
@@ -369,6 +386,9 @@ PODS:
     - React
   - RNGestureHandler (1.5.2):
     - React
+  - RNGoogleSignin (3.0.3):
+    - GoogleSignIn (~> 5.0.0)
+    - React
   - RNPermissions (2.0.6):
     - React
   - RNRate (1.1.10):
@@ -398,6 +418,7 @@ DEPENDENCIES:
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - GoogleIDFASupport (~> 3.14.0)
+  - GoogleSignIn (~> 5.0.2)
   - "kakao-login (from `../node_modules/@react-native-seoul/kakao-login`)"
   - lottie-ios (from `../node_modules/lottie-ios`)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
@@ -433,6 +454,7 @@ DEPENDENCIES:
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFirebase (from `../node_modules/react-native-firebase/ios`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - "RNGoogleSignin (from `../node_modules/@react-native-community/google-signin`)"
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNRate (from `../node_modules/react-native-rate`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -442,6 +464,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - AppAuth
     - Base64
     - boost-for-react-native
     - Crashlytics
@@ -457,7 +480,10 @@ SPEC REPOS:
     - FirebaseRemoteConfig
     - GoogleAppMeasurement
     - GoogleIDFASupport
+    - GoogleSignIn
     - GoogleUtilities
+    - GTMAppAuth
+    - GTMSessionFetcher
     - JWT
     - KakaoOpenSDK
     - nanopb
@@ -545,6 +571,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-firebase/ios"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNGoogleSignin:
+    :path: "../node_modules/@react-native-community/google-signin"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
   RNRate:
@@ -559,6 +587,7 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  AppAuth: 73574f3013a1e65b9601a3ddc8b3158cce68c09d
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   BugsnagReactNative: 34f9500e304c2667ce7a3e76037d91e41eca2ffe
@@ -582,7 +611,10 @@ SPEC CHECKSUMS:
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
   GoogleAppMeasurement: ffe513e90551844a739e7bcbb1d2aca1c28a4338
   GoogleIDFASupport: aaf8c10bd429abb1c15349d5252244f5eda8ead1
+  GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GoogleUtilities: 04fce34bcd5620c1ee76fb79172105c74a4df335
+  GTMAppAuth: 4deac854479704f348309e7b66189e604cf5e01e
+  GTMSessionFetcher: 43b8b64263023d4f32caa0b40f4c8bfa3c5f36d8
   JWT: 9b5c05abbcc1a0e69c3c91e1655b3387fc7e581d
   kakao-login: 9483bc4c48c7ad26bb765dfdc34956f002349686
   KakaoOpenSDK: 016f24ab128c4e05c76a6a0965d6c379c0fafb58
@@ -619,6 +651,7 @@ SPEC CHECKSUMS:
   RNDeviceInfo: e5976ab5c3bed0b5c78f188e0b8abb139b33a9da
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
   RNGestureHandler: 946a7691e41df61e2c4b1884deab41a4cdc3afff
+  RNGoogleSignin: a10b849c165088c737d4465de6c2062f24d06002
   RNPermissions: 3944d2574eca469ca5dcc3fa945271468c67483d
   RNRate: d44a8bca6ee08f5d890ecccddaec2810955ffbb3
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
@@ -627,6 +660,6 @@ SPEC CHECKSUMS:
   SSZipArchive: fa16b8cc4cdeceb698e5e5d9f67e9558532fbf23
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: 6f6492fe1cb125573d682dc544ee968e5377de2b
+PODFILE CHECKSUM: a7d4f58dc64b74e40484e5433502c8260fd93d9d
 
 COCOAPODS: 1.8.4

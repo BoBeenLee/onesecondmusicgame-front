@@ -2,11 +2,15 @@ import { types } from "mobx-state-tree";
 import { AppState, AppStateStatus } from "react-native";
 
 import TodoStore from "src/stores/TodoStore";
+import AuthStore from "src/stores/AuthStore";
+import ToastStore from "src/stores/ToastStore";
 
 const Store = types
   .model({
     appStateStatus: types.frozen<AppStateStatus>(AppState.currentState),
-    todoStore: types.optional(TodoStore, {})
+    authStore: types.optional(AuthStore, {}),
+    todoStore: types.optional(TodoStore, {}),
+    toastStore: types.optional(ToastStore, {})
   })
   .actions(self => {
     const setAppStateStatus = (appState: AppStateStatus) => {

@@ -10,7 +10,7 @@ interface IEnvironment {
 
 interface IEnvironmentEntry {
   REACT_ENV: string;
-  WEBVIEW_URL: string;
+  API_URL: string;
 }
 
 const REACT_ENV = _.defaultTo(
@@ -22,19 +22,19 @@ const REACT_ENV = _.defaultTo(
 const env: IEnvironment = {
   development: {
     REACT_ENV,
-    WEBVIEW_URL: "http://localhost:8000/"
+    API_URL: "http://localhost:8888"
   },
   production: {
     REACT_ENV,
-    WEBVIEW_URL: "http://localhost:8000/"
+    API_URL: "http://localhost:8888"
   },
   staging: {
     REACT_ENV,
-    WEBVIEW_URL: "http://localhost:8000/"
+    API_URL: "http://localhost:8888"
   },
   storybook: {
     REACT_ENV,
-    WEBVIEW_URL: "http://localhost:8000/"
+    API_URL: "http://localhost:8888"
   }
 };
 

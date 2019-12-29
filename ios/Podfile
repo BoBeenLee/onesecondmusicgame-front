@@ -53,6 +53,8 @@ target 'RNApp' do
 
   pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications.podspec"
 
+  pod 'GoogleSignIn', '~> 5.0.2'
+
   target 'RNApp-tvOSTests' do
     inherit! :search_paths
     # Pods for testing

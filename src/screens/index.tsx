@@ -12,6 +12,8 @@ import withStore from "src/hocs/withStore";
 import { SCREEN_IDS } from "src/screens/constant";
 import SplashScreen from "src/screens/SplashScreen";
 import { getRootStore } from "src/stores/Store";
+import SignInScreen from "src/screens/SignInScreen";
+import SignUpScreen from "src/screens/SignUpScreen";
 
 interface IScreenProps {
   id: string;
@@ -47,6 +49,14 @@ const screens: IScreenProps[] = [
   {
     Component: SplashScreen,
     id: SCREEN_IDS.SplashScreen
+  },
+  {
+    Component: SignInScreen,
+    id: SCREEN_IDS.SignInScreen
+  },
+  {
+    Component: SignUpScreen,
+    id: SCREEN_IDS.SignUpScreen
   }
 ];
 
