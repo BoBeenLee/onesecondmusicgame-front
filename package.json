@@ -19,7 +19,7 @@
     "build:android": "cd ./android && ./gradlew assembleRelease",
     "appdistribution:android": "npm run build:android && firebase appdistribution:distribute ./android/app/build/outputs/apk/release/app-release.apk --app 1:729865146079:android:1ec7739544849fc8 --token 1/Imdv27tKHLaob8Y1o4h6CA6-kn_zbXZXQi6e_-Xfuus",
     "appdistribution:ios": "firebase appdistribution:distribute $BITRISE_IPA_PATH --app 1:833905792974:ios:1ec7739544849fc8 --token 1/Imdv27tKHLaob8Y1o4h6CA6-kn_zbXZXQi6e_-Xfuus",
-    "prettier": "prettier './src/**/*.{js,ts,tsx}'",
+    "prettier": "prettier './src/**/*.{js,ts,tsx}' --write",
     "lint:css": "stylelint './src/**/*.tsx'",
     "eslint": "./node_modules/.bin/eslint './src/**/*.{js,ts,tsx}'",
     "eslint:fix": "./node_modules/.bin/eslint './src/**/*.{js,ts,tsx}' --fix",

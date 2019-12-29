@@ -22,23 +22,23 @@ const Content = styled.View`
 const Logo = styled(Bold14)``;
 
 class MainScreen extends Component {
-    public static open(componentId: string) {
-        setStackRoot({
-            animtaions: fadeTransition,
-            componentId,
-            nextComponentId: SCREEN_IDS.MainScreen
-        });
-    }
+  public static open(componentId: string) {
+    setStackRoot({
+      animtaions: fadeTransition,
+      componentId,
+      nextComponentId: SCREEN_IDS.MainScreen
+    });
+  }
 
-    public render() {
-        return (
-            <Container>
-                <Content>
-                    <Logo>Main</Logo>
-                </Content>
-            </Container>
-        );
-    }
+  public render() {
+    return (
+      <Container>
+        <Content>
+          <Logo>Main</Logo>
+        </Content>
+      </Container>
+    );
+  }
 }
 
 export default MainScreen;
