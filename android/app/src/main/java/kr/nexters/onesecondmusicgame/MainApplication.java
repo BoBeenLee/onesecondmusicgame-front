@@ -46,6 +46,7 @@ import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.bugsnag.BugsnagReactNative;
 import com.reactnativecommunity.rnpermissions.RNPermissionsPackage; 
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
+import com.brentvatne.react.ReactVideoPackage;
 
 public class MainApplication extends NavigationApplication {
     @Override
@@ -100,7 +101,8 @@ public class MainApplication extends NavigationApplication {
                 BugsnagReactNative.getPackage(),
                 new RNPermissionsPackage(),
                 new RNFirebaseAuthPackage(),
-                new RNGoogleSigninPackage()
+                new RNGoogleSigninPackage(),
+                new ReactVideoPackage()
         );
     }
 
