@@ -1,0 +1,14 @@
+<resources>
+	<string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">kN1fbT7qfGgFAZAGAGGnc61NAXcOZ9VCaAL_Y</string>
+    <string name="CodePushPublicKey">-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA28oeNxERFYQ1qb//vH2i
+lvZJ7kPX5ObZwLBahwp0+qa1OoTgfEl+4wEyUHPYKMHUj41/a1+t8s3162FJIMN2
+ARIoZ+Larkbw69lp3Y3y7hLmIFngbP9jho6Le1Cjv1A2v6A91m6QeByjgVXmXydz
+jOP72Yxs9yTsua4dYEFLPpzLdcUVmvV0Au4sedDgJF09FYArdGDAhKhSs2EgWkIP
+j6hRGuPTSMX7WSrFXNHCBSKgKjFdjKTkp4TJaVaRAnDyGo/pbXcNl40xQ5TgLwYH
+j8zkJ5x6RdlMmXXylcQ1fg5W6p7LpMEoSEZb+nMlGgnjd1UhJXJI6+7nSiXz+YyT
+zQIDAQAB
+-----END PUBLIC KEY-----</string>
+    <string name="app_name">onesecondmusicgame</string>
+    <string name="default_notification_channel_id">onesecondmusicgame-channel</string>
+</resources>

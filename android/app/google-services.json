@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "858680448613",
+    "firebase_url": "https://onesecondmusicgame-prod.firebaseio.com",
+    "project_id": "onesecondmusicgame-prod",
+    "storage_bucket": "onesecondmusicgame-prod.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:858680448613:android:4dfa8696bcc65cc20ed88c",
+        "android_client_info": {
+          "package_name": "kr.nexters.onesecondmusicgame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "858680448613-aml0spg8co8mbu76ghpju4p1kh349kss.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcIRb9twikzjhONfkTs8H-bpXHpSpN4Uo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "858680448613-aml0spg8co8mbu76ghpju4p1kh349kss.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "858680448613-41nnl7utkq9o50qu3tamg5mjdfen3t8q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "kr.nexters.onesecondmusicgame"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

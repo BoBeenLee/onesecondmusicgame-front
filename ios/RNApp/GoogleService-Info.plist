@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>858680448613-41nnl7utkq9o50qu3tamg5mjdfen3t8q.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.858680448613-41nnl7utkq9o50qu3tamg5mjdfen3t8q</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAYFpTqhjHEwWThX8O4ttV9RS1B6VtDJXQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>858680448613</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>kr.nexters.onesecondmusicgame</string>
+	<key>PROJECT_ID</key>
+	<string>onesecondmusicgame-prod</string>
+	<key>STORAGE_BUCKET</key>
+	<string>onesecondmusicgame-prod.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:858680448613:ios:57e2b0958d39a7780ed88c</string>
+	<key>DATABASE_URL</key>
+	<string>https://onesecondmusicgame-prod.firebaseio.com</string>
+</dict>
+</plist>
