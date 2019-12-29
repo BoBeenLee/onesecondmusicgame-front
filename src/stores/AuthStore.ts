@@ -5,6 +5,7 @@ import {
   GoogleSignin,
   statusCodes
 } from "@react-native-community/google-signin";
+import firebase, { RNFirebase, AuthCredential } from "react-native-firebase";
 
 import { getRootStore } from "src/stores/StoreHelper";
 export type AUTH_PROVIDER = "KAKAO" | "GOOGLE" | "EMAIL" | "NONE";
@@ -34,11 +35,22 @@ const AuthStore = types
 
     const googleSignIn = flow(function*() {
       try {
-        yield GoogleSignin.hasPlayServices();
+        GoogleSignin.configure();
         const userInfo: RetrieveAsyncFunc<typeof GoogleSignin.signIn> = yield GoogleSignin.signIn();
+        const tokenInfo: RetrieveAsyncFunc<typeof GoogleSignin.getTokens> = yield GoogleSignin.getTokens();
+
+        const credential = firebase.auth.GoogleAuthProvider.credential(
+          tokenInfo.idToken,
+          tokenInfo.accessToken
+        );
+        const firebaseUserCredential: RetrieveAsyncFunc<(
+          credential: AuthCredential
+        ) => Promise<
+          RNFirebase.UserCredential
+        >> = yield firebase.auth().signInWithCredential(credential);
 
         self.accessId = userInfo.user.id;
-        self.accessToken = userInfo.idToken || "";
+        self.accessToken = tokenInfo.accessToken;
         self.provider = "GOOGLE";
       } catch (error) {
         rootStore.toastStore.showToast(error.message);

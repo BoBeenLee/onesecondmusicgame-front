@@ -27,6 +27,7 @@ import io.invertase.firebase.instanceid.RNFirebaseInstanceIdPackage;
 import io.invertase.firebase.links.RNFirebaseLinksPackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
 import io.invertase.firebase.config.RNFirebaseRemoteConfigPackage;
+import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import com.microsoft.codepush.react.CodePush;
 import com.airbnb.android.react.lottie.LottiePackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
@@ -98,6 +99,7 @@ public class MainApplication extends NavigationApplication {
                 new RNGestureHandlerPackage(),
                 BugsnagReactNative.getPackage(),
                 new RNPermissionsPackage(),
+                new RNFirebaseAuthPackage(),
                 new RNGoogleSigninPackage()
         );
     }

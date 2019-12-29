@@ -8,13 +8,23 @@ import { Bold12, Bold20 } from "src/components/text/Typographies";
 import images from "src/images";
 import { IStore } from "src/stores/Store";
 import { iosStatusBarHeight } from "src/utils/device";
-import { setModalStackRoot } from "src/utils/navigator";
+import { setStackRoot } from "src/utils/navigator";
 import { SCREEN_IDS } from "src/screens/constant";
 import { initialize as initializeRequestAPI } from "src/configs/requestAPI";
-import { initialize as initializeGoogleAuth } from "src/configs/googleAuth";
+import { fadeTransition } from "src/screens/styles/animations";
+import { initialize as initializeRemoteConfig } from "src/configs/remoteConfig";
+import { ICodePushStore } from "src/stores/CodePushStore";
+import { IAuthStore } from "src/stores/AuthStore";
+import { IPushNotificationStore } from "src/stores/PushNotificationStore";
 
 interface IInject {
-  store: IStore;
+  authStore: IAuthStore;
+  codePushStore: ICodePushStore;
+  pushNotificationStore: IPushNotificationStore;
+}
+
+interface IProps extends IInject {
+  componentId: string;
 }
 
 const Container = styled.View`
@@ -31,11 +41,13 @@ const Name = styled(Bold20)`
 
 @inject(
   ({ store }: { store: IStore }): IInject => ({
-    store
+    authStore: store.authStore,
+    codePushStore: store.codePushStore,
+    pushNotificationStore: store.pushNotificationStore
   })
 )
 @observer
-class SplashScreen extends React.Component<IInject> {
+class SplashScreen extends React.Component<IProps> {
   public animation: any = null;
 
   public async componentDidMount() {
@@ -44,11 +56,10 @@ class SplashScreen extends React.Component<IInject> {
   }
 
   public render() {
-    const { todoTest } = this.props.store.todoStore;
     return (
       <Container>
         <Name>
-          {this.props.store!.appStateStatus}123{todoTest}
+          123
         </Name>
         <LottieView
           style={{
@@ -66,14 +77,24 @@ class SplashScreen extends React.Component<IInject> {
   }
 
   private initializeApp = async () => {
-    initializeGoogleAuth();
+    const {
+      codePushStore,
+      pushNotificationStore
+    } = this.props;
+
+    await initializeRemoteConfig();
+    codePushStore.initialize();
+    pushNotificationStore.initialize();
     initializeRequestAPI();
   }
 
   private navigateTo = () => {
+    const { componentId } = this.props;
     // If Not SignIn
-    setModalStackRoot({
-      nextComponentId: SCREEN_IDS.SignInScreen
+    setStackRoot({
+      animtaions: fadeTransition,
+      componentId,
+      nextComponentId: SCREEN_IDS.SignInScreen,
     });
   }
 }

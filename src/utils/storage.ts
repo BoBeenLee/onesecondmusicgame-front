@@ -7,8 +7,12 @@ import { getOS, getVersion } from "src/utils/device";
 // tslint:disable:object-literal-sort-keys
 export const FIELD = {
   ACCESS_TOKEN: "ACCESS_TOKEN",
+  CODE_PUSH: `CODE_PUSH_${_.upperCase(getOS())}_${getVersion()
+    .split(".")
+    .join("")}`,
   REFRESH_TOKEN: "REFRESH_TOKEN",
-  PROVIDER_TYPE: "PROVIDER_TYPE"
+  PROVIDER_TYPE: "PROVIDER_TYPE",
+  IOS_PUSH_PERMISSION_DISALLOWED: "IOS_PUSH_PERMISSION_DISALLOWED"
 };
 
 export const setItem = (key: string, value: string) => {

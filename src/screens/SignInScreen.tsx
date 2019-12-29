@@ -7,6 +7,7 @@ import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import { Bold12, Bold14 } from "src/components/text/Typographies";
 import { IStore } from "src/stores/Store";
 import { IAuthStore } from "src/stores/AuthStore";
+import SignUpScreen from "src/screens/SignUpScreen";
 
 interface IInject {
     authStore: IAuthStore;
@@ -64,7 +65,7 @@ class SignInScreen extends Component<IProps> {
                         color={GoogleSigninButton.Color.Dark}
                         onPress={googleSignIn}
                     />
-                    <SignInButton>
+                    <SignInButton onPress={SignUpScreen.open}>
                         <ButtonText>회원 가입</ButtonText>
                     </SignInButton>
                 </Bottom>
