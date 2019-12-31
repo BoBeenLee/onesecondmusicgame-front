@@ -19,13 +19,13 @@ jobs:
       - run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p && npm install
 
       - name: grant chmod
-        run: chmod 755 ./packages/app/android/gradlew
+        run: chmod 755 ./android/gradlew
 
       - name: Assemble app debug APK
-        run: cd ./packages/app/android && ./gradlew app:assembleRelease
+        run: cd ./android && ./gradlew app:assembleRelease
 
       - name: Upload app APK
         uses: actions/upload-artifact@v1
         with:
           name: app-release
-          path: ./android/app/build/outputs/apk/app-release.apk
+          path: android/app/build/outputs/apk/release/app-release.apk
