@@ -7,23 +7,34 @@ A brief description of your project, what it is used for.
 
 ## Installing / Getting started
 
-A quick introduction of the minimal setup you need to get a hello world up &
+A quick introduction of the minimal setup you need to get a OneSecondMusicGame up &
 running.
 
 ```shell
 npm install
+
+# ios
+cd ios
+pod install
 ```
 
-Here you should say what actually happens when you execute the code above.
+### IOS Running
+```shell
+npm run ios
+```
+
+### Android Running
+```shell
+npm run android
+```
 
 ## Developing
 
 ### Built With
-List main libraries, frameworks used including versions (React, Angular etc...)
+React, React Native ...
 
 ### Prerequisites
-What is needed to set up the dev environment. For instance, global dependencies or any other tools. include download links.
-
+Xcode 최신버젼, node 10이상
 
 ### Setting up Dev
 
