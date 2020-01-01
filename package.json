@@ -29,8 +29,11 @@
     "androidstudio": "open -a /Applications/Android\\ Studio.app ./android",
     "androidrectotronconnect": "adb reverse tcp:9090 tcp:9090",
     "storybook": "storybook start -p 7007",
-    "release": "release-it",
-    "prepush": "npm run lint:css && npm run eslint"
+    "prepush": "npm run lint:css && npm run eslint",
+    "postinstall": "npx jetify",
+    "postbuildnumber:ios": "RNV=ios react-native-version",
+    "version": "react-native-version --reset-build",
+    "release": "release-it --ci"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.4.2",
@@ -134,6 +137,7 @@
     "prettier": "^1.19.1",
     "react-dom": "^16.11.0",
     "react-native-svg-transformer": "^0.13.0",
+    "react-native-version": "^3.2.0",
     "react-test-renderer": "16.8.3",
     "release-it": "^12.4.3",
     "stylelint": "^9.10.1",
