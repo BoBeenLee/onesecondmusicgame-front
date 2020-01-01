@@ -19,7 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(MARKETING_VERSION)</string>
+	<string>1.0.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -51,21 +51,21 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<string>1</string>
 	<key>CodePushDeploymentKey</key>
 	<string>2WxyU4VY9EWOSe2E04vnj9P2NM1_mRdNE1HlX</string>
 	<key>CodePushPublicKey</key>
 	<string>-----BEGIN PUBLIC KEY-----
-    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA28oeNxERFYQ1qb//vH2i
-    lvZJ7kPX5ObZwLBahwp0+qa1OoTgfEl+4wEyUHPYKMHUj41/a1+t8s3162FJIMN2
-    ARIoZ+Larkbw69lp3Y3y7hLmIFngbP9jho6Le1Cjv1A2v6A91m6QeByjgVXmXydz
-    jOP72Yxs9yTsua4dYEFLPpzLdcUVmvV0Au4sedDgJF09FYArdGDAhKhSs2EgWkIP
-    j6hRGuPTSMX7WSrFXNHCBSKgKjFdjKTkp4TJaVaRAnDyGo/pbXcNl40xQ5TgLwYH
-    j8zkJ5x6RdlMmXXylcQ1fg5W6p7LpMEoSEZb+nMlGgnjd1UhJXJI6+7nSiXz+YyT
-    zQIDAQAB
-    -----END PUBLIC KEY-----</string>
+		MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA28oeNxERFYQ1qb//vH2i
+		lvZJ7kPX5ObZwLBahwp0+qa1OoTgfEl+4wEyUHPYKMHUj41/a1+t8s3162FJIMN2
+		ARIoZ+Larkbw69lp3Y3y7hLmIFngbP9jho6Le1Cjv1A2v6A91m6QeByjgVXmXydz
+		jOP72Yxs9yTsua4dYEFLPpzLdcUVmvV0Au4sedDgJF09FYArdGDAhKhSs2EgWkIP
+		j6hRGuPTSMX7WSrFXNHCBSKgKjFdjKTkp4TJaVaRAnDyGo/pbXcNl40xQ5TgLwYH
+		j8zkJ5x6RdlMmXXylcQ1fg5W6p7LpMEoSEZb+nMlGgnjd1UhJXJI6+7nSiXz+YyT
+		zQIDAQAB
+		-----END PUBLIC KEY-----</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
+	<false />
 	<key>KAKAO_APP_KEY</key>
 	<string>f89aad4462e12d4b828bf312ee7ef895</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -82,22 +82,22 @@
 		<string>fbshareextension</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
-	<true/>
+	<true />
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
-		<true/>
+		<true />
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>codepush.azurewebsites.net</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
+				<true />
 			</dict>
 			<key>localhost</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
+				<true />
 			</dict>
 		</dict>
 	</dict>
@@ -133,6 +133,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<false />
 </dict>
 </plist>
