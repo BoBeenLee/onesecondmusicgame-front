@@ -111,6 +111,7 @@
     "@types/react-native-snap-carousel": "^3.7.2",
     "@types/react-native-tab-view": "^1.0.6",
     "@types/react-native-vector-icons": "^6.4.1",
+    "@types/react-native-video": "^3.1.5",
     "@types/react-test-renderer": "^16.8.1",
     "@types/recompose": "^0.30.6",
     "@types/semver": "^6.0.1",
