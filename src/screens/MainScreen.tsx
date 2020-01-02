@@ -6,6 +6,7 @@ import { Bold12, Bold14 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
 import { setRoot } from "src/utils/navigator";
 import colors from "src/styles/colors";
+import AudioPlayer from "src/components/AudioPlayer";
 
 const Container = styled(ContainerWithStatusBar)`
   flex: 1;
@@ -23,7 +24,7 @@ const Logo = styled(Bold14)``;
 class MainScreen extends Component {
   public static open() {
     setRoot({
-      nextComponentId: SCREEN_IDS.SignInScreen
+      nextComponentId: SCREEN_IDS.MainScreen
     });
   }
 
@@ -32,6 +33,7 @@ class MainScreen extends Component {
       <Container>
         <Content>
           <Logo>Main</Logo>
+          <AudioPlayer />
         </Content>
       </Container>
     );

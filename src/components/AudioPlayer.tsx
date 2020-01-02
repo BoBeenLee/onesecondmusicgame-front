@@ -20,7 +20,7 @@ class AudioPlayer extends Component {
           controls={true}
           source={{
             uri:
-              "https://soundcloud.com/xxxtension/jinsang-night-breeze-extended"
+              "https://api.soundcloud.com/tracks/736765723/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
           }}
         />
       </Container>
