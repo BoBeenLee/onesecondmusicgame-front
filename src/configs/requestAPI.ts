@@ -11,13 +11,15 @@ export const requestAPI = async <T>(config: AxiosRequestConfig) => {
     ...config.headers
   };
 
-  const response: AxiosResponse<T> = await axios({ ...config, headers });
+  const response: AxiosResponse<T> = await axios({
+    ...config,
+    baseURL: env.API_URL,
+    headers
+  });
   return response.data;
 };
 
 export const initialize = () => {
-  axios.defaults.baseURL = env.API_URL;
-
   axios.interceptors.response.use(
     response => {
       return response;

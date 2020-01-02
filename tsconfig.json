@@ -16,6 +16,7 @@
     "target": "esnext",
     "typeRoots": ["./typings", "./node_modules/@types"]
   },
+  "include": ["./**/*.*"],
   "exclude": [
     "node_modules",
     "babel.config.js",

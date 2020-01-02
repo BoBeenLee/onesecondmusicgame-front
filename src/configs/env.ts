@@ -11,6 +11,7 @@ interface IEnvironment {
 interface IEnvironmentEntry {
   REACT_ENV: string;
   API_URL: string;
+  SOUNDCLOUD_API_URL: string;
 }
 
 const REACT_ENV = _.defaultTo(
@@ -18,23 +19,29 @@ const REACT_ENV = _.defaultTo(
   "staging"
 ) as keyof IEnvironment;
 
+const SOUNDCLOUD_API_URL = "https://api.soundcloud.com";
+
 // tslint:disable:object-literal-sort-keys
 const env: IEnvironment = {
   development: {
     REACT_ENV,
-    API_URL: "http://localhost:8888"
+    API_URL: "http://localhost:8888",
+    SOUNDCLOUD_API_URL
   },
   production: {
     REACT_ENV,
-    API_URL: "http://localhost:8888"
+    API_URL: "http://34.84.5.51:8888",
+    SOUNDCLOUD_API_URL
   },
   staging: {
     REACT_ENV,
-    API_URL: "http://localhost:8888"
+    API_URL: "http://34.84.5.51:8888",
+    SOUNDCLOUD_API_URL
   },
   storybook: {
     REACT_ENV,
-    API_URL: "http://localhost:8888"
+    API_URL: "http://34.84.5.51:8888",
+    SOUNDCLOUD_API_URL
   }
 };
 
