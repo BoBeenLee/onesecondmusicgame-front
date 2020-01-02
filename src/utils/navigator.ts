@@ -26,22 +26,21 @@ const start = () => {
   setRoot({ nextComponentId: SCREEN_IDS.SplashScreen });
 };
 
-const setRoot = async ({ nextComponentId }: { nextComponentId: string }) =>
-  await protectedMultiClick(() => {
-    Navigation.setRoot({
-      root: {
-        stack: {
-          children: [
-            {
-              component: {
-                name: nextComponentId
-              }
+const setRoot = async ({ nextComponentId }: { nextComponentId: string }) => {
+  Navigation.setRoot({
+    root: {
+      stack: {
+        children: [
+          {
+            component: {
+              name: nextComponentId
             }
-          ]
-        }
+          }
+        ]
       }
-    });
-  })();
+    }
+  });
+};
 
 const setCurrentComponent = (componentId: string, componentName: string) => {
   currentComponentId = componentId;
