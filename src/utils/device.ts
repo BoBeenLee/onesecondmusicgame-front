@@ -19,10 +19,7 @@ export function isIphoneX() {
   );
 }
 
-export function ifIphoneX(
-  iphoneXStyle: any,
-  regularStyle: any
-) {
+export function ifIphoneX(iphoneXStyle: any, regularStyle: any) {
   if (isIphoneX()) {
     return iphoneXStyle;
   }

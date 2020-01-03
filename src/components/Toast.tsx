@@ -25,14 +25,13 @@ const makeContainerStyleByType = (
   type: string,
   opacityAnimated: Animated.Value
 ) => {
-  const containerStyles = new Map<string, IToastStyle>()
-    .set("top", {
-      end: TOP_OFFSET,
-      start: TOP_OFFSET - TOP_DIFF,
-      style: {
-        top: 0
-      }
-    });
+  const containerStyles = new Map<string, IToastStyle>().set("top", {
+    end: TOP_OFFSET,
+    start: TOP_OFFSET - TOP_DIFF,
+    style: {
+      top: 0
+    }
+  });
   const containerStyle = containerStyles.get(type)!;
 
   return {
