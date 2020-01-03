@@ -47,7 +47,7 @@ const Name = styled(Bold20)`
 )
 @observer
 class SplashScreen extends React.Component<IProps> {
-  public animation: any = null;
+  public animation: Animated.Value | null = null;
 
   public async componentDidMount() {
     await this.initializeApp();

@@ -1,7 +1,12 @@
 import _ from "lodash";
 
+interface IProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  detail: any;
+}
+
 export class OSMGError extends Error {
-  constructor(props: any) {
+  constructor(props: IProps) {
     const { detail } = props;
     const primaryMessage = _.get(
       detail,

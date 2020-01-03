@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import _ from "lodash";
 
 export const enhanceNoError = (func: any) => async (...args: any[]) => {

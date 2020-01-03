@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Layout, Navigation } from "react-native-navigation";
 
 import { SCREEN_IDS } from "src/screens/constant";

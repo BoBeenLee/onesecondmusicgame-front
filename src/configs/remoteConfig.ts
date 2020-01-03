@@ -50,7 +50,7 @@ const getJSONValue = async <T>(key: string, defaultValue: T) => {
   return defaultValue;
 };
 
-const getRemoteConfig = async (key: string, defaultValue: any) => {
+const getRemoteConfig = async <T>(key: string, defaultValue: T) => {
   try {
     await firebase.config().fetch(0);
     await firebase.config().activateFetched();

@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { Dimensions, Platform, StatusBar } from "react-native";
+import { Dimensions, Platform, StatusBar, ViewStyle } from "react-native";
 import DeviceInfo from "react-native-device-info";
 
 const getOS = (): string => Platform.OS;
@@ -19,7 +19,10 @@ export function isIphoneX() {
   );
 }
 
-export function ifIphoneX(iphoneXStyle: any, regularStyle: any) {
+export function ifIphoneX(
+  iphoneXStyle: ViewStyle["style"],
+  regularStyle: ViewStyle["style"]
+) {
   if (isIphoneX()) {
     return iphoneXStyle;
   }

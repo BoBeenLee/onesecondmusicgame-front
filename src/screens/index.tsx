@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import hoistNonReactStatic from "hoist-non-react-statics";
 import _ from "lodash";
 import { Navigation } from "react-native-navigation";

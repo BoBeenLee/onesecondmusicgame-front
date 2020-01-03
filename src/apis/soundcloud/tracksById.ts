@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { soundCloudAPI } from "src/configs/soundCloudAPI";
 import { IUser } from "src/apis/soundcloud/interface";
 

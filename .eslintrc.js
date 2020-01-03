@@ -13,7 +13,8 @@ module.exports = {
       jsx: true // Allows for the parsing of JSX
     },
     project: "./tsconfig.json",
-    tsconfigRootDir: "./"
+    tsconfigRootDir: "./",
+    createDefaultProgram: true
   },
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs

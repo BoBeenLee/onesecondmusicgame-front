@@ -15,13 +15,13 @@ interface IEnvironmentEntry {
 }
 
 const REACT_ENV = _.defaultTo(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (config as any).REACT_ENV,
   "staging"
 ) as keyof IEnvironment;
 
 const SOUNDCLOUD_API_URL = "https://api.soundcloud.com";
 
-// tslint:disable:object-literal-sort-keys
 const env: IEnvironment = {
   development: {
     REACT_ENV,
