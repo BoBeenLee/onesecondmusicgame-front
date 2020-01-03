@@ -1,8 +1,8 @@
 import { requestAPI } from "src/configs/requestAPI";
 
 interface IVariables {
-    highlightSeconds: number[];
-    songId: number;
+  highlightSeconds: number[];
+  songId: number;
 }
 
 export const highlightNew = async (data: IVariables) => {
