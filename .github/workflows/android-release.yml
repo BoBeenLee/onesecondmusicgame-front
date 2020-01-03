@@ -1,31 +1,22 @@
 name: Android Release
-
 on:
   push:
     branches:
-      - "production*"
+      - "master*"
 
 jobs:
-  apk:
+  ipa:
     name: Generate APK
-    runs-on: ubuntu-18.04
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v1
-      - name: Set up JDK 1.8 And npm install
-        uses: actions/setup-java@v1
+      - run: npm install
+      - name: Fastlane step
+        uses: maierj/fastlane-action@v1.2.0
         with:
-          java-version: 1.8
-      - run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p && npm install
-
-      - name: grant chmod
-        run: chmod 755 ./android/gradlew
-
-      - name: Assemble app debug APK
-        run: cd ./android && ./gradlew app:assembleRelease
-
-      - name: Upload app APK
-        uses: actions/upload-artifact@v1
-        with:
-          name: app-release
-          path: android/app/build/outputs/apk/release/app-release.apk
+          lane: "android ci"
+        env:
+          OUTPUT_NAME: "RNApp"
+          OUTPUT_SUFFIX: ""
+          FIREBASE_TOKEN: "1//0eoKcGGVW69GBCgYIARAAGA4SNwF-L9IrtDU_S9ZQrWvYKLjQwcjzaYUVxLNtaPOOCbW0gAkKxINs6nEjAOpOSAWnAVAF297ntCo"
