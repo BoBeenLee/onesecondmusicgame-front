@@ -2,8 +2,8 @@ import { soundCloudAPI } from "src/configs/soundCloudAPI";
 import { IUser } from "src/apis/soundcloud/interface";
 
 interface IVariables {
-  limit: number;
-  offset: number;
+  limit?: number;
+  offset?: number;
   tags?: string;
   q?: string;
 }
@@ -64,10 +64,20 @@ interface Collection {
   download_url?: string;
 }
 
-export const tracks = async (data: IVariables) => {
+export const tracks = async ({
+  limit = 20,
+  offset = 0,
+  tags,
+  q
+}: IVariables) => {
   return await soundCloudAPI<IResponse>({
     method: "get",
     url: `/tracks`,
-    params: data
+    params: {
+      limit,
+      offset,
+      tags,
+      q
+    }
   });
 };
