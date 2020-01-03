@@ -8,7 +8,7 @@ import {
 import firebase, { RNFirebase, AuthCredential } from "react-native-firebase";
 import { defaultItemToString, FIELD } from "src/utils/storage";
 
-export type AUTH_PROVIDER = "KAKAO" | "GOOGLE" | "EMAIL" | "NONE";
+export type AUTH_PROVIDER = "KAKAO" | "GOOGLE" | "FACEBOOK" | "NONE";
 
 const AuthStore = types
   .model("AuthStore", {

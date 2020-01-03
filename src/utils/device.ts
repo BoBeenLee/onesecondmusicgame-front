@@ -20,8 +20,8 @@ export function isIphoneX() {
 }
 
 export function ifIphoneX(
-  iphoneXStyle: ViewProps["style"],
-  regularStyle: ViewProps["style"]
+  iphoneXStyle: any,
+  regularStyle: any
 ) {
   if (isIphoneX()) {
     return iphoneXStyle;

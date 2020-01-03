@@ -15,7 +15,6 @@ import { IAuthStore } from "src/stores/AuthStore";
 import { IPushNotificationStore } from "src/stores/PushNotificationStore";
 import MainScreen from "src/screens/MainScreen";
 import SignInScreen from "src/screens/SignInScreen";
-import { Animated } from "react-native";
 
 interface IInject {
   authStore: IAuthStore;
@@ -48,7 +47,8 @@ const Name = styled(Bold20)`
 )
 @observer
 class SplashScreen extends React.Component<IProps> {
-  public animation: Animated.Value | null = null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public animation: any = null;
 
   public async componentDidMount() {
     await this.initializeApp();

@@ -16,6 +16,7 @@ import { getRootStore } from "src/stores/Store";
 import SignInScreen from "src/screens/SignInScreen";
 import SignUpScreen from "src/screens/SignUpScreen";
 import MainScreen from "src/screens/MainScreen";
+import withToast from "src/hocs/withToast";
 
 interface IScreenProps {
   id: string;
@@ -32,6 +33,7 @@ const enhanceOverlayScreen = (Component: React.ComponentType<any>) => {
 
 const enhanceScreen = (Component: React.ComponentType<any>) => {
   const EnhancedComponent = compose(
+    withToast,
     withPopup,
     withAppState,
     withNavigator,

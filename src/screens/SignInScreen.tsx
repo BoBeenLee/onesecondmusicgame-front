@@ -93,35 +93,37 @@ class SignInScreen extends Component<IProps> {
   }
 
   private facebookSignIn = (error: object, result: LoginResult) => {
+    const { showToast } = this.props.toastStore;
+
     if (error) {
-      console.log("login has error: " + result.error);
+      showToast("login has error: " + result.error);
     } else if (result.isCancelled) {
-      console.log("login is cancelled.");
+      showToast("login is cancelled.");
     } else {
       AccessToken.getCurrentAccessToken().then(data => {
-        console.log(data?.accessToken?.toString());
+        showToast(data?.accessToken?.toString?.() ?? "");
       });
     }
   };
 
-  private googleSignIn = () => {
+  private googleSignIn = async () => {
     const { googleSignIn } = this.props.authStore;
     const { showToast } = this.props.toastStore;
 
     try {
-      googleSignIn();
+      await googleSignIn();
       MainScreen.open();
     } catch (error) {
       showToast(error.message);
     }
   };
 
-  private kakaoSignIn = () => {
+  private kakaoSignIn = async () => {
     const { kakaoSignIn } = this.props.authStore;
     const { showToast } = this.props.toastStore;
 
     try {
-      kakaoSignIn();
+      await kakaoSignIn();
       MainScreen.open();
     } catch (error) {
       showToast(error.message);
