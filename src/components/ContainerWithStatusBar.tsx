@@ -1,5 +1,5 @@
 import React from "react";
-import { RegisteredStyle, ViewStyle } from "react-native";
+import { ViewProps } from "react-native";
 import styled from "styled-components/native";
 
 import colors from "src/styles/colors";
@@ -7,7 +7,7 @@ import { iosStatusBarHeight } from "src/utils/device";
 
 interface IProps {
   children?: React.ReactNode;
-  style?: RegisteredStyle<ViewStyle> | ViewStyle;
+  style?: ViewProps["style"];
   statusBarColor?: string;
 }
 

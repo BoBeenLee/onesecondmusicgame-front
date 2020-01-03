@@ -15,6 +15,7 @@ import { IAuthStore } from "src/stores/AuthStore";
 import { IPushNotificationStore } from "src/stores/PushNotificationStore";
 import MainScreen from "src/screens/MainScreen";
 import SignInScreen from "src/screens/SignInScreen";
+import { Animated } from "react-native";
 
 interface IInject {
   authStore: IAuthStore;
