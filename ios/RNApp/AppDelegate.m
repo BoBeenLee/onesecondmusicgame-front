@@ -14,6 +14,7 @@
 #import <ReactNativeNavigation/ReactNativeNavigation.h>
 #import "RNSplashScreen.h"
 #import <KakaoOpenSDK/KakaoOpenSDK.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import "RNFirebaseLinks.h"
 #import "RNFirebaseNotifications.h"
 #import "RNFirebaseMessaging.h"
@@ -26,6 +27,7 @@
     [FIROptions defaultOptions].deepLinkURLScheme = @"onesecondmusicgame";
     [FIRApp configure];
     [RNFirebaseNotifications configure];
+    [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
   
     NSURL *jsCodeLocation;
     #if DEBUG
@@ -68,7 +70,10 @@ fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHand
   if ([KOSession isKakaoAccountLoginCallback:url]) {
     return [KOSession handleOpenURL:url];
   }
-  return false;
+  return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                         openURL:url
+                                               sourceApplication:sourceApplication
+                                                      annotation:annotation];
 }
 
 - (BOOL)application:(UIApplication *)application
@@ -76,6 +81,9 @@ fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHand
             options:(NSDictionary<NSString *, id> *)options {
     if ([KOSession isKakaoAccountLoginCallback:url]) {
       return [KOSession handleOpenURL:url];
+    }
+    if ([[FBSDKApplicationDelegate sharedInstance] application:application openURL:url options:options]) {
+      return YES;
     }
     return [[RNFirebaseLinks instance] application:application openURL:url options:options];
 }
@@ -89,6 +97,7 @@ continueUserActivity:(NSUserActivity *)userActivity
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
   [KOSession handleDidBecomeActive];
+  [FBSDKAppEvents activateApp];
 }
 
 @end

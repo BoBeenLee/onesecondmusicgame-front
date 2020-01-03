@@ -47,6 +47,7 @@ import com.bugsnag.BugsnagReactNative;
 import com.reactnativecommunity.rnpermissions.RNPermissionsPackage; 
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.brentvatne.react.ReactVideoPackage;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
 
 public class MainApplication extends NavigationApplication {
     @Override
@@ -102,7 +103,8 @@ public class MainApplication extends NavigationApplication {
                 new RNPermissionsPackage(),
                 new RNFirebaseAuthPackage(),
                 new RNGoogleSigninPackage(),
-                new ReactVideoPackage()
+                new ReactVideoPackage(),
+                new FBSDKPackage()
         );
     }
 

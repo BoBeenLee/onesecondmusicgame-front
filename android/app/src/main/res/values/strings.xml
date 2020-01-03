@@ -11,4 +11,6 @@ zQIDAQAB
 -----END PUBLIC KEY-----</string>
     <string name="app_name">onesecondmusicgame</string>
     <string name="default_notification_channel_id">onesecondmusicgame-channel</string>
+    <string name="facebook_app_id">758933814518094</string>
+    <string name="fb_login_protocol_scheme">fb758933814518094</string>
 </resources>

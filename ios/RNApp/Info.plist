@@ -30,7 +30,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>kakaof89aad4462e12d4b828bf312ee7ef895</string>
-				<string>fb1902652103167623</string>
+				<string>fb758933814518094</string>
 			</array>
 		</dict>
 		<dict>
@@ -68,6 +68,10 @@
 	<false />
 	<key>KAKAO_APP_KEY</key>
 	<string>f89aad4462e12d4b828bf312ee7ef895</string>
+	<key>FacebookAppID</key>
+	<string>758933814518094</string>
+	<key>FacebookDisplayName</key>
+	<string>OneSecondMusicGame</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>kakaof89aad4462e12d4b828bf312ee7ef895</string>
