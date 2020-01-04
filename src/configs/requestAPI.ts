@@ -4,16 +4,27 @@ import _ from "lodash";
 import env from "src/configs/env";
 import { getRootStore } from "src/stores/Store";
 import { OSMGError } from "src/configs/error";
+import { FetchAPI } from "__generate__/api";
 
-export const requestAPI = async <T>(config: AxiosRequestConfig) => {
+interface IOptions {
+  headers: object;
+  body: object;
+}
+
+export const requestAPI: FetchAPI = async <T>(
+  url: string,
+  config: IOptions
+) => {
   const headers = {
     // Authorization: `JWT ${getStore().authStore.accessToken}`,
     ...config.headers
   };
+  const data = config.body;
 
   const response: AxiosResponse<T> = await axios({
-    ...config,
     baseURL: env.API_URL,
+    url,
+    data,
     headers
   });
   return response.data;
