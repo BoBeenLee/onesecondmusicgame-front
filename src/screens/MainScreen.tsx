@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Clipboard, Alert } from "react-native";
 import styled from "styled-components/native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
@@ -7,6 +8,8 @@ import { SCREEN_IDS } from "src/screens/constant";
 import { setRoot } from "src/utils/navigator";
 import colors from "src/styles/colors";
 import AudioPlayer from "src/components/AudioPlayer";
+import XEIconButton from "src/components/button/XEIconButton";
+import { makeAppShareLink } from "src/utils/dynamicLink";
 
 const Container = styled(ContainerWithStatusBar)`
   flex: 1;
@@ -32,12 +35,24 @@ class MainScreen extends Component {
     return (
       <Container>
         <Content>
+          <XEIconButton
+            iconName="alarm-o"
+            iconColor={colors.gray900}
+            iconSize={20}
+            onPress={this.shareLink}
+          />
           <Logo>Main</Logo>
           <AudioPlayer />
         </Content>
       </Container>
     );
   }
+
+  private shareLink = async () => {
+    const shortLink = await makeAppShareLink("test");
+    Alert.alert(shortLink);
+    Clipboard.setString(shortLink);
+  };
 }
 
 export default MainScreen;
