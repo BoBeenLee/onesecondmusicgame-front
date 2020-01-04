@@ -8,18 +8,15 @@ import { Bold12, Bold20 } from "src/components/text/Typographies";
 import images from "src/images";
 import { IStore } from "src/stores/Store";
 import { iosStatusBarHeight } from "src/utils/device";
-import { initialize as initializeRequestAPI } from "src/configs/requestAPI";
-import { initialize as initializeRemoteConfig } from "src/configs/remoteConfig";
-import { ICodePushStore } from "src/stores/CodePushStore";
 import { IAuthStore } from "src/stores/AuthStore";
-import { IPushNotificationStore } from "src/stores/PushNotificationStore";
+import { ICodePushStore } from "src/stores/CodePushStore";
 import MainScreen from "src/screens/MainScreen";
 import SignInScreen from "src/screens/SignInScreen";
 
 interface IInject {
+  store: IStore;
   authStore: IAuthStore;
   codePushStore: ICodePushStore;
-  pushNotificationStore: IPushNotificationStore;
 }
 
 interface IProps extends IInject {
@@ -40,9 +37,8 @@ const Name = styled(Bold20)`
 
 @inject(
   ({ store }: { store: IStore }): IInject => ({
-    authStore: store.authStore,
-    codePushStore: store.codePushStore,
-    pushNotificationStore: store.pushNotificationStore
+    store,
+    codePushStore: store.codePushStore
   })
 )
 @observer
@@ -51,7 +47,8 @@ class SplashScreen extends React.Component<IProps> {
   public animation: any = null;
 
   public async componentDidMount() {
-    await this.initializeApp();
+    const { store } = this.props;
+    await store.initializeApp();
     this.navigateTo();
   }
 
@@ -73,16 +70,6 @@ class SplashScreen extends React.Component<IProps> {
       </Container>
     );
   }
-
-  private initializeApp = async () => {
-    const { authStore, codePushStore, pushNotificationStore } = this.props;
-
-    await initializeRemoteConfig();
-    codePushStore.initialize();
-    pushNotificationStore.initialize();
-    authStore.initialize();
-    initializeRequestAPI();
-  };
 
   private navigateTo = () => {
     const { isGuest } = this.props.authStore;

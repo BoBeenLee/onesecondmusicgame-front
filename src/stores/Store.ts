@@ -1,4 +1,4 @@
-import { types } from "mobx-state-tree";
+import { flow, types } from "mobx-state-tree";
 import { AppState, AppStateStatus } from "react-native";
 
 import TodoStore from "src/stores/TodoStore";
@@ -6,7 +6,9 @@ import AuthStore from "src/stores/AuthStore";
 import ToastStore from "src/stores/ToastStore";
 import PushNotificationStore from "src/stores/PushNotificationStore";
 import CodePushStore from "src/stores/CodePushStore";
-import LinkingStore from "./LinkingStore";
+import LinkingStore from "src/stores/LinkingStore";
+import { initialize as initializeRequestAPI } from "src/configs/requestAPI";
+import { initialize as initializeRemoteConfig } from "src/configs/remoteConfig";
 
 const Store = types
   .model({
@@ -23,8 +25,18 @@ const Store = types
       self.appStateStatus = appState;
     };
 
+    const initializeApp = flow(function*() {
+      yield initializeRemoteConfig();
+      self.linkingStore.initialize();
+      self.codePushStore.initialize();
+      self.pushNotificationStore.initialize();
+      self.authStore.initialize();
+      initializeRequestAPI();
+    });
+
     return {
-      setAppStateStatus
+      setAppStateStatus,
+      initializeApp
     };
   });
 
