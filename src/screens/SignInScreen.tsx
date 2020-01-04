@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
 import { GoogleSigninButton } from "@react-native-community/google-signin";
-import { LoginButton, AccessToken, LoginResult } from "react-native-fbsdk";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import { Bold12, Bold14 } from "src/components/text/Typographies";
@@ -83,7 +82,9 @@ class SignInScreen extends Component<IProps> {
             color={GoogleSigninButton.Color.Dark}
             onPress={this.googleSignIn}
           />
-          <LoginButton onLoginFinished={this.facebookSignIn} />
+          <SignInButton onPress={this.facebookSignIn}>
+            <ButtonText>페이스북 로그인</ButtonText>
+          </SignInButton>
           <SignInButton onPress={SignUpScreen.open}>
             <ButtonText>회원 가입</ButtonText>
           </SignInButton>
@@ -92,16 +93,15 @@ class SignInScreen extends Component<IProps> {
     );
   }
 
-  private facebookSignIn = async (error: object, result: LoginResult) => {
+  private facebookSignIn = async () => {
+    const { facebookSignIn } = this.props.authStore;
     const { showToast } = this.props.toastStore;
 
-    if (error) {
-      showToast("login has error: " + result.error);
-    } else if (result.isCancelled) {
-      showToast("login is cancelled.");
-    } else {
-      const data = await AccessToken.getCurrentAccessToken();
-      showToast(data?.userID + " - " + data?.accessToken?.toString?.() ?? "");
+    try {
+      await facebookSignIn();
+      MainScreen.open();
+    } catch (error) {
+      showToast(error.message);
     }
   };
 

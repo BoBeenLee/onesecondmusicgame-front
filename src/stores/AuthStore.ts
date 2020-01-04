@@ -6,7 +6,10 @@ import {
   statusCodes
 } from "@react-native-community/google-signin";
 import firebase, { RNFirebase, AuthCredential } from "react-native-firebase";
+import { LoginManager, AccessToken } from "react-native-fbsdk";
+
 import { defaultItemToString, FIELD } from "src/utils/storage";
+import { userControllerApi } from "src/apis/user";
 
 export type AUTH_PROVIDER = "KAKAO" | "GOOGLE" | "FACEBOOK" | "NONE";
 
@@ -57,6 +60,7 @@ const AuthStore = types
       self.accessId = profileResponse.id;
       self.accessToken = tokenResponse.accessToken;
       self.provider = "KAKAO";
+      yield signIn();
     });
 
     const googleSignIn = flow(function*() {
@@ -77,6 +81,7 @@ const AuthStore = types
         self.accessId = userInfo.user.id;
         self.accessToken = tokenInfo.accessToken;
         self.provider = "GOOGLE";
+        yield signIn();
       } catch (error) {
         if (error.code === statusCodes.SIGN_IN_CANCELLED) {
           // user cancelled the login flow
@@ -93,9 +98,27 @@ const AuthStore = types
       }
     });
 
-    const emailSignIn = () => {
-      // TODO
-    };
+    const facebookSignIn = flow(function*() {
+      const result: RetrieveAsyncFunc<typeof LoginManager.logInWithPermissions> = yield LoginManager.logInWithPermissions(
+        ["public_profile"]
+      );
+      if (result.isCancelled) {
+        throw new Error("Login cancelled")
+      }
+      const data: RetrieveAsyncFunc<typeof AccessToken.getCurrentAccessToken> = yield AccessToken.getCurrentAccessToken();
+      if (!Boolean(data?.accessToken)) {
+        throw new Error("not exists facebook token")
+      }
+      self.accessId = data?.userID ?? "";
+      self.accessToken = data?.accessToken?.toString?.() ?? "";
+    });
+
+    const signIn = flow(function*() {
+      yield userControllerApi.signInUsingPOST({
+        accessId: self.accessId,
+        accessToken: self.accessToken
+      });
+    });
 
     const signOut = () => {
       // TODO
@@ -103,9 +126,9 @@ const AuthStore = types
 
     return {
       initialize,
+      facebookSignIn,
       kakaoSignIn,
       googleSignIn,
-      emailSignIn,
       signOut
     };
   });
