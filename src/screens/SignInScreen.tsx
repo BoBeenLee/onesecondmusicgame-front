@@ -92,7 +92,7 @@ class SignInScreen extends Component<IProps> {
     );
   }
 
-  private facebookSignIn = (error: object, result: LoginResult) => {
+  private facebookSignIn = async (error: object, result: LoginResult) => {
     const { showToast } = this.props.toastStore;
 
     if (error) {
@@ -100,9 +100,8 @@ class SignInScreen extends Component<IProps> {
     } else if (result.isCancelled) {
       showToast("login is cancelled.");
     } else {
-      AccessToken.getCurrentAccessToken().then(data => {
-        showToast(data?.accessToken?.toString?.() ?? "");
-      });
+      const data = await AccessToken.getCurrentAccessToken();
+      showToast(data?.userID + " - " + data?.accessToken?.toString?.() ?? "");
     }
   };
 
