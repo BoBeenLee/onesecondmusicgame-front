@@ -40,6 +40,7 @@ target 'RNApp' do
   pod 'ReactNativeNavigation', :podspec => '../node_modules/react-native-navigation/ReactNativeNavigation.podspec'
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
   pod 'Firebase/Core', '~> 6.3.0'
+  pod 'Firebase/AdMob', '~> 6.3.0'
   pod 'Firebase/Analytics', '~> 6.3.0'
   pod 'Firebase/Auth', '~> 6.3.0'
   pod 'Firebase/RemoteConfig', '~> 6.3.0'
