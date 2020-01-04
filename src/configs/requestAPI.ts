@@ -7,25 +7,31 @@ import { OSMGError } from "src/configs/error";
 import { FetchAPI } from "__generate__/api";
 
 interface IOptions {
-  headers: object;
   body: object;
+  headers: object;
+  method: any;
+  query: object;
 }
 
 export const requestAPI: FetchAPI = async <T>(
   url: string,
-  config: IOptions
+  options: IOptions
 ) => {
   const headers = {
     // Authorization: `JWT ${getStore().authStore.accessToken}`,
-    ...config.headers
+    ...options.headers
   };
-  const data = config.body;
+  const configs: AxiosRequestConfig = {
+    headers,
+    data: options.body,
+    params: options.query,
+    method: options.method,
+    url
+  };
 
   const response: AxiosResponse<T> = await axios({
     baseURL: env.API_URL,
-    url,
-    data,
-    headers
+    ...configs
   });
   return response.data;
 };

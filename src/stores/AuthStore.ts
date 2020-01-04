@@ -103,17 +103,33 @@ const AuthStore = types
         ["public_profile"]
       );
       if (result.isCancelled) {
-        throw new Error("Login cancelled")
+        throw new Error("Login cancelled");
       }
       const data: RetrieveAsyncFunc<typeof AccessToken.getCurrentAccessToken> = yield AccessToken.getCurrentAccessToken();
       if (!Boolean(data?.accessToken)) {
-        throw new Error("not exists facebook token")
+        throw new Error("not exists facebook token");
       }
       self.accessId = data?.userID ?? "";
       self.accessToken = data?.accessToken?.toString?.() ?? "";
     });
 
     const signIn = flow(function*() {
+      try {
+        yield userControllerApi.signInUsingPOST({
+          accessId: self.accessId,
+          accessToken: self.accessToken
+        });
+      } catch (error) {
+        yield fallbackSignIn();
+      }
+    });
+
+    const fallbackSignIn = flow(function*() {
+      yield userControllerApi.signUpUsingPOST({
+        accessId: self.accessId,
+        deviceId: "deviceId",
+        nickname: "hello world"
+      });
       yield userControllerApi.signInUsingPOST({
         accessId: self.accessId,
         accessToken: self.accessToken
