@@ -38,6 +38,7 @@ const Name = styled(Bold20)`
 @inject(
   ({ store }: { store: IStore }): IInject => ({
     store,
+    authStore: store.authStore,
     codePushStore: store.codePushStore
   })
 )
