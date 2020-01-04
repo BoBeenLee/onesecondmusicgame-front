@@ -12,7 +12,7 @@ export const FIELD = {
     .join("")}`,
   REFRESH_TOKEN: "REFRESH_TOKEN",
   PROVIDER_TYPE: "PROVIDER_TYPE",
-  IOS_PUSH_PERMISSION_DISALLOWED: "IOS_PUSH_PERMISSION_DISALLOWED"
+  SHARED_ACCESS_ID: "SHARED_ACCESS_ID"
 };
 
 export const setItem = (key: string, value: string) => {

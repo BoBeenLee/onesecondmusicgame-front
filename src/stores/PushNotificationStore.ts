@@ -78,15 +78,6 @@ const PushNotificationStore = types
         yield firebase.messaging().requestPermission();
         return (self.pushPermission = true);
       } catch (error) {
-        const isDisallowedBefore = yield defaultItemToBoolean(
-          FIELD.IOS_PUSH_PERMISSION_DISALLOWED,
-          false
-        );
-
-        if (!isDisallowedBefore) {
-          yield setItem(FIELD.IOS_PUSH_PERMISSION_DISALLOWED, "true");
-          // TODO: GA for disa_llowing push permission in IOS
-        }
         return (self.pushPermission = false);
       }
     });
