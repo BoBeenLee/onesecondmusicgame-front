@@ -6,6 +6,7 @@ import AuthStore from "src/stores/AuthStore";
 import ToastStore from "src/stores/ToastStore";
 import PushNotificationStore from "src/stores/PushNotificationStore";
 import CodePushStore from "src/stores/CodePushStore";
+import LinkingStore from "./LinkingStore";
 
 const Store = types
   .model({
@@ -14,7 +15,8 @@ const Store = types
     codePushStore: types.optional(CodePushStore, {}),
     todoStore: types.optional(TodoStore, {}),
     toastStore: types.optional(ToastStore, {}),
-    pushNotificationStore: types.optional(PushNotificationStore, {})
+    pushNotificationStore: types.optional(PushNotificationStore, {}),
+    linkingStore: types.optional(LinkingStore, {})
   })
   .actions(self => {
     const setAppStateStatus = (appState: AppStateStatus) => {
