@@ -372,7 +372,7 @@ PODS:
     - react-native-video/Video (= 5.0.2)
   - react-native-video/Video (5.0.2):
     - React
-  - react-native-webview (5.12.1):
+  - react-native-webview (8.0.2):
     - React
   - React-RCTActionSheet (0.61.4):
     - React-Core/RCTActionSheetHeaders (= 0.61.4)
@@ -698,7 +698,7 @@ SPEC CHECKSUMS:
   react-native-fbsdk: b94a83971c496a35803f38b921aec6d637ba07b5
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-video: 961749da457e73bf0b5565edfbaffc25abfb8974
-  react-native-webview: 21c396687cb983fadc6ccc0751cc74f554131f3f
+  react-native-webview: 88b0a0453a88cd7e3c0729ce8723a66783814dd6
   React-RCTActionSheet: 7369b7c85f99b6299491333affd9f01f5a130c22
   React-RCTAnimation: d07be15b2bd1d06d89417eb0343f98ffd2b099a7
   React-RCTBlob: 8e0b23d95c9baa98f6b0e127e07666aaafd96c34
