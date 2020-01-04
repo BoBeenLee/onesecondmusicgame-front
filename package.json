@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
+    "codegen": "java -jar ./scripts/swagger-codegen-cli-2.4.10.jar generate -i http://34.84.5.51:8888/v2/api-docs -l typescript-fetch -o ./__generate__",
     "android": "node node_modules/react-native/local-cli/cli.js run-android",
     "android:release": "node node_modules/react-native/local-cli/cli.js run-android --variant=release",
     "android:release:open": "open ./android/app/build/outputs/apk",
@@ -53,6 +54,7 @@
     "mobx-state-tree": "^3.15.0",
     "moment": "^2.24.0",
     "numeral": "^2.0.6",
+    "portable-fetch": "^3.0.0",
     "qs": "^6.8.0",
     "react": "^16.11.0",
     "react-native": "0.61.4",

@@ -18,6 +18,7 @@
   },
   "include": ["./**/*.*"],
   "exclude": [
+    "__generate__",
     "node_modules",
     "babel.config.js",
     "metro.config.js",
