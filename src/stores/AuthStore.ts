@@ -37,10 +37,12 @@ const AuthStore = types
       self.accessId = "";
       self.accessToken = "";
       self.refreshToken = "";
+      saveAuthInfo();
     };
 
     const initialize = flow(function*() {
       self.provider = yield defaultItemToString(FIELD.PROVIDER_TYPE, "NONE");
+      self.accessId = yield defaultItemToString(FIELD.ACCESS_ID, "");
       self.accessToken = yield defaultItemToString(FIELD.ACCESS_TOKEN, "");
       self.refreshToken = yield defaultItemToString(FIELD.REFRESH_TOKEN, "");
 
@@ -174,7 +176,7 @@ const AuthStore = types
     });
 
     const signOut = () => {
-      // TODO
+      clear();
     };
 
     return {

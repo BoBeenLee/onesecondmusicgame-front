@@ -30,7 +30,7 @@ const Store = types
       self.linkingStore.initialize();
       self.codePushStore.initialize();
       self.pushNotificationStore.initialize();
-      self.authStore.initialize();
+      yield self.authStore.initialize();
       initializeRequestAPI();
     });
 
