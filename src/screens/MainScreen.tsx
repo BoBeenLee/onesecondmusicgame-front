@@ -60,7 +60,8 @@ class MainScreen extends Component<IProps> {
   }
 
   public async componentDidMount() {
-    loadAD(AdmobUnitID.HeartReward, ["foo", "bar"]);
+    loadAD(AdmobUnitID.HeartReward, ["game", "quiz"]);
+    loadAD(AdmobUnitID.HeartScreen, ["game", "quiz"]);
   }
 
   public render() {
@@ -69,6 +70,9 @@ class MainScreen extends Component<IProps> {
         <Content>
           <ADButton onPress={this.requestHeartRewardAD}>
             <ButtonText>광고 보기(리워드)</ButtonText>
+          </ADButton>
+          <ADButton onPress={this.requestHeartScreenAD}>
+            <ButtonText>광고 보기(전면)</ButtonText>
           </ADButton>
           <ADButton onPress={this.shareLink}>
             <ButtonText>
@@ -89,6 +93,10 @@ class MainScreen extends Component<IProps> {
 
   private requestHeartRewardAD = () => {
     showAD(AdmobUnitID.HeartReward);
+  };
+
+  private requestHeartScreenAD = () => {
+    showAD(AdmobUnitID.HeartScreen);
   };
 
   private shareLink = async () => {

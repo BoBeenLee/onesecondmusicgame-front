@@ -56,13 +56,18 @@ class AdmobUnit {
 }
 
 export enum AdmobUnitID {
-  HeartReward = "HeartReward"
+  HeartReward = "HeartReward",
+  HeartScreen = "HeartScreen"
 }
 
 const admobs: { [key in keyof typeof AdmobUnitID]: AdmobUnit } = {
   [AdmobUnitID.HeartReward]: new AdmobUnit(() => {
     const admobModule = (firebase as any).admob() as IAdmobModule;
     return admobModule.rewarded(env.buildAdEnv().HEART_REWARD);
+  }),
+  [AdmobUnitID.HeartScreen]: new AdmobUnit(() => {
+    const admobModule = (firebase as any).admob() as IAdmobModule;
+    return admobModule.interstitial(env.buildAdEnv().HEART_SCREEN);
   })
 };
 

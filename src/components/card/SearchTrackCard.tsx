@@ -9,6 +9,7 @@ interface IProps {
   thumnail: string;
   title: string;
   author: string;
+  onPress?: () => void;
 }
 
 const Container = styled.TouchableOpacity`
@@ -33,19 +34,17 @@ const Title = styled(Bold12)``;
 
 const Author = styled(Bold10)``;
 
-class SearchTrackCard extends Component<IProps> {
-  public render() {
-    const { style, thumnail, title, author } = this.props;
-    return (
-      <Container style={style}>
-        <Thumnail source={{ uri: thumnail }} />
-        <Content>
-          <Title>{title}</Title>
-          <Author>{author}</Author>
-        </Content>
-      </Container>
-    );
-  }
+function SearchTrackCard(props: IProps) {
+  const { style, thumnail, title, author, onPress } = props;
+  return (
+    <Container style={style} onPress={onPress}>
+      <Thumnail source={{ uri: thumnail }} />
+      <Content>
+        <Title>{title}</Title>
+        <Author>{author}</Author>
+      </Content>
+    </Container>
+  );
 }
 
 export default SearchTrackCard;
