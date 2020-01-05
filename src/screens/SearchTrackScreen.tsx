@@ -34,15 +34,21 @@ const Container = styled(ContainerWithStatusBar)`
 
 const Content = styled.View`
   flex: 1;
-  justify-content: center;
-  align-items: center;
+  padding: 16px;
 `;
 
-const SearchInput = styled(OSMGTextInput)``;
+const SearchInput = styled(OSMGTextInput)`
+  width: 100%;
+`;
 
 const Result = styled<ComponentClass<FlatListProps<ITrackItem>>>(FlatList)`
   flex: 1;
-  padding: 4px 16px 16px 16px;
+  width: 100%;
+`;
+
+const ItemSeperator = styled.View`
+  width: 100%;
+  height: 10px;
 `;
 
 @observer
@@ -68,7 +74,7 @@ class SearchTrackScreen extends Component<IProps, IStates> {
   }
 
   public render() {
-    const { trackViews, append, refresh } = this.tracks;
+    const { trackViews, append, refresh, isRefresh } = this.tracks;
     const { searchText } = this.state;
 
     return (
@@ -79,13 +85,16 @@ class SearchTrackScreen extends Component<IProps, IStates> {
             autoFocus={true}
             onChangeText={this.onSearchChangeText}
             defaultValue={searchText}
+            placeholder="search"
           />
           <Result
             data={trackViews}
             renderItem={this.renderTrackItem}
             keyExtractor={this.trackKeyExtreactor}
+            refreshing={isRefresh}
             onRefresh={refresh}
             onEndReached={append}
+            ItemSeparatorComponent={ItemSeperator}
           />
         </Content>
       </Container>
@@ -119,8 +128,13 @@ class SearchTrackScreen extends Component<IProps, IStates> {
         thumnail={item.artwork_url || "https://via.placeholder.com/150"}
         title={item.title}
         author={item.user.username}
+        onPress={_.partial(this.selected, item)}
       />
     );
+  };
+
+  private selected = (item: ITrackItem) => {
+    this.back();
   };
 
   private back = () => {
