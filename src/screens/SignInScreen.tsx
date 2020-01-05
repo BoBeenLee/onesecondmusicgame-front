@@ -12,7 +12,6 @@ import { SCREEN_IDS } from "src/screens/constant";
 import { setRoot } from "src/utils/navigator";
 import SignUpScreen from "src/screens/SignUpScreen";
 import MainScreen from "src/screens/MainScreen";
-import { tracks } from "src/apis/soundcloud/tracks";
 
 interface IInject {
   authStore: IAuthStore;
@@ -57,12 +56,6 @@ class SignInScreen extends Component<IProps> {
   public static open() {
     setRoot({
       nextComponentId: SCREEN_IDS.SignInScreen
-    });
-  }
-
-  public async componentDidMount() {
-    await tracks({
-      q: "hello world"
     });
   }
 

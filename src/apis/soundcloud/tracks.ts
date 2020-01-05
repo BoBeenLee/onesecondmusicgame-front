@@ -9,12 +9,7 @@ interface IVariables {
   q?: string;
 }
 
-interface IResponse {
-  collection: Collection[];
-  next_href: string;
-}
-
-interface Collection {
+export interface ITrackItem {
   id: number;
   kind: string;
   created_at: string;
@@ -71,7 +66,7 @@ export const tracks = async ({
   tags,
   q
 }: IVariables) => {
-  return await soundCloudAPI<IResponse>({
+  return await soundCloudAPI<ITrackItem[]>({
     method: "get",
     url: `/tracks`,
     params: {

@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import { Clipboard } from "react-native";
@@ -15,6 +16,8 @@ import AudioPlayer from "src/components/AudioPlayer";
 import XEIconButton from "src/components/button/XEIconButton";
 import { makeAppShareLink } from "src/utils/dynamicLink";
 import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
+import { tracks, ITrackItem } from "src/apis/soundcloud/tracks";
+import SearchTrackScreen from "src/screens/SearchTrackScreen";
 
 interface IInject {
   authStore: IAuthStore;
@@ -56,7 +59,7 @@ class MainScreen extends Component<IProps> {
     });
   }
 
-  public componentDidMount() {
+  public async componentDidMount() {
     loadAD(AdmobUnitID.HeartReward, ["foo", "bar"]);
   }
 
@@ -65,12 +68,17 @@ class MainScreen extends Component<IProps> {
       <Container>
         <Content>
           <ADButton onPress={this.requestHeartRewardAD}>
-            <ButtonText>광고 보기</ButtonText>
+            <ButtonText>광고 보기(리워드)</ButtonText>
           </ADButton>
           <ADButton onPress={this.shareLink}>
             <ButtonText>
               링크 공유(스토어 등록되어야 정상적으로 동작함)
             </ButtonText>
+          </ADButton>
+          <ADButton
+            onPress={() => SearchTrackScreen.open({ onResult: _.identity })}
+          >
+            <ButtonText>트랙 검색</ButtonText>
           </ADButton>
           <Logo>Main</Logo>
           <AudioPlayer />
