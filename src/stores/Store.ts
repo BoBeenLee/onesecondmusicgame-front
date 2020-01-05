@@ -9,6 +9,7 @@ import CodePushStore from "src/stores/CodePushStore";
 import LinkingStore from "src/stores/LinkingStore";
 import { initialize as initializeRequestAPI } from "src/configs/requestAPI";
 import { initialize as initializeRemoteConfig } from "src/configs/remoteConfig";
+import { initialize as initializeAdmob } from "src/configs/admob";
 
 const Store = types
   .model({
@@ -26,6 +27,7 @@ const Store = types
     };
 
     const initializeApp = flow(function*() {
+      initializeAdmob();
       yield initializeRemoteConfig();
       self.linkingStore.initialize();
       self.codePushStore.initialize();

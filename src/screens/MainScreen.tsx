@@ -1,15 +1,29 @@
 import React, { Component } from "react";
-import { Clipboard, Alert } from "react-native";
+import { inject, observer } from "mobx-react";
+import { Clipboard } from "react-native";
 import styled from "styled-components/native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import { Bold12, Bold14 } from "src/components/text/Typographies";
+import { IStore } from "src/stores/Store";
+import { IAuthStore } from "src/stores/AuthStore";
+import { IToastStore } from "src/stores/ToastStore";
 import { SCREEN_IDS } from "src/screens/constant";
 import { setRoot } from "src/utils/navigator";
 import colors from "src/styles/colors";
 import AudioPlayer from "src/components/AudioPlayer";
 import XEIconButton from "src/components/button/XEIconButton";
 import { makeAppShareLink } from "src/utils/dynamicLink";
+import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
+
+interface IInject {
+  authStore: IAuthStore;
+  toastStore: IToastStore;
+}
+
+interface IProps extends IInject {
+  componentId: string;
+}
 
 const Container = styled(ContainerWithStatusBar)`
   flex: 1;
@@ -24,17 +38,40 @@ const Content = styled.View`
 
 const Logo = styled(Bold14)``;
 
-class MainScreen extends Component {
+const ADButton = styled.TouchableOpacity``;
+
+const ButtonText = styled(Bold12)``;
+
+@inject(
+  ({ store }: { store: IStore }): IInject => ({
+    authStore: store.authStore,
+    toastStore: store.toastStore
+  })
+)
+@observer
+class MainScreen extends Component<IProps> {
   public static open() {
     setRoot({
       nextComponentId: SCREEN_IDS.MainScreen
     });
   }
 
+  public componentDidMount() {
+    loadAD(AdmobUnitID.HeartReward, ["foo", "bar"]);
+  }
+
   public render() {
     return (
       <Container>
         <Content>
+          <ADButton onPress={this.requestHeartRewardAD}>
+            <ButtonText>광고 보기</ButtonText>
+          </ADButton>
+          <ADButton onPress={this.shareLink}>
+            <ButtonText>
+              링크 공유(스토어 등록되어야 정상적으로 동작함)
+            </ButtonText>
+          </ADButton>
           <XEIconButton
             iconName="alarm-o"
             iconColor={colors.gray900}
@@ -48,10 +85,16 @@ class MainScreen extends Component {
     );
   }
 
+  private requestHeartRewardAD = () => {
+    showAD(AdmobUnitID.HeartReward);
+  };
+
   private shareLink = async () => {
-    const shortLink = await makeAppShareLink("test");
-    Alert.alert(shortLink);
+    const { showToast } = this.props.toastStore;
+    const { accessId } = this.props.authStore;
+    const shortLink = await makeAppShareLink(accessId);
     Clipboard.setString(shortLink);
+    showToast("공유 링크 복사 완료");
   };
 }
 
