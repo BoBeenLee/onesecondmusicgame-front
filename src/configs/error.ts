@@ -1,19 +1,20 @@
 import _ from "lodash";
 
+export enum ErrorCode {
+  UNKOWN_ERROR = 0,
+  FORBIDDEN_ERROR = 4001
+}
+
 interface IProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  detail: any;
+  status: number;
+  body: string;
 }
 
 export class OSMGError extends Error {
-  constructor(props: IProps) {
-    const { detail } = props;
-    const primaryMessage = _.get(
-      detail,
-      [0, "message"],
-      "알 수 없는 에러가 발생하였습니다."
-    );
+  public status: number;
 
-    super(primaryMessage);
+  constructor(props: IProps) {
+    super(props.body);
+    this.status = props.status;
   }
 }

@@ -1,6 +1,12 @@
 import _ from "lodash";
 import { flow, types } from "mobx-state-tree";
 import firebase from "react-native-firebase";
+import {
+  isAppShareLink,
+  makeLinkPayload,
+  IShareLinkPayload
+} from "src/utils/dynamicLink";
+import { FIELD, setItem } from "src/utils/storage";
 
 const LinkingStore = types
   .model("LinkingStore", {
@@ -14,6 +20,10 @@ const LinkingStore = types
   .actions(self => {
     const setLinkURL = (url: string) => {
       self.linkingURL = url;
+      if (isAppShareLink(url)) {
+        const linkPayload = makeLinkPayload<IShareLinkPayload>(url);
+        setItem(FIELD.SHARED_ACCESS_ID, linkPayload.accessId ?? "");
+      }
     };
 
     return {

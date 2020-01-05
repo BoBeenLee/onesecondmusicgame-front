@@ -1,10 +1,33 @@
+import _ from "lodash";
+import qs from "qs";
+import URL from "url";
 import firebase from "react-native-firebase";
 
+export enum LinkType {
+  SHARE = "/share"
+}
+
+export interface IShareLinkPayload {
+  accessId?: string;
+}
+
+const CUSTOM_PROTOCOL = "onesecondmusicgame://";
 const ONESECONDMUSICGAME_PREFIX_URL = "https://onesecondmusicgame.kr";
+
+export const isAppShareLink = (paramURL: string) => {
+  const url = URL.parse(paramURL);
+  const { pathname } = url;
+  return pathname === LinkType.SHARE;
+};
+
+export const makeLinkPayload = <T>(paramURL: string): T => {
+  const url = URL.parse(paramURL);
+  return qs.parse(_.defaultTo(url.query, ""));
+};
 
 export const makeAppShareLink = async (accessId: string) => {
   const link = new firebase.links.DynamicLink(
-    `${ONESECONDMUSICGAME_PREFIX_URL}?accessId=${accessId}`,
+    `${ONESECONDMUSICGAME_PREFIX_URL}${LinkType.SHARE}?accessId=${accessId}`,
     "onesecondmusicgame.page.link"
   ).android
     .setPackageName("kr.nexters.onesecondmusicgame")

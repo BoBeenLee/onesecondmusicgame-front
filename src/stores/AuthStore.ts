@@ -8,8 +8,11 @@ import {
 import firebase, { RNFirebase, AuthCredential } from "react-native-firebase";
 import { LoginManager, AccessToken } from "react-native-fbsdk";
 
-import { defaultItemToString, FIELD } from "src/utils/storage";
+import { defaultItemToString, FIELD, setItem } from "src/utils/storage";
 import { userControllerApi } from "src/apis/user";
+import { getUniqueID } from "src/utils/device";
+import User from "src/stores/model/User";
+import { ErrorCode } from "src/configs/error";
 
 export type AUTH_PROVIDER = "KAKAO" | "GOOGLE" | "FACEBOOK" | "NONE";
 
@@ -18,7 +21,8 @@ const AuthStore = types
     provider: types.frozen<AUTH_PROVIDER>("NONE"),
     accessId: types.optional(types.string, ""),
     accessToken: types.optional(types.string, ""),
-    refreshToken: types.optional(types.string, "")
+    refreshToken: types.optional(types.string, ""),
+    user: types.optional(types.maybeNull(User), null)
   })
   .views(self => {
     return {
@@ -33,10 +37,12 @@ const AuthStore = types
       self.accessId = "";
       self.accessToken = "";
       self.refreshToken = "";
+      saveAuthInfo();
     };
 
     const initialize = flow(function*() {
       self.provider = yield defaultItemToString(FIELD.PROVIDER_TYPE, "NONE");
+      self.accessId = yield defaultItemToString(FIELD.ACCESS_ID, "");
       self.accessToken = yield defaultItemToString(FIELD.ACCESS_TOKEN, "");
       self.refreshToken = yield defaultItemToString(FIELD.REFRESH_TOKEN, "");
 
@@ -60,6 +66,10 @@ const AuthStore = types
       self.accessId = profileResponse.id;
       self.accessToken = tokenResponse.accessToken;
       self.provider = "KAKAO";
+      self.user = User.create({
+        accessId: self.accessId,
+        nickname: profileResponse.nickname
+      });
       yield signIn();
     });
 
@@ -81,6 +91,10 @@ const AuthStore = types
         self.accessId = userInfo.user.id;
         self.accessToken = tokenInfo.accessToken;
         self.provider = "GOOGLE";
+        self.user = User.create({
+          accessId: self.accessId,
+          nickname: userInfo.user.name ?? userInfo.user.email
+        });
         yield signIn();
       } catch (error) {
         if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -111,6 +125,12 @@ const AuthStore = types
       }
       self.accessId = data?.userID ?? "";
       self.accessToken = data?.accessToken?.toString?.() ?? "";
+      self.provider = "FACEBOOK";
+      self.user = User.create({
+        accessId: self.accessId,
+        nickname: data?.userID ?? ""
+      });
+      yield signIn();
     });
 
     const signIn = flow(function*() {
@@ -119,25 +139,44 @@ const AuthStore = types
           accessId: self.accessId,
           accessToken: self.accessToken
         });
+        saveAuthInfo();
       } catch (error) {
-        yield fallbackSignIn();
+        if (error.status === ErrorCode.FORBIDDEN_ERROR) {
+          yield fallbackSignUpAndSignIn();
+          return;
+        }
+        throw error;
       }
     });
 
-    const fallbackSignIn = flow(function*() {
+    const fallbackSignUpAndSignIn = flow(function*() {
+      const deviceId = getUniqueID();
+      const sharedAccessId = yield defaultItemToString(
+        FIELD.SHARED_ACCESS_ID,
+        ""
+      );
       yield userControllerApi.signUpUsingPOST({
         accessId: self.accessId,
-        deviceId: "deviceId",
-        nickname: "hello world"
+        deviceId: deviceId,
+        nickname: self.user?.nickname ?? self.accessId,
+        socialType: self.provider,
+        ...(sharedAccessId ? { invitedBy: sharedAccessId } : {})
       });
       yield userControllerApi.signInUsingPOST({
         accessId: self.accessId,
         accessToken: self.accessToken
       });
+      saveAuthInfo();
+    });
+
+    const saveAuthInfo = flow(function*() {
+      setItem(FIELD.ACCESS_ID, self.accessId);
+      setItem(FIELD.ACCESS_TOKEN, self.accessToken);
+      setItem(FIELD.PROVIDER_TYPE, self.provider);
     });
 
     const signOut = () => {
-      // TODO
+      clear();
     };
 
     return {
