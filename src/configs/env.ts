@@ -45,7 +45,9 @@ const buildProdAdEnv = () => ({
   HEART_REWARD: isIOS()
     ? "ca-app-pub-7927704382463131/3882569726"
     : "ca-app-pub-7927704382463131/2829891243",
-  HEART_SCREEN: "ca-app-pub-3940256099942544/8691691433"
+  HEART_SCREEN: isIOS()
+    ? "ca-app-pub-7927704382463131/4738703438"
+    : "ca-app-pub-7927704382463131/2662655698"
 });
 
 const STAGING_ENV_ENTRY: IEnvironmentEntry = {
