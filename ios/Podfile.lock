@@ -44,6 +44,9 @@ PODS:
     - FBSDKShareKit/Share (= 5.8.0)
   - FBSDKShareKit/Share (5.8.0):
     - FBSDKCoreKit (~> 5.0)
+  - Firebase/AdMob (6.3.0):
+    - Firebase/CoreOnly
+    - Google-Mobile-Ads-SDK (~> 7.44)
   - Firebase/Analytics (6.3.0):
     - Firebase/Core
   - Firebase/Auth (6.3.0):
@@ -119,6 +122,8 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
+  - Google-Mobile-Ads-SDK (7.53.1):
+    - GoogleAppMeasurement (~> 6.0)
   - GoogleAppMeasurement (6.0.2):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
@@ -458,6 +463,7 @@ DEPENDENCIES:
   - FBSDKCoreKit
   - FBSDKLoginKit
   - FBSDKShareKit
+  - Firebase/AdMob (~> 6.3.0)
   - Firebase/Analytics (~> 6.3.0)
   - Firebase/Auth (~> 6.3.0)
   - Firebase/Core (~> 6.3.0)
@@ -534,6 +540,7 @@ SPEC REPOS:
     - FirebaseInstanceID
     - FirebaseMessaging
     - FirebaseRemoteConfig
+    - Google-Mobile-Ads-SDK
     - GoogleAppMeasurement
     - GoogleIDFASupport
     - GoogleSignIn
@@ -674,6 +681,7 @@ SPEC CHECKSUMS:
   FirebaseRemoteConfig: 7c64ecec5ca63d7c6b304509c3a6f9a036d403d4
   Folly: 30e7936e1c45c08d884aa59369ed951a8e68cf51
   glog: 1f3da668190260b06b429bb211bfbee5cd790c28
+  Google-Mobile-Ads-SDK: fac081606dbd438d8db57198b83ba8b5f875a601
   GoogleAppMeasurement: a35a645835bae31b6bdc0576396bc23908f12a22
   GoogleIDFASupport: aaf8c10bd429abb1c15349d5252244f5eda8ead1
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
@@ -727,6 +735,6 @@ SPEC CHECKSUMS:
   SSZipArchive: fa16b8cc4cdeceb698e5e5d9f67e9558532fbf23
   Yoga: ba3d99dbee6c15ea6bbe3783d1f0cb1ffb79af0f
 
-PODFILE CHECKSUM: ba65e3aec4989c34bf9b09ae10dee67d50015b1b
+PODFILE CHECKSUM: ff0bc513a02a9bdeaa33bc0c0f815191ccc35c1b
 
 COCOAPODS: 1.8.4
