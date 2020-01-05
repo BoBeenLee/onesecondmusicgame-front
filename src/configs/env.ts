@@ -30,17 +30,17 @@ const env: IEnvironment = {
   },
   production: {
     REACT_ENV,
-    API_URL: "http://34.84.5.51:8888",
+    API_URL: "http://api.alsongdalsong.com:8888",
     SOUNDCLOUD_API_URL
   },
   staging: {
     REACT_ENV,
-    API_URL: "http://34.84.5.51:8888",
+    API_URL: "http://api.alsongdalsong.com:8888",
     SOUNDCLOUD_API_URL
   },
   storybook: {
     REACT_ENV,
-    API_URL: "http://34.84.5.51:8888",
+    API_URL: "http://api.alsongdalsong.com:8888",
     SOUNDCLOUD_API_URL
   }
 };
