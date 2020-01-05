@@ -10,6 +10,8 @@ import { LoginManager, AccessToken } from "react-native-fbsdk";
 
 import { defaultItemToString, FIELD } from "src/utils/storage";
 import { userControllerApi } from "src/apis/user";
+import { getUniqueID } from "src/utils/device";
+import User from "src/stores/model/User";
 
 export type AUTH_PROVIDER = "KAKAO" | "GOOGLE" | "FACEBOOK" | "NONE";
 
@@ -18,7 +20,8 @@ const AuthStore = types
     provider: types.frozen<AUTH_PROVIDER>("NONE"),
     accessId: types.optional(types.string, ""),
     accessToken: types.optional(types.string, ""),
-    refreshToken: types.optional(types.string, "")
+    refreshToken: types.optional(types.string, ""),
+    user: types.optional(types.maybeNull(User), null)
   })
   .views(self => {
     return {
@@ -60,6 +63,10 @@ const AuthStore = types
       self.accessId = profileResponse.id;
       self.accessToken = tokenResponse.accessToken;
       self.provider = "KAKAO";
+      self.user = User.create({
+        accessId: self.accessId,
+        nickname: profileResponse.nickname
+      });
       yield signIn();
     });
 
@@ -81,6 +88,10 @@ const AuthStore = types
         self.accessId = userInfo.user.id;
         self.accessToken = tokenInfo.accessToken;
         self.provider = "GOOGLE";
+        self.user = User.create({
+          accessId: self.accessId,
+          nickname: userInfo.user.name ?? userInfo.user.email
+        });
         yield signIn();
       } catch (error) {
         if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -111,6 +122,10 @@ const AuthStore = types
       }
       self.accessId = data?.userID ?? "";
       self.accessToken = data?.accessToken?.toString?.() ?? "";
+      self.user = User.create({
+        accessId: self.accessId,
+        nickname: data?.userID ?? ""
+      });
     });
 
     const signIn = flow(function*() {
@@ -125,9 +140,10 @@ const AuthStore = types
     });
 
     const fallbackSignIn = flow(function*() {
+      const deviceId = getUniqueID();
       yield userControllerApi.signUpUsingPOST({
         accessId: self.accessId,
-        deviceId: "deviceId",
+        deviceId: deviceId,
         nickname: "hello world"
       });
       yield userControllerApi.signInUsingPOST({
