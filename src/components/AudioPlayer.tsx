@@ -17,6 +17,7 @@ class AudioPlayer extends Component {
     return (
       <Container>
         <AudioView
+          ignoreSilentSwitch={"ignore"}
           controls={true}
           source={{
             uri:
