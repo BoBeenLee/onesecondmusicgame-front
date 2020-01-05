@@ -8,7 +8,7 @@ import {
 import firebase, { RNFirebase, AuthCredential } from "react-native-firebase";
 import { LoginManager, AccessToken } from "react-native-fbsdk";
 
-import { defaultItemToString, FIELD } from "src/utils/storage";
+import { defaultItemToString, FIELD, setItem } from "src/utils/storage";
 import { userControllerApi } from "src/apis/user";
 import { getUniqueID } from "src/utils/device";
 import User from "src/stores/model/User";
@@ -123,6 +123,7 @@ const AuthStore = types
       }
       self.accessId = data?.userID ?? "";
       self.accessToken = data?.accessToken?.toString?.() ?? "";
+      self.provider = "FACEBOOK";
       self.user = User.create({
         accessId: self.accessId,
         nickname: data?.userID ?? ""
@@ -136,6 +137,7 @@ const AuthStore = types
           accessId: self.accessId,
           accessToken: self.accessToken
         });
+        saveAuthInfo();
       } catch (error) {
         if (error.status === ErrorCode.FORBIDDEN_ERROR) {
           yield fallbackSignUpAndSignIn();
@@ -155,12 +157,20 @@ const AuthStore = types
         accessId: self.accessId,
         deviceId: deviceId,
         nickname: self.user?.nickname ?? self.accessId,
-        ...(sharedAccessId ? { sharedAccessId } : {})
+        socialType: self.provider,
+        ...(sharedAccessId ? { invitedBy: sharedAccessId } : {})
       });
       yield userControllerApi.signInUsingPOST({
         accessId: self.accessId,
         accessToken: self.accessToken
       });
+      saveAuthInfo();
+    });
+
+    const saveAuthInfo = flow(function*() {
+      setItem(FIELD.ACCESS_ID, self.accessId);
+      setItem(FIELD.ACCESS_TOKEN, self.accessToken);
+      setItem(FIELD.PROVIDER_TYPE, self.provider);
     });
 
     const signOut = () => {

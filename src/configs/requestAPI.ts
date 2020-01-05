@@ -13,6 +13,9 @@ interface IOptions {
   query: object;
 }
 
+const NORMAL_STATUS = 200;
+const NORMAL_STATUS_ = 2000;
+
 export const requestAPI: any = async <T extends ResponseDTO>(
   url: string,
   options: IOptions
@@ -32,7 +35,11 @@ export const requestAPI: any = async <T extends ResponseDTO>(
     baseURL: env.API_URL,
     ...configs
   });
-  if (response?.data?.status !== 2000) {
+  if (
+    ![NORMAL_STATUS_, NORMAL_STATUS].some(
+      status => status === response?.data?.status
+    )
+  ) {
     throw new OSMGError({
       status: response?.data?.status!,
       body: response?.data?.body ?? `${response?.data?.status!}`
@@ -40,7 +47,7 @@ export const requestAPI: any = async <T extends ResponseDTO>(
   }
   const responseDTO: Partial<Response> = {
     headers: response.headers,
-    ok: response.status === 200,
+    ok: response.status === NORMAL_STATUS,
     status: response.status,
     statusText: response.statusText,
     url: response.config.url ?? "",

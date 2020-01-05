@@ -2,7 +2,7 @@ import _ from "lodash";
 
 export enum ErrorCode {
   UNKOWN_ERROR = 0,
-  FORBIDDEN_ERROR = 40001
+  FORBIDDEN_ERROR = 4001
 }
 
 interface IProps {
