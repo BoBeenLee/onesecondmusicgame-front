@@ -126,6 +126,7 @@ const AuthStore = types
         accessId: self.accessId,
         nickname: data?.userID ?? ""
       });
+      yield signIn();
     });
 
     const signIn = flow(function*() {
@@ -144,7 +145,7 @@ const AuthStore = types
       yield userControllerApi.signUpUsingPOST({
         accessId: self.accessId,
         deviceId: deviceId,
-        nickname: "hello world"
+        nickname: self.user?.nickname ?? self.accessId
       });
       yield userControllerApi.signInUsingPOST({
         accessId: self.accessId,
