@@ -36,15 +36,12 @@ class AdmobUnit {
       onRewarded?: (event: any) => void;
     }
   ) => {
-    const admobModule = (firebase as any).admob() as IAdmobModule;
-    this.advert = admobModule.rewarded(env.ADMOB_ENV.HEART_REWARD);
     const request: AdRequest = new (firebase as any).admob.AdRequest();
 
     for (const keyword of keywords) {
       request.addKeyword(keyword);
     }
     this.advert.loadAd(request.build());
-
     onListeners?.onAdLoaded &&
       this.advert.on("onAdLoaded", onListeners?.onAdLoaded);
     onListeners?.onRewarded &&
@@ -65,7 +62,7 @@ export enum AdmobUnitID {
 const admobs: { [key in keyof typeof AdmobUnitID]: AdmobUnit } = {
   [AdmobUnitID.HeartReward]: new AdmobUnit(() => {
     const admobModule = (firebase as any).admob() as IAdmobModule;
-    return admobModule.rewarded(env.ADMOB_ENV.HEART_REWARD);
+    return admobModule.rewarded(env.buildAdEnv().HEART_REWARD);
   })
 };
 
@@ -87,5 +84,5 @@ export const showAD = (admobUnitID: AdmobUnitID) => {
 
 export const initialize = () => {
   const admobModule = (firebase as any).admob() as IAdmobModule;
-  admobModule.initialize(env.ADMOB_ENV.APP_ID);
+  admobModule.initialize(env.buildAdEnv().APP_ID);
 };

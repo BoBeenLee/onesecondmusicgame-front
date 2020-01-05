@@ -18,7 +18,7 @@ interface IEnvironmentEntry {
   REACT_ENV: string;
   API_URL: string;
   SOUNDCLOUD_API_URL: string;
-  ADMOB_ENV: IAdmobEnv;
+  buildAdEnv: () => IAdmobEnv;
 }
 
 const REACT_ENV = _.defaultTo(
@@ -28,22 +28,30 @@ const REACT_ENV = _.defaultTo(
 ) as keyof IEnvironment;
 
 const SOUNDCLOUD_API_URL = "https://api.soundcloud.com";
-const ADMOB_APP_ID = isIOS()
-  ? "ca-app-pub-7927704382463131~8110014374"
-  : "ca-app-pub-7927704382463131~1736177714";
 
-const ADMOB_REWARD_TEST = isIOS()
-  ? "ca-app-pub-3940256099942544/1712485313"
-  : "ca-app-pub-3940256099942544/5224354917";
+const buildTestAdEnv = () => ({
+  APP_ID: isIOS()
+    ? "ca-app-pub-7927704382463131~8110014374"
+    : "ca-app-pub-7927704382463131~1736177714",
+  HEART_REWARD: isIOS()
+    ? "ca-app-pub-3940256099942544/1712485313"
+    : "ca-app-pub-3940256099942544/5224354917"
+});
+
+const buildProdAdEnv = () => ({
+  APP_ID: isIOS()
+    ? "ca-app-pub-7927704382463131~8110014374"
+    : "ca-app-pub-7927704382463131~1736177714",
+  HEART_REWARD: isIOS()
+    ? "ca-app-pub-7927704382463131/3882569726"
+    : "ca-app-pub-7927704382463131/2829891243"
+});
 
 const STAGING_ENV_ENTRY: IEnvironmentEntry = {
   REACT_ENV,
   API_URL: "http://api.alsongdalsong.com:8888",
   SOUNDCLOUD_API_URL,
-  ADMOB_ENV: {
-    APP_ID: ADMOB_APP_ID,
-    HEART_REWARD: ADMOB_REWARD_TEST
-  }
+  buildAdEnv: buildTestAdEnv
 };
 
 const env: IEnvironment = {
@@ -56,12 +64,7 @@ const env: IEnvironment = {
     REACT_ENV,
     API_URL: "http://api.alsongdalsong.com:8888",
     SOUNDCLOUD_API_URL,
-    ADMOB_ENV: {
-      APP_ID: ADMOB_APP_ID,
-      HEART_REWARD: isIOS()
-        ? "ca-app-pub-7927704382463131/3882569726"
-        : "ca-app-pub-7927704382463131/2829891243"
-    }
+    buildAdEnv: buildProdAdEnv
   },
   staging: STAGING_ENV_ENTRY,
   storybook: STAGING_ENV_ENTRY
