@@ -72,12 +72,6 @@ class MainScreen extends Component<IProps> {
               링크 공유(스토어 등록되어야 정상적으로 동작함)
             </ButtonText>
           </ADButton>
-          <XEIconButton
-            iconName="alarm-o"
-            iconColor={colors.gray900}
-            iconSize={20}
-            onPress={this.shareLink}
-          />
           <Logo>Main</Logo>
           <AudioPlayer />
         </Content>
