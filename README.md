@@ -64,6 +64,16 @@ Here again you should state what actually happens when the code above gets
 executed.
 
 ### Deploying / Publishing
+
+- 코드푸쉬 apply 예시
+
+```
+code-push release-react onesecondmusicgame/onesecondmusicgame-android android -d Staging -m true --privateKeyPath ~/private.pem --description "헬로우 월드44"
+
+code-push release-react onesecondmusicgame/onesecondmusicgame-ios ios -d Staging -m true --privateKeyPath ~/private.pem --description "헬로우 월드44" --plistFile "ios/RNApp/Info.plist"
+```
+
+
 give instructions on how to build and release a new version
 In case there's some step you have to take that publishes this project to a
 server, this is the right time to state it.
