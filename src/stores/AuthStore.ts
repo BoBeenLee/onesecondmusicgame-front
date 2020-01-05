@@ -12,6 +12,7 @@ import { defaultItemToString, FIELD } from "src/utils/storage";
 import { userControllerApi } from "src/apis/user";
 import { getUniqueID } from "src/utils/device";
 import User from "src/stores/model/User";
+import { ErrorCode } from "src/configs/error";
 
 export type AUTH_PROVIDER = "KAKAO" | "GOOGLE" | "FACEBOOK" | "NONE";
 
@@ -136,16 +137,25 @@ const AuthStore = types
           accessToken: self.accessToken
         });
       } catch (error) {
-        yield fallbackSignIn();
+        if (error.status === ErrorCode.FORBIDDEN_ERROR) {
+          yield fallbackSignUpAndSignIn();
+          return;
+        }
+        throw error;
       }
     });
 
-    const fallbackSignIn = flow(function*() {
+    const fallbackSignUpAndSignIn = flow(function*() {
       const deviceId = getUniqueID();
+      const sharedAccessId = yield defaultItemToString(
+        FIELD.SHARED_ACCESS_ID,
+        ""
+      );
       yield userControllerApi.signUpUsingPOST({
         accessId: self.accessId,
         deviceId: deviceId,
-        nickname: self.user?.nickname ?? self.accessId
+        nickname: self.user?.nickname ?? self.accessId,
+        ...(sharedAccessId ? { sharedAccessId } : {})
       });
       yield userControllerApi.signInUsingPOST({
         accessId: self.accessId,
