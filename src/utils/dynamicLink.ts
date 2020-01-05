@@ -13,6 +13,7 @@ export interface IShareLinkPayload {
 
 const CUSTOM_PROTOCOL = "onesecondmusicgame://";
 const ONESECONDMUSICGAME_PREFIX_URL = "https://onesecondmusicgame.kr";
+const DOMAIN_URI_PREFIX = "https://onesecondmusicgame.page.link";
 
 export const isAppShareLink = (paramURL: string) => {
   const url = URL.parse(paramURL);
@@ -28,7 +29,7 @@ export const makeLinkPayload = <T>(paramURL: string): T => {
 export const makeAppShareLink = async (accessId: string) => {
   const link = new firebase.links.DynamicLink(
     `${ONESECONDMUSICGAME_PREFIX_URL}${LinkType.SHARE}?accessId=${accessId}`,
-    "onesecondmusicgame.page.link"
+    DOMAIN_URI_PREFIX
   ).android
     .setPackageName("kr.nexters.onesecondmusicgame")
     .ios.setBundleId("kr.nexters.onesecondmusicgame");
