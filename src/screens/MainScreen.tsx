@@ -1,7 +1,7 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Clipboard } from "react-native";
+import { Clipboard, InteractionManager } from "react-native";
 import styled from "styled-components/native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
@@ -18,9 +18,11 @@ import { makeAppShareLink } from "src/utils/dynamicLink";
 import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
 import { tracks, ITrackItem } from "src/apis/soundcloud/tracks";
 import SearchTrackScreen from "src/screens/SearchTrackScreen";
+import { ICodePushStore } from "src/stores/CodePushStore";
 
 interface IInject {
   authStore: IAuthStore;
+  codePushStore: ICodePushStore;
   toastStore: IToastStore;
 }
 
@@ -48,6 +50,7 @@ const ButtonText = styled(Bold12)``;
 @inject(
   ({ store }: { store: IStore }): IInject => ({
     authStore: store.authStore,
+    codePushStore: store.codePushStore,
     toastStore: store.toastStore
   })
 )
@@ -62,7 +65,21 @@ class MainScreen extends Component<IProps> {
   public async componentDidMount() {
     loadAD(AdmobUnitID.HeartReward, ["game", "quiz"]);
     loadAD(AdmobUnitID.HeartScreen, ["game", "quiz"]);
+    this.updateCodePushIfAvailable();
   }
+
+  public updateCodePushIfAvailable = async () => {
+    const {
+      checkCodePushAvailability,
+      updateCodePush
+    } = this.props.codePushStore;
+
+    if (await checkCodePushAvailability()) {
+      InteractionManager.runAfterInteractions(async () => {
+        await updateCodePush();
+      });
+    }
+  };
 
   public render() {
     return (

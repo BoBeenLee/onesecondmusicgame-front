@@ -1,6 +1,7 @@
 ![Logo of the project](./images/logo.sample.png)
 
 # OneSecondMusicGame &middot; [![Build Status](https://img.shields.io/travis/npm/npm/latest.svg?style=flat-square)](https://travis-ci.org/npm/npm) [![npm](https://img.shields.io/npm/v/npm.svg?style=flat-square)](https://www.npmjs.com/package/npm) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/your/your-project/blob/master/LICENSE)
+
 > Additional information or tag line
 
 A brief description of your project, what it is used for.
@@ -19,11 +20,13 @@ pod install
 ```
 
 ### IOS Running
+
 ```shell
 npm run ios
 ```
 
 ### Android Running
+
 ```shell
 npm run android
 ```
@@ -31,9 +34,11 @@ npm run android
 ## Developing
 
 ### Built With
+
 React, React Native ...
 
 ### Prerequisites
+
 Xcode 최신버젼, node 10이상
 
 ### Setting up Dev
@@ -68,11 +73,10 @@ executed.
 - 코드푸쉬 apply 예시
 
 ```
-code-push release-react onesecondmusicgame/onesecondmusicgame-android android -d Staging -m true --privateKeyPath ~/private.pem --description "헬로우 월드44"
+code-push release-react onesecondmusicgame/onesecondmusicgame-android android -d Production -m true --privateKeyPath ~/private.pem --description "헬로우 월드44"
 
-code-push release-react onesecondmusicgame/onesecondmusicgame-ios ios -d Staging -m true --privateKeyPath ~/private.pem --description "헬로우 월드44" --plistFile "ios/RNApp/Info.plist"
+code-push release-react onesecondmusicgame/onesecondmusicgame-ios ios -d Production -m true --privateKeyPath ~/private.pem --description "헬로우 월드44" --plistFile "ios/RNApp/Info.plist"
 ```
-
 
 give instructions on how to build and release a new version
 In case there's some step you have to take that publishes this project to a
@@ -87,7 +91,6 @@ And again you'd need to tell what the previous code actually does.
 ## Versioning
 
 We can maybe use [SemVer](http://semver.org/) for versioning. For the versions available, see the [link to tags on this repository](/tags).
-
 
 ## Configuration
 
@@ -111,11 +114,10 @@ Explain your code style and show how to check it.
 
 If the api is external, link to api documentation. If not describe your api including authentication methods as well as explaining all the endpoints with their required parameters.
 
-
 ## Database
 
 Explaining what database (and version) has been used. Provide download links.
-Documents your database design and schemas, relations etc... 
+Documents your database design and schemas, relations etc...
 
 ## Licensing
 
