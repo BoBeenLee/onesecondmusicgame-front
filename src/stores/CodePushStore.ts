@@ -52,6 +52,10 @@ const CodePushStore = types
         );
         const { deviceIds: userIDs } = self.newCodePushData;
 
+        if (__DEV__) {
+          self.isCodePush = false;
+          return;
+        }
         if (
           !_.isEmpty(userIDs) &&
           _.includes(userIDs, targetDeviceID) &&
