@@ -16,6 +16,7 @@ import AudioPlayer from "src/components/AudioPlayer";
 import { makeAppShareLink } from "src/utils/dynamicLink";
 import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
 import SearchTrackScreen from "src/screens/SearchTrackScreen";
+import RegisterSongScreen from "src/screens/RegisterSongScreen";
 import { ICodePushStore } from "src/stores/CodePushStore";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 
@@ -99,6 +100,9 @@ class MainScreen extends Component<IProps> {
             onPress={() => SearchTrackScreen.open({ onResult: _.identity })}
           >
             <ButtonText>트랙 검색</ButtonText>
+          </ADButton>
+          <ADButton onPress={RegisterSongScreen.open}>
+            <ButtonText>노래 등록</ButtonText>
           </ADButton>
           {this.renderItemAll}
           <AudioPlayer />

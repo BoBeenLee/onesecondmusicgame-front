@@ -18,6 +18,7 @@ import SignUpScreen from "src/screens/SignUpScreen";
 import MainScreen from "src/screens/MainScreen";
 import withToast from "src/hocs/withToast";
 import SearchTrackScreen from "src/screens/SearchTrackScreen";
+import RegisterSongScreen from "src/screens/RegisterSongScreen";
 
 interface IScreenProps {
   id: string;
@@ -70,6 +71,10 @@ const screens: IScreenProps[] = [
   {
     Component: SearchTrackScreen,
     id: SCREEN_IDS.SearchTrackScreen
+  },
+  {
+    Component: RegisterSongScreen,
+    id: SCREEN_IDS.RegisterSongScreen
   }
 ];
 
