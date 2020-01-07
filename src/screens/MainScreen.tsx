@@ -13,10 +13,8 @@ import { SCREEN_IDS } from "src/screens/constant";
 import { setRoot } from "src/utils/navigator";
 import colors from "src/styles/colors";
 import AudioPlayer from "src/components/AudioPlayer";
-import XEIconButton from "src/components/button/XEIconButton";
 import { makeAppShareLink } from "src/utils/dynamicLink";
 import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
-import { tracks, ITrackItem } from "src/apis/soundcloud/tracks";
 import SearchTrackScreen from "src/screens/SearchTrackScreen";
 import { ICodePushStore } from "src/stores/CodePushStore";
 
@@ -40,8 +38,6 @@ const Content = styled.View`
   justify-content: center;
   align-items: center;
 `;
-
-const Logo = styled(Bold14)``;
 
 const ADButton = styled.TouchableOpacity``;
 
@@ -101,10 +97,29 @@ class MainScreen extends Component<IProps> {
           >
             <ButtonText>트랙 검색</ButtonText>
           </ADButton>
-          <Logo>Main</Logo>
+          {this.renderItemAll}
           <AudioPlayer />
         </Content>
       </Container>
+    );
+  }
+
+  private get renderItemAll() {
+    const { user } = this.props.authStore;
+    return (
+      <>
+        <ButtonText>item All</ButtonText>
+        {user?.userItemViews
+          ? user?.userItemViews.map(item => {
+              return (
+                <React.Fragment key={item.itemType}>
+                  <ButtonText>{item.itemType}</ButtonText>
+                  <ButtonText>{item.count}</ButtonText>
+                </React.Fragment>
+              );
+            })
+          : null}
+      </>
     );
   }
 

@@ -23,6 +23,15 @@ export const setupReactotron = (store: IStore) => {
   (Reactotron as any).trackMstNode(store);
   overlay = (Reactotron as any).overlay;
   (console as any).tron = Reactotron;
+
+  Reactotron.onCustomCommand({
+    command: "clearAllAsyncStorage",
+    description: "clearAllAsyncStorage",
+    handler: async () => {
+      await AsyncStorage.clear();
+    },
+    title: "clearAllAsyncStorage"
+  });
 };
 
 export const withOverlay: any = (App: React.ReactNode) => {

@@ -10,7 +10,6 @@ import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
 import { SCREEN_IDS } from "src/screens/constant";
 import { setRoot } from "src/utils/navigator";
-import SignUpScreen from "src/screens/SignUpScreen";
 import MainScreen from "src/screens/MainScreen";
 
 interface IInject {
@@ -77,9 +76,6 @@ class SignInScreen extends Component<IProps> {
           />
           <SignInButton onPress={this.facebookSignIn}>
             <ButtonText>페이스북 로그인</ButtonText>
-          </SignInButton>
-          <SignInButton onPress={SignUpScreen.open}>
-            <ButtonText>회원 가입</ButtonText>
           </SignInButton>
         </Bottom>
       </Container>

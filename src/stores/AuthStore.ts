@@ -17,6 +17,7 @@ import {
 import { getUniqueID } from "src/utils/device";
 import User from "src/stores/model/User";
 import { ErrorCode } from "src/configs/error";
+import { findItemAllUsingGET } from "src/apis/item";
 
 export type AUTH_PROVIDER = "KAKAO" | "GOOGLE" | "FACEBOOK" | "NONE";
 
@@ -166,6 +167,7 @@ const AuthStore = types
           }
         );
         saveAuthInfo(signInResponse);
+        fetchUserInfo();
       } catch (error) {
         if (error.status === ErrorCode.FORBIDDEN_ERROR) {
           yield fallbackSignUpAndSignIn();
@@ -195,6 +197,12 @@ const AuthStore = types
         }
       );
       saveAuthInfo(signInResponse);
+      fetchUserInfo();
+    });
+
+    const fetchUserInfo = flow(function*() {
+      const response: RetrieveAsyncFunc<typeof findItemAllUsingGET> = yield findItemAllUsingGET();
+      self.user?.setUserItems(response.body);
     });
 
     const saveAuthInfo = flow(function*(
