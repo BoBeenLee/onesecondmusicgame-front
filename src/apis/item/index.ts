@@ -8,8 +8,8 @@ export const itemControllerApi = ItemControllerApiFactory(
 );
 
 export enum ItemType {
-  SKIP = "skip",
-  LISTEN_ONE_MORE_SECOND = "listen_one_more_second"
+  SKIP = "SKIP",
+  ONE_MORE_SECOND = "ONE_MORE_SECOND"
 }
 
 export interface IItem {
