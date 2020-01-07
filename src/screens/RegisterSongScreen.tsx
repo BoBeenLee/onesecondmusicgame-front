@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { Component } from "react";
 import styled from "styled-components/native";
 
@@ -9,7 +10,7 @@ import ModalTopBar from "src/components/topbar/ModalTopBar";
 import colors from "src/styles/colors";
 import { ITrackItem } from "src/apis/soundcloud/tracks";
 import SearchTrackScreen from "src/screens/SearchTrackScreen";
-import _ from "lodash";
+import { songControllerApi } from "src/apis/song";
 
 interface IProps {
   componentId: string;
@@ -26,11 +27,15 @@ const Container = styled(ContainerWithStatusBar)`
 
 const Content = styled.View`
   flex: 1;
-  justify-content: center;
   align-items: center;
 `;
 
 const Logo = styled(Bold14)``;
+
+const Thumnail = styled.Image`
+  width: 50px;
+  height: 50px;
+`;
 
 const ADButton = styled.TouchableOpacity``;
 
@@ -55,7 +60,6 @@ class RegisterSongScreen extends Component<IProps, IStates> {
       <Container>
         <ModalTopBar title="노래 등록" onBackPress={this.back} />
         <Content>
-          <Logo>노래 등록</Logo>
           <ADButton
             onPress={_.partial(SearchTrackScreen.open, {
               onResult: this.onSelected
@@ -63,8 +67,21 @@ class RegisterSongScreen extends Component<IProps, IStates> {
           >
             <ButtonText>트랙 검색</ButtonText>
           </ADButton>
+          <Thumnail
+            source={{
+              uri:
+                selectedTrackItem?.artwork_url ??
+                "https://via.placeholder.com/150"
+            }}
+          />
           <ButtonText>title: {selectedTrackItem?.title}</ButtonText>
-          <ButtonText>singerName: {selectedTrackItem?.title}</ButtonText>
+          <ButtonText>
+            singerName: {selectedTrackItem?.user?.username}
+          </ButtonText>
+          <ButtonText>url: {selectedTrackItem?.stream_url}</ButtonText>
+          <ADButton onPress={this.register}>
+            <ButtonText style={{ color: "red" }}>register song</ButtonText>
+          </ADButton>
         </Content>
       </Container>
     );
@@ -73,6 +90,23 @@ class RegisterSongScreen extends Component<IProps, IStates> {
   private onSelected = (trackItem: ITrackItem) => {
     this.setState({
       selectedTrackItem: trackItem
+    });
+  };
+
+  private register = async () => {
+    const { selectedTrackItem } = this.state;
+    const title = selectedTrackItem?.title;
+    const singerName = selectedTrackItem?.user?.username;
+    const url = selectedTrackItem?.stream_url;
+
+    if (![title, singerName, url].some(value => !!value)) {
+      return;
+    }
+    await songControllerApi.addNewSongUsingPOST({
+      title,
+      singerName,
+      url,
+      highlightSeconds: [0]
     });
   };
 

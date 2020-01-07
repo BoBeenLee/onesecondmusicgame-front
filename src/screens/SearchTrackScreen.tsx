@@ -6,7 +6,7 @@ import styled from "styled-components/native";
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import { Bold12, Bold14 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
-import { dismissAllModals, showModal } from "src/utils/navigator";
+import { dismissModal, showModal } from "src/utils/navigator";
 import ModalTopBar from "src/components/topbar/ModalTopBar";
 import colors from "src/styles/colors";
 import OSMGTextInput from "src/components/input/OSMGTextInput";
@@ -16,7 +16,7 @@ import SearchTrackCard from "src/components/card/SearchTrackCard";
 import Tracks, { ITracks } from "src/stores/Tracks";
 
 interface IParams {
-  onResult: (selectedTracks: ITrackItem[]) => void;
+  onResult: (selectedTracks: ITrackItem) => void;
 }
 
 interface IProps extends IParams {
@@ -125,7 +125,7 @@ class SearchTrackScreen extends Component<IProps, IStates> {
   private renderTrackItem: ListRenderItem<ITrackItem> = ({ item }) => {
     return (
       <SearchTrackCard
-        thumnail={item.artwork_url || "https://via.placeholder.com/150"}
+        thumnail={item.artwork_url ?? "https://via.placeholder.com/150"}
         title={item.title}
         author={item.user.username}
         onPress={_.partial(this.selected, item)}
@@ -134,11 +134,14 @@ class SearchTrackScreen extends Component<IProps, IStates> {
   };
 
   private selected = (item: ITrackItem) => {
+    const { onResult } = this.props;
+    onResult(item);
     this.back();
   };
 
   private back = () => {
-    dismissAllModals();
+    const { componentId } = this.props;
+    dismissModal(componentId);
   };
 }
 

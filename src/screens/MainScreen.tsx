@@ -45,6 +45,11 @@ const ADButton = styled.TouchableOpacity``;
 
 const ButtonText = styled(Bold12)``;
 
+const ItemAllView = styled.View`
+  padding: 15px;
+  border: 1px solid black;
+`;
+
 @inject(
   ({ store }: { store: IStore }): IInject => ({
     authStore: store.authStore,
@@ -114,7 +119,7 @@ class MainScreen extends Component<IProps> {
   private get renderItemAll() {
     const { user } = this.props.authStore;
     return (
-      <>
+      <ItemAllView>
         <ButtonText>item All</ButtonText>
         {user?.userItemViews
           ? user?.userItemViews.map(item => {
@@ -126,7 +131,7 @@ class MainScreen extends Component<IProps> {
               );
             })
           : null}
-      </>
+      </ItemAllView>
     );
   }
 
