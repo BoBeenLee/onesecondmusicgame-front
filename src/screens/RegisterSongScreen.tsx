@@ -1,7 +1,9 @@
 import _ from "lodash";
 import React, { Component } from "react";
+import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
 
+import { IStore } from "src/stores/Store";
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import { Bold12, Bold14 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";

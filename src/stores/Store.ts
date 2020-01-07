@@ -9,6 +9,7 @@ import LinkingStore from "src/stores/LinkingStore";
 import { initialize as initializeRequestAPI } from "src/configs/requestAPI";
 import { initialize as initializeRemoteConfig } from "src/configs/remoteConfig";
 import { initialize as initializeAdmob } from "src/configs/admob";
+import { initialize as initializeAnalytics } from "src/configs/analytics";
 
 const Store = types
   .model({
@@ -25,6 +26,7 @@ const Store = types
     };
 
     const initializeApp = flow(function*() {
+      initializeAnalytics();
       initializeAdmob();
       yield initializeRemoteConfig();
       self.linkingStore.initialize();

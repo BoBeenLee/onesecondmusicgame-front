@@ -18,6 +18,7 @@ import { getUniqueID } from "src/utils/device";
 import User from "src/stores/model/User";
 import { ErrorCode } from "src/configs/error";
 import { findItemAllUsingGET } from "src/apis/item";
+import { setUserID } from "src/configs/analytics";
 
 export type AUTH_PROVIDER = "KAKAO" | "GOOGLE" | "FACEBOOK" | "NONE";
 
@@ -42,7 +43,7 @@ const AuthStore = types
       self.accessId = "";
       self.accessToken = "";
       self.refreshToken = "";
-      saveAuthInfo(null);
+      self.user = null;
     };
 
     const clearIfProviderExpiredToken = flow(function*() {
@@ -166,8 +167,8 @@ const AuthStore = types
             accessToken: self.accessToken
           }
         );
-        saveAuthInfo(signInResponse);
-        fetchUserInfo();
+        yield updateUserInfo(signInResponse);
+        updateAuthInfo();
       } catch (error) {
         if (error.status === ErrorCode.FORBIDDEN_ERROR) {
           yield fallbackSignUpAndSignIn();
@@ -196,19 +197,22 @@ const AuthStore = types
           accessToken: self.accessToken
         }
       );
-      saveAuthInfo(signInResponse);
-      fetchUserInfo();
+      yield updateUserInfo(signInResponse);
+      updateAuthInfo();
     });
 
-    const fetchUserInfo = flow(function*() {
-      const response: RetrieveAsyncFunc<typeof findItemAllUsingGET> = yield findItemAllUsingGET();
-      self.user?.setUserItems(response.body);
-    });
-
-    const saveAuthInfo = flow(function*(
+    const updateUserInfo = flow(function*(
       signInResponse: IUserLoginResponse | null
     ) {
-      self.user?.setUserAccessToken(signInResponse?.body?.token ?? "");
+      const response: RetrieveAsyncFunc<typeof findItemAllUsingGET> = yield findItemAllUsingGET();
+      if (signInResponse) {
+        self.user?.setUserAccessToken(signInResponse.body.token);
+      }
+      self.user?.setUserItems(response.body);
+      setUserID(self.accessId);
+    });
+
+    const updateAuthInfo = flow(function*() {
       setItem(FIELD.ACCESS_ID, self.accessId);
       setItem(FIELD.ACCESS_TOKEN, self.accessToken);
       setItem(FIELD.PROVIDER_TYPE, self.provider);
@@ -221,7 +225,7 @@ const AuthStore = types
     return {
       initialize,
       facebookSignIn,
-      fetchUserInfo,
+      updateUserInfo,
       kakaoSignIn,
       googleSignIn,
       signOut
