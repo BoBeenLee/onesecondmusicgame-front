@@ -19,6 +19,7 @@ import SearchTrackScreen from "src/screens/SearchTrackScreen";
 import RegisterSongScreen from "src/screens/RegisterSongScreen";
 import { ICodePushStore } from "src/stores/CodePushStore";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
+import { ItemType } from "src/apis/item";
 
 interface IInject {
   authStore: IAuthStore;
@@ -127,6 +128,11 @@ class MainScreen extends Component<IProps> {
                 <React.Fragment key={item.itemType}>
                   <ButtonText>{item.itemType}</ButtonText>
                   <ButtonText>{item.count}</ButtonText>
+                  <ADButton onPress={_.partial(this.useItem, item.itemType)}>
+                    <ButtonText style={{ color: "red" }}>
+                      아이템 사용하기
+                    </ButtonText>
+                  </ADButton>
                 </React.Fragment>
               );
             })
@@ -145,6 +151,10 @@ class MainScreen extends Component<IProps> {
     } catch (error) {
       showToast(error.message);
     }
+  };
+
+  private useItem = (itemType: ItemType) => {
+    this.props.authStore.user?.userItemsByItemType(itemType)?.useItemType();
   };
 
   private requestHeartRewardAD = () => {

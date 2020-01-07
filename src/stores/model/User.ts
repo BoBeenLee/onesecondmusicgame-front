@@ -1,7 +1,7 @@
 import { types } from "mobx-state-tree";
 
 import UserItem from "src/stores/model/UserItem";
-import { IItem } from "src/apis/item";
+import { IItem, ItemType } from "src/apis/item";
 
 const User = types
   .model("User", {
@@ -14,6 +14,9 @@ const User = types
     return {
       get userItemViews() {
         return Array.from(self.userItems.values());
+      },
+      userItemsByItemType(itemType: ItemType) {
+        return self.userItems.get(itemType);
       }
     };
   })
