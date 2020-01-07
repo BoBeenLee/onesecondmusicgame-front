@@ -9,7 +9,11 @@ import firebase, { RNFirebase, AuthCredential } from "react-native-firebase";
 import { LoginManager, AccessToken } from "react-native-fbsdk";
 
 import { defaultItemToString, FIELD, setItem } from "src/utils/storage";
-import { userControllerApi } from "src/apis/user";
+import {
+  userControllerApi,
+  signInUsingPOST,
+  IUserLoginResponse
+} from "src/apis/user";
 import { getUniqueID } from "src/utils/device";
 import User from "src/stores/model/User";
 import { ErrorCode } from "src/configs/error";
@@ -37,7 +41,7 @@ const AuthStore = types
       self.accessId = "";
       self.accessToken = "";
       self.refreshToken = "";
-      saveAuthInfo();
+      saveAuthInfo(null);
     };
 
     const initialize = flow(function*() {
@@ -135,11 +139,11 @@ const AuthStore = types
 
     const signIn = flow(function*() {
       try {
-        yield userControllerApi.signInUsingPOST({
+        const signInResponse = yield signInUsingPOST({
           accessId: self.accessId,
           accessToken: self.accessToken
         });
-        saveAuthInfo();
+        saveAuthInfo(signInResponse);
       } catch (error) {
         if (error.status === ErrorCode.FORBIDDEN_ERROR) {
           yield fallbackSignUpAndSignIn();
@@ -162,14 +166,17 @@ const AuthStore = types
         socialType: self.provider,
         ...(sharedAccessId ? { invitedBy: sharedAccessId } : {})
       });
-      yield userControllerApi.signInUsingPOST({
+      const signInResponse = yield signInUsingPOST({
         accessId: self.accessId,
         accessToken: self.accessToken
       });
-      saveAuthInfo();
+      saveAuthInfo(signInResponse);
     });
 
-    const saveAuthInfo = flow(function*() {
+    const saveAuthInfo = flow(function*(
+      signInResponse: IUserLoginResponse | null
+    ) {
+      self.user?.setUserAccessToken(signInResponse?.body?.token ?? "");
       setItem(FIELD.ACCESS_ID, self.accessId);
       setItem(FIELD.ACCESS_TOKEN, self.accessToken);
       setItem(FIELD.PROVIDER_TYPE, self.provider);

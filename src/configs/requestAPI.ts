@@ -4,6 +4,7 @@ import _ from "lodash";
 import env from "src/configs/env";
 import { ResponseDTO } from "__generate__/api";
 import { OSMGError } from "./error";
+import { getRootStore } from "src/stores/Store";
 
 interface IOptions {
   body: object;
@@ -20,8 +21,9 @@ export const requestAPI: any = async <T extends ResponseDTO>(
   url: string,
   options: IOptions
 ) => {
+  const userAccessToken = getRootStore().authStore.user?.userAccessToken;
   const headers = {
-    // Authorization: `JWT ${getStore().authStore.accessToken}`,
+    ...(userAccessToken ? { token: userAccessToken } : {}),
     ...options.headers
   };
   const configs: AxiosRequestConfig = {
