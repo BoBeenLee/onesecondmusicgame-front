@@ -26,9 +26,12 @@ const Store = types
     };
 
     const initializeApp = flow(function*() {
+      yield Promise.all([
+        self.codePushStore.notifyAppReady(),
+        initializeRemoteConfig()
+      ]);
       initializeAnalytics();
       initializeAdmob();
-      yield initializeRemoteConfig();
       self.linkingStore.initialize();
       self.codePushStore.initialize();
       self.pushNotificationStore.initialize();
