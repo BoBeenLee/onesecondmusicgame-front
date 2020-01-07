@@ -1,4 +1,4 @@
-import { HeartControllerApiFactory } from "__generate__/api";
+import { HeartControllerApiFactory, ResponseDTO } from "__generate__/api";
 import { requestAPI } from "src/configs/requestAPI";
 
 export const heartControllerApi = HeartControllerApiFactory(
@@ -6,3 +6,15 @@ export const heartControllerApi = HeartControllerApiFactory(
   requestAPI,
   ""
 );
+
+export interface ICheckHeartResponse extends ResponseDTO {
+  body: {
+    heartCount: number;
+  };
+}
+
+export const checkMyHeartUsingGET = async () => {
+  return (await heartControllerApi.checkMyHeartUsingGET()) as Promise<
+    ICheckHeartResponse
+  >;
+};

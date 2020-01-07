@@ -215,6 +215,7 @@ const AuthStore = types
     const updateUserInfo = flow(function*() {
       const response: RetrieveAsyncFunc<typeof findItemAllUsingGET> = yield findItemAllUsingGET();
       self.user?.setUserItems(response.body);
+      self.user?.heart.fetchHeart();
       setUserID(self.accessId);
     });
 

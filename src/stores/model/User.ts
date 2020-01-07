@@ -1,14 +1,16 @@
-import { types } from "mobx-state-tree";
+import { flow, types } from "mobx-state-tree";
 
 import UserItem from "src/stores/model/UserItem";
 import { IItem, ItemType } from "src/apis/item";
+import Heart from "src/stores/model/Heart";
 
 const User = types
   .model("User", {
     accessId: types.identifier,
     nickname: types.string,
     userAccessToken: types.optional(types.string, ""),
-    userItems: types.optional(types.map(UserItem), {})
+    userItems: types.optional(types.map(UserItem), {}),
+    heart: types.optional(Heart, {})
   })
   .views(self => {
     return {

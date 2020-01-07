@@ -92,6 +92,7 @@ class MainScreen extends Component<IProps> {
   };
 
   public render() {
+    const { user } = this.props.authStore;
     return (
       <Container>
         <Content>
@@ -115,6 +116,12 @@ class MainScreen extends Component<IProps> {
             <ButtonText>노래 등록</ButtonText>
           </ADButton>
           {this.renderItemAll}
+          <ADButton onPress={RegisterSongScreen.open}>
+            <ButtonText>하트 체크: {user?.heart.heartCount}</ButtonText>
+          </ADButton>
+          <ADButton onPress={user?.heart.useHeart}>
+            <ButtonText>하트 사용</ButtonText>
+          </ADButton>
           <AudioPlayer />
         </Content>
       </Container>
