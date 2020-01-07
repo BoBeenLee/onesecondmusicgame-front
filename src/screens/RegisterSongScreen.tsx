@@ -11,8 +11,13 @@ import colors from "src/styles/colors";
 import { ITrackItem } from "src/apis/soundcloud/interface";
 import SearchTrackScreen from "src/screens/SearchTrackScreen";
 import { songControllerApi } from "src/apis/song";
+import { IToastStore } from "src/stores/ToastStore";
 
-interface IProps {
+interface IInject {
+  toastStore: IToastStore;
+}
+
+interface IProps extends IInject {
   componentId: string;
 }
 
@@ -41,6 +46,12 @@ const ADButton = styled.TouchableOpacity``;
 
 const ButtonText = styled(Bold12)``;
 
+@inject(
+  ({ store }: { store: IStore }): IInject => ({
+    toastStore: store.toastStore
+  })
+)
+@observer
 class RegisterSongScreen extends Component<IProps, IStates> {
   public static open() {
     return showStackModal(SCREEN_IDS.RegisterSongScreen);
@@ -94,6 +105,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
   };
 
   private register = async () => {
+    const { showToast } = this.props.toastStore;
     const { selectedTrackItem } = this.state;
     const title = selectedTrackItem?.title;
     const singerName = selectedTrackItem?.user?.username;
@@ -108,6 +120,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
       url,
       highlightSeconds: [0]
     });
+    showToast("등록 완료!");
   };
 
   private back = () => {
