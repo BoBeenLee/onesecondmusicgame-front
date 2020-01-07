@@ -20,6 +20,7 @@ import RegisterSongScreen from "src/screens/RegisterSongScreen";
 import { ICodePushStore } from "src/stores/CodePushStore";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import { ItemType } from "src/apis/item";
+import Singers, { ISingers } from "src/stores/Singers";
 
 interface IInject {
   authStore: IAuthStore;
@@ -66,7 +67,10 @@ class MainScreen extends Component<IProps> {
     });
   }
 
+  public singers: ISingers = Singers.create();
+
   public async componentDidMount() {
+    await this.singers.initialize();
     loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
       onRewarded: this.onRewarded
     });
@@ -146,7 +150,7 @@ class MainScreen extends Component<IProps> {
     const { showToast } = this.props.toastStore;
     try {
       await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
-      await updateUserInfo(null);
+      await updateUserInfo();
       showToast("보상 완료!");
     } catch (error) {
       showToast(error.message);

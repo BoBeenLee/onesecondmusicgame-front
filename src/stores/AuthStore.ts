@@ -167,7 +167,8 @@ const AuthStore = types
             accessToken: self.accessToken
           }
         );
-        yield updateUserInfo(signInResponse);
+        updateUserAccessToken(signInResponse);
+        updateUserInfo();
         updateAuthInfo();
       } catch (error) {
         if (error.status === ErrorCode.FORBIDDEN_ERROR) {
@@ -197,17 +198,22 @@ const AuthStore = types
           accessToken: self.accessToken
         }
       );
-      yield updateUserInfo(signInResponse);
+      updateUserAccessToken(signInResponse);
+      updateUserInfo();
       updateAuthInfo();
     });
 
-    const updateUserInfo = flow(function*(
+    const updateUserAccessToken = (
       signInResponse: IUserLoginResponse | null
-    ) {
-      const response: RetrieveAsyncFunc<typeof findItemAllUsingGET> = yield findItemAllUsingGET();
-      if (signInResponse) {
-        self.user?.setUserAccessToken(signInResponse.body.token);
+    ) => {
+      if (!signInResponse) {
+        throw new Error("sign in Error!");
       }
+      self.user?.setUserAccessToken(signInResponse.body.token);
+    };
+
+    const updateUserInfo = flow(function*() {
+      const response: RetrieveAsyncFunc<typeof findItemAllUsingGET> = yield findItemAllUsingGET();
       self.user?.setUserItems(response.body);
       setUserID(self.accessId);
     });
