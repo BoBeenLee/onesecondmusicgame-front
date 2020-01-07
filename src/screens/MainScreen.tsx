@@ -17,6 +17,7 @@ import { makeAppShareLink } from "src/utils/dynamicLink";
 import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
 import SearchTrackScreen from "src/screens/SearchTrackScreen";
 import { ICodePushStore } from "src/stores/CodePushStore";
+import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 
 interface IInject {
   authStore: IAuthStore;
@@ -59,7 +60,9 @@ class MainScreen extends Component<IProps> {
   }
 
   public async componentDidMount() {
-    loadAD(AdmobUnitID.HeartReward, ["game", "quiz"]);
+    loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
+      onRewarded: this.onRewarded
+    });
     loadAD(AdmobUnitID.HeartScreen, ["game", "quiz"]);
     this.updateCodePushIfAvailable();
   }
@@ -122,6 +125,18 @@ class MainScreen extends Component<IProps> {
       </>
     );
   }
+
+  private onRewarded = async () => {
+    const { fetchUserInfo } = this.props.authStore;
+    const { showToast } = this.props.toastStore;
+    try {
+      await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
+      await fetchUserInfo();
+      showToast("보상 완료!");
+    } catch (error) {
+      showToast(error.message);
+    }
+  };
 
   private requestHeartRewardAD = () => {
     showAD(AdmobUnitID.HeartReward);

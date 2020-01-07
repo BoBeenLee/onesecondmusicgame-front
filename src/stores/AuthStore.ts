@@ -221,6 +221,7 @@ const AuthStore = types
     return {
       initialize,
       facebookSignIn,
+      fetchUserInfo,
       kakaoSignIn,
       googleSignIn,
       signOut

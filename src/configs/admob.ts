@@ -74,13 +74,12 @@ const admobs: { [key in keyof typeof AdmobUnitID]: AdmobUnit } = {
 export const loadAD = (
   admobUnitID: AdmobUnitID,
   keywords: string[],
-  onAdLoaded?: () => void,
-  onRewarded?: (event: any) => void
+  onListeners?: {
+    onAdLoaded?: () => void;
+    onRewarded?: (event: any) => void;
+  }
 ) => {
-  admobs[admobUnitID].load(keywords, {
-    onAdLoaded,
-    onRewarded
-  });
+  admobs[admobUnitID].load(keywords, onListeners);
 };
 
 export const showAD = (admobUnitID: AdmobUnitID) => {
