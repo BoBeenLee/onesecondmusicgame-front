@@ -11,7 +11,7 @@ import ModalTopBar from "src/components/topbar/ModalTopBar";
 import colors from "src/styles/colors";
 import OSMGTextInput from "src/components/input/OSMGTextInput";
 import { FlatListProps, FlatList, ListRenderItem } from "react-native";
-import { ITrackItem } from "src/apis/soundcloud/tracks";
+import { ITrackItem } from "src/apis/soundcloud/interface";
 import SearchTrackCard from "src/components/card/SearchTrackCard";
 import Tracks, { ITracks } from "src/stores/Tracks";
 

@@ -8,7 +8,7 @@ import { SCREEN_IDS } from "src/screens/constant";
 import { showStackModal, dismissAllModals } from "src/utils/navigator";
 import ModalTopBar from "src/components/topbar/ModalTopBar";
 import colors from "src/styles/colors";
-import { ITrackItem } from "src/apis/soundcloud/tracks";
+import { ITrackItem } from "src/apis/soundcloud/interface";
 import SearchTrackScreen from "src/screens/SearchTrackScreen";
 import { songControllerApi } from "src/apis/song";
 

@@ -1,7 +1,8 @@
 import _ from "lodash";
 import { flow, types } from "mobx-state-tree";
 
-import { tracks, ITrackItem } from "src/apis/soundcloud/tracks";
+import { tracks } from "src/apis/soundcloud/tracks";
+import { ITrackItem } from "src/apis/soundcloud/interface";
 
 interface IVariables {
   q: string;
