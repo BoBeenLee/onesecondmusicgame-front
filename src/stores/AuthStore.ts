@@ -44,22 +44,42 @@ const AuthStore = types
       saveAuthInfo(null);
     };
 
-    const initialize = flow(function*() {
-      self.provider = yield defaultItemToString(FIELD.PROVIDER_TYPE, "NONE");
-      self.accessId = yield defaultItemToString(FIELD.ACCESS_ID, "");
-      self.accessToken = yield defaultItemToString(FIELD.ACCESS_TOKEN, "");
-      self.refreshToken = yield defaultItemToString(FIELD.REFRESH_TOKEN, "");
-
+    const clearIfProviderExpiredToken = flow(function*() {
       GoogleSignin.configure();
       switch (self.provider) {
         case "GOOGLE":
           const isSignedIn = yield GoogleSignin.isSignedIn();
           if (!isSignedIn) {
             clear();
+            return;
           }
           return;
         case "KAKAO":
           return;
+      }
+    });
+
+    const makeUserIfProviderExists = () => {
+      self.user = User.create({
+        accessId: self.accessId,
+        nickname: ""
+      });
+    };
+
+    const initialize = flow(function*() {
+      self.provider = yield defaultItemToString(FIELD.PROVIDER_TYPE, "NONE");
+      self.accessId = yield defaultItemToString(FIELD.ACCESS_ID, "");
+      self.accessToken = yield defaultItemToString(FIELD.ACCESS_TOKEN, "");
+      self.refreshToken = yield defaultItemToString(FIELD.REFRESH_TOKEN, "");
+      yield clearIfProviderExpiredToken();
+      if (self.provider === "NONE") {
+        return;
+      }
+      makeUserIfProviderExists();
+      try {
+        yield signIn();
+      } catch (error) {
+        // NOTHING
       }
     });
 
@@ -139,10 +159,12 @@ const AuthStore = types
 
     const signIn = flow(function*() {
       try {
-        const signInResponse = yield signInUsingPOST({
-          accessId: self.accessId,
-          accessToken: self.accessToken
-        });
+        const signInResponse: RetrieveAsyncFunc<typeof signInUsingPOST> = yield signInUsingPOST(
+          {
+            accessId: self.accessId,
+            accessToken: self.accessToken
+          }
+        );
         saveAuthInfo(signInResponse);
       } catch (error) {
         if (error.status === ErrorCode.FORBIDDEN_ERROR) {
@@ -166,10 +188,12 @@ const AuthStore = types
         socialType: self.provider,
         ...(sharedAccessId ? { invitedBy: sharedAccessId } : {})
       });
-      const signInResponse = yield signInUsingPOST({
-        accessId: self.accessId,
-        accessToken: self.accessToken
-      });
+      const signInResponse: RetrieveAsyncFunc<typeof signInUsingPOST> = yield signInUsingPOST(
+        {
+          accessId: self.accessId,
+          accessToken: self.accessToken
+        }
+      );
       saveAuthInfo(signInResponse);
     });
 
