@@ -67,7 +67,7 @@ const env: IEnvironment = {
     REACT_ENV,
     API_URL: "http://api.alsongdalsong.com:8888",
     SOUNDCLOUD_API_URL,
-    buildAdEnv: buildProdAdEnv
+    buildAdEnv: buildTestAdEnv
   },
   staging: STAGING_ENV_ENTRY,
   storybook: STAGING_ENV_ENTRY
