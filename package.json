@@ -33,7 +33,8 @@
     "prepush": "npm run eslint",
     "postinstall": "npx jetify",
     "postbuildnumber:ios": "RNV=ios react-native-version",
-    "version": "react-native-version --reset-build",
+    "changelog": "auto-changelog -p && git add CHANGELOG.md",
+    "version": "npm run changelog && react-native-version --reset-build",
     "release": "release-it --ci"
   },
   "dependencies": {
@@ -124,6 +125,7 @@
     "@types/yup": "^0.26.14",
     "@typescript-eslint/eslint-plugin": "^2.13.0",
     "@typescript-eslint/parser": "^2.13.0",
+    "auto-changelog": "^1.16.2",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^24.8.0",
     "babel-loader": "^8.0.6",
