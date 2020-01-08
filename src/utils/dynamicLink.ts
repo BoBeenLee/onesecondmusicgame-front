@@ -33,6 +33,7 @@ export const makeAppShareLink = async (accessId: string) => {
   ).android
     .setPackageName("kr.nexters.onesecondmusicgame")
     .ios.setBundleId("kr.nexters.onesecondmusicgame")
-    .ios.setCustomScheme(CUSTOM_PROTOCOL);
+    .ios.setCustomScheme(CUSTOM_PROTOCOL)
+    .navigation.setForcedRedirectEnabled(true);
   return await firebase.links().createShortDynamicLink(link, "SHORT");
 };
