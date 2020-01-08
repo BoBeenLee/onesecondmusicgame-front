@@ -13,6 +13,9 @@ const Heart = types
     });
 
     const useHeart = flow(function*() {
+      if (self.heartCount === 0) {
+        return;
+      }
       yield heartControllerApi.useHeartUsingPUT();
       self.heartCount -= 1;
     });
