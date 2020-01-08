@@ -92,6 +92,10 @@ And again you'd need to tell what the previous code actually does.
 
 We can maybe use [SemVer](http://semver.org/) for versioning. For the versions available, see the [link to tags on this repository](/tags).
 
+## Commit
+
+- https://gist.github.com/stephenparish/9941e89d80e2bc58a153
+
 ## Configuration
 
 Here you should write what are all of the configurations a user can enter when
@@ -108,7 +112,7 @@ Give an example
 
 ## Style guide
 
-Explain your code style and show how to check it.
+stylelint, eslint
 
 ## Api Reference
 
