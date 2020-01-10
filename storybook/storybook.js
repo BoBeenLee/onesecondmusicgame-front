@@ -19,7 +19,12 @@ addDecorator(story => (
   <ContainerWithStatusBar>{story()}</ContainerWithStatusBar>
 ));
 
-const StorybookUIRoot = getStorybookUI({ port: 7007, onDeviceUI: true });
+const StorybookUIRoot = getStorybookUI({
+  port: 7007,
+  onDeviceUI: false,
+  resetStorybook: true,
+  shouldPersistSelection: true
+});
 
 class StorybookUIHMRRoot extends Component {
   componentDidMount() {

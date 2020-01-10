@@ -49,6 +49,9 @@ export type XEIconType =
   | "thumbs-up"
   | "emoticon-smiley"
   | "emoticon-sad"
-  | "emoticon-neutral";
+  | "emoticon-neutral"
+  | "play"
+  | "pause"
+  | "stop";
 
 export default XEIcon;

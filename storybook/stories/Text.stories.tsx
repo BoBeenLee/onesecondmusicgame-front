@@ -10,9 +10,13 @@ const BodyText = styled(Regular12)`
   color: ${colors.gray700};
 `;
 
-storiesOf("Text", module)
-    .add("ReadMoreText", () => {
-        return (
-            <BodyText>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis numquam assumenda repudiandae porro quisquam dolorum, itaque est, fuga hic aspernatur architecto excepturi aliquid suscipit odit officiis, quaerat magni voluptates consectetur!</BodyText>
-        )
-    });
+storiesOf("Text", module).add("ReadMoreText", () => {
+  return (
+    <BodyText>
+      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis numquam
+      assumenda repudiandae porro quisquam dolorum, itaque est, fuga hic
+      aspernatur architecto excepturi aliquid suscipit odit officiis, quaerat
+      magni voluptates consectetur!
+    </BodyText>
+  );
+});
