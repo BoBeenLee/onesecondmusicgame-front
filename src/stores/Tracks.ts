@@ -73,6 +73,14 @@ const Tracks = types
       initialize,
       refresh
     };
+  })
+  .actions(self => {
+    const search = (variables: IVariables) => {
+      self.initialize(variables);
+    };
+    return {
+      search: _.debounce(search, 500)
+    };
   });
 
 export type ITracks = typeof Tracks.Type;

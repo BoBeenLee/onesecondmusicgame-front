@@ -69,7 +69,6 @@ class SearchTrackScreen extends Component<IProps, IStates> {
     this.state = {
       searchText: ""
     };
-    this.search = _.debounce(this.search, 500);
     this.tracks = Tracks.create();
   }
 
@@ -101,20 +100,13 @@ class SearchTrackScreen extends Component<IProps, IStates> {
     );
   }
 
-  private search = async () => {
-    const { searchText } = this.state;
-    const { initialize } = this.tracks;
-    initialize({
-      q: searchText
-    });
-  };
-
   private onSearchChangeText = (text: string) => {
+    const { search } = this.tracks;
     this.setState(
       {
         searchText: text
       },
-      this.search
+      _.partial(search, { q: text })
     );
   };
 
