@@ -29,20 +29,21 @@ function MiniAudioPlayer(props: IProps) {
     Extract<XEIconType, "play" | "stop">
   >("play");
   const onPlayerEnd = () => {
-    setPlayType("stop");
+    setPlayType("play");
     onEnd && onEnd();
   };
-  const onPlayerStart = () => {
-    setPlayType("play");
-    onLoadStart && onLoadStart();
+
+  const onPress = () => {
+    setPlayType(playType === "play" ? "stop" : "play");
   };
+
   return (
     <Container size={size}>
       <AudioPlayer
         ignoreSilentSwitch={"ignore"}
         controls={false}
         onEnd={onPlayerEnd}
-        onLoadStart={onPlayerStart}
+        onLoadStart={onLoadStart}
         paused={playType === "stop"}
         {...rest}
       />
@@ -50,7 +51,7 @@ function MiniAudioPlayer(props: IProps) {
         style={style}
         size={size}
         playType={playType}
-        onPress={_.partial(setPlayType, playType === "play" ? "stop" : "play")}
+        onPress={onPress}
       />
     </Container>
   );
