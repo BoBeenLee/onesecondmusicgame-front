@@ -5,12 +5,20 @@ import styled from "styled-components/native";
 
 import SearchTrackCard from "src/components/card/SearchTrackCard";
 
-storiesOf("Card", module).add("SearchTrackCard", () => {
-  return (
-    <SearchTrackCard
-      thumnail="https://via.placeholder.com/150"
-      title="Hello World"
-      author="Hello"
-    />
-  );
-});
+const CenterView = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+storiesOf("Card", module)
+  .addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
+  .add("SearchTrackCard", () => {
+    return (
+      <SearchTrackCard
+        thumnail="https://via.placeholder.com/150"
+        title="Hello World"
+        author="Hello"
+      />
+    );
+  });

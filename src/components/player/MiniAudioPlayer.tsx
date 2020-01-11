@@ -38,7 +38,7 @@ function MiniAudioPlayer(props: IProps) {
   };
 
   return (
-    <Container size={size}>
+    <Container style={style} size={size}>
       <AudioPlayer
         ignoreSilentSwitch={"ignore"}
         controls={false}
@@ -47,12 +47,7 @@ function MiniAudioPlayer(props: IProps) {
         paused={playType === "stop"}
         {...rest}
       />
-      <AudioView
-        style={style}
-        size={size}
-        playType={playType}
-        onPress={onPress}
-      />
+      <AudioView size={size} playType={playType} onPress={onPress} />
     </Container>
   );
 }
