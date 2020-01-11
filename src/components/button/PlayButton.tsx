@@ -10,13 +10,13 @@ interface IProps {
   style?: ViewProps["style"];
   size: number;
   playType: Extract<XEIconType, "play" | "pause" | "stop">;
+  onPress: () => void;
 }
 
-const Container = styled.View<{ size: number }>`
-  padding: 10px;
+const Container = styled.TouchableOpacity<{ size: number }>`
   justify-content: center;
   align-items: center;
-  background-color: #ff3300;
+  background-color: ${colors.red500};
   ${({ size }) => css`
     width: ${size}px;
     height: ${size}px;
@@ -24,17 +24,15 @@ const Container = styled.View<{ size: number }>`
   `}
 `;
 
-const PlayIcon = styled(XEIcon)``;
+const PlayIcon = styled(XEIcon)`
+  margin-left: 2px;
+`;
 
 function PlayButton(props: IProps) {
-  const { style, playType, size } = props;
+  const { style, playType, size, onPress } = props;
   return (
-    <Container style={style} size={size}>
-      <PlayIcon
-        type={"basket" as XEIconType}
-        size={size}
-        color={colors.white}
-      />
+    <Container style={style} size={size} onPress={onPress}>
+      <PlayIcon name={playType} size={size * (2 / 3)} color={colors.white} />
     </Container>
   );
 }
