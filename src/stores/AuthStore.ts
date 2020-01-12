@@ -82,6 +82,7 @@ const AuthStore = types
         yield signIn();
       } catch (error) {
         // NOTHING
+        clear();
       }
     });
 
@@ -171,7 +172,11 @@ const AuthStore = types
         updateUserInfo();
         updateAuthInfo();
       } catch (error) {
-        if (error.status === ErrorCode.FORBIDDEN_ERROR) {
+        if (
+          [ErrorCode.NOT_FOUND, ErrorCode.FORBIDDEN_ERROR].some(
+            status => status === error.status
+          )
+        ) {
           yield fallbackSignUpAndSignIn();
           return;
         }

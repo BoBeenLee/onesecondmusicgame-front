@@ -10,6 +10,7 @@ export const heartControllerApi = HeartControllerApiFactory(
 export interface ICheckHeartResponse extends ResponseDTO {
   body: {
     heartCount: number;
+    leftTime: number;
   };
 }
 
