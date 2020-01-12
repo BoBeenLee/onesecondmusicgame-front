@@ -4,6 +4,7 @@ import React from "react";
 import styled from "styled-components/native";
 
 import SearchTrackCard from "src/components/card/SearchTrackCard";
+import GameRankCard from "src/components/card/GameRankCard";
 
 const CenterView = styled.View`
   flex: 1;
@@ -21,4 +22,7 @@ storiesOf("Card", module)
         author="Hello"
       />
     );
+  })
+  .add("GameRankCard", () => {
+    return <GameRankCard />;
   });
