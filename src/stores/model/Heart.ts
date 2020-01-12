@@ -2,6 +2,8 @@ import { flow, types } from "mobx-state-tree";
 
 import { heartControllerApi, checkMyHeartUsingGET } from "src/apis/heart";
 
+const INTERVAL_THREE_MINUTES = 180000;
+
 const Heart = types
   .model("Heart", {
     heartCount: types.optional(types.number, 0)
@@ -22,6 +24,14 @@ const Heart = types
     return {
       fetchHeart,
       useHeart
+    };
+  })
+  .actions(self => {
+    const afterCreate = () => {
+      setInterval(self.fetchHeart, INTERVAL_THREE_MINUTES);
+    };
+    return {
+      afterCreate
     };
   });
 

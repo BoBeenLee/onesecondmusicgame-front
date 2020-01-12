@@ -19,6 +19,7 @@ import MainScreen from "src/screens/MainScreen";
 import withToast from "src/hocs/withToast";
 import SearchTrackScreen from "src/screens/SearchTrackScreen";
 import RegisterSongScreen from "src/screens/RegisterSongScreen";
+import GamePlayScreen from "src/screens/game/GamePlayScreen";
 
 interface IScreenProps {
   id: string;
@@ -75,6 +76,10 @@ const screens: IScreenProps[] = [
   {
     Component: RegisterSongScreen,
     id: SCREEN_IDS.RegisterSongScreen
+  },
+  {
+    Component: GamePlayScreen,
+    id: SCREEN_IDS.GamePlayScreen
   }
 ];
 

@@ -122,12 +122,17 @@ const setModalStackRoot = async ({
     });
   })(nextComponentId, params);
 
-const push = async (
-  componentId: string,
-  nextComponentId: string,
-  params?: object,
-  animtaions: any = pushTransition
-) =>
+const push = async ({
+  componentId,
+  nextComponentId,
+  params,
+  animtaions = pushTransition
+}: {
+  componentId: string;
+  nextComponentId: string;
+  params?: object;
+  animtaions?: any;
+}) =>
   await protectedMultiClick(async () => {
     await Navigation.push(componentId, {
       component: {

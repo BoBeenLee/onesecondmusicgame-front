@@ -21,6 +21,7 @@ import { ICodePushStore } from "src/stores/CodePushStore";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import { ItemType } from "src/apis/item";
 import Singers, { ISingers } from "src/stores/Singers";
+import GamePlayScreen from "src/screens/game/GamePlayScreen";
 
 interface IInject {
   authStore: IAuthStore;
@@ -123,6 +124,9 @@ class MainScreen extends Component<IProps> {
             <ButtonText>하트 사용</ButtonText>
           </ADButton>
           <AudioPlayer />
+          <ADButton onPress={GamePlayScreen.open}>
+            <ButtonText>게임플레이</ButtonText>
+          </ADButton>
         </Content>
       </Container>
     );
