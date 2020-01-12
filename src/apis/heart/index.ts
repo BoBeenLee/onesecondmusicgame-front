@@ -19,3 +19,9 @@ export const checkMyHeartUsingGET = async () => {
     ICheckHeartResponse
   >;
 };
+
+export const useHeartUsingPUT = async () => {
+  return (await heartControllerApi.useHeartUsingPUT()) as Promise<
+    ICheckHeartResponse
+  >;
+};
