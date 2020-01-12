@@ -39,7 +39,7 @@ const withToast = <P extends object>(
       dismissToast(id);
     };
   }
-  hoistNonReactStatic(WithToast, TargetComponent as any);
+  hoistNonReactStatic(WithToast, TargetComponent);
   return WithToast;
 };
 
