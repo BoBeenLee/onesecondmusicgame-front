@@ -22,6 +22,7 @@ import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import { ItemType } from "src/apis/item";
 import Singers, { ISingers } from "src/stores/Singers";
 import GamePlayScreen from "src/screens/game/GamePlayScreen";
+import GameModeScreen from "src/screens/game/GameModeScreen";
 
 interface IInject {
   authStore: IAuthStore;
@@ -131,6 +132,13 @@ class MainScreen extends Component<IProps> {
             })}
           >
             <ButtonText>게임플레이</ButtonText>
+          </ADButton>
+          <ADButton
+            onPress={_.partial(GameModeScreen.open, {
+              componentId: componentId
+            })}
+          >
+            <ButtonText>게임모드</ButtonText>
           </ADButton>
         </Content>
       </Container>

@@ -8,7 +8,7 @@ import { XEIconType } from "src/components/icon/XEIcon";
 import { Bold15 } from "src/components/text/Typographies";
 import colors from "src/styles/colors";
 
-const TOP_BAR_HEIGHT = 56;
+export const TOP_BAR_HEIGHT = 56;
 
 export interface ITopBarProps {
   style?: ViewProps["style"];
@@ -67,5 +67,4 @@ function FMTopBar({
   );
 }
 
-export { TOP_BAR_HEIGHT };
 export default FMTopBar;
