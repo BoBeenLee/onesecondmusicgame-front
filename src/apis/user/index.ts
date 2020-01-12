@@ -1,25 +1,22 @@
 import {
   MusicUserControllerApiFactory,
   UserLoginRequest,
-  ResponseDTO
+  UserSignUpRequest
 } from "__generate__/api";
 import { requestAPI } from "src/configs/requestAPI";
 
-export const userControllerApi = MusicUserControllerApiFactory(
+const userControllerApi = MusicUserControllerApiFactory(
   undefined,
   requestAPI,
   ""
 );
 
-export interface IUserLoginResponse extends ResponseDTO {
-  body: {
-    token: string;
-    nickname: string;
-  };
-}
-
 export const signInUsingPOST = async (request: UserLoginRequest) => {
-  return (await userControllerApi.signInUsingPOST(request)) as Promise<
-    IUserLoginResponse
-  >;
+  const response = await userControllerApi.signInUsingPOST(request);
+  return response.body!;
+};
+
+export const signUpUsingPOST = async (request: UserSignUpRequest) => {
+  const response = await userControllerApi.signUpUsingPOST(request);
+  return response.body!;
 };

@@ -1,7 +1,7 @@
 import { RewardControllerApiFactory } from "__generate__/api";
 import { requestAPI } from "src/configs/requestAPI";
 
-export const rewardControllerApi = RewardControllerApiFactory(
+const rewardControllerApi = RewardControllerApiFactory(
   undefined,
   requestAPI,
   ""
@@ -12,6 +12,7 @@ export enum RewardType {
   SuggestMusic = "suggest_music"
 }
 
-export const rewardForWatchingAdUsingPOST = async (rewardType: RewardType) => {
-  await rewardControllerApi.rewardForWatchingAdUsingPOST(rewardType);
+export const rewardForWatchingAdUsingPOST = async (type: RewardType) => {
+  const response = await rewardControllerApi.rewardForWatchingAdUsingPOST(type);
+  return response.body;
 };

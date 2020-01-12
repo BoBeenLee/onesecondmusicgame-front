@@ -1,10 +1,6 @@
 import { reaction } from "mobx";
 import { addDisposer, flow, types } from "mobx-state-tree";
-import {
-  heartControllerApi,
-  checkMyHeartUsingGET,
-  useHeartUsingPUT
-} from "src/apis/heart";
+import { checkMyHeartUsingGET, useHeartUsingPUT } from "src/apis/heart";
 import { delay } from "src/utils/common";
 import _ from "lodash";
 
@@ -16,8 +12,8 @@ const Heart = types
   .actions(self => {
     const fetchHeart = flow(function*() {
       const response: RetrieveAsyncFunc<typeof checkMyHeartUsingGET> = yield checkMyHeartUsingGET();
-      self.heartCount = response.body.heartCount;
-      self.leftTime = response.body.leftTime;
+      self.heartCount = response.heartCount ?? 0;
+      self.leftTime = response.leftTime ?? 0;
     });
 
     const useHeart = flow(function*() {
@@ -25,8 +21,8 @@ const Heart = types
         return;
       }
       const response: RetrieveAsyncFunc<typeof useHeartUsingPUT> = yield useHeartUsingPUT();
-      self.heartCount = response.body.heartCount;
-      self.leftTime = response.body.leftTime;
+      self.heartCount = response.heartCount ?? 0;
+      self.leftTime = response.leftTime ?? 0;
     });
     return {
       fetchHeart,

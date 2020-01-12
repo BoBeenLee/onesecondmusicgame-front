@@ -1,14 +1,17 @@
-import { SongControllerApiFactory } from "__generate__/api";
+import {
+  SongControllerApiFactory,
+  SongRegisterRequest
+} from "__generate__/api";
 import { requestAPI } from "src/configs/requestAPI";
-import _ from "lodash";
 
-export const songControllerApi = SongControllerApiFactory(
-  undefined,
-  requestAPI,
-  ""
-);
+const songControllerApi = SongControllerApiFactory(undefined, requestAPI, "");
 
-export const songByTrackId = async (trackId: number): Promise<any> => {
+export const songByTrackId = async (trackId: number) => {
   const response = await songControllerApi.getSongUsingGET(trackId);
+  return response.body;
+};
+
+export const addNewSongUsingPOST = async (params: SongRegisterRequest) => {
+  const response = await songControllerApi.addNewSongUsingPOST(params);
   return response.body;
 };

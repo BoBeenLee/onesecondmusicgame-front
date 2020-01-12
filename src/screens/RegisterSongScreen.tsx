@@ -12,8 +12,8 @@ import ModalTopBar from "src/components/topbar/ModalTopBar";
 import colors from "src/styles/colors";
 import { ITrackItem } from "src/apis/soundcloud/interface";
 import SearchTrackScreen from "src/screens/SearchTrackScreen";
-import { songControllerApi } from "src/apis/song";
 import { IToastStore } from "src/stores/ToastStore";
+import { addNewSongUsingPOST } from "src/apis/song";
 
 interface IInject {
   toastStore: IToastStore;
@@ -116,7 +116,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
     if (![title, singerName, url].some(value => !!value)) {
       return;
     }
-    await songControllerApi.addNewSongUsingPOST({
+    await addNewSongUsingPOST({
       title,
       singerName,
       url,

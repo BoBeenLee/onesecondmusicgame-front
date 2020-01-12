@@ -3,7 +3,7 @@ import _ from "lodash";
 import { SingerControllerApiFactory } from "__generate__/api";
 import { requestAPI } from "src/configs/requestAPI";
 
-export const singerControllerApi = SingerControllerApiFactory(
+const singerControllerApi = SingerControllerApiFactory(
   undefined,
   requestAPI,
   ""

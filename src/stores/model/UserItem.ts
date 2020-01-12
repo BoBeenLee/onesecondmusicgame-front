@@ -1,7 +1,7 @@
 import { Item } from "__generate__/api";
 import { flow, types } from "mobx-state-tree";
 
-import { itemControllerApi } from "src/apis/item";
+import { useItemUsingPUT } from "src/apis/item";
 
 const UserItem = types
   .model("UserItem", {
@@ -10,7 +10,7 @@ const UserItem = types
   })
   .actions(self => {
     const useItemType = flow(function*() {
-      yield itemControllerApi.useItemUsingPUT(String(self.itemType));
+      yield useItemUsingPUT(String(self.itemType));
       self.count -= 1;
     });
     return {

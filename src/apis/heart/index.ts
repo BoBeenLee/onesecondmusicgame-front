@@ -1,27 +1,14 @@
 import { HeartControllerApiFactory, ResponseDTO } from "__generate__/api";
 import { requestAPI } from "src/configs/requestAPI";
 
-export const heartControllerApi = HeartControllerApiFactory(
-  undefined,
-  requestAPI,
-  ""
-);
-
-export interface ICheckHeartResponse extends ResponseDTO {
-  body: {
-    heartCount: number;
-    leftTime: number;
-  };
-}
+const heartControllerApi = HeartControllerApiFactory(undefined, requestAPI, "");
 
 export const checkMyHeartUsingGET = async () => {
-  return (await heartControllerApi.checkMyHeartUsingGET()) as Promise<
-    ICheckHeartResponse
-  >;
+  const response = await heartControllerApi.checkMyHeartUsingGET();
+  return response.body!;
 };
 
 export const useHeartUsingPUT = async () => {
-  return (await heartControllerApi.useHeartUsingPUT()) as Promise<
-    ICheckHeartResponse
-  >;
+  const response = await heartControllerApi.useHeartUsingPUT();
+  return response.body!;
 };

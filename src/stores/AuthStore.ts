@@ -10,15 +10,15 @@ import { LoginManager, AccessToken } from "react-native-fbsdk";
 
 import { defaultItemToString, FIELD, setItem } from "src/utils/storage";
 import {
-  userControllerApi,
   signInUsingPOST,
-  IUserLoginResponse
+  signUpUsingPOST
 } from "src/apis/user";
 import { getUniqueID } from "src/utils/device";
 import User from "src/stores/model/User";
 import { ErrorCode } from "src/configs/error";
-import { itemControllerApi } from "src/apis/item";
+import { findItemAllUsingGET } from "src/apis/item";
 import { setUserID } from "src/configs/analytics";
+import { LoggedInMusicUser } from "__generate__/api";
 
 export type AUTH_PROVIDER = "KAKAO" | "GOOGLE" | "FACEBOOK" | "NONE";
 
@@ -190,7 +190,7 @@ const AuthStore = types
         FIELD.SHARED_ACCESS_ID,
         ""
       );
-      yield userControllerApi.signUpUsingPOST({
+      yield signUpUsingPOST({
         accessId: self.accessId,
         deviceId: deviceId,
         nickname: self.user?.nickname ?? self.accessId,
@@ -209,17 +209,17 @@ const AuthStore = types
     });
 
     const updateUserAccessToken = (
-      signInResponse: IUserLoginResponse | null
+      signInResponse: LoggedInMusicUser | null
     ) => {
-      if (!signInResponse) {
+      if (!signInResponse?.token) {
         throw new Error("sign in Error!");
       }
-      self.user?.setUserAccessToken(signInResponse.body.token);
+      self.user?.setUserAccessToken(signInResponse.token);
     };
 
     const updateUserInfo = flow(function*() {
-      const response: RetrieveAsyncFunc<typeof itemControllerApi.findItemAllUsingGET> = yield itemControllerApi.findItemAllUsingGET();
-      self.user?.setUserItems(response.body ?? []);
+      const response: RetrieveAsyncFunc<typeof findItemAllUsingGET> = yield findItemAllUsingGET();
+      self.user?.setUserItems(response);
       self.user?.heart.fetchHeart();
       setUserID(self.accessId);
     });
