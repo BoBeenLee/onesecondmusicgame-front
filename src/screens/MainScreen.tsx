@@ -1,3 +1,4 @@
+import { Item } from "__generate__/api";
 import _ from "lodash";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
@@ -19,7 +20,6 @@ import SearchTrackScreen from "src/screens/SearchTrackScreen";
 import RegisterSongScreen from "src/screens/RegisterSongScreen";
 import { ICodePushStore } from "src/stores/CodePushStore";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
-import { ItemType } from "src/apis/item";
 import Singers, { ISingers } from "src/stores/Singers";
 import GamePlayScreen from "src/screens/game/GamePlayScreen";
 import GameModeScreen from "src/screens/game/GameModeScreen";
@@ -181,7 +181,7 @@ class MainScreen extends Component<IProps> {
     }
   };
 
-  private useItem = (itemType: ItemType) => {
+  private useItem = (itemType: Item.ItemTypeEnum) => {
     this.props.authStore.user?.userItemsByItemType(itemType)?.useItemType();
   };
 

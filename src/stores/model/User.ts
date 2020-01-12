@@ -1,7 +1,7 @@
+import { Item } from "__generate__/api";
 import { flow, types } from "mobx-state-tree";
 
 import UserItem from "src/stores/model/UserItem";
-import { IItem, ItemType } from "src/apis/item";
 import Heart from "src/stores/model/Heart";
 
 const User = types
@@ -17,8 +17,8 @@ const User = types
       get userItemViews() {
         return Array.from(self.userItems.values());
       },
-      userItemsByItemType(itemType: ItemType) {
-        return self.userItems.get(itemType);
+      userItemsByItemType(itemType: Item.ItemTypeEnum) {
+        return self.userItems.get(String(itemType));
       }
     };
   })
@@ -27,9 +27,15 @@ const User = types
       setUserAccessToken: (userAccessToken: string) => {
         self.userAccessToken = userAccessToken;
       },
-      setUserItems: (items: IItem[]) => {
+      setUserItems: (items: Item[]) => {
         for (const item of items) {
-          self.userItems.set(item.itemType, UserItem.create(item));
+          self.userItems.set(
+            String(item.itemType!),
+            UserItem.create({
+              count: item.count,
+              itemType: item.itemType!
+            })
+          );
         }
       }
     };

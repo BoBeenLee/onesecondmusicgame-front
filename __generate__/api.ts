@@ -81,6 +81,81 @@ export class RequiredError extends Error {
 /**
  * 
  * @export
+ * @interface HeartResponse
+ */
+export interface HeartResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof HeartResponse
+     */
+    heartCount?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof HeartResponse
+     */
+    leftTime?: number;
+}
+
+/**
+ * 
+ * @export
+ * @interface Item
+ */
+export interface Item {
+    /**
+     * 
+     * @type {number}
+     * @memberof Item
+     */
+    count?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Item
+     */
+    itemType?: Item.ItemTypeEnum;
+}
+
+/**
+ * @export
+ * @namespace Item
+ */
+export namespace Item {
+    /**
+     * @export
+     * @enum {string}
+     */
+    export enum ItemTypeEnum {
+        SKIP = <any> 'SKIP',
+        ONEMORESECOND = <any> 'ONE_MORE_SECOND'
+    }
+}
+
+/**
+ * 
+ * @export
+ * @interface LoggedInMusicUser
+ */
+export interface LoggedInMusicUser {
+    /**
+     * 
+     * @type {string}
+     * @memberof LoggedInMusicUser
+     */
+    nickname?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LoggedInMusicUser
+     */
+    token?: string;
+}
+
+/**
+ * 
+ * @export
  * @interface ModelAndView
  */
 export interface ModelAndView {
@@ -212,6 +287,32 @@ export namespace ModelAndView {
 /**
  * 
  * @export
+ * @interface MusicUser
+ */
+export interface MusicUser {
+    /**
+     * 
+     * @type {number}
+     * @memberof MusicUser
+     */
+    id?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MusicUser
+     */
+    nickname?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MusicUser
+     */
+    socialType?: string;
+}
+
+/**
+ * 
+ * @export
  * @interface ResponseDTO
  */
 export interface ResponseDTO {
@@ -227,6 +328,280 @@ export interface ResponseDTO {
      * @memberof ResponseDTO
      */
     status?: number;
+}
+
+/**
+ * 
+ * @export
+ * @interface ResponseDTOHeartResponse
+ */
+export interface ResponseDTOHeartResponse {
+    /**
+     * 
+     * @type {HeartResponse}
+     * @memberof ResponseDTOHeartResponse
+     */
+    body?: HeartResponse;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResponseDTOHeartResponse
+     */
+    status?: number;
+}
+
+/**
+ * 
+ * @export
+ * @interface ResponseDTOListItem
+ */
+export interface ResponseDTOListItem {
+    /**
+     * 
+     * @type {Array<Item>}
+     * @memberof ResponseDTOListItem
+     */
+    body?: Array<Item>;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResponseDTOListItem
+     */
+    status?: number;
+}
+
+/**
+ * 
+ * @export
+ * @interface ResponseDTOListstring
+ */
+export interface ResponseDTOListstring {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ResponseDTOListstring
+     */
+    body?: Array<string>;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResponseDTOListstring
+     */
+    status?: number;
+}
+
+/**
+ * 
+ * @export
+ * @interface ResponseDTOLoggedInMusicUser
+ */
+export interface ResponseDTOLoggedInMusicUser {
+    /**
+     * 
+     * @type {LoggedInMusicUser}
+     * @memberof ResponseDTOLoggedInMusicUser
+     */
+    body?: LoggedInMusicUser;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResponseDTOLoggedInMusicUser
+     */
+    status?: number;
+}
+
+/**
+ * 
+ * @export
+ * @interface ResponseDTOReward
+ */
+export interface ResponseDTOReward {
+    /**
+     * 
+     * @type {Reward}
+     * @memberof ResponseDTOReward
+     */
+    body?: Reward;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResponseDTOReward
+     */
+    status?: number;
+}
+
+/**
+ * 
+ * @export
+ * @interface ResponseDTOSong
+ */
+export interface ResponseDTOSong {
+    /**
+     * 
+     * @type {Song}
+     * @memberof ResponseDTOSong
+     */
+    body?: Song;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResponseDTOSong
+     */
+    status?: number;
+}
+
+/**
+ * 
+ * @export
+ * @interface ResponseDTOUserContextHolder
+ */
+export interface ResponseDTOUserContextHolder {
+    /**
+     * 
+     * @type {UserContextHolder}
+     * @memberof ResponseDTOUserContextHolder
+     */
+    body?: UserContextHolder;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResponseDTOUserContextHolder
+     */
+    status?: number;
+}
+
+/**
+ * 
+ * @export
+ * @interface ResponseDTOstring
+ */
+export interface ResponseDTOstring {
+    /**
+     * 
+     * @type {string}
+     * @memberof ResponseDTOstring
+     */
+    body?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResponseDTOstring
+     */
+    status?: number;
+}
+
+/**
+ * 
+ * @export
+ * @interface Reward
+ */
+export interface Reward {
+    /**
+     * 
+     * @type {number}
+     * @memberof Reward
+     */
+    id?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Reward
+     */
+    rewardType?: string;
+}
+
+/**
+ * 
+ * @export
+ * @interface Song
+ */
+export interface Song {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Song
+     */
+    exported?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof Song
+     */
+    id?: number;
+    /**
+     * 
+     * @type {MusicUser}
+     * @memberof Song
+     */
+    musicUser?: MusicUser;
+    /**
+     * 
+     * @type {string}
+     * @memberof Song
+     */
+    singer?: string;
+    /**
+     * 
+     * @type {Array<SongHighlight>}
+     * @memberof Song
+     */
+    songHighlight?: Array<SongHighlight>;
+    /**
+     * 
+     * @type {string}
+     * @memberof Song
+     */
+    title?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof Song
+     */
+    titleSet?: Array<string>;
+    /**
+     * 
+     * @type {number}
+     * @memberof Song
+     */
+    trackId?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Song
+     */
+    url?: string;
+}
+
+/**
+ * 
+ * @export
+ * @interface SongHighlight
+ */
+export interface SongHighlight {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SongHighlight
+     */
+    elected?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof SongHighlight
+     */
+    id?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof SongHighlight
+     */
+    second?: number;
+    /**
+     * 
+     * @type {Song}
+     * @memberof SongHighlight
+     */
+    song?: Song;
 }
 
 /**
@@ -279,6 +654,14 @@ export interface SongRegisterRequest {
      * @memberof SongRegisterRequest
      */
     url?: string;
+}
+
+/**
+ * 
+ * @export
+ * @interface UserContextHolder
+ */
+export interface UserContextHolder {
 }
 
 /**
@@ -368,11 +751,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
     return {
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingDELETE(options: any = {}): FetchArgs {
+        errorHtmlUsingDELETE(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
@@ -391,11 +774,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingGET(options: any = {}): FetchArgs {
+        errorHtmlUsingGET(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
@@ -414,11 +797,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingHEAD(options: any = {}): FetchArgs {
+        errorHtmlUsingHEAD(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'HEAD' }, options);
@@ -437,11 +820,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingOPTIONS(options: any = {}): FetchArgs {
+        errorHtmlUsingOPTIONS(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'OPTIONS' }, options);
@@ -460,11 +843,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPATCH(options: any = {}): FetchArgs {
+        errorHtmlUsingPATCH(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'PATCH' }, options);
@@ -483,11 +866,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPOST(options: any = {}): FetchArgs {
+        errorHtmlUsingPOST(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
@@ -506,11 +889,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPUT(options: any = {}): FetchArgs {
+        errorHtmlUsingPUT(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
@@ -538,12 +921,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
     return {
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingDELETE(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingDELETE(options);
+        errorHtmlUsingDELETE(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingDELETE(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -556,12 +939,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingGET(options);
+        errorHtmlUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingGET(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -574,12 +957,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingHEAD(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingHEAD(options);
+        errorHtmlUsingHEAD(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingHEAD(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -592,12 +975,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingOPTIONS(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingOPTIONS(options);
+        errorHtmlUsingOPTIONS(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingOPTIONS(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -610,12 +993,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPATCH(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingPATCH(options);
+        errorHtmlUsingPATCH(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingPATCH(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -628,12 +1011,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPOST(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingPOST(options);
+        errorHtmlUsingPOST(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingPOST(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -646,12 +1029,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPUT(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingPUT(options);
+        errorHtmlUsingPUT(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingPUT(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -673,66 +1056,66 @@ export const BasicErrorControllerApiFactory = function (configuration?: Configur
     return {
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingDELETE(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingDELETE(options)(fetch, basePath);
+        errorHtmlUsingDELETE(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingDELETE(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingGET(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingGET(options)(fetch, basePath);
+        errorHtmlUsingGET(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingGET(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingHEAD(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingHEAD(options)(fetch, basePath);
+        errorHtmlUsingHEAD(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingHEAD(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingOPTIONS(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingOPTIONS(options)(fetch, basePath);
+        errorHtmlUsingOPTIONS(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingOPTIONS(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPATCH(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingPATCH(options)(fetch, basePath);
+        errorHtmlUsingPATCH(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingPATCH(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPOST(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingPOST(options)(fetch, basePath);
+        errorHtmlUsingPOST(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingPOST(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPUT(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingPUT(options)(fetch, basePath);
+        errorHtmlUsingPUT(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingPUT(options)(fetch, basePath);
         },
     };
 };
@@ -746,79 +1129,79 @@ export const BasicErrorControllerApiFactory = function (configuration?: Configur
 export class BasicErrorControllerApi extends BaseAPI {
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingDELETE(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingDELETE(options)(this.fetch, this.basePath);
+    public errorHtmlUsingDELETE(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingDELETE(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingGET(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingGET(options)(this.fetch, this.basePath);
+    public errorHtmlUsingGET(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingGET(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingHEAD(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingHEAD(options)(this.fetch, this.basePath);
+    public errorHtmlUsingHEAD(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingHEAD(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingOPTIONS(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingOPTIONS(options)(this.fetch, this.basePath);
+    public errorHtmlUsingOPTIONS(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingOPTIONS(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingPATCH(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingPATCH(options)(this.fetch, this.basePath);
+    public errorHtmlUsingPATCH(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingPATCH(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingPOST(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingPOST(options)(this.fetch, this.basePath);
+    public errorHtmlUsingPOST(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingPOST(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingPUT(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingPUT(options)(this.fetch, this.basePath);
+    public errorHtmlUsingPUT(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingPUT(options)(this.fetch, this.basePath);
     }
 
 }
@@ -987,7 +1370,7 @@ export const HeartControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        checkMyHeartUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTO> {
+        checkMyHeartUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOHeartResponse> {
             const localVarFetchArgs = HeartControllerApiFetchParamCreator(configuration).checkMyHeartUsingGET(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
@@ -1005,7 +1388,7 @@ export const HeartControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        useHeartUsingPUT(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTO> {
+        useHeartUsingPUT(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOHeartResponse> {
             const localVarFetchArgs = HeartControllerApiFetchParamCreator(configuration).useHeartUsingPUT(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
@@ -1151,7 +1534,7 @@ export const ItemControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findItemAllUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTO> {
+        findItemAllUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOListItem> {
             const localVarFetchArgs = ItemControllerApiFetchParamCreator(configuration).findItemAllUsingGET(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
@@ -1408,7 +1791,7 @@ export const MusicUserControllerApiFp = function(configuration?: Configuration) 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserInfoUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTO> {
+        getUserInfoUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOUserContextHolder> {
             const localVarFetchArgs = MusicUserControllerApiFetchParamCreator(configuration).getUserInfoUsingGET(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
@@ -1426,7 +1809,7 @@ export const MusicUserControllerApiFp = function(configuration?: Configuration) 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refreshTokenUsingPOST(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTO> {
+        refreshTokenUsingPOST(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOstring> {
             const localVarFetchArgs = MusicUserControllerApiFetchParamCreator(configuration).refreshTokenUsingPOST(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
@@ -1445,7 +1828,7 @@ export const MusicUserControllerApiFp = function(configuration?: Configuration) 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        secedeSelfUsingDELETE(password: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTO> {
+        secedeSelfUsingDELETE(password: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOstring> {
             const localVarFetchArgs = MusicUserControllerApiFetchParamCreator(configuration).secedeSelfUsingDELETE(password, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
@@ -1464,7 +1847,7 @@ export const MusicUserControllerApiFp = function(configuration?: Configuration) 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        signInUsingPOST(request: UserLoginRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTO> {
+        signInUsingPOST(request: UserLoginRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOLoggedInMusicUser> {
             const localVarFetchArgs = MusicUserControllerApiFetchParamCreator(configuration).signInUsingPOST(request, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
@@ -1673,7 +2056,7 @@ export const RewardControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        rewardForWatchingAdUsingPOST(type: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTO> {
+        rewardForWatchingAdUsingPOST(type: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOReward> {
             const localVarFetchArgs = RewardControllerApiFetchParamCreator(configuration).rewardForWatchingAdUsingPOST(type, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
@@ -1772,7 +2155,7 @@ export const SingerControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllSingerNameUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTO> {
+        getAllSingerNameUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOListstring> {
             const localVarFetchArgs = SingerControllerApiFetchParamCreator(configuration).getAllSingerNameUsingGET(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
@@ -1940,7 +2323,7 @@ export const SongControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addNewSongUsingPOST(registerRequest: SongRegisterRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTO> {
+        addNewSongUsingPOST(registerRequest: SongRegisterRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOSong> {
             const localVarFetchArgs = SongControllerApiFetchParamCreator(configuration).addNewSongUsingPOST(registerRequest, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
@@ -1959,7 +2342,7 @@ export const SongControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addSongHighlightUsingPOST(request: SongHighlightAddRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTO> {
+        addSongHighlightUsingPOST(request: SongHighlightAddRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOSong> {
             const localVarFetchArgs = SongControllerApiFetchParamCreator(configuration).addSongHighlightUsingPOST(request, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
@@ -1978,7 +2361,7 @@ export const SongControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSongUsingGET(trackId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTO> {
+        getSongUsingGET(trackId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOSong> {
             const localVarFetchArgs = SongControllerApiFetchParamCreator(configuration).getSongUsingGET(trackId, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
@@ -2128,7 +2511,7 @@ export const SongHighlightControllerApiFp = function(configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        makeHighlightUsingPOST(trackId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTO> {
+        makeHighlightUsingPOST(trackId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOSong> {
             const localVarFetchArgs = SongHighlightControllerApiFetchParamCreator(configuration).makeHighlightUsingPOST(trackId, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {

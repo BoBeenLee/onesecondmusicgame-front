@@ -17,7 +17,7 @@ import {
 import { getUniqueID } from "src/utils/device";
 import User from "src/stores/model/User";
 import { ErrorCode } from "src/configs/error";
-import { findItemAllUsingGET } from "src/apis/item";
+import { itemControllerApi } from "src/apis/item";
 import { setUserID } from "src/configs/analytics";
 
 export type AUTH_PROVIDER = "KAKAO" | "GOOGLE" | "FACEBOOK" | "NONE";
@@ -218,8 +218,8 @@ const AuthStore = types
     };
 
     const updateUserInfo = flow(function*() {
-      const response: RetrieveAsyncFunc<typeof findItemAllUsingGET> = yield findItemAllUsingGET();
-      self.user?.setUserItems(response.body);
+      const response: RetrieveAsyncFunc<typeof itemControllerApi.findItemAllUsingGET> = yield itemControllerApi.findItemAllUsingGET();
+      self.user?.setUserItems(response.body ?? []);
       self.user?.heart.fetchHeart();
       setUserID(self.accessId);
     });
