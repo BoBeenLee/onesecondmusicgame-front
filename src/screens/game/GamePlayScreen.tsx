@@ -40,9 +40,9 @@ class GamePlayScreen extends Component<IProps> {
   public render() {
     return (
       <Container>
-        <ModalTopBar title="회원가입" onBackPress={this.back} />
+        <ModalTopBar title="" onBackPress={this.back} />
         <Content>
-          <Logo>SignUp</Logo>
+          <Logo>GamePlay</Logo>
         </Content>
       </Container>
     );

@@ -93,6 +93,7 @@ class MainScreen extends Component<IProps> {
   };
 
   public render() {
+    const { componentId } = this.props;
     const { user } = this.props.authStore;
     return (
       <Container>
@@ -124,7 +125,11 @@ class MainScreen extends Component<IProps> {
             <ButtonText>하트 사용</ButtonText>
           </ADButton>
           <AudioPlayer />
-          <ADButton onPress={GamePlayScreen.open}>
+          <ADButton
+            onPress={_.partial(GamePlayScreen.open, {
+              componentId: componentId
+            })}
+          >
             <ButtonText>게임플레이</ButtonText>
           </ADButton>
         </Content>
