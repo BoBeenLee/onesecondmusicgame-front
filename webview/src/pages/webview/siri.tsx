@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { navigate } from "gatsby";
 
-import { getReactNativeWebView } from "src/utils/webview";
 import SiriWaveForm from "src/components/SiriWaveForm";
 import { makeQueryParams } from "src/utils/uri";
 import { isBrowser } from "src/utils/navigator";
