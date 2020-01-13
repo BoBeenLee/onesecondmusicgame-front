@@ -6,6 +6,7 @@ import Video, { VideoProperties } from "react-native-video";
 
 import XEIcon, { XEIconType } from "src/components/icon/XEIcon";
 import PlayButton from "src/components/button/PlayButton";
+import { AudioType } from "src/components/player/interface";
 
 interface IProps extends VideoProperties {
   style?: ViewProps["style"];
@@ -25,15 +26,15 @@ const AudioView = styled(PlayButton)``;
 
 function MiniAudioPlayer(props: IProps) {
   const { style, size, onEnd, onLoadStart, ...rest } = props;
-  const [playType, setPlayType] = useState<
-    Extract<XEIconType, "play" | "stop">
-  >("play");
+  const [playType, setPlayType] = useState<Extract<XEIconType, AudioType>>(
+    "play"
+  );
   const onPlayerEnd = () => {
     setPlayType("play");
     onEnd && onEnd();
   };
 
-  const onPress = () => {
+  const onTogglePlayType = () => {
     setPlayType(playType === "play" ? "stop" : "play");
   };
 
@@ -47,7 +48,7 @@ function MiniAudioPlayer(props: IProps) {
         paused={playType === "stop"}
         {...rest}
       />
-      <AudioView size={size} playType={playType} onPress={onPress} />
+      <AudioView size={size} playType={playType} onPress={onTogglePlayType} />
     </Container>
   );
 }

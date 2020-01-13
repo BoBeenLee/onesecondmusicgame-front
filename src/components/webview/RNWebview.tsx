@@ -20,7 +20,7 @@ class RNWebview extends PureComponent<IProps> {
 
   public render() {
     const { style, source, onMessage } = this.props;
-
+    console.tron.log(source);
     return (
       <Container style={style}>
         <WebView

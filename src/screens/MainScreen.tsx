@@ -23,6 +23,7 @@ import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import Singers, { ISingers } from "src/stores/Singers";
 import GamePlayScreen from "src/screens/game/GamePlayScreen";
 import GameModeScreen from "src/screens/game/GameModeScreen";
+import SiriAudioPlayer from "src/components/player/SiriAudioPlayer";
 
 interface IInject {
   authStore: IAuthStore;
@@ -125,7 +126,13 @@ class MainScreen extends Component<IProps> {
           <ADButton onPress={user?.heart.useHeart}>
             <ButtonText>하트 사용</ButtonText>
           </ADButton>
-          <AudioPlayer />
+          <SiriAudioPlayer
+            onToggle={this.toggleSiriPlayer}
+            source={{
+              uri:
+                "https://api.soundcloud.com/tracks/736765723/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
+            }}
+          />
           <ADButton
             onPress={_.partial(GamePlayScreen.open, {
               componentId: componentId
@@ -168,6 +175,10 @@ class MainScreen extends Component<IProps> {
       </ItemAllView>
     );
   }
+
+  private toggleSiriPlayer = __ => {
+    // NOTHING
+  };
 
   private onRewarded = async () => {
     const { updateUserInfo } = this.props.authStore;

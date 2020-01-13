@@ -3,13 +3,13 @@ import styled from "styled-components/native";
 
 import RNWebview from "src/components/webview/RNWebview";
 import env from "src/configs/env";
+import { AudioType } from "src/components/player/interface";
 
 interface IProps {
   width: number;
   height: number;
-  type: "play" | "stop";
+  type: AudioType;
 }
-
 
 function SiriWebview(props: IProps) {
   const { width, height, type } = props;
@@ -26,7 +26,7 @@ function SiriWebview(props: IProps) {
       style={{ width, height }}
       ref={siriRef as any}
       source={{
-        uri: `${env.WEBVIEW_URL}/webview/siri?width=${width}&height=${height}`
+        uri: `${env.WEBVIEW_URL}/webview/siri/?width=${width}&height=${height}`
       }}
     />
   );
