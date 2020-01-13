@@ -4,6 +4,7 @@ import { navigate } from "gatsby";
 import { getReactNativeWebView } from "src/utils/webview";
 import SiriWaveForm from "src/components/SiriWaveForm";
 import { makeQueryParams } from "src/utils/uri";
+import { isBrowser } from "src/utils/navigator";
 
 interface IProps {
   location: Location;
@@ -20,7 +21,7 @@ class Siri extends Component<IProps, IStates> {
     this.state = {
       type: "play"
     };
-    window.addEventListener("message", this.onMessage);
+    isBrowser && window.addEventListener("message", this.onMessage);
   }
 
   public render() {
