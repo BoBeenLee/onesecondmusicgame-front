@@ -176,7 +176,7 @@ class MainScreen extends Component<IProps> {
     );
   }
 
-  private toggleSiriPlayer = __ => {
+  private toggleSiriPlayer = (__: any) => {
     // NOTHING
   };
 
