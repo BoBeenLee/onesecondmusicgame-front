@@ -1,16 +1,14 @@
 import React, { PureComponent } from "react";
 import { ViewProps } from "react-native";
-import { WebView } from "react-native-webview";
+import { WebView, WebViewProps } from "react-native-webview";
 import {
   WebViewMessageEvent,
   WebViewSource
 } from "react-native-webview/lib/WebViewTypes";
 import styled from "styled-components/native";
 
-interface IProps {
+interface IProps extends WebViewProps {
   style?: ViewProps["style"];
-  source: WebViewSource;
-  onMessage?: (event: WebViewMessageEvent) => void;
 }
 
 const Container = styled.View``;
@@ -19,8 +17,7 @@ class RNWebview extends PureComponent<IProps> {
   public webview = React.createRef<WebView>();
 
   public render() {
-    const { style, source, onMessage } = this.props;
-    console.tron.log(source);
+    const { style, source, onMessage, ...rest } = this.props;
     return (
       <Container style={style}>
         <WebView
@@ -32,6 +29,7 @@ class RNWebview extends PureComponent<IProps> {
           automaticallyAdjustContentInsets={false}
           onMessage={onMessage}
           source={source}
+          {...rest}
         />
       </Container>
     );

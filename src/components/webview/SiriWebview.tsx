@@ -9,10 +9,11 @@ interface IProps {
   width: number;
   height: number;
   type: AudioType;
+  onLoadEnd?: () => void;
 }
 
 function SiriWebview(props: IProps) {
-  const { width, height, type } = props;
+  const { width, height, type, onLoadEnd } = props;
   const siriRef = useRef<RNWebview>();
 
   useEffect(() => {
@@ -28,6 +29,7 @@ function SiriWebview(props: IProps) {
       source={{
         uri: `${env.WEBVIEW_URL}/webview/siri/?width=${width}&height=${height}`
       }}
+      onLoadEnd={onLoadEnd}
     />
   );
 }
