@@ -8,4 +8,4 @@ import SiriWaveForm from "src/components/SiriWaveForm";
 storiesOf("Component", module)
   .add("Header", () => <Header />)
   .add("Footer", () => <Footer />)
-  .add("SiriWaveForm", () => <SiriWaveForm />);
+  .add("SiriWaveForm", () => <SiriWaveForm width={50} height={50} type="play" />);

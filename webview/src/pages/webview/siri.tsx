@@ -15,9 +15,8 @@ interface IStates {
 class Siri extends Component<IProps, IStates> {
   constructor(props: IProps) {
     super(props);
-
     this.state = {
-      type: "play"
+      type: "stop"
     };
     isBrowser && window.addEventListener("message", this.onMessage);
   }
@@ -35,10 +34,14 @@ class Siri extends Component<IProps, IStates> {
     if (!message.data) {
       return;
     }
-    const { type } = JSON.parse(message.data);
-    this.setState({
-      type
-    });
+    try {
+      const { type } = JSON.parse(message.data);
+      this.setState({
+        type
+      });
+    } catch (error) {
+      // NOTHING
+    }
   };
 }
 

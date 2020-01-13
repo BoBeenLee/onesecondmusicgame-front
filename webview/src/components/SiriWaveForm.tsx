@@ -19,7 +19,7 @@ function SiriWaveForm(props: IProps) {
       style: "ios9",
       width,
       height,
-      amplitude: 0
+      amplitude: 0.1
     });
     siriWave.current.start();
   }, []);

@@ -9,7 +9,7 @@
     "test": "jest",
     "build:staging": "GATSBY_ENV=staging gatsby build",
     "build:production": "GATSBY_ENV=production gatsby build",
-    "deploy:staging": "cd public && surge --domain onesecondmusicgame.surge.sh",
+    "deploy:staging": "npm run build:staging && cd public && surge --domain onesecondmusicgame.surge.sh",
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
     "storybook": "start-storybook -p 6006",
