@@ -18,6 +18,7 @@ interface IAdmobEnv {
 interface IEnvironmentEntry {
   REACT_ENV: string;
   API_URL: string;
+  WEBVIEW_URL: string;
   SOUNDCLOUD_API_URL: string;
   buildAdEnv: () => IAdmobEnv;
 }
@@ -53,6 +54,7 @@ const buildProdAdEnv = () => ({
 const STAGING_ENV_ENTRY: IEnvironmentEntry = {
   REACT_ENV,
   API_URL: "http://api.alsongdalsong.com:8888",
+  WEBVIEW_URL: "http://localhost:8000",
   SOUNDCLOUD_API_URL,
   buildAdEnv: buildTestAdEnv
 };
@@ -66,6 +68,7 @@ const env: IEnvironment = {
   production: {
     REACT_ENV,
     API_URL: "http://api.alsongdalsong.com:8888",
+    WEBVIEW_URL: "http://localhost:8000",
     SOUNDCLOUD_API_URL,
     buildAdEnv: buildTestAdEnv
   },
