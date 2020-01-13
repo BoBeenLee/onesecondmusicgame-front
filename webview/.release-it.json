@@ -1,0 +1,23 @@
+{
+  "git": {
+    "commit": true,
+    "commitMessage": "chore(Release): v${version}",
+    "requireUpstream": false,
+    "requireCleanWorkingDir": true,
+    "tag": true,
+    "tagName": "v%s-web",
+    "push": false
+  },
+  "npm": {
+    "publish": false
+  },
+  "github": {
+    "release": false,
+    "releaseName": "RNWeb %s Released!",
+    "draft": true
+  },
+  "hooks": {
+    "after:beforeRelease": "npm run version",
+    "after:release": "echo Successfully released ${name} v${version} to ${repo.repository}.\n"
+  }
+}
