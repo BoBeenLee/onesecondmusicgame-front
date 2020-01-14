@@ -18,7 +18,7 @@ function useTimer({
       setTimeLeft(timeLeft - 1);
     }, 1000);
     return () => clearInterval(intervalId);
-  }, [timeLeft]);
+  }, [onTimeEnd, timeLeft]);
 
   return { timeLeft };
 }
