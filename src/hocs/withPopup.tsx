@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import styled from "styled-components/native";
 
 import withBackHandler, { IBackHandlerProps } from "src/hocs/withBackHandler";
+import TouchablePopup from "src/components/popup/TouchablePopup";
 
 interface IStates {
   PopupComponent: JSX.Element | null;
@@ -12,11 +13,13 @@ interface IStates {
 }
 
 export interface IPopupProps {
-  showPopup: (
-    PopupComponent: JSX.Element | null,
-    closeOverlay?: boolean
-  ) => void;
-  setClosePopupCallback: (closeCallback: () => void) => void;
+  popupProps: {
+    showPopup: (
+      PopupComponent: JSX.Element | null,
+      closeOverlay?: boolean
+    ) => void;
+    closePopup: () => void;
+  };
 }
 
 const Container = styled.View`
@@ -42,6 +45,12 @@ const PopupTouchableOverlay = styled.TouchableOpacity.attrs({
   height: 100%;
 `;
 
+const INITIAL_STATES = {
+  PopupComponent: null,
+  closeCallback: _.identity,
+  closeOverlay: true
+};
+
 const withPopup = <P extends IPopupProps>(
   TargetComponent: React.ComponentType<P>
 ): any => {
@@ -52,55 +61,48 @@ const withPopup = <P extends IPopupProps>(
     constructor(props: Subtract<P, IPopupProps>) {
       super(props);
 
-      this.state = {
-        PopupComponent: null,
-        closeCallback: _.identity,
-        closeOverlay: true
-      };
+      this.state = INITIAL_STATES;
     }
 
     public render() {
-      const Popup = this.Popup;
       return (
         <Container>
           <TargetComponent
             {...(this.props as P)}
-            showPopup={this.showPopup}
-            setClosePopupCallback={this.setCloseCallback}
+            popupProps={{
+              showPopup: this.showPopup,
+              closePopup: this.closePopup
+            }}
           />
-          {this.isShow ? <Popup /> : null}
+          {this.isShow ? this.Popup : null}
         </Container>
       );
     }
 
     private showPopup = (
       PopupComponent: JSX.Element | null,
-      closeOverlay = true
+      closeOverlay = true,
+      closeCallback = _.identity
     ) => {
       this.setState({
         PopupComponent,
-        closeOverlay
-      });
-    };
-
-    private setCloseCallback = (closeCallback: () => void) => {
-      this.setState({
+        closeOverlay,
         closeCallback
       });
     };
 
+    private closePopup = () => {
+      this.setState(INITIAL_STATES, () => {
+        this.state?.closeCallback();
+      });
+    };
+
     private onBackgroundPress = () => {
-      this.setState(
-        {
-          PopupComponent: null
-        },
-        () => {
-          const { closeCallback } = this.state;
-          if (closeCallback) {
-            closeCallback();
-          }
-        }
-      );
+      const { closeOverlay } = this.state;
+      if (!closeOverlay) {
+        return true;
+      }
+      this.closePopup();
       return true;
     };
 
@@ -110,28 +112,12 @@ const withPopup = <P extends IPopupProps>(
     }
 
     private get Popup() {
-      const { closeOverlay } = this.state;
-      if (!closeOverlay) {
-        return () => (
-          <PopupContainer>
-            <PopupTouchableOverlay />
-            {this.state.PopupComponent}
-          </PopupContainer>
-        );
-      }
-      return withBackHandler(
-        (props: React.PropsWithChildren<IBackHandlerProps>) => {
-          const { addBackButtonListener } = props;
-          if (addBackButtonListener) {
-            addBackButtonListener(this.onBackgroundPress);
-          }
-          return (
-            <PopupContainer>
-              <PopupTouchableOverlay onPress={this.onBackgroundPress} />
-              {this.state.PopupComponent}
-            </PopupContainer>
-          );
-        }
+      const { PopupComponent } = this.state;
+      return (
+        <TouchablePopup
+          PopupComponent={PopupComponent}
+          onBackgroundPress={this.onBackgroundPress}
+        />
       );
     }
   };

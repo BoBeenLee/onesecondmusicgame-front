@@ -2,7 +2,9 @@ import hoistNonReactStatic from "hoist-non-react-statics";
 import { Provider } from "mobx-react/native";
 import React, { Component } from "react";
 
-const withStore = (store: any) => <P extends object>(
+import { IStore } from "src/stores/Store";
+
+const withStore = (store: IStore) => <P extends object>(
   TargetComponent: React.ComponentType<P>
 ): any => {
   class WithStore extends Component<P> {
@@ -14,7 +16,7 @@ const withStore = (store: any) => <P extends object>(
       );
     }
   }
-  hoistNonReactStatic(WithStore, TargetComponent as any);
+  hoistNonReactStatic(WithStore, TargetComponent);
   return WithStore;
 };
 

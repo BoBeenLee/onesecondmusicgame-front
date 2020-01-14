@@ -14,7 +14,7 @@ const withSplash = <P extends object>(
       return <TargetComponent {...this.props} />;
     }
   }
-  hoistNonReactStatic(WithSplash, TargetComponent as any);
+  hoistNonReactStatic(WithSplash, TargetComponent);
   return WithSplash;
 };
 

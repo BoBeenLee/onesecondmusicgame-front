@@ -12,9 +12,7 @@ interface IProps {
 const withNavigator = <P extends object>(
   TargetComponent: React.ComponentType<P>
 ): any => {
-  const WithNavigator = class WithNavigatorAnonymous extends Component<
-    P & IProps
-  > {
+  class WithNavigator extends Component<P & IProps> {
     constructor(props: P & IProps) {
       super(props);
       Navigation.events().bindComponent(this);
@@ -29,7 +27,7 @@ const withNavigator = <P extends object>(
     public render() {
       return <TargetComponent {...this.props} />;
     }
-  };
+  }
   hoistNonReactStatic(WithNavigator, TargetComponent as any);
   return WithNavigator;
 };

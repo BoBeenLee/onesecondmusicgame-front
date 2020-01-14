@@ -7,7 +7,7 @@ import { getRootStore } from "src/stores/Store";
 const withAppState = <P extends object>(
   TargetComponent: React.ComponentType<P>
 ): any => {
-  const WithAppState = class WithAppStateAnonymous extends Component<P> {
+  class WithAppState extends Component<P> {
     public componentDidMount() {
       AppState.addEventListener("change", this.handleAppStateChange);
     }
@@ -31,8 +31,8 @@ const withAppState = <P extends object>(
         appState === "active" && getRootStore().appStateStatus !== "active"
       );
     };
-  };
-  hoistNonReactStatic(WithAppState, TargetComponent as any);
+  }
+  hoistNonReactStatic(WithAppState, TargetComponent);
   return WithAppState;
 };
 
