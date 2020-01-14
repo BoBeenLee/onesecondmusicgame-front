@@ -1,4 +1,4 @@
-import { HeartControllerApiFactory, ResponseDTO } from "__generate__/api";
+import { HeartControllerApiFactory } from "__generate__/api";
 import { requestAPI } from "src/configs/requestAPI";
 
 const heartControllerApi = HeartControllerApiFactory(undefined, requestAPI, "");
