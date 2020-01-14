@@ -26,13 +26,15 @@ module.exports = {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-use-before-define": "off",
-    "@typescript-eslint/explicit-member-accessibility": 0
+    "@typescript-eslint/explicit-member-accessibility": 0,
+    "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
+    "react-hooks/exhaustive-deps": "warn" // Checks effect dependencies
     // "@typescript-eslint/member-delimiter-style": {
     //     delimiter: "none",
     //     requireLast: true,
     // },
   },
-  plugins: ["react", "react-native"],
+  plugins: ["react", "react-native", "react-hooks"],
   settings: {
     react: {
       version: "detect"
