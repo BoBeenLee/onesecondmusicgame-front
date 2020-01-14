@@ -53,7 +53,7 @@ const INITIAL_STATES = {
 
 const withPopup = <P extends IPopupProps>(
   TargetComponent: React.ComponentType<P>
-): any => {
+) => {
   const WithPopup = class WithPopupAnonymous extends Component<
     Subtract<P, IPopupProps>,
     IStates

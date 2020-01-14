@@ -4,7 +4,7 @@ import SplashScreen from "react-native-splash-screen";
 
 const withSplash = <P extends object>(
   TargetComponent: React.ComponentType<P>
-): any => {
+) => {
   class WithSplash extends Component<P> {
     public componentDidMount() {
       SplashScreen.hide();

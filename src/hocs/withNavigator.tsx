@@ -11,7 +11,7 @@ interface IProps {
 
 const withNavigator = <P extends object>(
   TargetComponent: React.ComponentType<P>
-): any => {
+) => {
   class WithNavigator extends Component<P & IProps> {
     constructor(props: P & IProps) {
       super(props);

@@ -6,7 +6,7 @@ import { IStore } from "src/stores/Store";
 
 const withStore = (store: IStore) => <P extends object>(
   TargetComponent: React.ComponentType<P>
-): any => {
+) => {
   class WithStore extends Component<P> {
     public render() {
       return (

@@ -8,8 +8,7 @@ import { getRootStore } from "src/stores/Store";
 
 const withToast = <P extends object>(
   TargetComponent: React.ComponentType<P>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): any => {
+) => {
   class WithToast extends Component<P> {
     public render() {
       return (
