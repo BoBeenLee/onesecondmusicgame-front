@@ -24,5 +24,12 @@ storiesOf("Card", module)
     );
   })
   .add("GameRankCard", () => {
-    return <GameRankCard />;
+    return (
+      <GameRankCard
+        rank={1}
+        profileImage="https://via.placeholder.com/350x350"
+        name="jasmin"
+        score={83}
+      />
+    );
   });

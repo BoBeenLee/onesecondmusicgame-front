@@ -9,3 +9,4 @@ import "./Popup.stories";
 import "./Icon.stories";
 import "./Input.stories";
 import "./BackDrop.stories";
+import "./Image.stories";
