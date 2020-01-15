@@ -8,10 +8,9 @@ import XEIconButton from "src/components/button/XEIconButton";
 
 interface IProps {
   style?: ViewProps["style"];
-  message: string;
+  ContentComponent: React.ReactNode;
   confirmText: string;
   onConfirm: () => void;
-  cancelText: string;
   onCancel: () => void;
 }
 
@@ -30,11 +29,10 @@ const Content = styled.View`
   align-items: center;
 `;
 
-const Message = styled(Bold12)``;
-
 const Bottom = styled.View`
   width: 100%;
   flex-direction: row;
+  justify-content: center;
   align-items: center;
 `;
 
@@ -43,7 +41,7 @@ const Button = styled.TouchableOpacity`
   align-items: center;
   width: 100px;
   height: 40px;
-  background-color: #ee0;
+  background-color: ${colors.gray500};
   margin-horizontal: 10px;
 `;
 
@@ -57,14 +55,12 @@ const CloseButton = styled(XEIconButton)`
   right: 0px;
 `;
 
-function ConfirmPopup(props: IProps) {
-  const { style, message, confirmText, onConfirm, onCancel } = props;
+function OnlyConfirmPopup(props: IProps) {
+  const { style, ContentComponent, confirmText, onConfirm, onCancel } = props;
 
   return (
     <Container style={style}>
-      <Content>
-        <Message>{message}</Message>
-      </Content>
+      <Content>{ContentComponent}</Content>
       <Bottom>
         <Button onPress={onConfirm}>
           <ConfirmButtonText>{confirmText}</ConfirmButtonText>
@@ -80,4 +76,4 @@ function ConfirmPopup(props: IProps) {
   );
 }
 
-export default ConfirmPopup;
+export default OnlyConfirmPopup;

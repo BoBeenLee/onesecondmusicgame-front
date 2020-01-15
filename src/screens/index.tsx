@@ -100,6 +100,10 @@ const screens: IScreenProps[] = [
   {
     Component: GameSearchSongScreen,
     id: SCREEN_IDS.GameSearchSongScreen
+  },
+  {
+    Component: GameSearchSongScreen,
+    id: SCREEN_IDS.GameSearchSongScreen
   }
 ];
 

@@ -2,29 +2,24 @@ import { Item } from "__generate__/api";
 import _ from "lodash";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Clipboard, InteractionManager } from "react-native";
+import { InteractionManager, Clipboard } from "react-native";
 import styled from "styled-components/native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
-import { Bold12, Bold14 } from "src/components/text/Typographies";
+import { Bold12, Bold36 } from "src/components/text/Typographies";
 import { IStore } from "src/stores/Store";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
 import { SCREEN_IDS } from "src/screens/constant";
 import { setRoot } from "src/utils/navigator";
 import colors from "src/styles/colors";
-import AudioPlayer from "src/components/AudioPlayer";
-import { makeAppShareLink } from "src/utils/dynamicLink";
-import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
-import SearchTrackScreen from "src/screens/SearchTrackScreen";
-import RegisterSongScreen from "src/screens/RegisterSongScreen";
 import { ICodePushStore } from "src/stores/CodePushStore";
-import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
-import Singers, { ISingers } from "src/stores/Singers";
-import GamePlayScreen from "src/screens/game/GamePlayScreen";
-import GameModeScreen from "src/screens/game/GameModeScreen";
-import SiriAudioPlayer from "src/components/player/SiriAudioPlayer";
 import { IPopupProps } from "src/hocs/withPopup";
+import MockButton from "src/components/button/MockButton";
+import HeartGroup from "src/components/icon/HeartGroup";
+import TimerText from "src/components/text/TimerText";
+import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
+import { makeAppShareLink } from "src/utils/dynamicLink";
 
 interface IInject {
   authStore: IAuthStore;
@@ -41,20 +36,51 @@ const Container = styled(ContainerWithStatusBar)`
   flex-direction: column;
 `;
 
+const HeartStatus = styled.View`
+  position: absolute;
+  top: 0px;
+  left: 21px;
+`;
+
+const HeartRemain = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+const HeartRemainText = styled(Bold12)``;
+
+const HeartRemainTime = styled(TimerText)``;
+
+const GameItems = styled.View`
+  position: absolute;
+  top: 0px;
+  right: 31px;
+  flex-direction: column;
+`;
+
 const Content = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
 `;
 
-const ADButton = styled.TouchableOpacity``;
+const Logo = styled(Bold36)``;
 
-const ButtonText = styled(Bold12)``;
-
-const ItemAllView = styled.View`
-  padding: 15px;
-  border: 1px solid black;
+const Footer = styled.View`
+  height: 100px;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
 `;
+
+const PopupContainer = styled.View`
+  justify-content: center;
+  align-items: center;
+`;
+
+const PopupTitle = styled(Bold12)``;
+
+const PopupDescription = styled(Bold12)``;
 
 @inject(
   ({ store }: { store: IStore }): IInject => ({
@@ -71,14 +97,7 @@ class MainScreen extends Component<IProps> {
     });
   }
 
-  public singers: ISingers = Singers.create();
-
   public async componentDidMount() {
-    await this.singers.initialize();
-    loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
-      onRewarded: this.onRewarded
-    });
-    loadAD(AdmobUnitID.HeartScreen, ["game", "quiz"]);
     this.updateCodePushIfAvailable();
   }
 
@@ -96,128 +115,57 @@ class MainScreen extends Component<IProps> {
   };
 
   public render() {
-    const { componentId } = this.props;
-    const { user } = this.props.authStore;
     return (
       <Container>
         <Content>
-          <ADButton onPress={this.requestHeartRewardAD}>
-            <ButtonText>광고 보기(리워드)</ButtonText>
-          </ADButton>
-          <ADButton onPress={this.requestHeartScreenAD}>
-            <ButtonText>광고 보기(전면)</ButtonText>
-          </ADButton>
-          <ADButton onPress={this.shareLink}>
-            <ButtonText>
-              링크 공유(스토어 등록되어야 정상적으로 동작함)
-            </ButtonText>
-          </ADButton>
-          <ADButton
-            onPress={() => SearchTrackScreen.open({ onResult: _.identity })}
-          >
-            <ButtonText>트랙 검색</ButtonText>
-          </ADButton>
-          <ADButton onPress={RegisterSongScreen.open}>
-            <ButtonText>노래 등록</ButtonText>
-          </ADButton>
-          {this.renderItemAll}
-          <ADButton onPress={RegisterSongScreen.open}>
-            <ButtonText>하트 체크: {user?.heart.heartCount}</ButtonText>
-          </ADButton>
-          <ADButton onPress={user?.heart.useHeart}>
-            <ButtonText>하트 사용</ButtonText>
-          </ADButton>
-          <SiriAudioPlayer
-            onToggle={this.toggleSiriPlayer}
-            source={{
-              uri:
-                "https://api.soundcloud.com/tracks/736765723/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
-            }}
-          />
-          <ADButton
-            onPress={_.partial(GamePlayScreen.open, {
-              componentId: componentId
-            })}
-          >
-            <ButtonText>게임플레이</ButtonText>
-          </ADButton>
-          <ADButton
-            onPress={_.partial(GameModeScreen.open, {
-              componentId: componentId
-            })}
-          >
-            <ButtonText>게임모드</ButtonText>
-          </ADButton>
-          <ADButton onPress={this.showPopup}>
-            <ButtonText>확인 팝업</ButtonText>
-          </ADButton>
+          <Logo>알쏭달쏭</Logo>
+          <MockButton name="가수선택" onPress={_.identity} />
+          <HeartStatus>
+            <HeartGroup hearts={["active", "inactive"]} />
+            <HeartRemain>
+              <HeartRemainText>충전까지 남은 시간</HeartRemainText>
+              <HeartRemainTime seconds={60} onTimeEnd={_.identity} />
+            </HeartRemain>
+          </HeartStatus>
+          <GameItems>
+            <MockButton name="아이템" onPress={_.identity} />
+            <MockButton name="하트 풀 충전" onPress={_.identity} />
+            <MockButton name="스킵" onPress={_.identity} />
+          </GameItems>
         </Content>
+        <Footer>
+          <MockButton name="친구초대" onPress={this.onInvitePopup} />
+          <MockButton name="음악 등록" onPress={_.identity} />
+          <MockButton name="개인 랭킹" onPress={_.identity} />
+        </Footer>
       </Container>
     );
   }
 
-  private get renderItemAll() {
-    const { user } = this.props.authStore;
-    return (
-      <ItemAllView>
-        <ButtonText>item All</ButtonText>
-        {user?.userItemViews
-          ? user?.userItemViews.map(item => {
-              return (
-                <React.Fragment key={item.itemType}>
-                  <ButtonText>{item.itemType}</ButtonText>
-                  <ButtonText>{item.count}</ButtonText>
-                  <ADButton onPress={_.partial(this.useItem, item.itemType)}>
-                    <ButtonText style={{ color: "red" }}>
-                      아이템 사용하기
-                    </ButtonText>
-                  </ADButton>
-                </React.Fragment>
-              );
-            })
-          : null}
-      </ItemAllView>
+  private onInvitePopup = () => {
+    const { showPopup, closePopup } = this.props.popupProps;
+    showPopup(
+      <OnlyConfirmPopup
+        ContentComponent={
+          <PopupContainer>
+            <PopupTitle>친구 초대하기</PopupTitle>
+            <PopupDescription>{`친구를 초대하면 
+하트 풀충전 + 스킵 아이템을 각각 1개씩 드려요!`}</PopupDescription>
+          </PopupContainer>
+        }
+        confirmText={"초대하기"}
+        onConfirm={this.invite}
+        onCancel={closePopup}
+      />
     );
-  }
-
-  private toggleSiriPlayer = (__: any) => {
-    // NOTHING
   };
 
-  private onRewarded = async () => {
-    const { updateUserInfo } = this.props.authStore;
-    const { showToast } = this.props.toastStore;
-    try {
-      await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
-      await updateUserInfo();
-      showToast("보상 완료!");
-    } catch (error) {
-      showToast(error.message);
-    }
-  };
-
-  private useItem = (itemType: Item.ItemTypeEnum) => {
-    this.props.authStore.user?.userItemsByItemType(itemType)?.useItemType();
-  };
-
-  private requestHeartRewardAD = () => {
-    showAD(AdmobUnitID.HeartReward);
-  };
-
-  private requestHeartScreenAD = () => {
-    showAD(AdmobUnitID.HeartScreen);
-  };
-
-  private shareLink = async () => {
+  private invite = async () => {
     const { showToast } = this.props.toastStore;
     const { accessId } = this.props.authStore;
     const shortLink = await makeAppShareLink(accessId);
     Clipboard.setString(shortLink);
     showToast("공유 링크 복사 완료");
-  };
-
-  private showPopup = () => {
-    // NOTHING
   };
 }
 
