@@ -1,6 +1,7 @@
 import _ from "lodash";
 import React, { Component, ComponentClass } from "react";
 import { inject, observer } from "mobx-react";
+import { FlatListProps, FlatList, ListRenderItem } from "react-native";
 import styled from "styled-components/native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
@@ -10,7 +11,6 @@ import { dismissModal, showModal } from "src/utils/navigator";
 import ModalTopBar from "src/components/topbar/ModalTopBar";
 import colors from "src/styles/colors";
 import OSMGTextInput from "src/components/input/OSMGTextInput";
-import { FlatListProps, FlatList, ListRenderItem } from "react-native";
 import { ITrackItem } from "src/apis/soundcloud/interface";
 import SearchTrackCard from "src/components/card/SearchTrackCard";
 import Tracks, { ITracks } from "src/stores/Tracks";

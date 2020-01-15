@@ -3,15 +3,17 @@ import { flow, types } from "mobx-state-tree";
 
 import { singers, ISinger } from "src/apis/singer";
 
+const mocks = [{ name: "a," }, { name: "b" }];
+
 const Singers = types
   .model("Singers", {
     isRefresh: types.optional(types.boolean, false),
-    singers: types.optional(types.array(types.frozen<ISinger>()), [])
+    singers: types.optional(types.array(types.frozen<ISinger>()), mocks)
   })
   .views(self => {
     return {
       get singerViews() {
-        return self.singers;
+        return Array.from(self.singers);
       }
     };
   })

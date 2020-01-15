@@ -13,22 +13,25 @@ interface IProps {
 
 const Container = styled.TouchableOpacity`
   flex-direction: column;
+  align-items: center;
 `;
 
-const SongImage = styled.Image`
+const SingerImage = styled.Image`
+  width: 72px;
+  height: 72px;
   margin-bottom: 10px;
 `;
 
 const Name = styled(Bold12)``;
 
-function SearchSongCard(props: IProps) {
+function SearchSingerCard(props: IProps) {
   const { style, image, name, onPress } = props;
   return (
     <Container style={style} onPress={onPress}>
-      <SongImage source={{ uri: image }} />
+      <SingerImage source={{ uri: image }} />
       <Name>{name}</Name>
     </Container>
   );
 }
 
-export default SearchSongCard;
+export default SearchSingerCard;

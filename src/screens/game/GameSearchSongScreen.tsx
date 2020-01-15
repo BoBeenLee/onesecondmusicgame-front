@@ -1,13 +1,18 @@
-import React, { Component } from "react";
+import _ from "lodash";
+import React, { Component, ComponentClass } from "react";
+import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
+import { FlatListProps, FlatList, ListRenderItem } from "react-native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
-import { Bold12, Bold14 } from "src/components/text/Typographies";
+import { Bold12, Bold14, Bold20 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
-import { TOP_BAR_HEIGHT } from "src/components/topbar/OSMGTopBar";
 import colors from "src/styles/colors";
-import RegisterSongScreen from "src/screens/RegisterSongScreen";
+import SearchTextInput from "src/components/input/SearchTextInput";
+import { ISinger } from "src/apis/singer";
+import Singers, { ISingers } from "src/stores/Singers";
+import SearchSingerCard from "src/components/card/SearchSingerCard";
 
 interface IParams {
   componentId: string;
@@ -23,37 +28,53 @@ const Container = styled(ContainerWithStatusBar)`
 `;
 
 const Header = styled.View`
-  height: ${TOP_BAR_HEIGHT}px;
   justify-content: center;
   align-items: center;
 `;
 
-const Title = styled(Bold12)``;
+const Title = styled(Bold20)`
+  margin-top: 35px;
+`;
+
+const Description = styled(Bold14)`
+  margin-top: 16px;
+`;
+
+const SearchView = styled.View`
+  margin-top: 50px;
+  margin-horizontal: 44px;
+`;
 
 const Content = styled.View`
   flex: 1;
-  justify-content: center;
-  align-items: center;
+  padding-horizontal: 16px;
+  margin-top: 37px;
 `;
 
-const GameModeSection = styled.View`
+const ResultText = styled(Bold12)`
+  color: ${colors.black};
+  margin-bottom: 20px;
+`;
+
+const Result = styled<ComponentClass<FlatListProps<ISinger>>>(FlatList)`
   flex: 1;
+  width: 100%;
+`;
+
+const SearchSingerCardView = styled(SearchSingerCard)`
+  margin: 8px;
+`;
+
+const ResultEmpty = styled.View`
+  flex: 1;
+  height: 400px;
   justify-content: center;
   align-items: center;
 `;
 
-const GameModeTitle = styled(Bold12)``;
+const ResultEmptyText = styled(Bold12)``;
 
-const Footer = styled.View`
-  height: 100px;
-  justify-content: center;
-  align-items: center;
-`;
-
-const RegisterSongButton = styled.TouchableOpacity``;
-
-const RegisterSongButtonText = styled(Bold12)``;
-
+@observer
 class GameSearchSongScreen extends Component<IProps> {
   public static open(params: IParams) {
     return push({
@@ -62,28 +83,66 @@ class GameSearchSongScreen extends Component<IProps> {
     });
   }
 
+  public singers: ISingers = Singers.create();
+
+  public async componentDidMount() {
+    await this.singers.initialize();
+  }
+
   public render() {
+    const { singerViews, refresh, isRefresh } = this.singers;
+
     return (
       <Container>
         <Header>
-          <Title>게임 모드 선택</Title>
+          <Title>어떤 가수의 음악이 자신있으세요?</Title>
+          <Description>최대 3명의 가수를 선택하실 수 있습니다.</Description>
         </Header>
+        <SearchView>
+          <SearchTextInput
+            placeholder="가수명"
+            onChangeInput={this.search}
+            onSearch={this.search}
+          />
+        </SearchView>
         <Content>
-          <GameModeSection>
-            <GameModeTitle>가수별</GameModeTitle>
-          </GameModeSection>
-          <GameModeSection>
-            <GameModeTitle>시대별</GameModeTitle>
-          </GameModeSection>
+          <ResultText>전체 1000</ResultText>
+          <Result
+            data={singerViews}
+            numColumns={4}
+            renderItem={this.renderSingerItem}
+            keyExtractor={this.singerKeyExtreactor}
+            refreshing={isRefresh}
+            onRefresh={refresh}
+            ListEmptyComponent={
+              <ResultEmpty>
+                <ResultEmptyText>검색결과가 없습니다.</ResultEmptyText>
+              </ResultEmpty>
+            }
+          />
         </Content>
-        <Footer>
-          <RegisterSongButton onPress={RegisterSongScreen.open}>
-            <RegisterSongButtonText>음원 등록하기</RegisterSongButtonText>
-          </RegisterSongButton>
-        </Footer>
       </Container>
     );
   }
+
+  private singerKeyExtreactor = (item: ISinger, index: number) => {
+    return String(item.name) + index;
+  };
+
+  private renderSingerItem: ListRenderItem<ISinger> = ({ item }) => {
+    const { name } = item;
+    return (
+      <SearchSingerCardView
+        image={"https://via.placeholder.com/150"}
+        name={name}
+        onPress={_.identity}
+      />
+    );
+  };
+
+  private search = (text: string) => {
+    // SEARCH
+  };
 
   private back = () => {
     const { componentId } = this.props;

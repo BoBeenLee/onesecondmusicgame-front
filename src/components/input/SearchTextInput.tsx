@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React, { useState } from "react";
-import { ViewProps } from "react-native";
+import { ViewProps, TextInputProps } from "react-native";
 import styled from "styled-components/native";
 
 import OSMGTextInput from "src/components/input/OSMGTextInput";
@@ -8,7 +8,7 @@ import colors from "src/styles/colors";
 import XEIconButton from "src/components/button/XEIconButton";
 import useDebouncedCallback from "src/hooks/useDebouncedCallback";
 
-interface IProps {
+interface IProps extends TextInputProps {
   style?: ViewProps["style"];
   onChangeInput: (text: string) => void;
   onSearch: (text: string) => void;
@@ -36,7 +36,7 @@ const SearchIcon = styled(XEIconButton).attrs({
 })``;
 
 function SearchTextInput(props: IProps) {
-  const { style, onSearch } = props;
+  const { style, onSearch, ...rest } = props;
   const [text, setText] = useState("");
 
   const onChangeInput = useDebouncedCallback(props.onChangeInput, 500);
@@ -48,7 +48,7 @@ function SearchTextInput(props: IProps) {
 
   return (
     <Container style={style}>
-      <Input value={text} onChangeText={onChangeText} />
+      <Input {...rest} value={text} onChangeText={onChangeText} />
       <SearchIcon onPress={_.partial(onSearch, text)} />
     </Container>
   );
