@@ -15,5 +15,10 @@ const CenterView = styled.View`
 storiesOf("Input", module)
   .addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
   .add("SearchTextInput", () => {
-    return <SearchTextInput onSearch={action("onSearch")} />;
+    return (
+      <SearchTextInput
+        onChangeInput={action("onChangeInput")}
+        onSearch={action("onSearch")}
+      />
+    );
   });

@@ -6,10 +6,11 @@ import styled from "styled-components/native";
 import OSMGTextInput from "src/components/input/OSMGTextInput";
 import colors from "src/styles/colors";
 import XEIconButton from "src/components/button/XEIconButton";
-import useDebouncedCallback from "src/hooks/useDebouncedCallbackdCallback";
+import useDebouncedCallback from "src/hooks/useDebouncedCallback";
 
 interface IProps {
   style?: ViewProps["style"];
+  onChangeInput: (text: string) => void;
   onSearch: (text: string) => void;
 }
 
@@ -38,9 +39,12 @@ const SearchTextInput = (props: IProps) => {
   const { style, onSearch } = props;
   const [text, setText] = useState("");
 
-  const onChangeText = useDebouncedCallback((text: string) => {
+  const onChangeInput = useDebouncedCallback(props.onChangeInput, 500);
+
+  const onChangeText = (text: string) => {
     setText(text);
-  }, 500);
+    onChangeInput(text);
+  };
 
   return (
     <Container style={style}>
