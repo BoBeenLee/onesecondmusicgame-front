@@ -52,6 +52,7 @@ export type XEIconType =
   | "emoticon-neutral"
   | "play"
   | "pause"
-  | "stop";
+  | "stop"
+  | "search";
 
 export default XEIcon;
