@@ -21,7 +21,7 @@ addDecorator(story => (
 
 const StorybookUIRoot = getStorybookUI({
   port: 7007,
-  onDeviceUI: true,
+  onDeviceUI: false,
   resetStorybook: true,
   shouldPersistSelection: true
 });
