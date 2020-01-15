@@ -1,8 +1,9 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import { Image, ImageProps } from "react-native";
-import { getRatioHeight } from "src/utils/image";
 import styled from "styled-components/native";
+
+import { getRatioHeight } from "src/utils/image";
 
 interface IProps extends ImageProps {
   width: number;
