@@ -6,3 +6,4 @@ import "./TopBar.stories";
 import "./Carousel.stories";
 import "./Webview.stories";
 import "./Popup.stories";
+import "./Icon.stories";
