@@ -24,6 +24,7 @@ import Singers, { ISingers } from "src/stores/Singers";
 import GamePlayScreen from "src/screens/game/GamePlayScreen";
 import GameModeScreen from "src/screens/game/GameModeScreen";
 import SiriAudioPlayer from "src/components/player/SiriAudioPlayer";
+import { IPopupProps } from "src/hocs/withPopup";
 
 interface IInject {
   authStore: IAuthStore;
@@ -31,7 +32,7 @@ interface IInject {
   toastStore: IToastStore;
 }
 
-interface IProps extends IInject {
+interface IProps extends IInject, IPopupProps {
   componentId: string;
 }
 
@@ -147,6 +148,9 @@ class MainScreen extends Component<IProps> {
           >
             <ButtonText>게임모드</ButtonText>
           </ADButton>
+          <ADButton onPress={this.showPopup}>
+            <ButtonText>확인 팝업</ButtonText>
+          </ADButton>
         </Content>
       </Container>
     );
@@ -210,6 +214,10 @@ class MainScreen extends Component<IProps> {
     const shortLink = await makeAppShareLink(accessId);
     Clipboard.setString(shortLink);
     showToast("공유 링크 복사 완료");
+  };
+
+  private showPopup = () => {
+    // NOTHING
   };
 }
 
