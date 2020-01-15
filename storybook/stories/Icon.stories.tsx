@@ -16,8 +16,8 @@ const CenterView = styled.View`
 storiesOf("Icon", module)
   .addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
   .add("HeartGroup", () => {
-    return <HeartGroup />;
+    return <HeartGroup hearts={["active", "inactive"]} />;
   })
   .add("CircleCheckGroup", () => {
-    return <CircleCheckGroup checks={["active", "inactive", "check"]} />;
+    return <CircleCheckGroup circles={["active", "inactive", "check"]} />;
   });
