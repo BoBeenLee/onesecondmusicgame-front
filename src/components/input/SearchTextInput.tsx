@@ -52,6 +52,6 @@ function SearchTextInput(props: IProps) {
       <SearchIcon onPress={_.partial(onSearch, text)} />
     </Container>
   );
-};
+}
 
 export default SearchTextInput;

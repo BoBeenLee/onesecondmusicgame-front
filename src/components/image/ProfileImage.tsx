@@ -18,7 +18,7 @@ const Container = styled.Image<{
 function ProfileImage({ size, ...props }: IProps) {
   const borderRadius: number = size / 2;
   return <Container size={size} borderRadius={borderRadius} {...props} />;
-};
+}
 
 ProfileImage.defaultProps = {
   source: { uri: "https://via.placeholder.com/350x350" }

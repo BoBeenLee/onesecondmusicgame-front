@@ -35,6 +35,6 @@ const Container = styled.View<{ check: CircleCheck }>`
 function CircleCheckIcon(props: IProps) {
   const { style, check } = props;
   return <Container style={style} check={check} />;
-};
+}
 
 export default CircleCheckIcon;

@@ -29,7 +29,7 @@ function TouchablePopup(props: IProps) {
   const { onBackgroundPress } = props;
   useEffect(() => {
     props.backHandlerProps.addBackButtonListener(onBackgroundPress);
-  }, [onBackgroundPress]);
+  }, [onBackgroundPress, props.backHandlerProps]);
 
   return (
     <PopupContainer>

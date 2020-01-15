@@ -25,6 +25,6 @@ function LevelBadge(props: IProps) {
       <Text>{level}</Text>
     </Container>
   );
-};
+}
 
 export default LevelBadge;

@@ -52,12 +52,15 @@ class AutoHeightImage extends Component<IProps, IStates> {
     return (
       <Container
         {..._.omit(this.props, ["width", "widthRatio", "heightRatio"])}
-        style={[{
-          height: _.floor(
-            getRatioHeight(`${widthRatio}:${heightRatio}`, width)
-          ),
-          width
-        }, style]}
+        style={[
+          {
+            height: _.floor(
+              getRatioHeight(`${widthRatio}:${heightRatio}`, width)
+            ),
+            width
+          },
+          style
+        ]}
       />
     );
   }
