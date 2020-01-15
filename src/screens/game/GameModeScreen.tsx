@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import styled from "styled-components/native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
-import { Bold12, Bold14 } from "src/components/text/Typographies";
+import { Bold12, Bold18, Bold20 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
 import { TOP_BAR_HEIGHT } from "src/components/topbar/OSMGTopBar";
 import colors from "src/styles/colors";
 import RegisterSongScreen from "src/screens/RegisterSongScreen";
+import LevelBadge from "src/components/badge/LevelBadge";
 
 interface IParams {
   componentId: string;
@@ -20,6 +21,7 @@ interface IProps {
 const Container = styled(ContainerWithStatusBar)`
   flex: 1;
   flex-direction: column;
+  padding-horizontal: 21px;
 `;
 
 const Header = styled.View`
@@ -28,21 +30,39 @@ const Header = styled.View`
   align-items: center;
 `;
 
-const Title = styled(Bold12)``;
+const Title = styled(Bold20)`
+  padding-top: 35px;
+  color: ${colors.black};
+`;
 
 const Content = styled.View`
   flex: 1;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  padding-top: 78px;
 `;
 
-const GameModeSection = styled.View`
-  flex: 1;
+const GameModeSection = styled.TouchableOpacity`
+  width: 100%;
+  height: 105px;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 10px;
+  border: solid 1px ${colors.warmGrey};
+  margin-top: 35px;
 `;
 
-const GameModeTitle = styled(Bold12)``;
+const GameModeTitle = styled(Bold18)``;
+
+const GameModeDescription = styled(Bold12)``;
+
+const LevelBadgeView = styled(LevelBadge)`
+  position: absolute;
+  top: -15px;
+  left: 10px;
+  background-color: ${colors.white};
+`;
 
 const Footer = styled.View`
   height: 100px;
@@ -66,14 +86,21 @@ class GameModeScreen extends Component<IProps> {
     return (
       <Container>
         <Header>
-          <Title>게임 모드 선택</Title>
+          <Title>난이도 선택</Title>
         </Header>
         <Content>
           <GameModeSection>
-            <GameModeTitle>가수별</GameModeTitle>
+            <GameModeTitle>랜덤으로 시작하기</GameModeTitle>
+            <GameModeDescription>
+              무작위로 문제가 출제됩니다.
+            </GameModeDescription>
+            <LevelBadgeView level="hard" />
           </GameModeSection>
           <GameModeSection>
-            <GameModeTitle>시대별</GameModeTitle>
+            <GameModeTitle>자신있는 가수 선택하기</GameModeTitle>
+            <GameModeDescription>
+              선택한 가수의 곡이 출제됩니다.
+            </GameModeDescription>
           </GameModeSection>
         </Content>
         <Footer>
