@@ -5,6 +5,7 @@ import styled from "styled-components/native";
 
 import SearchTrackCard from "src/components/card/SearchTrackCard";
 import GameRankCard from "src/components/card/GameRankCard";
+import GameTopRankCard from "src/components/card/GameTopRankCard";
 
 const CenterView = styled.View`
   flex: 1;
@@ -26,7 +27,17 @@ storiesOf("Card", module)
   .add("GameRankCard", () => {
     return (
       <GameRankCard
-        rank={1}
+        rank={"1"}
+        profileImage="https://via.placeholder.com/350x350"
+        name="jasmin"
+        score={83}
+      />
+    );
+  })
+  .add("GameTopRankCard", () => {
+    return (
+      <GameTopRankCard
+        rank={"1"}
         profileImage="https://via.placeholder.com/350x350"
         name="jasmin"
         score={83}
