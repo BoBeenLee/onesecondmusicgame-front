@@ -21,19 +21,17 @@ const CircleCheckItem = styled(CircleCheckIcon)`
   margin-right: 4px;
 `;
 
-class CircleCheckGroup extends React.PureComponent<IProps> {
-  public render() {
-    const { style, circles } = this.props;
-    return (
-      <Container style={style}>
-        {_.map(circles, (circleCheck, index) => {
-          return (
-            <CircleCheckItem key={`indicator${index}`} check={circleCheck} />
-          );
-        })}
-      </Container>
-    );
-  }
+function CircleCheckGroup(props: IProps) {
+  const { style, circles } = this.props;
+  return (
+    <Container style={style}>
+      {_.map(circles, (circleCheck, index) => {
+        return (
+          <CircleCheckItem key={`indicator${index}`} check={circleCheck} />
+        );
+      })}
+    </Container>
+  );
 }
 
 export default CircleCheckGroup;

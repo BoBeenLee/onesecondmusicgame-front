@@ -35,7 +35,7 @@ const SearchIcon = styled(XEIconButton).attrs({
   iconColor: "#000"
 })``;
 
-const SearchTextInput = (props: IProps) => {
+function SearchTextInput(props: IProps) {
   const { style, onSearch } = props;
   const [text, setText] = useState("");
 
