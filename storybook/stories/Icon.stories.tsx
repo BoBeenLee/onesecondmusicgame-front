@@ -5,6 +5,7 @@ import styled from "styled-components/native";
 
 import HeartGroup from "src/components/icon/HeartGroup";
 import colors from "src/styles/colors";
+import CircleCheckGroup from "src/components/icon/CircleCheckGroup";
 
 const CenterView = styled.View`
   flex: 1;
@@ -16,4 +17,7 @@ storiesOf("Icon", module)
   .addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
   .add("HeartGroup", () => {
     return <HeartGroup />;
+  })
+  .add("CircleCheckGroup", () => {
+    return <CircleCheckGroup checks={["active", "inactive", "check"]} />;
   });
