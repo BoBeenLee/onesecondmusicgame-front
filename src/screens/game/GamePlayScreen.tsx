@@ -5,7 +5,8 @@ import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import { Bold12, Bold14 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
-import ModalTopBar from "src/components/topbar/ModalTopBar";
+import CircleCheckGroup from "src/components/icon/CircleCheckGroup";
+import LimitTimeProgress from "src/components/progress/LimitTimeProgress";
 import colors from "src/styles/colors";
 
 interface IParams {
@@ -19,6 +20,17 @@ interface IProps {
 const Container = styled(ContainerWithStatusBar)`
   flex: 1;
   flex-direction: column;
+`;
+
+const Header = styled.View`
+  justify-content: center;
+  align-items: center;
+  padding-top: 16px;
+  padding-horizontal: 16px;
+`;
+
+const Lifes = styled(CircleCheckGroup)`
+  margin-bottom: 21px;
 `;
 
 const Content = styled.View`
@@ -40,13 +52,20 @@ class GamePlayScreen extends Component<IProps> {
   public render() {
     return (
       <Container>
-        <ModalTopBar title="" onBackPress={this.back} />
+        <Header>
+          <Lifes circles={["active", "inactive", "check"]} />
+          <LimitTimeProgress seconds={60} onTimeEnd={this.onLimitTimeEnd} />
+        </Header>
         <Content>
           <Logo>GamePlay</Logo>
         </Content>
       </Container>
     );
   }
+
+  private onLimitTimeEnd = () => {
+    // NOTHING
+  };
 
   private back = () => {
     const { componentId } = this.props;

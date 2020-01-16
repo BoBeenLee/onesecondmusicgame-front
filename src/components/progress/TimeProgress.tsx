@@ -11,7 +11,7 @@ interface IProps {
 }
 
 const Container = styled.View`
-  width: 100%;
+  flex: 1;
   height: 11px;
   background-color: #d8d8d8;
 `;

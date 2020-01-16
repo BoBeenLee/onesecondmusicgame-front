@@ -25,7 +25,7 @@ const AudioPlayer = styled(Video)``;
 
 const AudioView = styled(PlayButton)``;
 
-function MiniAudioPlayer(props: IProps) {
+function GameAudioPlayer(props: IProps) {
   const { style, size, onToggle, ...rest } = props;
   const [playType, setPlayType] = useState<Extract<XEIconType, AudioType>>(
     "play"
@@ -71,4 +71,4 @@ function MiniAudioPlayer(props: IProps) {
   );
 }
 
-export default MiniAudioPlayer;
+export default GameAudioPlayer;
