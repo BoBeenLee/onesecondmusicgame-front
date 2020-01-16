@@ -7,7 +7,7 @@ import ProfileImage from "src/components/image/ProfileImage";
 
 interface IProps {
   style?: ViewProps["style"];
-  rank: string;
+  rank: number;
   name: string;
   profileImage: string;
   score: number;
