@@ -71,7 +71,7 @@ class GameRankingScreen extends Component<IProps> {
     const { isRefresh, refresh, rankViews } = this.ranks;
     return (
       <Container>
-        <BackTopBar title="" onBackPress={this.back} />
+        <BackTopBar title="개인 랭킹" onBackPress={this.back} />
         <Content>
           <RankCaption>*NN시 NN분 기준의 랭킹입니다. </RankCaption>
           <TopRankView>

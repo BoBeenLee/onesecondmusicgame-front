@@ -7,7 +7,7 @@ import styled from "styled-components/native";
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import { Bold12, Bold14 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
-import { dismissModal, showModal } from "src/utils/navigator";
+import { dismissModal, showModal, push } from "src/utils/navigator";
 import ModalTopBar from "src/components/topbar/ModalTopBar";
 import colors from "src/styles/colors";
 import OSMGTextInput from "src/components/input/OSMGTextInput";
@@ -16,7 +16,8 @@ import SearchTrackCard from "src/components/card/SearchTrackCard";
 import Tracks, { ITracks } from "src/stores/Tracks";
 
 interface IParams {
-  onResult: (selectedTracks: ITrackItem) => void;
+  componentId: string;
+  onResult: (selectedTrackItem: ITrackItem) => void;
 }
 
 interface IProps extends IParams {
@@ -54,11 +55,9 @@ const ItemSeperator = styled.View`
 @observer
 class SearchTrackScreen extends Component<IProps, IStates> {
   public static open(params: IParams) {
-    return showModal({
-      component: {
-        name: SCREEN_IDS.SearchTrackScreen,
-        passProps: params
-      }
+    return push({
+      componentId: params.componentId,
+      nextComponentId: SCREEN_IDS.GameSearchSongScreen
     });
   }
 

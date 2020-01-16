@@ -7,7 +7,7 @@ import { IStore } from "src/stores/Store";
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import { Bold12, Bold14 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
-import { showStackModal, dismissAllModals } from "src/utils/navigator";
+import { showStackModal, dismissAllModals, push } from "src/utils/navigator";
 import ModalTopBar from "src/components/topbar/ModalTopBar";
 import colors from "src/styles/colors";
 import { ITrackItem } from "src/apis/soundcloud/interface";
@@ -19,8 +19,13 @@ interface IInject {
   toastStore: IToastStore;
 }
 
-interface IProps extends IInject {
+interface IParams {
   componentId: string;
+}
+
+interface IProps extends IInject, IParams {
+  componentId: string;
+  selectedTrackItem?: ITrackItem;
 }
 
 interface IStates {
@@ -36,8 +41,6 @@ const Content = styled.View`
   flex: 1;
   align-items: center;
 `;
-
-const Logo = styled(Bold14)``;
 
 const Thumnail = styled.Image`
   width: 50px;
@@ -55,15 +58,26 @@ const ButtonText = styled(Bold12)``;
 )
 @observer
 class RegisterSongScreen extends Component<IProps, IStates> {
-  public static open() {
-    return showStackModal(SCREEN_IDS.RegisterSongScreen);
+  public static open(params: IParams) {
+    SearchTrackScreen.open({
+      componentId: params.componentId,
+      onResult: (selectedTrackItem: ITrackItem) => {
+        push({
+          componentId: params.componentId,
+          nextComponentId: SCREEN_IDS.GameSearchSongScreen,
+          params: {
+            selectedTrackItem
+          }
+        });
+      }
+    });
   }
 
   constructor(props: IProps) {
     super(props);
 
     this.state = {
-      selectedTrackItem: null
+      selectedTrackItem: props?.selectedTrackItem ?? null
     };
   }
 
@@ -73,13 +87,6 @@ class RegisterSongScreen extends Component<IProps, IStates> {
       <Container>
         <ModalTopBar title="노래 등록" onBackPress={this.back} />
         <Content>
-          <ADButton
-            onPress={_.partial(SearchTrackScreen.open, {
-              onResult: this.onSelected
-            })}
-          >
-            <ButtonText>트랙 검색</ButtonText>
-          </ADButton>
           <Thumnail
             source={{
               uri:
