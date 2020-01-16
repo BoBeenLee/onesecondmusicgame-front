@@ -12,6 +12,8 @@ import { IAuthStore } from "src/stores/AuthStore";
 import { ICodePushStore } from "src/stores/CodePushStore";
 import MainScreen from "src/screens/MainScreen";
 import SignInScreen from "src/screens/SignInScreen";
+import GamePlayScreen from "./game/GamePlayScreen";
+import colors from "src/styles/colors";
 
 interface IInject {
   store: IStore;
@@ -31,8 +33,9 @@ const Container = styled.View`
   padding-top: ${iosStatusBarHeight(false)}px;
 `;
 
-const Name = styled(Bold20)`
-  color: #000;
+const Title = styled(Bold20)`
+  color: ${colors.black};
+  margin-top: 35px;
 `;
 
 @inject(
@@ -56,7 +59,7 @@ class SplashScreen extends React.Component<IProps> {
   public render() {
     return (
       <Container>
-        <Name>123</Name>
+        <Title>123</Title>
         <LottieView
           style={{
             backgroundColor: "#eee",
@@ -73,12 +76,13 @@ class SplashScreen extends React.Component<IProps> {
   }
 
   private navigateTo = () => {
-    const { isGuest } = this.props.authStore;
-    if (isGuest) {
-      SignInScreen.open();
-      return;
-    }
-    MainScreen.open();
+    const { componentId } = this.props;
+    GamePlayScreen.open({ componentId });
+    // if (isGuest) {
+    //   SignInScreen.open();
+    //   return;
+    // }
+    // MainScreen.open();
   };
 }
 

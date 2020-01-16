@@ -11,7 +11,7 @@ import { AudioType } from "src/components/player/interface";
 interface IProps extends VideoProperties {
   style?: ViewProps["style"];
   size: number;
-  onToggle: (playType: AudioType) => void;
+  onToggle?: (playType: AudioType) => void;
 }
 
 const Container = styled.View<{ size: number }>`
@@ -39,7 +39,7 @@ function GameAudioPlayer(props: IProps) {
       return;
     }
     setPlayType(playType);
-    onToggle(playType);
+    onToggle?.(playType);
   };
 
   const onLoad = (data: { audio?: boolean }) => {
