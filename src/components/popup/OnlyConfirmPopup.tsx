@@ -14,16 +14,20 @@ interface IProps {
   onCancel: () => void;
 }
 
+const OutterContainer = styled.View`
+  width: 100%;
+  padding-horizontal: 50px;
+`;
+
 const Container = styled.View`
+  width: 100%;
   flex-direction: column;
-  height: 180px;
   border-radius: 6px;
   background-color: #eee;
   padding: 10px;
 `;
 
 const Content = styled.View`
-  flex: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -40,9 +44,9 @@ const Button = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   width: 100px;
-  height: 40px;
   background-color: ${colors.gray500};
-  margin-horizontal: 10px;
+  padding-vertical: 15px;
+  margin-bottom: 33px;
 `;
 
 const ButtonText = styled(Bold12)``;
@@ -51,28 +55,30 @@ const ConfirmButtonText = styled(ButtonText)``;
 
 const CloseButton = styled(XEIconButton)`
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top: 10px;
+  right: 10px;
 `;
 
 function OnlyConfirmPopup(props: IProps) {
   const { style, ContentComponent, confirmText, onConfirm, onCancel } = props;
 
   return (
-    <Container style={style}>
-      <Content>{ContentComponent}</Content>
-      <Bottom>
-        <Button onPress={onConfirm}>
-          <ConfirmButtonText>{confirmText}</ConfirmButtonText>
-        </Button>
-      </Bottom>
-      <CloseButton
-        iconName="close"
-        iconSize={24}
-        iconColor={colors.gray300}
-        onPress={onCancel}
-      />
-    </Container>
+    <OutterContainer>
+      <Container style={style}>
+        <Content>{ContentComponent}</Content>
+        <Bottom>
+          <Button onPress={onConfirm}>
+            <ConfirmButtonText>{confirmText}</ConfirmButtonText>
+          </Button>
+        </Bottom>
+        <CloseButton
+          iconName="close"
+          iconSize={24}
+          iconColor={colors.black}
+          onPress={onCancel}
+        />
+      </Container>
+    </OutterContainer>
   );
 }
 

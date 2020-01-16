@@ -48,7 +48,7 @@ class GamePlayTutorialOverlay extends Component<IProps> {
   private back = () => {
     const { componentId, onAfterClose } = this.props;
     dismissOverlay(componentId);
-    onAfterClose();
+    onAfterClose?.();
   };
 }
 

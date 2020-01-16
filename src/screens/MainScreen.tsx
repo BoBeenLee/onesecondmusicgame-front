@@ -6,7 +6,7 @@ import { InteractionManager, Clipboard } from "react-native";
 import styled from "styled-components/native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
-import { Bold12, Bold36 } from "src/components/text/Typographies";
+import { Bold12, Bold20, Bold36 } from "src/components/text/Typographies";
 import { IStore } from "src/stores/Store";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
@@ -78,9 +78,14 @@ const PopupContainer = styled.View`
   align-items: center;
 `;
 
-const PopupTitle = styled(Bold12)``;
+const PopupTitle = styled(Bold20)`
+  margin-top: 33px;
+  margin-bottom: 33px;
+`;
 
-const PopupDescription = styled(Bold12)``;
+const PopupDescription = styled(Bold12)`
+  margin-bottom: 47px;
+`;
 
 @inject(
   ({ store }: { store: IStore }): IInject => ({

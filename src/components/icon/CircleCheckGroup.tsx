@@ -22,7 +22,7 @@ const CircleCheckItem = styled(CircleCheckIcon)`
 `;
 
 function CircleCheckGroup(props: IProps) {
-  const { style, circles } = this.props;
+  const { style, circles } = props;
   return (
     <Container style={style}>
       {_.map(circles, (circleCheck, index) => {
