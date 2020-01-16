@@ -12,7 +12,6 @@ import { IAuthStore } from "src/stores/AuthStore";
 import { ICodePushStore } from "src/stores/CodePushStore";
 import MainScreen from "src/screens/MainScreen";
 import SignInScreen from "src/screens/SignInScreen";
-import GamePlayScreen from "./game/GamePlayScreen";
 import colors from "src/styles/colors";
 
 interface IInject {
@@ -76,13 +75,12 @@ class SplashScreen extends React.Component<IProps> {
   }
 
   private navigateTo = () => {
-    const { componentId } = this.props;
-    GamePlayScreen.open({ componentId });
-    // if (isGuest) {
-    //   SignInScreen.open();
-    //   return;
-    // }
-    // MainScreen.open();
+    const { isGuest } = this.props.authStore;
+    if (isGuest) {
+      SignInScreen.open();
+      return;
+    }
+    MainScreen.open();
   };
 }
 

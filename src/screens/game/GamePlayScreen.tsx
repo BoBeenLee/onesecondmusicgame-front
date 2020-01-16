@@ -40,6 +40,9 @@ interface IProps extends IInject, IPopupProps {
 
 interface IStates {
   currentStep: number;
+  currentStepStatus: "play" | "answer";
+  songAnswerInput: string;
+  songAnswers: string[];
 }
 
 interface ICarouselItem extends ICarousel {
@@ -54,7 +57,8 @@ const Container = styled(ContainerWithStatusBar)`
 const Header = styled.View`
   justify-content: center;
   align-items: center;
-  padding-top: 16px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   padding-horizontal: 16px;
 `;
 
@@ -62,21 +66,21 @@ const Lifes = styled(CircleCheckGroup)`
   margin-bottom: 21px;
 `;
 
-const Content = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
+const GamePlayers = styled(OSMGCarousel as any)<ICarouselItem>``;
 
-const GamePlayers = styled(OSMGCarousel as any)<ICarouselItem>`
-  padding-top: 40px;
-`;
-
-const SlideItemView = styled.View`
+const GamePlayerView = styled.View`
   width: 100%;
   justify-content: center;
   align-items: center;
   background-color: #eee;
+`;
+
+const Content = styled.View`
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 70px;
+  padding-horizontal: 70px;
 `;
 
 const SongInput = styled.View`
@@ -89,14 +93,18 @@ const SongInput = styled.View`
   border-bottom-color: ${"#000"};
 `;
 
-const SongTextInput = styled(OSMGTextInput)`
-  width: 300px;
+const SongTextInput = styled(OSMGTextInput)``;
+
+const AnswerView = styled.View`
+  flex: 1;
+  align-items: center;
+  padding-top: 60px;
 `;
 
 const GameItems = styled.View`
   position: absolute;
-  bottom: 0px;
-  right: 0px;
+  bottom: 30px;
+  right: 20px;
 `;
 
 const PopupContainer = styled.View`
@@ -170,39 +178,63 @@ class GamePlayScreen extends Component<IProps, IStates> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      currentStep: 0
+      currentStep: 0,
+      currentStepStatus: "play",
+      songAnswerInput: "",
+      songAnswers: []
     };
   }
 
   public render() {
+    const userItem = this.props.authStore.user?.userItemsByItemType(
+      Item.ItemTypeEnum.SKIP
+    );
     return (
       <Container>
         <Header>
           <Lifes circles={["active", "inactive", "check"]} />
           <LimitTimeProgress seconds={60} onTimeEnd={this.onLimitTimeEnd} />
         </Header>
+        <GamePlayers
+          data={MOCK_PLAYER_DATA}
+          itemWidth={240}
+          renderItem={this.renderItem}
+          onSnapToItem={this.onSnapToItem}
+        />
         <Content>
-          <GamePlayers
-            data={MOCK_PLAYER_DATA}
-            itemWidth={240}
-            renderItem={this.renderItem}
-            onSnapToItem={this.onSnapToItem}
-          />
           <SongInput>
-            <SongTextInput placeholder="노래 명" />
+            <SongTextInput
+              placeholder="노래 명"
+              onChangeText={this.onSongAnswerChangeText}
+            />
           </SongInput>
-          <MockButton name="확인" onPress={_.identity} />
+          {this.renderAnswer}
         </Content>
         <GameItems>
-          <MockButton name="스킵" onPress={this.onSkipItemPopup} />
+          <MockButton
+            name={`스킵(${userItem?.count ?? 0})`}
+            onPress={this.onSkipItemPopup}
+          />
         </GameItems>
       </Container>
     );
   }
 
+  private get renderAnswer() {
+    return (
+      <AnswerView>
+        <MockButton name="확인" onPress={this.submitAnswer} />
+      </AnswerView>
+    );
+  }
+
+  private onSongAnswerChangeText = (text: string) => {
+    this.setState({ songAnswerInput: text });
+  };
+
   private renderItem = ({ item }: { item: any; index: number }) => {
     return (
-      <SlideItemView>
+      <GamePlayerView>
         <GameAudioPlayer
           size={200}
           source={{
@@ -210,7 +242,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
               "https://api.soundcloud.com/tracks/736765723/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
           }}
         />
-      </SlideItemView>
+      </GamePlayerView>
     );
   };
 
@@ -219,7 +251,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private onLimitTimeEnd = () => {
-    // NOTHING
+    this.setState(prevState => {
+      return { currentStep: prevState.currentStep + 1 };
+    });
   };
 
   private onSkipItemPopup = () => {
@@ -263,6 +297,18 @@ class GamePlayScreen extends Component<IProps, IStates> {
         onCancel={closePopup}
       />
     );
+  };
+
+  private submitAnswer = () => {
+    this.setState({
+      currentStepStatus: "answer"
+    });
+    setTimeout(() => {
+      this.setState(prevState => ({
+        currentStep: prevState.currentStep,
+        currentStepStatus: "play"
+      }));
+    }, 2000);
   };
 
   private finish = () => {
