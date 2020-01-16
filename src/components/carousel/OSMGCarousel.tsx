@@ -15,6 +15,7 @@ export interface ICarousel {
 interface IProps<T> {
   style?: ViewProps["style"];
   data: Array<T & ICarousel>;
+  itemWidth: number;
   renderItem: (
     item: { item: T; index: number },
     parallaxProps?: AdditionalParallaxProps
@@ -43,7 +44,7 @@ class OSMGCarousel<T> extends Component<IProps<T & ICarousel>, IStates> {
   }
 
   public render() {
-    const { style, renderItem } = this.props;
+    const { style, renderItem, itemWidth } = this.props;
     return (
       <>
         <CarouselView style={style}>
@@ -52,7 +53,7 @@ class OSMGCarousel<T> extends Component<IProps<T & ICarousel>, IStates> {
             data={this.props.data}
             renderItem={renderItem}
             sliderWidth={windowWidth}
-            itemWidth={windowWidth}
+            itemWidth={itemWidth}
             slideInterpolatedStyle={this.animatedStyles}
             onSnapToItem={this.snapToItem}
           />

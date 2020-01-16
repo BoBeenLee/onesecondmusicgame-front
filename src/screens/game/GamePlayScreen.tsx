@@ -8,6 +8,8 @@ import { push, pop } from "src/utils/navigator";
 import CircleCheckGroup from "src/components/icon/CircleCheckGroup";
 import LimitTimeProgress from "src/components/progress/LimitTimeProgress";
 import colors from "src/styles/colors";
+import OSMGCarousel, { ICarousel } from "src/components/carousel/OSMGCarousel";
+import GameAudioPlayer from "src/components/player/GameAudioPlayer";
 
 interface IParams {
   componentId: string;
@@ -15,6 +17,14 @@ interface IParams {
 
 interface IProps {
   componentId: string;
+}
+
+interface IStates {
+  currentStep: number;
+}
+
+interface ICarouselItem extends ICarousel {
+  source: { uri: string };
 }
 
 const Container = styled(ContainerWithStatusBar)`
@@ -39,14 +49,53 @@ const Content = styled.View`
   align-items: center;
 `;
 
+const GamePlayers = styled(OSMGCarousel)`
+  padding-top: 40px;
+`;
+
+const SlideItemView = styled.View`
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: #eee;
+`;
+
 const Logo = styled(Bold14)``;
 
-class GamePlayScreen extends Component<IProps> {
+const MOCK_PLAYER_DATA: ICarouselItem[] = [
+  {
+    key: "1",
+    source: {
+      uri: "https://picsum.photos/200/300/?random"
+    }
+  },
+  {
+    key: "2",
+    source: {
+      uri: "https://picsum.photos/200/300/?random"
+    }
+  },
+  {
+    key: "3",
+    source: {
+      uri: "https://picsum.photos/200/300/?random"
+    }
+  }
+];
+
+class GamePlayScreen extends Component<IProps, IStates> {
   public static open(params: IParams) {
     return push({
       componentId: params.componentId,
       nextComponentId: SCREEN_IDS.GamePlayScreen
     });
+  }
+
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      currentStep: 0
+    };
   }
 
   public render() {
@@ -57,11 +106,35 @@ class GamePlayScreen extends Component<IProps> {
           <LimitTimeProgress seconds={60} onTimeEnd={this.onLimitTimeEnd} />
         </Header>
         <Content>
+          <GamePlayers
+            data={MOCK_PLAYER_DATA}
+            itemWidth={240}
+            renderItem={this.renderItem}
+            onSnapToItem={this.onSnapToItem}
+          />
           <Logo>GamePlay</Logo>
         </Content>
       </Container>
     );
   }
+
+  private renderItem = ({ item }: { item: any; index: number }) => {
+    return (
+      <SlideItemView>
+        <GameAudioPlayer
+          size={200}
+          source={{
+            uri:
+              "https://api.soundcloud.com/tracks/736765723/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
+          }}
+        />
+      </SlideItemView>
+    );
+  };
+
+  private onSnapToItem = (index: number) => {
+    this.setState({ snapToItem: index });
+  };
 
   private onLimitTimeEnd = () => {
     // NOTHING
