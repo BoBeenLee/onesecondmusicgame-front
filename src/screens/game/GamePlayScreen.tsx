@@ -1,8 +1,11 @@
+import { Item } from "__generate__/api";
+import _ from "lodash";
 import React, { Component } from "react";
+import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
-import { Bold12, Bold14 } from "src/components/text/Typographies";
+import { Bold12, Bold20 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
 import CircleCheckGroup from "src/components/icon/CircleCheckGroup";
@@ -10,12 +13,25 @@ import LimitTimeProgress from "src/components/progress/LimitTimeProgress";
 import colors from "src/styles/colors";
 import OSMGCarousel, { ICarousel } from "src/components/carousel/OSMGCarousel";
 import GameAudioPlayer from "src/components/player/GameAudioPlayer";
+import OSMGTextInput from "src/components/input/OSMGTextInput";
+import MockButton from "src/components/button/MockButton";
+import { IPopupProps } from "src/hocs/withPopup";
+import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
+import { IAuthStore } from "src/stores/AuthStore";
+import { IToastStore } from "src/stores/ToastStore";
+import { IStore } from "src/stores/Store";
+import GameResultScreen from "src/screens/game/GameResultScreen";
+
+interface IInject {
+  authStore: IAuthStore;
+  toastStore: IToastStore;
+}
 
 interface IParams {
   componentId: string;
 }
 
-interface IProps {
+interface IProps extends IInject, IPopupProps {
   componentId: string;
 }
 
@@ -49,7 +65,7 @@ const Content = styled.View`
   align-items: center;
 `;
 
-const GamePlayers = styled(OSMGCarousel)`
+const GamePlayers = styled(OSMGCarousel)<ICarouselItem>`
   padding-top: 40px;
 `;
 
@@ -60,7 +76,39 @@ const SlideItemView = styled.View`
   background-color: #eee;
 `;
 
-const Logo = styled(Bold14)``;
+const SongInput = styled.View`
+  width: 100%;
+  height: 40px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-bottom-width: 1px;
+  border-bottom-color: ${"#000"};
+`;
+
+const SongTextInput = styled(OSMGTextInput)`
+  width: 300px;
+`;
+
+const GameItems = styled.View`
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+`;
+
+const PopupContainer = styled.View`
+  justify-content: center;
+  align-items: center;
+`;
+
+const PopupTitle = styled(Bold20)`
+  margin-top: 33px;
+  margin-bottom: 33px;
+`;
+
+const PopupDescription = styled(Bold12)`
+  margin-bottom: 47px;
+`;
 
 const MOCK_PLAYER_DATA: ICarouselItem[] = [
   {
@@ -83,6 +131,13 @@ const MOCK_PLAYER_DATA: ICarouselItem[] = [
   }
 ];
 
+@inject(
+  ({ store }: { store: IStore }): IInject => ({
+    authStore: store.authStore,
+    toastStore: store.toastStore
+  })
+)
+@observer
 class GamePlayScreen extends Component<IProps, IStates> {
   public static open(params: IParams) {
     return push({
@@ -112,8 +167,14 @@ class GamePlayScreen extends Component<IProps, IStates> {
             renderItem={this.renderItem}
             onSnapToItem={this.onSnapToItem}
           />
-          <Logo>GamePlay</Logo>
+          <SongInput>
+            <SongTextInput placeholder="노래 명" />
+          </SongInput>
+          <MockButton name="확인" onPress={_.identity} />
         </Content>
+        <GameItems>
+          <MockButton name="스킵" onPress={this.onSkipItemPopup} />
+        </GameItems>
       </Container>
     );
   }
@@ -133,16 +194,59 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private onSnapToItem = (index: number) => {
-    this.setState({ snapToItem: index });
+    this.setState({ currentStep: index });
   };
 
   private onLimitTimeEnd = () => {
     // NOTHING
   };
 
-  private back = () => {
+  private onSkipItemPopup = () => {
+    const { showPopup, closePopup } = this.props.popupProps;
+    showPopup(
+      <OnlyConfirmPopup
+        ContentComponent={
+          <PopupContainer>
+            <PopupTitle>스킵 아이템</PopupTitle>
+            <PopupDescription>{`게임 중 모르는 노래를 skip하고
+정답 처리받을 수 있어요!`}</PopupDescription>
+          </PopupContainer>
+        }
+        confirmText={"친구초대하고 아이템받기 >"}
+        onConfirm={this.useSkipItem}
+        onCancel={closePopup}
+      />
+    );
+  };
+
+  private useSkipItem = () => {
+    const userItem = this.props.authStore.user?.userItemsByItemType(
+      Item.ItemTypeEnum.SKIP
+    );
+    userItem?.useItemType?.();
+  };
+
+  private onFinishPopup = () => {
+    const { showPopup, closePopup } = this.props.popupProps;
+    showPopup(
+      <OnlyConfirmPopup
+        ContentComponent={
+          <PopupContainer>
+            <PopupDescription>{`하트를 모두 사용했네요!
+광고를 보고
+하트 Full 충전 받으시겠어요?`}</PopupDescription>
+          </PopupContainer>
+        }
+        confirmText={"광고보기"}
+        onConfirm={this.finish}
+        onCancel={closePopup}
+      />
+    );
+  };
+
+  private finish = () => {
     const { componentId } = this.props;
-    pop(componentId);
+    GameResultScreen.open({ componentId });
   };
 }
 

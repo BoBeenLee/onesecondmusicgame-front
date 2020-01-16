@@ -15,6 +15,7 @@ export interface ICarousel {
 interface IProps<T> {
   style?: ViewProps["style"];
   data: Array<T & ICarousel>;
+  currentIndex?: number;
   itemWidth: number;
   renderItem: (
     item: { item: T; index: number },
@@ -34,6 +35,12 @@ const CarouselView = styled.View``;
 const CarouselBox = styled(Carousel)``;
 
 class OSMGCarousel<T> extends Component<IProps<T & ICarousel>, IStates> {
+  public static getDerivedStateFromProps<T>(props: IProps<T & ICarousel>) {
+    return {
+      currentIndex: props.currentIndex
+    };
+  }
+
   public carousel: any = null;
 
   constructor(props: IProps<T & ICarousel>) {
