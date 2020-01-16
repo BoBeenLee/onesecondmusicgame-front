@@ -16,13 +16,32 @@ interface IProps {
 const Container = styled.View`
   flex-direction: row;
   align-items: center;
+  background-color: #eaeaea;
+  padding: 18px;
 `;
 
-const Rank = styled(Bold24)``;
+const Content = styled.View`
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+`;
 
-const Profile = styled(ProfileImage)``;
+const Rank = styled(Bold24)`
+  margin-right: 18px;
+`;
 
-const Name = styled(Bold12)``;
+const Profile = styled(ProfileImage)`
+  margin-right: 15px;
+`;
+
+const RightSide = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+const Name = styled(Bold12)`
+  margin-right: 4px;
+`;
 
 const Score = styled(Bold12)``;
 
@@ -30,10 +49,14 @@ function GameRankCard(props: IProps) {
   const { style, rank, profileImage, name, score } = props;
   return (
     <Container style={style}>
-      <Rank>{rank}</Rank>
-      <Profile size={24} source={{ uri: profileImage }} />
-      <Name>{name}</Name>
-      <Score>{score}점</Score>
+      <Content>
+        <Rank>{rank}</Rank>
+        <Profile size={24} source={{ uri: profileImage }} />
+      </Content>
+      <RightSide>
+        <Name>{name}</Name>
+        <Score>{score}점</Score>
+      </RightSide>
     </Container>
   );
 }

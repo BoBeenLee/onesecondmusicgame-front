@@ -7,7 +7,6 @@ import ProfileImage from "src/components/image/ProfileImage";
 
 interface IProps {
   style?: ViewProps["style"];
-
   rank: string;
   name: string;
   profileImage: string;
@@ -16,12 +15,16 @@ interface IProps {
 
 const Container = styled.View`
   flex-direction: column;
+  align-items: center;
 `;
 
 const Rank = styled(Bold24)``;
 
 const Content = styled.View`
   flex-direction: column;
+  align-items: center;
+  background-color: #d8d8d8;
+  padding: 16px;
 `;
 
 const Profile = styled(ProfileImage)``;
