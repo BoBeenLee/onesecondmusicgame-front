@@ -10,7 +10,10 @@ interface IProps {
   onPress: () => void;
 }
 
-const Container = styled.TouchableOpacity``;
+const Container = styled.TouchableOpacity`
+  padding: 10px;
+  background-color: #999999;
+`;
 
 const Text = styled(Bold12)``;
 

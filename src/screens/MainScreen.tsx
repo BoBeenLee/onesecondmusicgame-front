@@ -20,6 +20,8 @@ import HeartGroup from "src/components/icon/HeartGroup";
 import TimerText from "src/components/text/TimerText";
 import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
 import { makeAppShareLink } from "src/utils/dynamicLink";
+import RegisterSongScreen from "src/screens/RegisterSongScreen";
+import GameRankingScreen from "src/screens/game/GameRankingScreen";
 
 interface IInject {
   authStore: IAuthStore;
@@ -120,32 +122,53 @@ class MainScreen extends Component<IProps> {
   };
 
   public render() {
+    const userItemViews = this.props.authStore.user?.userItemViews;
+    const heart = this.props.authStore.user?.heart;
     return (
       <Container>
         <Content>
           <Logo>알쏭달쏭</Logo>
           <MockButton name="가수선택" onPress={_.identity} />
           <HeartStatus>
-            <HeartGroup hearts={["active", "inactive"]} />
+            <HeartGroup
+              hearts={_.times(5, index =>
+                index <= (heart?.heartCount ?? 0) ? "active" : "inactive"
+              )}
+            />
             <HeartRemain>
               <HeartRemainText>충전까지 남은 시간</HeartRemainText>
-              <HeartRemainTime seconds={60} onTimeEnd={_.identity} />
+              <HeartRemainTime
+                seconds={heart?.leftTime ?? 0}
+                onTimeEnd={this.chargeTime}
+              />
             </HeartRemain>
           </HeartStatus>
           <GameItems>
             <MockButton name="아이템" onPress={_.identity} />
-            <MockButton name="하트 풀 충전" onPress={_.identity} />
-            <MockButton name="스킵" onPress={_.identity} />
+            {_.map(userItemViews, item => (
+              <MockButton
+                key={item.name}
+                name={`${item.name}(${item.count})`}
+                onPress={_.identity}
+              />
+            ))}
           </GameItems>
         </Content>
         <Footer>
           <MockButton name="친구초대" onPress={this.onInvitePopup} />
-          <MockButton name="음악 등록" onPress={_.identity} />
-          <MockButton name="개인 랭킹" onPress={_.identity} />
+          <MockButton name="음악 등록" onPress={this.navigateToRegisterSong} />
+          <MockButton name="개인 랭킹" onPress={this.navigateToRanking} />
         </Footer>
       </Container>
     );
   }
+
+  private chargeTime = () => {
+    const heart = this.props.authStore.user?.heart;
+    if (_.isEmpty(heart?.leftTime)) {
+      heart?.fetchHeart?.();
+    }
+  };
 
   private onInvitePopup = () => {
     const { showPopup, closePopup } = this.props.popupProps;
@@ -171,6 +194,18 @@ class MainScreen extends Component<IProps> {
     const shortLink = await makeAppShareLink(accessId);
     Clipboard.setString(shortLink);
     showToast("공유 링크 복사 완료");
+  };
+
+  private navigateToRegisterSong = () => {
+    const { componentId } = this.props;
+    RegisterSongScreen.open({
+      componentId
+    });
+  };
+
+  private navigateToRanking = () => {
+    const { componentId } = this.props;
+    GameRankingScreen.open({ componentId });
   };
 }
 

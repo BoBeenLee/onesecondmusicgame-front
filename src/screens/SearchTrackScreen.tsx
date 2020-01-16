@@ -20,9 +20,7 @@ interface IParams {
   onResult: (selectedTrackItem: ITrackItem) => void;
 }
 
-interface IProps extends IParams {
-  componentId: string;
-}
+type IProps = IParams;
 
 interface IStates {
   searchText: string;

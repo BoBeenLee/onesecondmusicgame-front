@@ -10,6 +10,8 @@ interface IToastData {
   type: ToastType;
 }
 
+const DEFAULT_DELAY_SECONDS = 1500;
+
 const ToastStore = types
   .model("ToastStore", {
     toastMap: types.optional(types.map(types.frozen<IToastData>()), {})
@@ -30,7 +32,7 @@ const ToastStore = types
     ) => {
       const id = _.uniqueId();
       self.toastMap.set(id, {
-        delay: delaySeconds || 2000,
+        delay: delaySeconds || DEFAULT_DELAY_SECONDS,
         id,
         message,
         type
@@ -38,7 +40,7 @@ const ToastStore = types
     };
 
     const showToast = (message: string, type: ToastType = "INFO") => {
-      showToastWithDelay(message, 2000, type);
+      showToastWithDelay(message, DEFAULT_DELAY_SECONDS, type);
     };
 
     const dismissToast = (id: string) => {
@@ -54,7 +56,4 @@ const ToastStore = types
 
 export type IToastStore = typeof ToastStore.Type;
 
-const getToastStore = (stores: any): IToastStore => stores.store.toastStore;
-
 export default ToastStore;
-export { getToastStore };

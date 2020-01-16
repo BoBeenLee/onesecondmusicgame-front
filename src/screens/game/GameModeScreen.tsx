@@ -104,13 +104,18 @@ class GameModeScreen extends Component<IProps> {
           </GameModeSection>
         </Content>
         <Footer>
-          <RegisterSongButton onPress={RegisterSongScreen.open}>
+          <RegisterSongButton onPress={this.navigateToRegisterSong}>
             <RegisterSongButtonText>음원 등록하기</RegisterSongButtonText>
           </RegisterSongButton>
         </Footer>
       </Container>
     );
   }
+
+  private navigateToRegisterSong = () => {
+    const { componentId } = this.props;
+    RegisterSongScreen.open({ componentId });
+  };
 
   private back = () => {
     const { componentId } = this.props;

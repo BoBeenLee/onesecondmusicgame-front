@@ -27,7 +27,6 @@ interface IParams {
 }
 
 interface IProps extends IInject, IParams {
-  componentId: string;
   selectedTrackItem?: ITrackItem;
 }
 
@@ -174,7 +173,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
       url,
       highlightSeconds: [0]
     });
-    showToast("등록 완료!");
+    showToast("노래가 등록 완료되었습니다!");
   };
 
   private back = () => {

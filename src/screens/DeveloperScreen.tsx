@@ -117,15 +117,19 @@ class DeveloperScreen extends Component<IProps> {
             </ButtonText>
           </ADButton>
           <ADButton
-            onPress={() => SearchTrackScreen.open({ onResult: _.identity })}
+            onPress={() =>
+              SearchTrackScreen.open({ componentId, onResult: _.identity })
+            }
           >
             <ButtonText>트랙 검색</ButtonText>
           </ADButton>
-          <ADButton onPress={RegisterSongScreen.open}>
+          <ADButton
+            onPress={_.partial(RegisterSongScreen.open, { componentId })}
+          >
             <ButtonText>노래 등록</ButtonText>
           </ADButton>
           {this.renderItemAll}
-          <ADButton onPress={RegisterSongScreen.open}>
+          <ADButton onPress={_.identity}>
             <ButtonText>하트 체크: {user?.heart.heartCount}</ButtonText>
           </ADButton>
           <ADButton onPress={user?.heart.useHeart}>
