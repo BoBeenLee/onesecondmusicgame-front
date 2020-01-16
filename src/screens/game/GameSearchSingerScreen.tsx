@@ -16,10 +16,13 @@ import SearchSingerCard from "src/components/card/SearchSingerCard";
 
 interface IParams {
   componentId: string;
+  onResult: (selectedSingers: ISinger[]) => void;
 }
 
-interface IProps {
-  componentId: string;
+type IProps = IParams;
+
+interface IStates {
+  selectedSingers: { [key in string]: ISinger | null };
 }
 
 const Container = styled(ContainerWithStatusBar)`
@@ -75,18 +78,28 @@ const ResultEmpty = styled.View`
 const ResultEmptyText = styled(Bold12)``;
 
 @observer
-class GameSearchSongScreen extends Component<IProps> {
+class GameSearchSingerScreen extends Component<IProps, IStates> {
   public static open(params: IParams) {
     return push({
       componentId: params.componentId,
-      nextComponentId: SCREEN_IDS.GameSearchSongScreen
+      nextComponentId: SCREEN_IDS.GameSearchSingerScreen,
+      params: {
+        onResult: params.onResult
+      }
     });
   }
 
-  public singers: ISingers = Singers.create();
+  public singers: ISingers;
+
+  constructor(props: IProps) {
+    super(props);
+    this.singers = Singers.create();
+
+    this.state = { selectedSingers: {} };
+  }
 
   public async componentDidMount() {
-    await this.singers.initialize();
+    await this.singers.initialize({ q: "" });
   }
 
   public render() {
@@ -106,7 +119,7 @@ class GameSearchSongScreen extends Component<IProps> {
           />
         </SearchView>
         <Content>
-          <ResultText>전체 1000</ResultText>
+          <ResultText>전체 {singerViews.length}</ResultText>
           <Result
             data={singerViews}
             numColumns={4}
@@ -135,13 +148,26 @@ class GameSearchSongScreen extends Component<IProps> {
       <SearchSingerCardView
         image={"https://via.placeholder.com/150"}
         name={name}
-        onPress={_.identity}
+        onPress={_.partial(this.onSelectedItem, item)}
       />
     );
   };
 
   private search = (text: string) => {
-    // SEARCH
+    this.singers.search({ q: text });
+  };
+
+  private onSelectedItem = (item: ISinger) => {
+    this.setState(prevState => {
+      return {
+        selectedSingers: {
+          ...prevState.selectedSingers,
+          [item.name]: !Boolean(prevState.selectedSingers[item.name])
+            ? item
+            : null
+        }
+      };
+    });
   };
 
   private back = () => {
@@ -150,4 +176,4 @@ class GameSearchSongScreen extends Component<IProps> {
   };
 }
 
-export default GameSearchSongScreen;
+export default GameSearchSingerScreen;

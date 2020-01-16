@@ -9,6 +9,7 @@ import { TOP_BAR_HEIGHT } from "src/components/topbar/OSMGTopBar";
 import colors from "src/styles/colors";
 import RegisterSongScreen from "src/screens/RegisterSongScreen";
 import LevelBadge from "src/components/badge/LevelBadge";
+import GamePlayScreen from "src/screens/game/GamePlayScreen";
 
 interface IParams {
   componentId: string;
@@ -89,14 +90,14 @@ class GameModeScreen extends Component<IProps> {
           <Title>난이도 선택</Title>
         </Header>
         <Content>
-          <GameModeSection>
+          <GameModeSection onPress={this.navigateToGamePlay}>
             <GameModeTitle>랜덤으로 시작하기</GameModeTitle>
             <GameModeDescription>
               무작위로 문제가 출제됩니다.
             </GameModeDescription>
             <LevelBadgeView level="hard" />
           </GameModeSection>
-          <GameModeSection>
+          <GameModeSection onPress={this.navigateToSelectedSingersGamePlay}>
             <GameModeTitle>자신있는 가수 선택하기</GameModeTitle>
             <GameModeDescription>
               선택한 가수의 곡이 출제됩니다.
@@ -115,6 +116,16 @@ class GameModeScreen extends Component<IProps> {
   private navigateToRegisterSong = () => {
     const { componentId } = this.props;
     RegisterSongScreen.open({ componentId });
+  };
+
+  private navigateToGamePlay = () => {
+    const { componentId } = this.props;
+    GamePlayScreen.open({ componentId });
+  };
+
+  private navigateToSelectedSingersGamePlay = () => {
+    const { componentId } = this.props;
+    GamePlayScreen.openSelectedSingers({ componentId });
   };
 
   private back = () => {

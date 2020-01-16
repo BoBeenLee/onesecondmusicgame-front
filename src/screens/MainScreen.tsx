@@ -22,6 +22,7 @@ import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
 import { makeAppShareLink } from "src/utils/dynamicLink";
 import RegisterSongScreen from "src/screens/RegisterSongScreen";
 import GameRankingScreen from "src/screens/game/GameRankingScreen";
+import GameModeScreen from "src/screens/game/GameModeScreen";
 
 interface IInject {
   authStore: IAuthStore;
@@ -40,13 +41,14 @@ const Container = styled(ContainerWithStatusBar)`
 
 const HeartStatus = styled.View`
   position: absolute;
-  top: 0px;
+  top: 20px;
   left: 21px;
 `;
 
 const HeartRemain = styled.View`
   flex-direction: row;
   align-items: center;
+  margin-left: 5px;
 `;
 
 const HeartRemainText = styled(Bold12)``;
@@ -55,7 +57,7 @@ const HeartRemainTime = styled(TimerText)``;
 
 const GameItems = styled.View`
   position: absolute;
-  top: 0px;
+  top: 20px;
   right: 31px;
   flex-direction: column;
 `;
@@ -66,7 +68,9 @@ const Content = styled.View`
   align-items: center;
 `;
 
-const Logo = styled(Bold36)``;
+const Logo = styled(Bold36)`
+  margin-bottom: 20px;
+`;
 
 const Footer = styled.View`
   height: 100px;
@@ -127,8 +131,6 @@ class MainScreen extends Component<IProps> {
     return (
       <Container>
         <Content>
-          <Logo>알쏭달쏭</Logo>
-          <MockButton name="가수선택" onPress={_.identity} />
           <HeartStatus>
             <HeartGroup
               hearts={_.times(5, index =>
@@ -136,7 +138,7 @@ class MainScreen extends Component<IProps> {
               )}
             />
             <HeartRemain>
-              <HeartRemainText>충전까지 남은 시간</HeartRemainText>
+              <HeartRemainText>충전까지 남은 시간 : </HeartRemainText>
               <HeartRemainTime
                 seconds={heart?.leftTime ?? 0}
                 onTimeEnd={this.chargeTime}
@@ -153,6 +155,8 @@ class MainScreen extends Component<IProps> {
               />
             ))}
           </GameItems>
+          <Logo>알쏭달쏭</Logo>
+          <MockButton name="가수선택" onPress={this.navigateToGameMode} />
         </Content>
         <Footer>
           <MockButton name="친구초대" onPress={this.onInvitePopup} />
@@ -189,11 +193,13 @@ class MainScreen extends Component<IProps> {
   };
 
   private invite = async () => {
+    const { closePopup } = this.props.popupProps;
     const { showToast } = this.props.toastStore;
     const { accessId } = this.props.authStore;
     const shortLink = await makeAppShareLink(accessId);
     Clipboard.setString(shortLink);
     showToast("공유 링크 복사 완료");
+    closePopup();
   };
 
   private navigateToRegisterSong = () => {
@@ -206,6 +212,11 @@ class MainScreen extends Component<IProps> {
   private navigateToRanking = () => {
     const { componentId } = this.props;
     GameRankingScreen.open({ componentId });
+  };
+
+  private navigateToGameMode = () => {
+    const { componentId } = this.props;
+    GameModeScreen.open({ componentId });
   };
 }
 

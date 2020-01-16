@@ -21,6 +21,8 @@ import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
 import GameResultScreen from "src/screens/game/GameResultScreen";
+import GameSearchSingerScreen from "src/screens/game/GameSearchSingerScreen";
+import { ISinger } from "src/apis/singer";
 
 interface IInject {
   authStore: IAuthStore;
@@ -33,6 +35,7 @@ interface IParams {
 
 interface IProps extends IInject, IPopupProps {
   componentId: string;
+  selectedSingers: ISinger[];
 }
 
 interface IStates {
@@ -142,7 +145,25 @@ class GamePlayScreen extends Component<IProps, IStates> {
   public static open(params: IParams) {
     return push({
       componentId: params.componentId,
-      nextComponentId: SCREEN_IDS.GamePlayScreen
+      nextComponentId: SCREEN_IDS.GamePlayScreen,
+      params: {
+        selectedSingers: []
+      }
+    });
+  }
+
+  public static openSelectedSingers(params: IParams) {
+    GameSearchSingerScreen.open({
+      componentId: params.componentId,
+      onResult: (selectedSingers: ISinger[]) => {
+        push({
+          componentId: params.componentId,
+          nextComponentId: SCREEN_IDS.GamePlayScreen,
+          params: {
+            selectedSingers
+          }
+        });
+      }
     });
   }
 
