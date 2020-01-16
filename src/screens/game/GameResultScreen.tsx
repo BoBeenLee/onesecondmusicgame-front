@@ -1,13 +1,16 @@
+import _ from "lodash";
 import React, { Component } from "react";
-import styled from "styled-components/native";
+import styled, { css } from "styled-components/native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
-import { Bold12, Bold14 } from "src/components/text/Typographies";
+import { Bold12, Bold36 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
 import { TOP_BAR_HEIGHT } from "src/components/topbar/OSMGTopBar";
 import colors from "src/styles/colors";
-import RegisterSongScreen from "src/screens/RegisterSongScreen";
+import MockButton from "src/components/button/MockButton";
+import HeartGroup from "src/components/icon/HeartGroup";
+import MainScreen from "../MainScreen";
 
 interface IParams {
   componentId: string;
@@ -23,36 +26,74 @@ const Container = styled(ContainerWithStatusBar)`
 `;
 
 const Header = styled.View`
-  height: ${TOP_BAR_HEIGHT}px;
   justify-content: center;
   align-items: center;
 `;
 
-const Title = styled(Bold12)``;
+const Title = styled(Bold36)``;
 
 const Content = styled.View`
-  flex: 1;
+  align-items: center;
+  padding-top: 26px;
+`;
+
+const ScoreView = styled.View`
+  width: 100%;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
 `;
 
-const GameModeSection = styled.View`
-  flex: 1;
+const GainScoreView = styled.View<{ size: number }>`
+  flex-direction: row;
   justify-content: center;
   align-items: center;
+  ${({ size }) => css`
+    width: ${size}px;
+    height: ${size}px;
+    border-radius: ${_.round(size / 2)}px;
+  `}
+  background-color: #d8d8d8;
 `;
 
-const GameModeTitle = styled(Bold12)``;
+const GainScore = styled(Bold36)``;
+
+const GainScoreText = styled(Bold12)``;
+
+const TotalScore = styled(Bold12)`
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+`;
+
+const ScoreDescription = styled(Bold12)`
+  padding-top: 26px;
+  text-align: center;
+`;
 
 const Footer = styled.View`
-  height: 100px;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  padding-top: 100px;
+  padding-horizontal: 16px;
 `;
 
-const RegisterSongButton = styled.TouchableOpacity``;
+const FooterRow1 = styled.View`
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  margin-vertical: 10px;
+`;
 
-const RegisterSongButtonText = styled(Bold12)``;
+const AgainPlayButton = styled.TouchableOpacity`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  padding-vertical: 16px;
+  background-color: #b3b3b3;
+`;
+
+const AgainPlayButtonText = styled(Bold12)``;
 
 class GameResultScreen extends Component<IProps> {
   public static open(params: IParams) {
@@ -66,28 +107,39 @@ class GameResultScreen extends Component<IProps> {
     return (
       <Container>
         <Header>
-          <Title>게임 모드 선택</Title>
+          <Title>Game over</Title>
         </Header>
         <Content>
-          <GameModeSection>
-            <GameModeTitle>가수별</GameModeTitle>
-          </GameModeSection>
-          <GameModeSection>
-            <GameModeTitle>시대별</GameModeTitle>
-          </GameModeSection>
+          <ScoreView>
+            <GainScoreView size={200}>
+              <GainScore>20</GainScore>
+              <GainScoreText>점</GainScoreText>
+            </GainScoreView>
+            <TotalScore>380점</TotalScore>
+          </ScoreView>
+          <ScoreDescription>{`놀랍네요!
+혹시 당신 트둥이 아닌가요?`}</ScoreDescription>
         </Content>
         <Footer>
-          <RegisterSongButton onPress={RegisterSongScreen.open}>
-            <RegisterSongButtonText>음원 등록하기</RegisterSongButtonText>
-          </RegisterSongButton>
+          <HeartGroup hearts={["active", "inactive"]} />
+          <FooterRow1>
+            <MockButton name="하트 풀 충전(ad)" onPress={_.identity} />
+            <MockButton name="친구 초대" onPress={_.identity} />
+            <MockButton name="개인 랭킹" onPress={_.identity} />
+          </FooterRow1>
+          <FooterRow1>
+            <MockButton name="홈" onPress={this.home} />
+            <AgainPlayButton>
+              <AgainPlayButtonText>다시 게임하기</AgainPlayButtonText>
+            </AgainPlayButton>
+          </FooterRow1>
         </Footer>
       </Container>
     );
   }
 
-  private back = () => {
-    const { componentId } = this.props;
-    pop(componentId);
+  private home = () => {
+    MainScreen.open();
   };
 }
 

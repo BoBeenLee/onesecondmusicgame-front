@@ -65,7 +65,7 @@ const Content = styled.View`
   align-items: center;
 `;
 
-const GamePlayers = styled(OSMGCarousel)<ICarouselItem>`
+const GamePlayers = styled(OSMGCarousel as any)<ICarouselItem>`
   padding-top: 40px;
 `;
 

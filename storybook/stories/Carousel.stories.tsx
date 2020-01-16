@@ -55,6 +55,7 @@ storiesOf("Carousel", module)
           }
         }
       ]}
+      itemWidth={300}
       renderItem={renderItem}
       onSnapToItem={action("onSnapToItem")}
     />
