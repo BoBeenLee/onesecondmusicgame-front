@@ -7,8 +7,8 @@ import styled from "styled-components/native";
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import { Bold12, Bold14 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
-import { dismissModal, showModal, push } from "src/utils/navigator";
-import ModalTopBar from "src/components/topbar/ModalTopBar";
+import { dismissModal, showModal, push, pop } from "src/utils/navigator";
+import BackTopBar from "src/components/topbar/BackTopBar";
 import colors from "src/styles/colors";
 import OSMGTextInput from "src/components/input/OSMGTextInput";
 import { ITrackItem } from "src/apis/soundcloud/interface";
@@ -45,6 +45,7 @@ const SearchInput = styled(OSMGTextInput)`
 const Result = styled<ComponentClass<FlatListProps<ITrackItem>>>(FlatList)`
   flex: 1;
   width: 100%;
+  padding-top: 20px;
 `;
 
 const ItemSeperator = styled.View`
@@ -57,7 +58,10 @@ class SearchTrackScreen extends Component<IProps, IStates> {
   public static open(params: IParams) {
     return push({
       componentId: params.componentId,
-      nextComponentId: SCREEN_IDS.GameSearchSongScreen
+      nextComponentId: SCREEN_IDS.SearchTrackScreen,
+      params: {
+        onResult: params.onResult
+      }
     });
   }
 
@@ -77,7 +81,7 @@ class SearchTrackScreen extends Component<IProps, IStates> {
 
     return (
       <Container>
-        <ModalTopBar title="검색" onBackPress={this.back} />
+        <BackTopBar title="검색" onBackPress={this.back} />
         <Content>
           <SearchInput
             autoFocus={true}
@@ -127,12 +131,11 @@ class SearchTrackScreen extends Component<IProps, IStates> {
   private selected = (item: ITrackItem) => {
     const { onResult } = this.props;
     onResult(item);
-    this.back();
   };
 
   private back = () => {
     const { componentId } = this.props;
-    dismissModal(componentId);
+    pop(componentId);
   };
 }
 

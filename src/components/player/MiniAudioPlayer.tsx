@@ -28,7 +28,7 @@ const AudioView = styled(PlayButton)``;
 function MiniAudioPlayer(props: IProps) {
   const { style, size, onToggle, ...rest } = props;
   const [playType, setPlayType] = useState<Extract<XEIconType, AudioType>>(
-    "play"
+    "stop"
   );
   const [loading, setLoading] = useState<{ audio: boolean }>({
     audio: true

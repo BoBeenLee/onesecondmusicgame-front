@@ -5,15 +5,18 @@ import styled from "styled-components/native";
 
 import { IStore } from "src/stores/Store";
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
-import { Bold12, Bold14 } from "src/components/text/Typographies";
+import { Bold12, Bold18 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
-import { showStackModal, dismissAllModals, push } from "src/utils/navigator";
-import ModalTopBar from "src/components/topbar/ModalTopBar";
+import { push, pop } from "src/utils/navigator";
+import BackTopBar from "src/components/topbar/BackTopBar";
 import colors from "src/styles/colors";
 import { ITrackItem } from "src/apis/soundcloud/interface";
 import SearchTrackScreen from "src/screens/SearchTrackScreen";
 import { IToastStore } from "src/stores/ToastStore";
 import { addNewSongUsingPOST } from "src/apis/song";
+import GameAudioPlayer from "src/components/player/GameAudioPlayer";
+import { makePlayStreamUri } from "src/configs/soundCloudAPI";
+import { OnLoadData } from "react-native-video";
 
 interface IInject {
   toastStore: IToastStore;
@@ -30,6 +33,7 @@ interface IProps extends IInject, IParams {
 
 interface IStates {
   selectedTrackItem: ITrackItem | null;
+  duration: number;
 }
 
 const Container = styled(ContainerWithStatusBar)`
@@ -39,7 +43,19 @@ const Container = styled(ContainerWithStatusBar)`
 
 const Content = styled.View`
   flex: 1;
+  flex-direction: column;
   align-items: center;
+`;
+
+const SongTitle = styled(Bold18)``;
+
+const GameSongPlayer = styled(GameAudioPlayer)`
+  margin-top: 24px;
+  margin-bottom: 20px;
+`;
+
+const RegisterSongDescription = styled(Bold12)`
+  text-align: center;
 `;
 
 const Thumnail = styled.Image`
@@ -47,9 +63,22 @@ const Thumnail = styled.Image`
   height: 50px;
 `;
 
-const ADButton = styled.TouchableOpacity``;
+const Footer = styled.View`
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+`;
 
-const ButtonText = styled(Bold12)``;
+const RegisterSongButton = styled.TouchableOpacity`
+  width: 375px;
+  justify-content: center;
+  align-items: center;
+  padding-vertical: 16px;
+  background-color: #b3b3b3;
+`;
+
+const RegisterSongButtonText = styled(Bold12)``;
 
 @inject(
   ({ store }: { store: IStore }): IInject => ({
@@ -64,7 +93,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
       onResult: (selectedTrackItem: ITrackItem) => {
         push({
           componentId: params.componentId,
-          nextComponentId: SCREEN_IDS.GameSearchSongScreen,
+          nextComponentId: SCREEN_IDS.RegisterSongScreen,
           params: {
             selectedTrackItem
           }
@@ -77,16 +106,29 @@ class RegisterSongScreen extends Component<IProps, IStates> {
     super(props);
 
     this.state = {
-      selectedTrackItem: props?.selectedTrackItem ?? null
+      selectedTrackItem: props?.selectedTrackItem ?? null,
+      duration: 0
     };
   }
 
   public render() {
-    const { selectedTrackItem } = this.state;
+    const { selectedTrackItem, duration } = this.state;
     return (
       <Container>
-        <ModalTopBar title="노래 등록" onBackPress={this.back} />
+        <BackTopBar title="노래 등록" onBackPress={this.back} />
         <Content>
+          <SongTitle>{selectedTrackItem?.title}</SongTitle>
+          <GameSongPlayer
+            size={200}
+            source={{
+              uri: makePlayStreamUri(selectedTrackItem?.stream_url ?? "")
+            }}
+            onLoad={this.onSongLoad}
+          />
+          <RegisterSongDescription>
+            {`원하는 노래 구간을 지정해주세요!
+미 지정 시, 랜덤으로 구간 지정됩니다.`}
+          </RegisterSongDescription>
           <Thumnail
             source={{
               uri:
@@ -94,22 +136,25 @@ class RegisterSongScreen extends Component<IProps, IStates> {
                 "https://via.placeholder.com/150"
             }}
           />
-          <ButtonText>title: {selectedTrackItem?.title}</ButtonText>
-          <ButtonText>
+          <RegisterSongButtonText>
             singerName: {selectedTrackItem?.user?.username}
-          </ButtonText>
-          <ButtonText>url: {selectedTrackItem?.stream_url}</ButtonText>
-          <ADButton onPress={this.register}>
-            <ButtonText style={{ color: "red" }}>register song</ButtonText>
-          </ADButton>
+          </RegisterSongButtonText>
+          <RegisterSongButtonText>
+            duration: {_.round(duration)}seconds
+          </RegisterSongButtonText>
         </Content>
+        <Footer>
+          <RegisterSongButton onPress={this.register}>
+            <RegisterSongButtonText>1초 노래 등록하기</RegisterSongButtonText>
+          </RegisterSongButton>
+        </Footer>
       </Container>
     );
   }
 
-  private onSelected = (trackItem: ITrackItem) => {
+  private onSongLoad = (data: OnLoadData) => {
     this.setState({
-      selectedTrackItem: trackItem
+      duration: data.duration
     });
   };
 
@@ -133,7 +178,8 @@ class RegisterSongScreen extends Component<IProps, IStates> {
   };
 
   private back = () => {
-    dismissAllModals();
+    const { componentId } = this.props;
+    pop(componentId);
   };
 }
 

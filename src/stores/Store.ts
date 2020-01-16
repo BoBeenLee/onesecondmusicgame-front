@@ -7,6 +7,7 @@ import PushNotificationStore from "src/stores/PushNotificationStore";
 import CodePushStore from "src/stores/CodePushStore";
 import LinkingStore from "src/stores/LinkingStore";
 import { initialize as initializeRequestAPI } from "src/configs/requestAPI";
+import { initialize as initializeSoundCloudAPI } from "src/configs/soundCloudAPI";
 import { initialize as initializeRemoteConfig } from "src/configs/remoteConfig";
 import { initialize as initializeAdmob } from "src/configs/admob";
 import { initialize as initializeAnalytics } from "src/configs/analytics";
@@ -36,6 +37,7 @@ const Store = types
       self.codePushStore.initialize();
       self.pushNotificationStore.initialize();
       yield self.authStore.initialize();
+      yield initializeSoundCloudAPI();
       initializeRequestAPI();
     });
 
