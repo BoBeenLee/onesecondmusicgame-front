@@ -23,7 +23,8 @@ import GamePlayScreen from "src/screens/game/GamePlayScreen";
 import GameModeScreen from "src/screens/game/GameModeScreen";
 import GameRankingScreen from "src/screens/game/GameRankingScreen";
 import GameResultScreen from "src/screens/game/GameResultScreen";
-import GameSearchSongScreen from "./game/GameSearchSongScreen";
+import GameSearchSongScreen from "src/screens/game/GameSearchSongScreen";
+import GamePlayTutorialOverlay from "src/screens/tutorial/GamePlayTutorialOverlay";
 
 interface IScreenProps {
   id: string;
@@ -54,7 +55,12 @@ const enhanceScreen = (Component: React.ComponentType<any>) => {
   return EnhancedComponent;
 };
 
-const overlaies: IScreenProps[] = [];
+const overlaies: IScreenProps[] = [
+  {
+    Component: GamePlayTutorialOverlay,
+    id: SCREEN_IDS.GamePlayTutorialOverlay
+  }
+];
 
 const screens: IScreenProps[] = [
   {

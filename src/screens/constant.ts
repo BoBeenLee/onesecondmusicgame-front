@@ -11,7 +11,8 @@ const SCREEN_IDS = {
   GameRankingScreen: "app.GameRankingScreen",
   GameResultScreen: "app.GameResultScreen",
   GameSearchSongScreen: "app.GameSearchSongScreen",
-  DeveloperScreen: "app.DeveloperScreen"
+  DeveloperScreen: "app.DeveloperScreen",
+  GamePlayTutorialOverlay: "app.GamePlayTutorialOverlay"
 };
 
 export { SCREEN_IDS };

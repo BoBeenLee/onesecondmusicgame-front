@@ -13,7 +13,8 @@ export const FIELD = {
     .join("")}`,
   REFRESH_TOKEN: "REFRESH_TOKEN",
   PROVIDER_TYPE: "PROVIDER_TYPE",
-  SHARED_ACCESS_ID: "SHARED_ACCESS_ID"
+  SHARED_ACCESS_ID: "SHARED_ACCESS_ID",
+  DO_NOT_SHOW_GAME_PLAY: "DO_NOT_SHOW_GAME_PLAY"
 };
 
 export const setItem = (key: string, value: string) => {

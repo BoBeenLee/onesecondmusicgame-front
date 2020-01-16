@@ -213,7 +213,7 @@ const showOverlay = async (params: Layout) =>
     await Navigation.showOverlay(params);
   })(params);
 
-const showOverlayTransparent = async (componentId: string) => {
+const showOverlayTransparent = async (componentId: string, params?: object) => {
   await showOverlay({
     component: {
       name: componentId,
@@ -227,7 +227,8 @@ const showOverlayTransparent = async (componentId: string) => {
         statusBar: {
           backgroundColor: "#00000039"
         }
-      }
+      },
+      passProps: params
     }
   });
 };
