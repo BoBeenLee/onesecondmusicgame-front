@@ -78,7 +78,7 @@ class DeveloperScreen extends Component<IProps> {
   public singers: ISingers = Singers.create();
 
   public async componentDidMount() {
-    await this.singers.initialize();
+    await this.singers.initialize({ q: "" });
     loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
       onRewarded: this.onRewarded
     });
