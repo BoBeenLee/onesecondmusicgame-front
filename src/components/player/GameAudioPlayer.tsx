@@ -7,6 +7,7 @@ import Video, { VideoProperties } from "react-native-video";
 import XEIcon, { XEIconType } from "src/components/icon/XEIcon";
 import PlayButton from "src/components/button/PlayButton";
 import { AudioType } from "src/components/player/interface";
+import ScaleableButton from "src/components/button/ScaleableButton";
 
 interface IProps extends VideoProperties {
   style?: ViewProps["style"];
@@ -14,16 +15,20 @@ interface IProps extends VideoProperties {
   onToggle?: (playType: AudioType) => void;
 }
 
-const Container = styled.View<{ size: number }>`
+const Container = styled(ScaleableButton)<{ size: number }>`
+  background-color: #d8d8d8;
   ${({ size }) => css`
     width: ${size}px;
     height: ${size}px;
+    border-radius: ${_.round(size / 2)}px;
   `}
 `;
 
 const AudioPlayer = styled(Video)``;
 
-const AudioView = styled(PlayButton)``;
+const AudioView = styled(PlayButton)`
+  background-color: #b7b7b7;
+`;
 
 function GameAudioPlayer(props: IProps) {
   const { style, size, onToggle, ...rest } = props;
@@ -51,7 +56,11 @@ function GameAudioPlayer(props: IProps) {
   const revertPlayType = playType === "play" ? "stop" : "play";
 
   return (
-    <Container style={style} size={size}>
+    <Container
+      style={style}
+      size={size}
+      onPress={_.partial(onTogglePlayType, revertPlayType)}
+    >
       <AudioPlayer
         ignoreSilentSwitch={"ignore"}
         controls={false}
@@ -63,7 +72,8 @@ function GameAudioPlayer(props: IProps) {
         {...rest}
       />
       <AudioView
-        size={size}
+        disabled={true}
+        size={size / 3}
         playType={revertPlayType}
         onPress={_.partial(onTogglePlayType, revertPlayType)}
       />
