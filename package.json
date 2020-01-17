@@ -18,7 +18,7 @@
     "ios8": "node node_modules/react-native/local-cli/cli.js run-ios --simulator='iPhone 8'",
     "ios:release": "node node_modules/react-native/local-cli/cli.js run-ios --configuration Release",
     "build:ios": "node node_modules/react-native/local-cli/cli.js bundle --entry-file='index.ios.js' --bundle-output='./ios/RNApp/main.jsbundle' --dev=false --platform='ios'",
-    "build:android": "./android && ./gradlew clean && ./gradlew app:assembleRelease",
+    "build:android": "cd ./android && ./gradlew clean && ./gradlew app:assembleRelease",
     "appdistribution:android": "npm run build:android && firebase appdistribution:distribute ./android/app/build/outputs/apk/release/app-release.apk --app 1:858680448613:android:4dfa8696bcc65cc20ed88c --token 1//0eJGW5rUC4NBRCgYIARAAGA4SNwF-L9IraQk7cq7VUh660mt0OCTG_JWyQfMzkwVxm3ngcWrRQRYRHvEZTx4hRHDdxhZd1Eq3FGw",
     "appdistribution:ios": "firebase appdistribution:distribute $BITRISE_IPA_PATH --app 1:833905792974:ios:1ec7739544849fc8 --token 1/Imdv27tKHLaob8Y1o4h6CA6-kn_zbXZXQi6e_-Xfuus",
     "prettier": "prettier './src/**/*.{js,ts,tsx}' --write",
