@@ -13,6 +13,8 @@ import SearchTextInput from "src/components/input/SearchTextInput";
 import { ISinger } from "src/apis/singer";
 import Singers, { ISingers } from "src/stores/Singers";
 import SearchSingerCard from "src/components/card/SearchSingerCard";
+import { filterNull } from "src/utils/common";
+import SingersSubmitBackDrop from "src/components/backdrop/SingersSubmitBackDrop";
 
 interface IParams {
   componentId: string;
@@ -104,6 +106,7 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
 
   public render() {
     const { singerViews, refresh, isRefresh } = this.singers;
+    const { selectedSingers } = this.state;
 
     return (
       <Container>
@@ -134,8 +137,18 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
             }
           />
         </Content>
+        <SingersSubmitBackDrop
+          selectedSingers={this.selectedSingers}
+          onSubmit={this.submit}
+          onSelectedItem={this.onSelectedItem}
+        />
       </Container>
     );
+  }
+
+  private get selectedSingers() {
+    const { selectedSingers } = this.state;
+    return filterNull(_.values(selectedSingers));
   }
 
   private singerKeyExtreactor = (item: ISinger, index: number) => {
@@ -168,6 +181,10 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
         }
       };
     });
+  };
+
+  private submit = () => {
+    // NOTHING
   };
 
   private back = () => {

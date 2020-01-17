@@ -16,19 +16,12 @@ interface IProps {
   onSelectedItem: (item: ISinger) => void;
 }
 
-const Container = styled.View`
-  flex: 1;
-  flex-direction: column;
+const BackdropView = styled(Backdrop)`
   justify-content: center;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  align-items: center;
+  padding-top: 20px;
+  background-color: ${colors.black70};
 `;
-
-const BackdropView = styled(Backdrop).attrs({
-  containerStyle: {
-    backgroundColor: colors.black70
-  }
-})``;
 
 const SingersView = styled.View`
   flex-direction: row;
@@ -36,8 +29,12 @@ const SingersView = styled.View`
 `;
 
 const AddSingerView = styled.View`
+  justify-content: center;
+  align-items: center;
   width: 72px;
   height: 72px;
+  border: solid 1px ${colors.warmGrey};
+  margin: 8px;
 `;
 
 const AddSingerPlusIcon = styled(XEIcon)``;
@@ -47,47 +44,49 @@ const SearchSingerCardView = styled(SearchSingerCard)`
 `;
 
 const LevelBadgeView = styled.View`
-  width: 100%;
   justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 15px;
 `;
 
-const SubmitButton = styled(MockButton)``;
+const SubmitButton = styled(MockButton)`
+  justify-content: center;
+  align-items: center;
+`;
 
 function SingersSubmitBackDrop(props: IProps) {
   const { selectedSingers, onSubmit, onSelectedItem } = props;
   return (
     <BackdropView
-      isFirstShow={false}
       overlayOpacity={false}
-      backdropHeight={96}
+      backdropHeight={300}
       onClose={onSubmit}
-      onBackgroundPress={onSubmit}
     >
-      <Container>
-        <SingersView>
-          {_.times(3, index => {
-            const existsSinger = selectedSingers[index];
-            if (Boolean(existsSinger)) {
-              return (
-                <SearchSingerCardView
-                  image={"https://via.placeholder.com/150"}
-                  name={existsSinger.name}
-                  onPress={_.partial(onSelectedItem, existsSinger)}
-                />
-              );
-            }
+      <SingersView>
+        {_.times(3, index => {
+          const existsSinger = index < selectedSingers.length;
+          if (Boolean(existsSinger)) {
+            const singer = selectedSingers[index];
             return (
-              <AddSingerView key={`addsinger${index}`}>
-                <AddSingerPlusIcon name="plus" size={24} color={colors.black} />
-              </AddSingerView>
+              <SearchSingerCardView
+                image={"https://via.placeholder.com/150"}
+                name={singer.name}
+                onPress={_.partial(onSelectedItem, singer)}
+              />
             );
-          })}
-        </SingersView>
-        <LevelBadgeView>
-          <LevelBadge level="hard" />
-        </LevelBadgeView>
-        <SubmitButton name="시작하기" onPress={onSubmit} />
-      </Container>
+          }
+          return (
+            <AddSingerView key={`addsinger${index}`}>
+              <AddSingerPlusIcon name="plus" size={24} color={colors.black} />
+            </AddSingerView>
+          );
+        })}
+      </SingersView>
+      <LevelBadgeView>
+        <LevelBadge level="hard" />
+      </LevelBadgeView>
+      <SubmitButton name="시작하기" onPress={onSubmit} />
     </BackdropView>
   );
 }
