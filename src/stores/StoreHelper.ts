@@ -6,11 +6,13 @@ import { IToastStore } from "src/stores/ToastStore";
 import { IPushNotificationStore } from "src/stores/PushNotificationStore";
 import { ILinkingStore } from "src/stores/LinkingStore";
 import { ICodePushStore } from "src/stores/CodePushStore";
+import { ISingerStore } from "src/stores/SingerStore";
 
 export interface IStoreType {
   appStateStatus: AppStateStatus;
   authStore: IAuthStore;
   codePushStore: ICodePushStore;
+  singerStore: ISingerStore;
   toastStore: IToastStore;
   pushNotificationStore: IPushNotificationStore;
   linkingStore: ILinkingStore;

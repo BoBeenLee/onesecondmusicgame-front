@@ -20,7 +20,8 @@ const BackdropView = styled(Backdrop)`
   justify-content: center;
   align-items: center;
   padding-top: 20px;
-  background-color: ${colors.black70};
+  background-color: ${colors.white};
+  border: solid 1px ${colors.warmGrey};
 `;
 
 const SingersView = styled.View`
@@ -70,6 +71,7 @@ function SingersSubmitBackDrop(props: IProps) {
             const singer = selectedSingers[index];
             return (
               <SearchSingerCardView
+                key={singer.name}
                 image={"https://via.placeholder.com/150"}
                 name={singer.name}
                 onPress={_.partial(onSelectedItem, singer)}

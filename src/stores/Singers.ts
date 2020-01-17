@@ -26,11 +26,6 @@ const Singers = types
     };
   })
   .actions(self => {
-    const afterCreate = flow(function*() {
-      const response: RetrieveAsyncFunc<typeof singers> = yield singers();
-      self.singers.replace(response);
-    });
-
     const clear = () => {
       self.isRefresh = false;
       self.singers.clear();
@@ -39,7 +34,7 @@ const Singers = types
     const fetch = flow(function*() {
       self.filterSingers.replace(
         self.singers.filter(item => {
-          return Boolean(item.name.search(self.variables.q));
+          return _.includes(item.name, self.variables.q);
         })
       );
     });
@@ -61,7 +56,6 @@ const Singers = types
     });
 
     return {
-      afterCreate,
       clear,
       initialize,
       refresh
@@ -72,7 +66,7 @@ const Singers = types
       self.initialize(variables);
     };
     return {
-      search: _.debounce(search, 500)
+      search: _.debounce(search, 250)
     };
   });
 

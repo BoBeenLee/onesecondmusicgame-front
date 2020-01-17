@@ -15,13 +15,21 @@ import Singers, { ISingers } from "src/stores/Singers";
 import SearchSingerCard from "src/components/card/SearchSingerCard";
 import { filterNull } from "src/utils/common";
 import SingersSubmitBackDrop from "src/components/backdrop/SingersSubmitBackDrop";
+import { IStore } from "src/stores/Store";
+import { ISingerStore } from "src/stores/SingerStore";
+import { IToastStore } from "src/stores/ToastStore";
+
+interface IInject {
+  singerStore: ISingerStore;
+  toastStore: IToastStore;
+}
 
 interface IParams {
   componentId: string;
   onResult: (selectedSingers: ISinger[]) => void;
 }
 
-type IProps = IParams;
+interface IProps extends IParams, IInject {}
 
 interface IStates {
   selectedSingers: { [key in string]: ISinger | null };
@@ -79,6 +87,12 @@ const ResultEmpty = styled.View`
 
 const ResultEmptyText = styled(Bold12)``;
 
+@inject(
+  ({ store }: { store: IStore }): IInject => ({
+    singerStore: store.singerStore,
+    toastStore: store.toastStore
+  })
+)
 @observer
 class GameSearchSingerScreen extends Component<IProps, IStates> {
   public static open(params: IParams) {
@@ -95,7 +109,9 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
 
   constructor(props: IProps) {
     super(props);
-    this.singers = Singers.create();
+    this.singers = Singers.create({
+      singers: props.singerStore.singers
+    });
 
     this.state = { selectedSingers: {} };
   }
@@ -106,7 +122,6 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
 
   public render() {
     const { singerViews, refresh, isRefresh } = this.singers;
-    const { selectedSingers } = this.state;
 
     return (
       <Container>
@@ -184,7 +199,9 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
   };
 
   private submit = () => {
-    // NOTHING
+    const { onResult } = this.props;
+    const { selectedSingers } = this.state;
+    onResult(this.selectedSingers);
   };
 
   private back = () => {

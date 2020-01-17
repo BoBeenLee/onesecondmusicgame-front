@@ -7,7 +7,7 @@ import styled from "styled-components/native";
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import { Bold12, Bold20 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
-import { push, pop } from "src/utils/navigator";
+import { push, pop, getCurrentComponentId } from "src/utils/navigator";
 import CircleCheckGroup from "src/components/icon/CircleCheckGroup";
 import LimitTimeProgress from "src/components/progress/LimitTimeProgress";
 import colors from "src/styles/colors";
@@ -157,7 +157,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
       componentId: params.componentId,
       onResult: (selectedSingers: ISinger[]) => {
         push({
-          componentId: params.componentId,
+          componentId: getCurrentComponentId(),
           nextComponentId: SCREEN_IDS.GamePlayScreen,
           params: {
             selectedSingers

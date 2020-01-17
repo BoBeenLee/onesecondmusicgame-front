@@ -3,6 +3,7 @@ import { AppState, AppStateStatus } from "react-native";
 
 import AuthStore from "src/stores/AuthStore";
 import ToastStore from "src/stores/ToastStore";
+import SingerStore from "src/stores/SingerStore";
 import PushNotificationStore from "src/stores/PushNotificationStore";
 import CodePushStore from "src/stores/CodePushStore";
 import LinkingStore from "src/stores/LinkingStore";
@@ -17,6 +18,7 @@ const Store = types
     appStateStatus: types.frozen<AppStateStatus>(AppState.currentState),
     authStore: types.optional(AuthStore, {}),
     codePushStore: types.optional(CodePushStore, {}),
+    singerStore: types.optional(SingerStore, {}),
     toastStore: types.optional(ToastStore, {}),
     pushNotificationStore: types.optional(PushNotificationStore, {}),
     linkingStore: types.optional(LinkingStore, {})
@@ -36,6 +38,7 @@ const Store = types
       self.linkingStore.initialize();
       self.codePushStore.initialize();
       self.pushNotificationStore.initialize();
+      self.singerStore.initialize();
       yield self.authStore.initialize();
       yield initializeSoundCloudAPI();
       initializeRequestAPI();
