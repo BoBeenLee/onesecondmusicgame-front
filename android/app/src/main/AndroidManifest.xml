@@ -12,6 +12,7 @@
 
     <application
         android:name=".MainApplication"
+        android:supportsRtl="true"
         android:allowBackup="true"
         android:appComponentFactory="whateverString"
         android:icon="@mipmap/ic_launcher"

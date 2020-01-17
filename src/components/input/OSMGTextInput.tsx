@@ -1,6 +1,14 @@
 import _ from "lodash";
 import React from "react";
-import { Platform, TextInputProps, TextStyle } from "react-native";
+import {
+  Platform,
+  TextInputProps,
+  TextStyle,
+  TextInput,
+  NativeSyntheticEvent,
+  TextInputFocusEventData,
+  InteractionManager
+} from "react-native";
 import styled from "styled-components/native";
 
 import colors from "src/styles/colors";
@@ -39,18 +47,19 @@ class OSMGTextInput extends React.Component<IProps, IStates> {
     fontType: "REGULAR"
   };
 
-  public state = {
-    currentStyle: null
-  };
+  public textInputRef = React.createRef<TextInput>();
 
-  public root: any = null;
+  constructor(props: IProps) {
+    super(props);
+    this.state = { currentStyle: null };
+  }
 
   public render() {
     const { style, fontType = "REGULAR", ...otherProps } = this.props;
     const { currentStyle } = this.state;
     return (
       <Container
-        ref={this.setRef}
+        ref={this.textInputRef}
         style={[
           style,
           currentStyle,
@@ -70,19 +79,15 @@ class OSMGTextInput extends React.Component<IProps, IStates> {
     );
   }
 
-  private setRef = (ref: any) => {
-    this.root = ref;
-  };
-
   private clearText = () => {
-    this.root.clear();
+    this.textInputRef.current?.clear();
   };
 
   private focus = () => {
-    this.root.focus();
+    this.textInputRef.current?.focus();
   };
 
-  private onFocus = (event: any) => {
+  private onFocus = (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
     const { onFocus, focusStyle } = this.props;
     if (onFocus) {
       onFocus(event);
@@ -92,7 +97,7 @@ class OSMGTextInput extends React.Component<IProps, IStates> {
     });
   };
 
-  private onBlur = (__: any) => {
+  private onBlur = () => {
     const { onTextBlur } = this.props;
 
     if (onTextBlur) {
@@ -105,7 +110,7 @@ class OSMGTextInput extends React.Component<IProps, IStates> {
 
   private nativeText = () => {
     const { defaultValue } = this.props;
-    return _.get(this.root, ["_lastNativeText"], defaultValue);
+    return _.get(this.textInputRef.current, ["_lastNativeText"], defaultValue);
   };
 }
 

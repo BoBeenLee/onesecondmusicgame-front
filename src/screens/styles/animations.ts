@@ -11,7 +11,8 @@ export const pushTransition =
               to: 0,
               duration: 380
             }
-          }
+          },
+          waitForRender: true
         },
         pop: {
           content: {
@@ -23,7 +24,7 @@ export const pushTransition =
           }
         }
       }
-    : undefined;
+    : { push: { waitForRender: true } };
 
 export const fadeTransition =
   Platform.OS === "android"
@@ -44,7 +45,8 @@ export const fadeTransition =
               from: 0,
               to: 1
             }
-          }
+          },
+          waitForRender: true
         }
       }
-    : undefined;
+    : { push: { waitForRender: true } };
