@@ -1,6 +1,7 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
+import { Clipboard } from "react-native";
 import styled, { css } from "styled-components/native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
@@ -15,7 +16,13 @@ import MainScreen from "src/screens/MainScreen";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
-import GameRankingScreen from "./GameRankingScreen";
+import GameRankingScreen from "src/screens/game/GameRankingScreen";
+import ChargeFullHeartPopup from "src/components/popup/ChargeFullHeartPopup";
+import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
+import { IPopupProps } from "src/hocs/withPopup";
+import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
+import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
+import { makeAppShareLink } from "src/utils/dynamicLink";
 
 interface IInject {
   authStore: IAuthStore;
@@ -26,7 +33,7 @@ interface IParams {
   componentId: string;
 }
 
-interface IProps extends IInject, IParams {}
+interface IProps extends IInject, IParams, IPopupProps {}
 
 const Container = styled(ContainerWithStatusBar)`
   flex: 1;
@@ -122,6 +129,14 @@ class GameResultScreen extends Component<IProps> {
     });
   }
 
+  constructor(props: IProps) {
+    super(props);
+
+    loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
+      onRewarded: this.onRewarded
+    });
+  }
+
   public render() {
     const heart = this.props.authStore.user?.heart;
 
@@ -148,8 +163,11 @@ class GameResultScreen extends Component<IProps> {
             )}
           />
           <FooterRow1>
-            <MockButton name="하트 풀 충전(ad)" onPress={_.identity} />
-            <MockButton name="친구 초대" onPress={_.identity} />
+            <MockButton
+              name="하트 풀 충전(ad)"
+              onPress={this.onChargeFullHeartPopup}
+            />
+            <MockButton name="친구 초대" onPress={this.onInvitePopup} />
             <MockButton name="개인 랭킹" onPress={this.navigateToRanking} />
           </FooterRow1>
           <FooterRow1>
@@ -162,6 +180,52 @@ class GameResultScreen extends Component<IProps> {
       </Container>
     );
   }
+
+  private onChargeFullHeartPopup = () => {
+    const { showPopup, closePopup } = this.props.popupProps;
+    showPopup(
+      <ChargeFullHeartPopup
+        onConfirm={this.requestHeartRewardAD}
+        onCancel={closePopup}
+      />
+    );
+  };
+
+  private requestHeartRewardAD = () => {
+    showAD(AdmobUnitID.HeartReward);
+  };
+
+  private onRewarded = async () => {
+    const { closePopup } = this.props.popupProps;
+    const { updateUserInfo } = this.props.authStore;
+    const { showToast } = this.props.toastStore;
+    try {
+      await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
+      await updateUserInfo();
+      showToast("보상 완료!");
+    } catch (error) {
+      showToast(error.message);
+    } finally {
+      closePopup();
+    }
+  };
+
+  private onInvitePopup = () => {
+    const { showPopup, closePopup } = this.props.popupProps;
+    showPopup(
+      <InviteFriendsPopup onConfirm={this.invite} onCancel={closePopup} />
+    );
+  };
+
+  private invite = async () => {
+    const { closePopup } = this.props.popupProps;
+    const { showToast } = this.props.toastStore;
+    const { accessId } = this.props.authStore;
+    const shortLink = await makeAppShareLink(accessId);
+    Clipboard.setString(shortLink);
+    showToast("공유 링크 복사 완료");
+    closePopup();
+  };
 
   private navigateToRanking = () => {
     const { componentId } = this.props;

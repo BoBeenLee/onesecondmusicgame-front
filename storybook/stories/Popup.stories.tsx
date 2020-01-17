@@ -5,7 +5,7 @@ import styled from "styled-components/native";
 
 import ConfirmPopup from "src/components/popup/ConfirmPopup";
 import colors from "src/styles/colors";
-import SkipItemPopup from "src/components/popup/SkipItemPopup";
+import ChargeSkipItemPopup from "src/components/popup/ChargeSkipItemPopup";
 import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
 
 const CenterView = styled.View`
@@ -29,7 +29,7 @@ storiesOf("Popup", module)
   })
   .add("SkipItemPopup", () => {
     return (
-      <SkipItemPopup
+      <ChargeSkipItemPopup
         onCancel={action("onCancel")}
         onConfirm={action("onConfirm")}
       />

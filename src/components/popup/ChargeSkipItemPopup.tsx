@@ -25,7 +25,7 @@ const PopupDescription = styled(Bold12)`
   margin-bottom: 47px;
 `;
 
-function SkipItemPopup(props: IProps) {
+function ChargeSkipItemPopup(props: IProps) {
   const { style, onConfirm, onCancel } = props;
   return (
     <OnlyConfirmPopup
@@ -44,4 +44,4 @@ function SkipItemPopup(props: IProps) {
   );
 }
 
-export default SkipItemPopup;
+export default ChargeSkipItemPopup;

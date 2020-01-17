@@ -19,11 +19,14 @@ import MockButton from "src/components/button/MockButton";
 import HeartGroup from "src/components/icon/HeartGroup";
 import TimerText from "src/components/text/TimerText";
 import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
-import SkipItemPopup from "src/components/popup/SkipItemPopup";
+import ChargeSkipItemPopup from "src/components/popup/ChargeSkipItemPopup";
 import { makeAppShareLink } from "src/utils/dynamicLink";
 import RegisterSongScreen from "src/screens/RegisterSongScreen";
 import GameRankingScreen from "src/screens/game/GameRankingScreen";
 import GameModeScreen from "src/screens/game/GameModeScreen";
+import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
+import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
+import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
 
 interface IInject {
   authStore: IAuthStore;
@@ -102,8 +105,11 @@ class MainScreen extends Component<IProps> {
 
     this.itemToOnPress = {
       [Item.ItemTypeEnum.SKIP]: this.onSkipItemPopup,
-      [Item.ItemTypeEnum.CHARGEALLHEART]: _.identity
+      [Item.ItemTypeEnum.CHARGEALLHEART]: this.onUseFullHeartPopup
     };
+    loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
+      onRewarded: this.onRewarded
+    });
   }
 
   public async componentDidMount() {
@@ -174,7 +180,50 @@ class MainScreen extends Component<IProps> {
 
   private onSkipItemPopup = () => {
     const { showPopup, closePopup } = this.props.popupProps;
-    showPopup(<SkipItemPopup onConfirm={this.invite} onCancel={closePopup} />);
+    showPopup(
+      <ChargeSkipItemPopup onConfirm={this.invite} onCancel={closePopup} />
+    );
+  };
+
+  private onUseFullHeartPopup = () => {
+    const { showPopup, closePopup } = this.props.popupProps;
+    showPopup(
+      <UseFullHeartPopup
+        onConfirm={this.useFullHeart}
+        onChargeFullHeart={this.requestHeartRewardAD}
+        onCancel={closePopup}
+      />
+    );
+  };
+
+  private useFullHeart = () => {
+    const { showToast } = this.props.toastStore;
+    const userItem = this.props.authStore.user?.userItemsByItemType?.(
+      Item.ItemTypeEnum.CHARGEALLHEART
+    );
+    const { closePopup } = this.props.popupProps;
+    userItem?.useItemType?.();
+    showToast("하트 풀충전 완료!");
+    closePopup();
+  };
+
+  private requestHeartRewardAD = () => {
+    showAD(AdmobUnitID.HeartReward);
+  };
+
+  private onRewarded = async () => {
+    const { closePopup } = this.props.popupProps;
+    const { updateUserInfo } = this.props.authStore;
+    const { showToast } = this.props.toastStore;
+    try {
+      await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
+      await updateUserInfo();
+      showToast("보상 완료!");
+    } catch (error) {
+      showToast(error.message);
+    } finally {
+      closePopup();
+    }
   };
 
   private onInvitePopup = () => {

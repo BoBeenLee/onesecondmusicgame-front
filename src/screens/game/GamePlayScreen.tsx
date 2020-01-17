@@ -16,7 +16,7 @@ import GameAudioPlayer from "src/components/player/GameAudioPlayer";
 import OSMGTextInput from "src/components/input/OSMGTextInput";
 import MockButton from "src/components/button/MockButton";
 import { IPopupProps } from "src/hocs/withPopup";
-import FullHeartPopup from "src/components/popup/FullHeartPopup";
+import ChargeFullHeartPopup from "src/components/popup/ChargeFullHeartPopup";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
@@ -312,7 +312,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   private onFinishPopup = () => {
     const { showPopup } = this.props.popupProps;
     showPopup(
-      <FullHeartPopup
+      <ChargeFullHeartPopup
         onConfirm={this.requestHeartRewardAD}
         onCancel={this.finish}
       />
