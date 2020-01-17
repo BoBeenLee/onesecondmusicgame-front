@@ -29,6 +29,7 @@ import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
 
 interface IInject {
+  store: IStore;
   authStore: IAuthStore;
   codePushStore: ICodePushStore;
   toastStore: IToastStore;
@@ -85,6 +86,7 @@ const Footer = styled.View`
 
 @inject(
   ({ store }: { store: IStore }): IInject => ({
+    store,
     authStore: store.authStore,
     codePushStore: store.codePushStore,
     toastStore: store.toastStore
@@ -110,6 +112,7 @@ class MainScreen extends Component<IProps> {
     loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
       onRewarded: this.onRewarded
     });
+    props.store.initializeMainApp();
   }
 
   public async componentDidMount() {
@@ -201,8 +204,10 @@ class MainScreen extends Component<IProps> {
     const userItem = this.props.authStore.user?.userItemsByItemType?.(
       Item.ItemTypeEnum.CHARGEALLHEART
     );
+
     const { closePopup } = this.props.popupProps;
     userItem?.useItemType?.();
+    this.props.authStore.user?.heart?.fetchHeart();
     showToast("하트 풀충전 완료!");
     closePopup();
   };

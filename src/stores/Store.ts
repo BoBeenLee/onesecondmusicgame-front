@@ -40,13 +40,17 @@ const Store = types
       self.pushNotificationStore.initialize();
       yield self.authStore.initialize();
       yield initializeSoundCloudAPI();
-      self.singerStore.initialize();
       initializeRequestAPI();
     });
 
+    const initializeMainApp = () => {
+      self.singerStore.initialize();
+    };
+
     return {
       setAppStateStatus,
-      initializeApp
+      initializeApp,
+      initializeMainApp
     };
   });
 
