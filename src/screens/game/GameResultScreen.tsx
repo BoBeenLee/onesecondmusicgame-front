@@ -23,6 +23,7 @@ import { IPopupProps } from "src/hocs/withPopup";
 import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import { makeAppShareLink } from "src/utils/dynamicLink";
+import GamePlayScreen from "src/screens/game/GamePlayScreen";
 
 interface IInject {
   authStore: IAuthStore;
@@ -172,7 +173,7 @@ class GameResultScreen extends Component<IProps> {
           </FooterRow1>
           <FooterRow1>
             <HomeButton name="홈" onPress={this.home} />
-            <RetryPlayButton>
+            <RetryPlayButton onPress={this.navigateToGamePlay}>
               <RetryPlayButtonText>다시 게임하기</RetryPlayButtonText>
             </RetryPlayButton>
           </FooterRow1>
@@ -225,6 +226,11 @@ class GameResultScreen extends Component<IProps> {
     Clipboard.setString(shortLink);
     showToast("공유 링크 복사 완료");
     closePopup();
+  };
+
+  private navigateToGamePlay = () => {
+    const { componentId } = this.props;
+    GamePlayScreen.open({ componentId });
   };
 
   private navigateToRanking = () => {

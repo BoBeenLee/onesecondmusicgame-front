@@ -54,6 +54,7 @@ export type XEIconType =
   | "pause"
   | "stop"
   | "search"
-  | "spinner-1";
+  | "spinner-1"
+  | "plus";
 
 export default XEIcon;
