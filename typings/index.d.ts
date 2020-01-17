@@ -13,7 +13,9 @@ type RemoveKeys<T, K extends Array<keyof T>> = Pick<
   Exclude<keyof T, K[keyof K]>
 >;
 type RequireProperty<T, P extends keyof T> = T & { [K in P]-?: T[P] };
-type NoUndefinedField<T> = { [P in keyof T]-?: NoUndefinedField<NonNullable<T[P]>> };
+type NoUndefinedField<T> = {
+  [P in keyof T]-?: NoUndefinedField<NonNullable<T[P]>>;
+};
 
 declare module "*.svg" {
   import { SvgProps } from "react-native-svg";
@@ -21,6 +23,6 @@ declare module "*.svg" {
   export default content;
 }
 
-declare module 'console' {
+declare module "console" {
   export = typeof import("console");
 }

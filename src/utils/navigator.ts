@@ -48,8 +48,8 @@ const setCurrentComponent = (componentId: string, componentName: string) => {
   currentComponentName = componentName;
 };
 
-const getCurrentComponent = () => {
-  return currentComponentId;
+const getCurrentComponentId = () => {
+  return currentComponentId!;
 };
 
 export const protectedMultiClick = (func: any, milliseconds = 500) => async (
@@ -251,7 +251,7 @@ export {
   showStackModal,
   showOverlay,
   showOverlayTransparent,
-  getCurrentComponent,
+  getCurrentComponentId,
   push,
   pushOptions,
   pop,

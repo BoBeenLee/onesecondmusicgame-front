@@ -53,6 +53,7 @@ export type XEIconType =
   | "play"
   | "pause"
   | "stop"
-  | "search";
+  | "search"
+  | "spinner-1";
 
 export default XEIcon;
