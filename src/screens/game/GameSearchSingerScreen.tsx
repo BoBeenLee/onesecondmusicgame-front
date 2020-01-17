@@ -110,7 +110,7 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
   constructor(props: IProps) {
     super(props);
     this.singers = Singers.create({
-      singers: props.singerStore.singers
+      singers: props.singerStore.singerViews
     });
 
     this.state = { selectedSingers: {} };

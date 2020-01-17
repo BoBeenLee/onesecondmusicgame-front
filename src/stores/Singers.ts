@@ -28,7 +28,7 @@ const Singers = types
   .actions(self => {
     const clear = () => {
       self.isRefresh = false;
-      self.singers.clear();
+      self.filterSingers.clear();
     };
 
     const fetch = flow(function*() {

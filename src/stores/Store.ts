@@ -38,9 +38,9 @@ const Store = types
       self.linkingStore.initialize();
       self.codePushStore.initialize();
       self.pushNotificationStore.initialize();
-      self.singerStore.initialize();
       yield self.authStore.initialize();
       yield initializeSoundCloudAPI();
+      self.singerStore.initialize();
       initializeRequestAPI();
     });
 

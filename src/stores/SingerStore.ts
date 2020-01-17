@@ -7,6 +7,13 @@ const SingerStore = types
   .model("SingerStore", {
     singers: types.optional(types.array(types.frozen<ISinger>()), [])
   })
+  .views(self => {
+    return {
+      get singerViews() {
+        return Array.from(self.singers);
+      }
+    };
+  })
   .actions(self => {
     const initialize = flow(function*() {
       const response: RetrieveAsyncFunc<typeof singers> = yield singers();
