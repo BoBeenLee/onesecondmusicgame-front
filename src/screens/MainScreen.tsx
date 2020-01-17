@@ -108,6 +108,17 @@ class MainScreen extends Component<IProps> {
     });
   }
 
+  public itemToOnPress: { [key in Item.ItemTypeEnum]: () => void };
+
+  constructor(props: IProps) {
+    super(props);
+
+    this.itemToOnPress = {
+      [Item.ItemTypeEnum.SKIP]: this.onSkipItemPopup,
+      [Item.ItemTypeEnum.CHARGEALLHEART]: _.identity
+    };
+  }
+
   public async componentDidMount() {
     this.updateCodePushIfAvailable();
   }
@@ -151,7 +162,7 @@ class MainScreen extends Component<IProps> {
               <MockButton
                 key={item.name}
                 name={`${item.name}(${item.count})`}
-                onPress={_.identity}
+                onPress={this.itemToOnPress[item.itemType]}
               />
             ))}
           </GameItems>
@@ -172,6 +183,24 @@ class MainScreen extends Component<IProps> {
     if (_.isEmpty(heart?.leftTime)) {
       heart?.fetchHeart?.();
     }
+  };
+
+  private onSkipItemPopup = () => {
+    const { showPopup, closePopup } = this.props.popupProps;
+    showPopup(
+      <OnlyConfirmPopup
+        ContentComponent={
+          <PopupContainer>
+            <PopupTitle>스킵 아이템</PopupTitle>
+            <PopupDescription>{`게임 중 모르는 노래를 skip하고
+정답 처리받을 수 있어요!`}</PopupDescription>
+          </PopupContainer>
+        }
+        confirmText={"친구초대하고 아이템받기 >"}
+        onConfirm={closePopup}
+        onCancel={closePopup}
+      />
+    );
   };
 
   private onInvitePopup = () => {

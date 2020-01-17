@@ -1,5 +1,6 @@
 import _ from "lodash";
 import React, { Component } from "react";
+import { inject, observer } from "mobx-react";
 import styled, { css } from "styled-components/native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
@@ -10,15 +11,22 @@ import { TOP_BAR_HEIGHT } from "src/components/topbar/OSMGTopBar";
 import colors from "src/styles/colors";
 import MockButton from "src/components/button/MockButton";
 import HeartGroup from "src/components/icon/HeartGroup";
-import MainScreen from "../MainScreen";
+import MainScreen from "src/screens/MainScreen";
+import { IAuthStore } from "src/stores/AuthStore";
+import { IToastStore } from "src/stores/ToastStore";
+import { IStore } from "src/stores/Store";
+import GameRankingScreen from "./GameRankingScreen";
+
+interface IInject {
+  authStore: IAuthStore;
+  toastStore: IToastStore;
+}
 
 interface IParams {
   componentId: string;
 }
 
-interface IProps {
-  componentId: string;
-}
+interface IProps extends IInject, IParams {}
 
 const Container = styled(ContainerWithStatusBar)`
   flex: 1;
@@ -85,7 +93,11 @@ const FooterRow1 = styled.View`
   margin-vertical: 10px;
 `;
 
-const AgainPlayButton = styled.TouchableOpacity`
+const HomeButton = styled(MockButton)`
+  margin-right: 20px;
+`;
+
+const RetryPlayButton = styled.TouchableOpacity`
   flex: 1;
   justify-content: center;
   align-items: center;
@@ -93,8 +105,15 @@ const AgainPlayButton = styled.TouchableOpacity`
   background-color: #b3b3b3;
 `;
 
-const AgainPlayButtonText = styled(Bold12)``;
+const RetryPlayButtonText = styled(Bold12)``;
 
+@inject(
+  ({ store }: { store: IStore }): IInject => ({
+    authStore: store.authStore,
+    toastStore: store.toastStore
+  })
+)
+@observer
 class GameResultScreen extends Component<IProps> {
   public static open(params: IParams) {
     return push({
@@ -104,6 +123,8 @@ class GameResultScreen extends Component<IProps> {
   }
 
   public render() {
+    const heart = this.props.authStore.user?.heart;
+
     return (
       <Container>
         <Header>
@@ -121,22 +142,31 @@ class GameResultScreen extends Component<IProps> {
 혹시 당신 트둥이 아닌가요?`}</ScoreDescription>
         </Content>
         <Footer>
-          <HeartGroup hearts={["active", "inactive"]} />
+          <HeartGroup
+            hearts={_.times(5, index =>
+              index <= (heart?.heartCount ?? 0) ? "active" : "inactive"
+            )}
+          />
           <FooterRow1>
             <MockButton name="하트 풀 충전(ad)" onPress={_.identity} />
             <MockButton name="친구 초대" onPress={_.identity} />
-            <MockButton name="개인 랭킹" onPress={_.identity} />
+            <MockButton name="개인 랭킹" onPress={this.navigateToRanking} />
           </FooterRow1>
           <FooterRow1>
-            <MockButton name="홈" onPress={this.home} />
-            <AgainPlayButton>
-              <AgainPlayButtonText>다시 게임하기</AgainPlayButtonText>
-            </AgainPlayButton>
+            <HomeButton name="홈" onPress={this.home} />
+            <RetryPlayButton>
+              <RetryPlayButtonText>다시 게임하기</RetryPlayButtonText>
+            </RetryPlayButton>
           </FooterRow1>
         </Footer>
       </Container>
     );
   }
+
+  private navigateToRanking = () => {
+    const { componentId } = this.props;
+    GameRankingScreen.open({ componentId });
+  };
 
   private home = () => {
     MainScreen.open();

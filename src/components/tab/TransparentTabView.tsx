@@ -14,7 +14,7 @@ interface IProps {
   lazy?: boolean;
 }
 
-interface IStates extends NavigationState<IRoute> {}
+type IStates = NavigationState<IRoute>;
 
 class TransparentTabView extends PureComponent<IProps, IStates> {
   public static defaultProps: Partial<IProps> = {

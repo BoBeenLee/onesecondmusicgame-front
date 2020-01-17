@@ -43,9 +43,9 @@ const Bottom = styled.View`
 const Button = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
-  width: 100px;
   background-color: ${colors.gray500};
   padding-vertical: 15px;
+  padding-horizontal: 10px;
   margin-bottom: 33px;
 `;
 

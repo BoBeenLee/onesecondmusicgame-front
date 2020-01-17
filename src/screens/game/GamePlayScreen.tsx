@@ -23,6 +23,8 @@ import { IStore } from "src/stores/Store";
 import GameResultScreen from "src/screens/game/GameResultScreen";
 import GameSearchSingerScreen from "src/screens/game/GameSearchSingerScreen";
 import { ISinger } from "src/apis/singer";
+import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
+import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 
 interface IInject {
   authStore: IAuthStore;
@@ -65,7 +67,6 @@ const Header = styled.View`
 const Lifes = styled(CircleCheckGroup)`
   margin-bottom: 21px;
 `;
-
 
 const GamePlayers = styled(OSMGCarousel)``;
 
@@ -190,6 +191,10 @@ class GamePlayScreen extends Component<IProps, IStates> {
       songAnswerInput: "",
       songAnswers: []
     };
+    loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
+      onRewarded: this.onRewarded
+    });
+    props.authStore.user?.heart?.useHeart?.();
   }
 
   public render() {
@@ -227,8 +232,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
         </Content>
         <GameItems>
           <MockButton
+            disabled={(userItem?.count ?? 0) === 0}
             name={`스킵(${userItem?.count ?? 0})`}
-            onPress={this.onSkipItemPopup}
+            onPress={this.useSkipItem}
           />
         </GameItems>
       </Container>
@@ -274,46 +280,19 @@ class GamePlayScreen extends Component<IProps, IStates> {
     this.gamePlayersRef.current?.snapToNext?.();
   };
 
-  private onSkipItemPopup = () => {
-    const { showPopup, closePopup } = this.props.popupProps;
-    showPopup(
-      <OnlyConfirmPopup
-        ContentComponent={
-          <PopupContainer>
-            <PopupTitle>스킵 아이템</PopupTitle>
-            <PopupDescription>{`게임 중 모르는 노래를 skip하고
-정답 처리받을 수 있어요!`}</PopupDescription>
-          </PopupContainer>
-        }
-        confirmText={"친구초대하고 아이템받기 >"}
-        onConfirm={this.useSkipItem}
-        onCancel={closePopup}
-      />
-    );
-  };
-
   private useSkipItem = () => {
+    const { closePopup } = this.props.popupProps;
     const userItem = this.props.authStore.user?.userItemsByItemType(
       Item.ItemTypeEnum.SKIP
     );
     userItem?.useItemType?.();
-  };
-
-  private onFinishPopup = () => {
-    const { showPopup, closePopup } = this.props.popupProps;
-    showPopup(
-      <OnlyConfirmPopup
-        ContentComponent={
-          <PopupContainer>
-            <PopupDescription>{`하트를 모두 사용했네요!
-광고를 보고
-하트 Full 충전 받으시겠어요?`}</PopupDescription>
-          </PopupContainer>
-        }
-        confirmText={"광고보기"}
-        onConfirm={this.finish}
-        onCancel={closePopup}
-      />
+    closePopup();
+    this.setState(
+      {
+        currentStepStatus: "play",
+        songAnswerInput: ""
+      },
+      this.nextStep
     );
   };
 
@@ -330,13 +309,60 @@ class GamePlayScreen extends Component<IProps, IStates> {
           currentStepStatus: "play",
           songAnswerInput: ""
         },
-        this.gamePlayersRef.current?.snapToNext
+        this.nextStep
       );
     }, 2000);
   };
 
+  private nextStep = () => {
+    const { currentStep } = this.state;
+    if (currentStep === MOCK_PLAYER_DATA.length - 1) {
+      this.onFinishPopup();
+      return;
+    }
+    this.gamePlayersRef.current?.snapToNext();
+  };
+
+  private onFinishPopup = () => {
+    const { showPopup } = this.props.popupProps;
+    showPopup(
+      <OnlyConfirmPopup
+        ContentComponent={
+          <PopupContainer>
+            <PopupDescription>{`하트를 모두 사용했네요!
+광고를 보고
+하트 Full 충전 받으시겠어요?`}</PopupDescription>
+          </PopupContainer>
+        }
+        confirmText={"광고보기"}
+        onConfirm={this.requestHeartRewardAD}
+        onCancel={this.finish}
+      />
+    );
+  };
+
+  private requestHeartRewardAD = () => {
+    showAD(AdmobUnitID.HeartReward);
+  };
+
+  private onRewarded = async () => {
+    const { updateUserInfo } = this.props.authStore;
+    const { showToast } = this.props.toastStore;
+    try {
+      await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
+      await updateUserInfo();
+      showToast("보상 완료!");
+    } catch (error) {
+      showToast(error.message);
+    } finally {
+      this.finish();
+    }
+  };
+
   private finish = () => {
+    const { closePopup } = this.props.popupProps;
     const { componentId } = this.props;
+    closePopup();
     GameResultScreen.open({ componentId });
   };
 }

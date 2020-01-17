@@ -1,13 +1,11 @@
 import React from "react";
 import styled from "styled-components/native";
-import { ViewProps } from "react-native";
+import { ViewProps, TouchableOpacityProps } from "react-native";
 
 import { Bold12 } from "src/components/text/Typographies";
 
-interface IProps {
-  style?: ViewProps["style"];
+interface IProps extends TouchableOpacityProps {
   name: string;
-  onPress: () => void;
 }
 
 const Container = styled.TouchableOpacity`
@@ -18,9 +16,9 @@ const Container = styled.TouchableOpacity`
 const Text = styled(Bold12)``;
 
 const MockButton = (props: IProps) => {
-  const { name, onPress } = props;
+  const { style, name, onPress } = props;
   return (
-    <Container onPress={onPress}>
+    <Container style={style} onPress={onPress}>
       <Text>{name}</Text>
     </Container>
   );
