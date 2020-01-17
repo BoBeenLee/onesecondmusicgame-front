@@ -9,6 +9,7 @@ import TimeProgress from "src/components/progress/TimeProgress";
 
 interface IProps {
   style?: ViewProps["style"];
+  key: string;
   seconds: number;
   onTimeEnd: () => void;
 }

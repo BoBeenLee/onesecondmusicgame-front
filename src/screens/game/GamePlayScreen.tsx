@@ -66,7 +66,8 @@ const Lifes = styled(CircleCheckGroup)`
   margin-bottom: 21px;
 `;
 
-const GamePlayers = styled(OSMGCarousel as any)<ICarouselItem>``;
+
+const GamePlayers = styled(OSMGCarousel)``;
 
 const GamePlayerView = styled.View`
   width: 100%;
@@ -100,6 +101,8 @@ const AnswerView = styled.View`
   align-items: center;
   padding-top: 60px;
 `;
+
+const AnswerText = styled(Bold12)``;
 
 const GameItems = styled.View`
   position: absolute;
@@ -142,6 +145,8 @@ const MOCK_PLAYER_DATA: ICarouselItem[] = [
   }
 ];
 
+const DEFAULT_LIMIT_TIME = 40;
+
 @inject(
   ({ store }: { store: IStore }): IInject => ({
     authStore: store.authStore,
@@ -175,6 +180,8 @@ class GamePlayScreen extends Component<IProps, IStates> {
     });
   }
 
+  public gamePlayersRef = React.createRef<OSMGCarousel<any>>();
+
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -189,13 +196,19 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const userItem = this.props.authStore.user?.userItemsByItemType(
       Item.ItemTypeEnum.SKIP
     );
+    const { currentStep } = this.state;
     return (
       <Container>
         <Header>
           <Lifes circles={["active", "inactive", "check"]} />
-          <LimitTimeProgress seconds={60} onTimeEnd={this.onLimitTimeEnd} />
+          <LimitTimeProgress
+            key={`${currentStep}`}
+            seconds={DEFAULT_LIMIT_TIME}
+            onTimeEnd={this.onLimitTimeEnd}
+          />
         </Header>
         <GamePlayers
+          ref={this.gamePlayersRef}
           data={MOCK_PLAYER_DATA}
           itemWidth={240}
           renderItem={this.renderItem}
@@ -221,9 +234,14 @@ class GamePlayScreen extends Component<IProps, IStates> {
   }
 
   private get renderAnswer() {
+    const { currentStepStatus } = this.state;
     return (
       <AnswerView>
-        <MockButton name="확인" onPress={this.submitAnswer} />
+        {currentStepStatus === "play" ? (
+          <MockButton name="확인" onPress={this.submitAnswer} />
+        ) : (
+          <AnswerText>정답입니다~</AnswerText>
+        )}
       </AnswerView>
     );
   }
@@ -251,9 +269,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private onLimitTimeEnd = () => {
-    this.setState(prevState => {
-      return { currentStep: prevState.currentStep + 1 };
-    });
+    this.gamePlayersRef.current?.snapToNext?.();
   };
 
   private onSkipItemPopup = () => {
@@ -300,14 +316,20 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private submitAnswer = () => {
-    this.setState({
-      currentStepStatus: "answer"
+    this.setState(prevState => {
+      return {
+        currentStepStatus: "answer",
+        songAnswers: [...prevState.songAnswers, prevState.songAnswerInput]
+      };
     });
     setTimeout(() => {
-      this.setState(prevState => ({
-        currentStep: prevState.currentStep,
-        currentStepStatus: "play"
-      }));
+      this.setState(
+        {
+          currentStepStatus: "play",
+          songAnswerInput: ""
+        },
+        this.gamePlayersRef.current?.snapToNext
+      );
     }, 2000);
   };
 

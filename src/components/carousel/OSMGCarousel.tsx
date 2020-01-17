@@ -1,7 +1,11 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import { ViewProps } from "react-native";
-import Carousel, { AdditionalParallaxProps } from "react-native-snap-carousel";
+import Carousel, {
+  CarouselProperties,
+  CarouselStatic,
+  AdditionalParallaxProps
+} from "react-native-snap-carousel";
 import styled from "styled-components/native";
 
 import { Regular12 } from "src/components/text/Typographies";
@@ -12,16 +16,8 @@ export interface ICarousel {
   key: string;
 }
 
-interface IProps<T> {
+interface IProps<T> extends CarouselProperties<T> {
   style?: ViewProps["style"];
-  data: Array<T & ICarousel>;
-  currentIndex?: number;
-  itemWidth: number;
-  renderItem: (
-    item: { item: T; index: number },
-    parallaxProps?: AdditionalParallaxProps
-  ) => JSX.Element | JSX.Element[];
-  onSnapToItem: (index: number) => void;
 }
 
 interface IStates {
@@ -30,18 +26,12 @@ interface IStates {
 
 const windowWidth = getDeviceWidth();
 
-const CarouselView = styled.View``;
+const CarouselView = styled.TouchableOpacity``;
 
 const CarouselBox = styled(Carousel)``;
 
 class OSMGCarousel<T> extends Component<IProps<T & ICarousel>, IStates> {
-  public static getDerivedStateFromProps<T>(props: IProps<T & ICarousel>) {
-    return {
-      currentIndex: props.currentIndex
-    };
-  }
-
-  public carousel: any = null;
+  public carouselRef = React.createRef<CarouselStatic<T>>();
 
   constructor(props: IProps<T & ICarousel>) {
     super(props);
@@ -50,17 +40,24 @@ class OSMGCarousel<T> extends Component<IProps<T & ICarousel>, IStates> {
     };
   }
 
+  public snapToPrev = () => {
+    this.carouselRef.current?.snapToPrev?.();
+  };
+
+  public snapToNext = () => {
+    this.carouselRef.current?.snapToNext?.();
+  };
+
   public render() {
-    const { style, renderItem, itemWidth } = this.props;
+    const { style, ...rest } = this.props;
     return (
       <>
         <CarouselView style={style}>
           <CarouselBox
-            ref={this.setCarouselRef}
+            {...rest}
+            ref={this.carouselRef as any}
             data={this.props.data}
-            renderItem={renderItem}
             sliderWidth={windowWidth}
-            itemWidth={itemWidth}
             slideInterpolatedStyle={this.animatedStyles}
             onSnapToItem={this.snapToItem}
           />
@@ -69,33 +66,18 @@ class OSMGCarousel<T> extends Component<IProps<T & ICarousel>, IStates> {
     );
   }
 
-  private setCarouselRef = (ref: any) => (this.carousel = ref);
-
-  private snapToPrev = () => {
-    if (this.carousel) {
-      this.carousel.snapToPrev();
-    }
-  };
-
-  private snapToNext = () => {
-    if (this.carousel) {
-      this.carousel.snapToNext();
-    }
-  };
-
   private getTotalLength = () => {
     const { data } = this.props;
     return data.length;
   };
 
   private snapToItem = (index: number) => {
-    const { onSnapToItem } = this.props;
     this.setState(
       {
         currentIndex: index
       },
       () => {
-        onSnapToItem(index);
+        this.props?.onSnapToItem?.(index);
       }
     );
   };
