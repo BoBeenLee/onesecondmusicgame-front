@@ -19,6 +19,8 @@ import MockButton from "src/components/button/MockButton";
 import HeartGroup from "src/components/icon/HeartGroup";
 import TimerText from "src/components/text/TimerText";
 import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
+import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
+import SkipItemPopup from "src/components/popup/SkipItemPopup";
 import { makeAppShareLink } from "src/utils/dynamicLink";
 import RegisterSongScreen from "src/screens/RegisterSongScreen";
 import GameRankingScreen from "src/screens/game/GameRankingScreen";
@@ -187,37 +189,13 @@ class MainScreen extends Component<IProps> {
 
   private onSkipItemPopup = () => {
     const { showPopup, closePopup } = this.props.popupProps;
-    showPopup(
-      <OnlyConfirmPopup
-        ContentComponent={
-          <PopupContainer>
-            <PopupTitle>스킵 아이템</PopupTitle>
-            <PopupDescription>{`게임 중 모르는 노래를 skip하고
-정답 처리받을 수 있어요!`}</PopupDescription>
-          </PopupContainer>
-        }
-        confirmText={"친구초대하고 아이템받기 >"}
-        onConfirm={closePopup}
-        onCancel={closePopup}
-      />
-    );
+    showPopup(<SkipItemPopup onConfirm={closePopup} onCancel={closePopup} />);
   };
 
   private onInvitePopup = () => {
     const { showPopup, closePopup } = this.props.popupProps;
     showPopup(
-      <OnlyConfirmPopup
-        ContentComponent={
-          <PopupContainer>
-            <PopupTitle>친구 초대하기</PopupTitle>
-            <PopupDescription>{`친구를 초대하면 
-하트 풀충전 + 스킵 아이템을 각각 1개씩 드려요!`}</PopupDescription>
-          </PopupContainer>
-        }
-        confirmText={"초대하기"}
-        onConfirm={this.invite}
-        onCancel={closePopup}
-      />
+      <InviteFriendsPopup onConfirm={this.invite} onCancel={closePopup} />
     );
   };
 
