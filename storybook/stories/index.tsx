@@ -11,3 +11,4 @@ import "./Input.stories";
 import "./BackDrop.stories";
 import "./Image.stories";
 import "./Progress.stories";
+import "./Tab.stories";

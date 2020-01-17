@@ -196,7 +196,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const userItem = this.props.authStore.user?.userItemsByItemType(
       Item.ItemTypeEnum.SKIP
     );
-    const { currentStep } = this.state;
+    const { currentStep, songAnswerInput } = this.state;
     return (
       <Container>
         <Header>
@@ -208,6 +208,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
           />
         </Header>
         <GamePlayers
+          scrollEnabled={false}
           ref={this.gamePlayersRef}
           data={MOCK_PLAYER_DATA}
           itemWidth={240}
@@ -218,6 +219,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
           <SongInput>
             <SongTextInput
               placeholder="노래 명"
+              value={songAnswerInput}
               onChangeText={this.onSongAnswerChangeText}
             />
           </SongInput>
