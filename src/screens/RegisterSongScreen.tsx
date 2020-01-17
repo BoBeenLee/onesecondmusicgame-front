@@ -188,7 +188,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
         url,
         highlightSeconds: [0]
       });
-      this.back();
+      this.goHome();
       showToast("노래가 등록 완료되었습니다!");
     } catch (error) {
       showToast(error.message);
@@ -196,6 +196,11 @@ class RegisterSongScreen extends Component<IProps, IStates> {
   };
 
   private back = () => {
+    const { componentId } = this.props;
+    pop(componentId);
+  };
+
+  private goHome = () => {
     const { parentComponentId } = this.props;
     popTo(parentComponentId);
   };
