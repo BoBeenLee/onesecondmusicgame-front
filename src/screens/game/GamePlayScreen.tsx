@@ -16,7 +16,7 @@ import GameAudioPlayer from "src/components/player/GameAudioPlayer";
 import OSMGTextInput from "src/components/input/OSMGTextInput";
 import MockButton from "src/components/button/MockButton";
 import { IPopupProps } from "src/hocs/withPopup";
-import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
+import FullHeartPopup from "src/components/popup/FullHeartPopup";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
@@ -109,20 +109,6 @@ const GameItems = styled.View`
   position: absolute;
   bottom: 30px;
   right: 20px;
-`;
-
-const PopupContainer = styled.View`
-  justify-content: center;
-  align-items: center;
-`;
-
-const PopupTitle = styled(Bold20)`
-  margin-top: 33px;
-  margin-bottom: 33px;
-`;
-
-const PopupDescription = styled(Bold12)`
-  margin-bottom: 47px;
 `;
 
 const MOCK_PLAYER_DATA: ICarouselItem[] = [
@@ -326,15 +312,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   private onFinishPopup = () => {
     const { showPopup } = this.props.popupProps;
     showPopup(
-      <OnlyConfirmPopup
-        ContentComponent={
-          <PopupContainer>
-            <PopupDescription>{`하트를 모두 사용했네요!
-광고를 보고
-하트 Full 충전 받으시겠어요?`}</PopupDescription>
-          </PopupContainer>
-        }
-        confirmText={"광고보기"}
+      <FullHeartPopup
         onConfirm={this.requestHeartRewardAD}
         onCancel={this.finish}
       />

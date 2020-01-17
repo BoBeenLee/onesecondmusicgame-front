@@ -18,7 +18,6 @@ import { IPopupProps } from "src/hocs/withPopup";
 import MockButton from "src/components/button/MockButton";
 import HeartGroup from "src/components/icon/HeartGroup";
 import TimerText from "src/components/text/TimerText";
-import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
 import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
 import SkipItemPopup from "src/components/popup/SkipItemPopup";
 import { makeAppShareLink } from "src/utils/dynamicLink";
@@ -79,20 +78,6 @@ const Footer = styled.View`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-`;
-
-const PopupContainer = styled.View`
-  justify-content: center;
-  align-items: center;
-`;
-
-const PopupTitle = styled(Bold20)`
-  margin-top: 33px;
-  margin-bottom: 33px;
-`;
-
-const PopupDescription = styled(Bold12)`
-  margin-bottom: 47px;
 `;
 
 @inject(
@@ -189,7 +174,7 @@ class MainScreen extends Component<IProps> {
 
   private onSkipItemPopup = () => {
     const { showPopup, closePopup } = this.props.popupProps;
-    showPopup(<SkipItemPopup onConfirm={closePopup} onCancel={closePopup} />);
+    showPopup(<SkipItemPopup onConfirm={this.invite} onCancel={closePopup} />);
   };
 
   private onInvitePopup = () => {
