@@ -33,6 +33,7 @@ import com.microsoft.codepush.react.CodePush;
 import com.airbnb.android.react.lottie.LottiePackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.dooboolab.kakaologins.RNKakaoLoginsPackage;
+import io.sentry.RNSentryPackage;
 
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -44,7 +45,6 @@ import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.swmansion.reanimated.ReanimatedPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import com.bugsnag.BugsnagReactNative;
 import com.reactnativecommunity.rnpermissions.RNPermissionsPackage; 
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.brentvatne.react.ReactVideoPackage;
@@ -85,6 +85,8 @@ public class MainApplication extends NavigationApplication {
                 new RNFirebaseLinksPackage(),
                 new RNFirebaseNotificationsPackage(),
                 new RNFirebaseRemoteConfigPackage(),
+                new RNFirebaseAuthPackage(),
+                new RNFirebaseAdMobPackage(),
                 new LottiePackage(),
                 new CodePush(getString(R.string.reactNativeCodePush_androidDeploymentKey), MainApplication.this, isDebug(),
                         R.string.CodePushPublicKey),
@@ -100,13 +102,11 @@ public class MainApplication extends NavigationApplication {
                 new RNCWebViewPackage(),
                 new ReanimatedPackage(),
                 new RNGestureHandlerPackage(),
-                BugsnagReactNative.getPackage(),
                 new RNPermissionsPackage(),
-                new RNFirebaseAuthPackage(),
                 new RNGoogleSigninPackage(),
                 new ReactVideoPackage(),
                 new FBSDKPackage(),
-                new RNFirebaseAdMobPackage()
+                new RNSentryPackage()
         );
     }
 
