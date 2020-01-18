@@ -12,7 +12,7 @@ const AudioView = styled(Video)`
 `;
 
 function AudioPlayer(props: VideoProperties) {
-  return <AudioView {...props} ignoreSilentSwitch={"ignore"} controls={true} />;
+  return <AudioView ignoreSilentSwitch={"ignore"} controls={true} {...props} />;
 }
 
 export default AudioPlayer;

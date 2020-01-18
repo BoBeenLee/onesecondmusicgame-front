@@ -121,7 +121,8 @@ const MOCK_PLAYER_DATA: ICarouselItem[] = [
     singerName: "트와이스",
     highlightSeconds: 48,
     source: {
-      uri: "https://picsum.photos/200/300/?random"
+      uri:
+        "https://api.soundcloud.com/tracks/385480856/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
     }
   },
   {
@@ -130,7 +131,8 @@ const MOCK_PLAYER_DATA: ICarouselItem[] = [
     singerName: "트와이스",
     highlightSeconds: 0,
     source: {
-      uri: "https://picsum.photos/200/300/?random"
+      uri:
+        "https://api.soundcloud.com/tracks/405717552/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
     }
   },
   {
@@ -139,7 +141,8 @@ const MOCK_PLAYER_DATA: ICarouselItem[] = [
     singerName: "마마무",
     highlightSeconds: 43,
     source: {
-      uri: "https://picsum.photos/200/300/?random"
+      uri:
+        "https://api.soundcloud.com/tracks/712795987/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
     }
   },
   {
@@ -148,7 +151,8 @@ const MOCK_PLAYER_DATA: ICarouselItem[] = [
     singerName: "BTS",
     highlightSeconds: 223,
     source: {
-      uri: "https://picsum.photos/200/300/?random"
+      uri:
+        "https://api.soundcloud.com/tracks/489955644/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
     }
   },
   {
@@ -157,12 +161,12 @@ const MOCK_PLAYER_DATA: ICarouselItem[] = [
     singerName: "BTS",
     highlightSeconds: 81,
     source: {
-      uri: "https://picsum.photos/200/300/?random"
+      uri:
+        "https://api.soundcloud.com/tracks/343188402/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
     }
   }
 ];
 
-const DEFAULT_PLAY_TIMEOUT = 1000;
 const DEFAULT_LIMIT_TIME = 40;
 
 @inject(
@@ -280,12 +284,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
     return (
       <GamePlayerView>
         <GameAudioPlayer
-          seek={highlightSeconds * 1000}
+          highlight={highlightSeconds * 1000}
           size={200}
-          source={{
-            uri:
-              "https://api.soundcloud.com/tracks/736765723/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
-          }}
+          source={source}
         />
       </GamePlayerView>
     );
@@ -316,6 +317,13 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private submitAnswer = () => {
+    const { currentStep, songAnswerInput } = this.state;
+    const { showToast } = this.props.toastStore;
+
+    if (MOCK_PLAYER_DATA[currentStep].name !== songAnswerInput) {
+      showToast("오답입니다ㅠㅜ");
+      return;
+    }
     this.setState(prevState => {
       return {
         currentStepStatus: "answer",
