@@ -10,6 +10,7 @@ import colors from "src/styles/colors";
 import RegisterSongScreen from "src/screens/RegisterSongScreen";
 import LevelBadge from "src/components/badge/LevelBadge";
 import GamePlayScreen from "src/screens/game/GamePlayScreen";
+import MockButton from "src/components/button/MockButton";
 
 interface IParams {
   componentId: string;
@@ -71,9 +72,7 @@ const Footer = styled.View`
   align-items: center;
 `;
 
-const RegisterSongButton = styled.TouchableOpacity``;
-
-const RegisterSongButtonText = styled(Bold12)``;
+const RegisterSongButton = styled(MockButton)``;
 
 class GameModeScreen extends Component<IProps> {
   public static open(params: IParams) {
@@ -105,9 +104,10 @@ class GameModeScreen extends Component<IProps> {
           </GameModeSection>
         </Content>
         <Footer>
-          <RegisterSongButton onPress={this.navigateToRegisterSong}>
-            <RegisterSongButtonText>음원 등록하기</RegisterSongButtonText>
-          </RegisterSongButton>
+          <RegisterSongButton
+            name="음원 등록하기"
+            onPress={this.navigateToRegisterSong}
+          />
         </Footer>
       </Container>
     );

@@ -1,8 +1,9 @@
 import _ from "lodash";
 import React, { Component } from "react";
+import { Clipboard } from "react-native";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
-import { OnLoadData } from "react-native-video";
+import { OnLoadData, OnSeekData } from "react-native-video";
 
 import { IStore } from "src/stores/Store";
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
@@ -18,6 +19,8 @@ import { addNewSongUsingPOST } from "src/apis/song";
 import GameAudioPlayer from "src/components/player/GameAudioPlayer";
 import { makePlayStreamUri } from "src/configs/soundCloudAPI";
 import ButtonLoading from "src/components/loading/ButtonLoading";
+import AudioPlayer from "src/components/AudioPlayer";
+import MockButton from "src/components/button/MockButton";
 
 interface IInject {
   toastStore: IToastStore;
@@ -35,6 +38,7 @@ interface IProps extends IInject, IParams {
 interface IStates {
   selectedTrackItem: ITrackItem | null;
   duration: number;
+  highlight: number;
 }
 
 const Container = styled(ContainerWithStatusBar)`
@@ -110,22 +114,25 @@ class RegisterSongScreen extends Component<IProps, IStates> {
     super(props);
     this.state = {
       selectedTrackItem: props?.selectedTrackItem ?? null,
-      duration: 0
+      duration: 0,
+      highlight: 0
     };
   }
 
   public render() {
-    const { selectedTrackItem, duration } = this.state;
+    const { selectedTrackItem, duration, highlight } = this.state;
     return (
       <Container>
         <BackTopBar title="노래 등록" onBackPress={this.back} />
         <Content>
           <SongTitle>{selectedTrackItem?.title}</SongTitle>
           <GameSongPlayer
+            seek={highlight}
             size={200}
             source={{
               uri: makePlayStreamUri(selectedTrackItem?.stream_url ?? "")
             }}
+            timeout={1000}
             onLoad={this.onSongLoad}
           />
           <RegisterSongDescription>
@@ -139,12 +146,19 @@ class RegisterSongScreen extends Component<IProps, IStates> {
                 "https://via.placeholder.com/150"
             }}
           />
-          <RegisterSongButtonText>
-            singerName: {selectedTrackItem?.user?.username}
-          </RegisterSongButtonText>
+          <MockButton
+            name={`singerName: ${selectedTrackItem?.user?.username}`}
+            onPress={this.copyUri}
+          />
           <RegisterSongButtonText>
             duration: {_.round(duration)}seconds
           </RegisterSongButtonText>
+          <AudioPlayer
+            source={{
+              uri: makePlayStreamUri(selectedTrackItem?.stream_url ?? "")
+            }}
+            onSeek={this.onSeek}
+          />
         </Content>
         <Footer>{this.renderRegisterSongButton}</Footer>
       </Container>
@@ -165,15 +179,26 @@ class RegisterSongScreen extends Component<IProps, IStates> {
     );
   }
 
+  private onSeek = (data: OnSeekData) => {
+    this.setState({
+      highlight: data.seekTime
+    });
+  };
+
   private onSongLoad = (data: OnLoadData) => {
     this.setState({
       duration: data.duration
     });
   };
 
+  private copyUri = () => {
+    const { selectedTrackItem } = this.state;
+    Clipboard.setString(makePlayStreamUri(selectedTrackItem?.stream_url ?? ""));
+  };
+
   private register = async () => {
     const { showToast } = this.props.toastStore;
-    const { selectedTrackItem } = this.state;
+    const { selectedTrackItem, highlight: highlightSeconds } = this.state;
     const title = selectedTrackItem?.title;
     const singerName = selectedTrackItem?.user?.username;
     const url = selectedTrackItem?.stream_url;
@@ -186,7 +211,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
         title,
         singerName,
         url,
-        highlightSeconds: [0]
+        highlightSeconds: [highlightSeconds]
       });
       this.goHome();
       showToast("노래가 등록 완료되었습니다!");

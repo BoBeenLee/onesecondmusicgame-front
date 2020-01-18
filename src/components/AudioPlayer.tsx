@@ -1,10 +1,9 @@
 import React, { Component } from "react";
+import { ViewProps } from "react-native";
 import styled from "styled-components/native";
-import Video from "react-native-video";
+import Video, { VideoProperties } from "react-native-video";
 
 import { Bold12 } from "src/components/text/Typographies";
-
-const Container = styled.View``;
 
 const AudioView = styled(Video)`
   width: 200px;
@@ -12,21 +11,8 @@ const AudioView = styled(Video)`
   background-color: black;
 `;
 
-class AudioPlayer extends Component {
-  public render() {
-    return (
-      <Container>
-        <AudioView
-          ignoreSilentSwitch={"ignore"}
-          controls={true}
-          source={{
-            uri:
-              "https://api.soundcloud.com/tracks/736765723/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
-          }}
-        />
-      </Container>
-    );
-  }
+function AudioPlayer(props: VideoProperties) {
+  return <AudioView {...props} ignoreSilentSwitch={"ignore"} controls={true} />;
 }
 
 export default AudioPlayer;
