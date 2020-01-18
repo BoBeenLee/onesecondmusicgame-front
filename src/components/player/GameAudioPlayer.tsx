@@ -58,7 +58,7 @@ function GameAudioPlayer(props: IProps) {
     }
     setPlayType(playType);
     onToggle?.(playType);
-    await delay(1000);
+    await delay(2000);
     stop();
   };
 
