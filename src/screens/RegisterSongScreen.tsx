@@ -127,12 +127,11 @@ class RegisterSongScreen extends Component<IProps, IStates> {
         <Content>
           <SongTitle>{selectedTrackItem?.title}</SongTitle>
           <GameSongPlayer
-            seek={highlight}
+            highlight={highlight}
             size={200}
             source={{
               uri: makePlayStreamUri(selectedTrackItem?.stream_url ?? "")
             }}
-            timeout={1000}
             onLoad={this.onSongLoad}
           />
           <RegisterSongDescription>

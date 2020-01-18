@@ -48,6 +48,9 @@ interface IStates {
 }
 
 interface ICarouselItem extends ICarousel {
+  name: string;
+  singerName: string;
+  highlightSeconds: number;
   source: { uri: string };
 }
 
@@ -114,24 +117,52 @@ const GameItems = styled.View`
 const MOCK_PLAYER_DATA: ICarouselItem[] = [
   {
     key: "1",
+    name: "TT",
+    singerName: "트와이스",
+    highlightSeconds: 48,
     source: {
       uri: "https://picsum.photos/200/300/?random"
     }
   },
   {
     key: "2",
+    name: "Likey",
+    singerName: "트와이스",
+    highlightSeconds: 0,
     source: {
       uri: "https://picsum.photos/200/300/?random"
     }
   },
   {
     key: "3",
+    name: "HIP",
+    singerName: "마마무",
+    highlightSeconds: 43,
+    source: {
+      uri: "https://picsum.photos/200/300/?random"
+    }
+  },
+  {
+    key: "4",
+    name: "Idol",
+    singerName: "BTS",
+    highlightSeconds: 223,
+    source: {
+      uri: "https://picsum.photos/200/300/?random"
+    }
+  },
+  {
+    key: "5",
+    name: "DNA",
+    singerName: "BTS",
+    highlightSeconds: 81,
     source: {
       uri: "https://picsum.photos/200/300/?random"
     }
   }
 ];
 
+const DEFAULT_PLAY_TIMEOUT = 1000;
 const DEFAULT_LIMIT_TIME = 40;
 
 @inject(
@@ -244,10 +275,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
     this.setState({ songAnswerInput: text });
   };
 
-  private renderItem = ({ item }: { item: any; index: number }) => {
+  private renderItem = (props: { item: ICarouselItem; index: number }) => {
+    const { highlightSeconds, source } = props.item;
     return (
       <GamePlayerView>
         <GameAudioPlayer
+          seek={highlightSeconds * 1000}
           size={200}
           source={{
             uri:
