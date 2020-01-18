@@ -10,6 +10,7 @@ interface IProps {
   thumnail: string;
   title: string;
   author: string;
+  uri: string;
   onPress?: () => void;
 }
 
@@ -51,7 +52,7 @@ const Date = styled(Bold10)``;
 const DateView = styled.View``;
 
 function SearchTrackCard(props: IProps) {
-  const { style, thumnail, title, author, onPress } = props;
+  const { style, thumnail, title, author, uri, onPress } = props;
   return (
     <Container style={style} onPress={onPress}>
       <Content>
@@ -59,8 +60,7 @@ function SearchTrackCard(props: IProps) {
         <MiniAudioPlayerView
           size={40}
           source={{
-            uri:
-              "https://api.soundcloud.com/tracks/736765723/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
+            uri
           }}
         />
         <TrackView>

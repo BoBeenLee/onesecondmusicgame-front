@@ -320,7 +320,10 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const { currentStep, songAnswerInput } = this.state;
     const { showToast } = this.props.toastStore;
 
-    if (MOCK_PLAYER_DATA[currentStep].name !== songAnswerInput) {
+    if (
+      MOCK_PLAYER_DATA[currentStep].name.toLowerCase() !==
+      songAnswerInput.toLowerCase()
+    ) {
       showToast("오답입니다ㅠㅜ");
       return;
     }

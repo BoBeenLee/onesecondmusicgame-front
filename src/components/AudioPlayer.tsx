@@ -7,7 +7,7 @@ import { Bold12 } from "src/components/text/Typographies";
 
 const AudioView = styled(Video)`
   width: 200px;
-  height: 200px;
+  height: 50px;
   background-color: black;
 `;
 

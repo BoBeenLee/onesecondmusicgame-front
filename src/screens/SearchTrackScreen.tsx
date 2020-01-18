@@ -14,6 +14,7 @@ import OSMGTextInput from "src/components/input/OSMGTextInput";
 import { ITrackItem } from "src/apis/soundcloud/interface";
 import SearchTrackCard from "src/components/card/SearchTrackCard";
 import Tracks, { ITracks } from "src/stores/Tracks";
+import { makePlayStreamUri } from "src/configs/soundCloudAPI";
 
 interface IParams {
   componentId: string;
@@ -121,6 +122,7 @@ class SearchTrackScreen extends Component<IProps, IStates> {
         thumnail={item.artwork_url ?? "https://via.placeholder.com/150"}
         title={item.title}
         author={item.user.username}
+        uri={makePlayStreamUri(item?.stream_url ?? "")}
         onPress={_.partial(this.selected, item)}
       />
     );
