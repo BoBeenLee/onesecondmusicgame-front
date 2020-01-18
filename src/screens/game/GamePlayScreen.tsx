@@ -356,7 +356,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
       <ChargeFullHeartPopup
         onConfirm={this.requestHeartRewardAD}
         onCancel={this.finish}
-      />
+      />,
+      true,
+      this.finish
     );
   };
 

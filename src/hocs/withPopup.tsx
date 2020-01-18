@@ -16,7 +16,8 @@ export interface IPopupProps {
   popupProps: {
     showPopup: (
       PopupComponent: JSX.Element | null,
-      closeOverlay?: boolean
+      closeOverlay?: boolean,
+      closeCallback?: () => void
     ) => void;
     closePopup: () => void;
   };
@@ -92,9 +93,7 @@ const withPopup = <P extends IPopupProps>(
     };
 
     private closePopup = () => {
-      this.setState(INITIAL_STATES, () => {
-        this.state?.closeCallback();
-      });
+      this.setState(INITIAL_STATES, this.state?.closeCallback);
     };
 
     private onBackgroundPress = () => {
