@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React, { useState, useCallback, useEffect, useRef } from "react";
-import { ViewProps } from "react-native";
+import { ViewProps, InteractionManager } from "react-native";
 import styled, { css } from "styled-components/native";
 import Video, { VideoProperties } from "react-native-video";
 
@@ -8,6 +8,7 @@ import XEIcon, { XEIconType } from "src/components/icon/XEIcon";
 import PlayButton from "src/components/button/PlayButton";
 import { AudioType } from "src/components/player/interface";
 import ScaleableButton from "src/components/button/ScaleableButton";
+import { delay } from "src/utils/common";
 
 interface IProps extends VideoProperties {
   style?: ViewProps["style"];
@@ -45,23 +46,21 @@ function GameAudioPlayer(props: IProps) {
     audioRef.current?.seek(props.highlight);
   }, [props.highlight]);
 
-  const onTogglePlayType = useCallback(
-    (playType: AudioType) => {
-      if (loading.audio) {
-        return;
-      }
-      setPlayType(playType);
-      onToggle?.(playType);
-      if (playType === "play") {
-        setTimeout(() => {
-          setPlayType("stop");
-          onToggle?.("stop");
-          audioRef.current?.seek(props.highlight);
-        }, 1000);
-      }
-    },
-    [loading.audio, onToggle, props.highlight]
-  );
+  const stop = () => {
+    setPlayType("stop");
+    onToggle?.("stop");
+    audioRef.current?.seek(props.highlight);
+  };
+
+  const onTogglePlayType = async (playType: AudioType) => {
+    if (loading.audio) {
+      return;
+    }
+    setPlayType(playType);
+    onToggle?.(playType);
+    await delay(1000);
+    stop();
+  };
 
   const onLoad = (data: { audio?: boolean }) => {
     setLoading(prevState => ({
@@ -81,7 +80,6 @@ function GameAudioPlayer(props: IProps) {
         ref={audioRef as any}
         ignoreSilentSwitch={"ignore"}
         controls={false}
-        onEnd={_.partial(onTogglePlayType, "stop")}
         onLoadStart={_.partial(onLoad, {
           audio: false
         })}
