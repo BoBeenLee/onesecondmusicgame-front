@@ -13,7 +13,7 @@ import { delay } from "src/utils/common";
 interface IProps extends VideoProperties {
   style?: ViewProps["style"];
   size: number;
-  highlight: number;
+  highlightSeconds: number;
   onToggle?: (playType: AudioType) => void;
 }
 
@@ -43,13 +43,13 @@ function GameAudioPlayer(props: IProps) {
   const audioRef = useRef<Video>();
 
   useEffect(() => {
-    audioRef.current?.seek(props.highlight);
-  }, [props.highlight]);
+    audioRef.current?.seek(props.highlightSeconds);
+  }, [props.highlightSeconds]);
 
   const stop = () => {
     setPlayType("stop");
     onToggle?.("stop");
-    audioRef.current?.seek(props.highlight);
+    audioRef.current?.seek(props.highlightSeconds);
   };
 
   const onTogglePlayType = async (playType: AudioType) => {
@@ -79,6 +79,8 @@ function GameAudioPlayer(props: IProps) {
       <AudioPlayer
         ref={audioRef as any}
         ignoreSilentSwitch={"ignore"}
+        playInBackground={true}
+        playWhenInactive={true}
         controls={false}
         onLoadStart={_.partial(onLoad, {
           audio: false

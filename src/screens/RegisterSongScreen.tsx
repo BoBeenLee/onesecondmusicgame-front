@@ -127,7 +127,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
         <Content>
           <SongTitle>{selectedTrackItem?.title}</SongTitle>
           <GameSongPlayer
-            highlight={highlight}
+            highlightSeconds={highlight}
             size={200}
             source={{
               uri: makePlayStreamUri(selectedTrackItem?.stream_url ?? "")

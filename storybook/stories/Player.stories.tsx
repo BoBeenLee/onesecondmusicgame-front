@@ -48,7 +48,7 @@ storiesOf("Player", module)
           uri:
             "https://api.soundcloud.com/tracks/736765723/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
         }}
-        highlight={0}
+        highlightSeconds={0}
         onToggle={action("onToggle")}
       />
     );

@@ -284,7 +284,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     return (
       <GamePlayerView>
         <GameAudioPlayer
-          highlight={highlightSeconds * 1000}
+          highlightSeconds={highlightSeconds}
           size={200}
           source={source}
         />
