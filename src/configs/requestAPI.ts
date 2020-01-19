@@ -43,8 +43,8 @@ export const requestAPI: any = async <T extends ResponseDTO>(
     )
   ) {
     throw new OSMGError({
-      status: response?.data?.status!,
-      body: response?.data?.body ?? `${response?.data?.status!}`
+      status: response?.data?.status ?? 0,
+      body: response?.data?.body ?? `${response?.data?.status ?? ""}`
     });
   }
   const responseDTO: Partial<Response> = {
