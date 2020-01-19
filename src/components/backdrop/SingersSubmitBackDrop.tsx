@@ -71,32 +71,33 @@ function SingersSubmitBackDrop(props: IProps) {
   );
   const [showSingers, setShowSingers] = useState(!showMinimumSubmit);
 
-  const showSingerOpacity = (toValue: number, callback?: () => any) => {
-    singerOpacityRef.current?.stopAnimation(() => {
+  const showSingerOpacity = useCallback(
+    (toValue: number, callback?: () => any) => {
       Animated.timing(singerOpacityRef.current, {
         duration: 200,
         toValue,
         useNativeDriver: true
       }).start(callback);
-    });
-  };
+    },
+    []
+  );
 
   useEffect(() => {
     if (showSingers) {
       showSingerOpacity(1);
     }
-  }, [showSingers]);
+  }, [showSingerOpacity, showSingers]);
   useEffect(() => {
     if (showMinimumSubmit) {
-      backdropRef.current?.hideBackdrop?.();
-      showSingerOpacity(0, () => {
+      backdropRef.current?.hideBackdrop?.(() => {
         setShowSingers(false);
       });
+      showSingerOpacity(0);
       return;
     }
     backdropRef.current?.showBackdrop?.();
     setShowSingers(true);
-  }, [showMinimumSubmit]);
+  }, [showMinimumSubmit, showSingerOpacity]);
 
   return (
     <BackdropView

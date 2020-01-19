@@ -18,6 +18,10 @@ import SingersSubmitBackDrop from "src/components/backdrop/SingersSubmitBackDrop
 import { IStore } from "src/stores/Store";
 import { ISingerStore } from "src/stores/SingerStore";
 import { IToastStore } from "src/stores/ToastStore";
+import withScrollDirection, {
+  IScrollDirectionProps
+} from "src/hocs/withScrollDirection";
+import { ScrollDirection } from "src/utils/scrollView";
 
 interface IInject {
   singerStore: ISingerStore;
@@ -29,10 +33,11 @@ interface IParams {
   onResult: (selectedSingers: ISinger[]) => void;
 }
 
-interface IProps extends IParams, IInject {}
+interface IProps extends IParams, IInject, IScrollDirectionProps {}
 
 interface IStates {
   selectedSingers: { [key in string]: ISinger | null };
+  showMinimumSubmit: boolean;
 }
 
 const Container = styled(ContainerWithStatusBar)`
@@ -113,7 +118,9 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
       singers: props.singerStore.singerViews
     });
 
-    this.state = { selectedSingers: {} };
+    this.state = { selectedSingers: {}, showMinimumSubmit: false };
+
+    this.onResultScroll = _.debounce(this.onResultScroll, 210);
   }
 
   public async componentDidMount() {
@@ -122,6 +129,8 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
 
   public render() {
     const { singerViews, refresh, isRefresh } = this.singers;
+    const { onScroll } = this.props.scrollDirectionProps;
+    const { showMinimumSubmit } = this.state;
 
     return (
       <Container>
@@ -150,9 +159,12 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
                 <ResultEmptyText>검색결과가 없습니다.</ResultEmptyText>
               </ResultEmpty>
             }
+            scrollEventThrottle={16}
+            onScroll={onScroll(this.onResultScroll)}
           />
         </Content>
         <SingersSubmitBackDrop
+          showMinimumSubmit={showMinimumSubmit}
           selectedSingers={this.selectedSingers}
           onSubmit={this.submit}
           onSelectedItem={this.onSelectedItem}
@@ -160,6 +172,32 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
       </Container>
     );
   }
+
+  private onResultScroll = (scrollDirection: ScrollDirection) => {
+    const { showMinimumSubmit } = this.state;
+
+    if (scrollDirection === ScrollDirection.IDLE) {
+      return;
+    }
+    if (
+      showMinimumSubmit === false &&
+      scrollDirection === ScrollDirection.DOWNWARD
+    ) {
+      this.setState({
+        showMinimumSubmit: true
+      });
+      return;
+    }
+    if (
+      showMinimumSubmit === true &&
+      scrollDirection === ScrollDirection.UPWARD
+    ) {
+      this.setState({
+        showMinimumSubmit: false
+      });
+      return;
+    }
+  };
 
   private get selectedSingers() {
     const { selectedSingers } = this.state;
@@ -193,7 +231,8 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
           [item.name]: !Boolean(prevState.selectedSingers[item.name])
             ? item
             : null
-        }
+        },
+        showMinimumSubmit: false
       };
     });
   };
@@ -210,4 +249,4 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
   };
 }
 
-export default GameSearchSingerScreen;
+export default withScrollDirection({ sensitivity: 10 })(GameSearchSingerScreen);

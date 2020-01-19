@@ -2,16 +2,14 @@ import hoistNonReactStatics from "hoist-non-react-statics";
 import React from "react";
 import { NativeScrollEvent, NativeSyntheticEvent } from "react-native";
 
-export enum ScrollDirection {
-  IDLE = "IDLE",
-  UPWARD = "UPWARD",
-  DOWNWARD = "DOWNWARD"
-}
+import { ScrollDirection, getScrollDirection } from "src/utils/scrollView";
+import _ from "lodash";
 
 export interface IScrollDirectionProps {
   scrollDirectionProps: {
-    scrollDirection: ScrollDirection;
-    onScroll: (e: NativeSyntheticEvent<NativeScrollEvent>) => void;
+    onScroll: (
+      callback: (scrollDirection: ScrollDirection) => void
+    ) => (e: NativeSyntheticEvent<NativeScrollEvent>) => void;
   };
 }
 
@@ -41,34 +39,25 @@ const withScrollDirection = ({ sensitivity = 5 }: { sensitivity: number }) => <
 
     private get scrollDirectionProps() {
       return {
-        onScroll: this.onScroll,
-        scrollDirection: this.state.scrollDirection
+        onScroll: this.onScroll
       };
     }
 
-    private onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const prevScrollY = this.scrollY;
+    private onScroll = (
+      callback: (scrollDirection: ScrollDirection) => void
+    ) => (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const scrollDirection = getScrollDirection(event, {
+        scrollY: this.scrollY,
+        currentScrollDirection: this.state.scrollDirection,
+        sensitivity
+      });
+      if (scrollDirection !== null) {
+        this.setState(
+          { scrollDirection },
+          _.partial(callback, scrollDirection)
+        );
+      }
       const currentScrollY = event.nativeEvent.contentOffset.y;
-      const scrollDirection =
-        currentScrollY > prevScrollY
-          ? ScrollDirection.DOWNWARD
-          : currentScrollY < prevScrollY
-          ? ScrollDirection.UPWARD
-          : ScrollDirection.IDLE;
-
-      if (scrollDirection === ScrollDirection.IDLE) {
-        this.setState({ scrollDirection });
-        return;
-      }
-
-      if (this.state.scrollDirection !== scrollDirection) {
-        const diff = Math.abs(currentScrollY - prevScrollY);
-
-        if (diff > sensitivity) {
-          this.setState({ scrollDirection });
-        }
-      }
-
       this.scrollY = currentScrollY;
     };
   }
