@@ -12,7 +12,7 @@ const withBackHandler = <P extends IBackHandlerProps>(
   TargetComponent: React.ComponentType<P>
 ) => {
   class WithBackHandler extends React.Component<
-    Subtract<P, IBackHandlerProps>
+    Subtract<P, IBackHandlerProps> & { innerRef: any }
   > {
     public backHandler: NativeEventSubscription | null = null;
 
@@ -21,9 +21,11 @@ const withBackHandler = <P extends IBackHandlerProps>(
     }
 
     public render() {
+      const { innerRef, ...rest } = this.props;
       return (
         <TargetComponent
-          {...(this.props as P)}
+          {...(rest as any)}
+          ref={innerRef}
           backHandlerProps={this.backHandlerProps}
         />
       );
@@ -42,7 +44,14 @@ const withBackHandler = <P extends IBackHandlerProps>(
       );
     };
   }
-  return hoistNonReactStatics(WithBackHandler, TargetComponent);
+
+  const WithBackHandlerFowardRef = React.forwardRef(
+    (props: Subtract<P, IBackHandlerProps>, ref: any) => {
+      return <WithBackHandler innerRef={ref} {...props} />;
+    }
+  );
+
+  return hoistNonReactStatics(WithBackHandlerFowardRef, TargetComponent);
 };
 
 export default withBackHandler;
