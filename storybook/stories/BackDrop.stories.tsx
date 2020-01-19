@@ -11,7 +11,13 @@ import MockButton from "src/components/button/MockButton";
 
 const Container = styled.View`
   flex: 1;
-  height: 100%;
+  background-color: #eee;
+`;
+
+const ScrollView = styled.ScrollView``;
+
+const Height2000View = styled.View`
+  height: 2000px;
   background-color: #eee;
 `;
 
@@ -36,6 +42,9 @@ storiesOf("BackDrop", module)
   ))
   .add("with SingersSubmitBackDrop", () => (
     <Container>
+      <ScrollView>
+        <Height2000View />
+      </ScrollView>
       <SingersSubmitBackDrop
         selectedSingers={[]}
         onSubmit={action("onSubmit")}
