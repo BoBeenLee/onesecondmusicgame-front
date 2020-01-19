@@ -123,7 +123,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
       selectedTrackItem: props?.selectedTrackItem ?? null,
       duration: 0,
       highlightSeconds: 0,
-      singerName: ""
+      singerName: props?.selectedTrackItem?.user?.username ?? ""
     };
   }
 
