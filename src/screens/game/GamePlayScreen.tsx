@@ -1,4 +1,4 @@
-import { Item } from "__generate__/api";
+import { Item, HighlightDTO } from "__generate__/api";
 import _ from "lodash";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
@@ -25,6 +25,8 @@ import GameSearchSingerScreen from "src/screens/game/GameSearchSingerScreen";
 import { ISinger } from "src/apis/singer";
 import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
+import GameHighlights, { IGameHighlightItem } from "src/stores/GameHighlights";
+import { makePlayStreamUriByTrackId } from "src/configs/soundCloudAPI";
 
 interface IInject {
   authStore: IAuthStore;
@@ -41,18 +43,11 @@ interface IProps extends IInject, IPopupProps {
 }
 
 interface IStates {
-  currentStep: number;
   currentStepStatus: "play" | "answer";
   songAnswerInput: string;
-  songAnswers: string[];
 }
 
-interface ICarouselItem extends ICarousel {
-  name: string;
-  singerName: string;
-  highlightSeconds: number;
-  source: { uri: string };
-}
+interface ICarouselItem extends ICarousel, IGameHighlightItem {}
 
 const Container = styled(ContainerWithStatusBar)`
   flex: 1;
@@ -114,59 +109,6 @@ const GameItems = styled.View`
   right: 20px;
 `;
 
-const MOCK_PLAYER_DATA: ICarouselItem[] = [
-  {
-    key: "1",
-    name: "TT",
-    singerName: "트와이스",
-    highlightSeconds: 48,
-    source: {
-      uri:
-        "https://api.soundcloud.com/tracks/385480856/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
-    }
-  },
-  {
-    key: "2",
-    name: "Likey",
-    singerName: "트와이스",
-    highlightSeconds: 0,
-    source: {
-      uri:
-        "https://api.soundcloud.com/tracks/405717552/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
-    }
-  },
-  {
-    key: "3",
-    name: "HIP",
-    singerName: "마마무",
-    highlightSeconds: 43,
-    source: {
-      uri:
-        "https://api.soundcloud.com/tracks/712795987/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
-    }
-  },
-  {
-    key: "4",
-    name: "Idol",
-    singerName: "BTS",
-    highlightSeconds: 223,
-    source: {
-      uri:
-        "https://api.soundcloud.com/tracks/489955644/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
-    }
-  },
-  {
-    key: "5",
-    name: "DNA",
-    singerName: "BTS",
-    highlightSeconds: 81,
-    source: {
-      uri:
-        "https://api.soundcloud.com/tracks/343188402/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
-    }
-  }
-];
-
 const DEFAULT_LIMIT_TIME = 40;
 
 @inject(
@@ -203,14 +145,13 @@ class GamePlayScreen extends Component<IProps, IStates> {
   }
 
   public gamePlayersRef = React.createRef<OSMGCarousel<any>>();
+  public gameHighlights = GameHighlights.create({});
 
   constructor(props: IProps) {
     super(props);
     this.state = {
-      currentStep: 0,
       currentStepStatus: "play",
-      songAnswerInput: "",
-      songAnswers: []
+      songAnswerInput: ""
     };
     loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
       onRewarded: this.onRewarded
@@ -218,11 +159,17 @@ class GamePlayScreen extends Component<IProps, IStates> {
     props.authStore.user?.heart?.useHeart?.();
   }
 
+  public componentDidMount() {
+    const { selectedSingers } = this.props;
+    this.gameHighlights.initialize(selectedSingers);
+  }
+
   public render() {
     const userItem = this.props.authStore.user?.userItemsByItemType(
       Item.ItemTypeEnum.SKIP
     );
-    const { currentStep, songAnswerInput } = this.state;
+    const { currentStep } = this.gameHighlights;
+    const { songAnswerInput } = this.state;
     return (
       <Container>
         <Header>
@@ -236,7 +183,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
         <GamePlayers
           scrollEnabled={false}
           ref={this.gamePlayersRef}
-          data={MOCK_PLAYER_DATA}
+          data={this.gameHighlightViews}
           itemWidth={240}
           renderItem={this.renderItem}
           onSnapToItem={this.onSnapToItem}
@@ -262,6 +209,13 @@ class GamePlayScreen extends Component<IProps, IStates> {
     );
   }
 
+  private get gameHighlightViews(): ICarouselItem[] {
+    return _.map(this.gameHighlights.gameHighlightViews, item => ({
+      ...item,
+      key: String(item.id)
+    }));
+  }
+
   private get renderAnswer() {
     const { currentStepStatus } = this.state;
     return (
@@ -280,20 +234,20 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private renderItem = (props: { item: ICarouselItem; index: number }) => {
-    const { highlightSeconds, source } = props.item;
+    const { millisecond, trackId } = props.item;
     return (
       <GamePlayerView>
         <GameAudioPlayer
-          highlightSeconds={highlightSeconds}
+          highlightSeconds={_.round((millisecond ?? 0) / 1000)}
           size={200}
-          source={source}
+          source={{ uri: makePlayStreamUriByTrackId(String(trackId)) }}
         />
       </GamePlayerView>
     );
   };
 
   private onSnapToItem = (index: number) => {
-    this.setState({ currentStep: index });
+    this.gameHighlights.setStep(index);
   };
 
   private onLimitTimeEnd = () => {
@@ -317,22 +271,18 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private submitAnswer = () => {
-    const { currentStep, songAnswerInput } = this.state;
+    const { answer, checkAnswer } = this.gameHighlights;
+    const { songAnswerInput } = this.state;
     const { showToast } = this.props.toastStore;
 
-    if (
-      MOCK_PLAYER_DATA[currentStep].name.toLowerCase() !==
-      songAnswerInput.toLowerCase()
-    ) {
+    if (!checkAnswer(songAnswerInput)) {
       showToast("오답입니다ㅠㅜ");
       return;
     }
-    this.setState(prevState => {
-      return {
-        currentStepStatus: "answer",
-        songAnswers: [...prevState.songAnswers, prevState.songAnswerInput]
-      };
+    this.setState({
+      currentStepStatus: "answer"
     });
+    answer(songAnswerInput);
     setTimeout(() => {
       this.setState(
         {
@@ -345,8 +295,8 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private nextStep = () => {
-    const { currentStep } = this.state;
-    if (currentStep === MOCK_PLAYER_DATA.length - 1) {
+    const { isFinish } = this.gameHighlights;
+    if (isFinish) {
       this.onFinishPopup();
       return;
     }

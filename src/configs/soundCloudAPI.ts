@@ -23,6 +23,10 @@ export const makePlayStreamUri = (uri: string) => {
   return `${uri}?client_id=${clientId}`;
 };
 
+export const makePlayStreamUriByTrackId = (trackId: string) => {
+  return `https://api.soundcloud.com/tracks/${trackId}/stream?client_id=${clientId}`;
+};
+
 export const initialize = async () => {
   clientId = await getStringValue(
     "SOUNDCLOUD_CLIENT_ID",
