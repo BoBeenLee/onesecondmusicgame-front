@@ -39,8 +39,8 @@ interface IProps extends IInject, IParams {
 interface IStates {
   selectedTrackItem: ITrackItem | null;
   duration: number;
-  highlight: number;
-  singer: string;
+  highlightSeconds: number;
+  singerName: string;
 }
 
 const Container = styled(ContainerWithStatusBar)`
@@ -65,7 +65,10 @@ const RegisterSongDescription = styled(Bold12)`
   text-align: center;
 `;
 
-const SingerTextInput = styled(OSMGTextInput)``;
+const SingerTextInput = styled(OSMGTextInput)`
+  margin-top: 20px;
+  margin-bottom: 20px;
+`;
 
 const Thumnail = styled.Image`
   width: 50px;
@@ -119,20 +122,25 @@ class RegisterSongScreen extends Component<IProps, IStates> {
     this.state = {
       selectedTrackItem: props?.selectedTrackItem ?? null,
       duration: 0,
-      highlight: 0,
-      singer: ""
+      highlightSeconds: 0,
+      singerName: ""
     };
   }
 
   public render() {
-    const { selectedTrackItem, duration, highlight, singer } = this.state;
+    const {
+      selectedTrackItem,
+      duration,
+      highlightSeconds,
+      singerName
+    } = this.state;
     return (
       <Container>
         <BackTopBar title="노래 등록" onBackPress={this.back} />
         <Content>
           <SongTitle>{selectedTrackItem?.title}</SongTitle>
           <GameSongPlayer
-            highlightSeconds={highlight}
+            highlightSeconds={highlightSeconds}
             size={200}
             source={{
               uri: makePlayStreamUri(selectedTrackItem?.stream_url ?? "")
@@ -144,8 +152,9 @@ class RegisterSongScreen extends Component<IProps, IStates> {
 미 지정 시, 랜덤으로 구간 지정됩니다.`}
           </RegisterSongDescription>
           <SingerTextInput
-            onChangeText={this.onSingerChangeText}
-            value={singer}
+            placeholder="가수이름 입력"
+            onChangeText={this.onSingerNameChangeText}
+            value={singerName}
           />
           <Thumnail
             source={{
@@ -154,10 +163,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
                 "https://via.placeholder.com/150"
             }}
           />
-          <MockButton
-            name={`singerName: ${selectedTrackItem?.user?.username}`}
-            onPress={this.copyUri}
-          />
+          <MockButton name={`copy stream uri`} onPress={this.copyUri} />
           <RegisterSongButtonText>
             duration: {_.round(duration)}seconds
           </RegisterSongButtonText>
@@ -187,13 +193,13 @@ class RegisterSongScreen extends Component<IProps, IStates> {
     );
   }
 
-  private onSingerChangeText = (text: string) => {
-    this.setState({ singer: text });
+  private onSingerNameChangeText = (text: string) => {
+    this.setState({ singerName: text });
   };
 
   private onSeek = (data: OnSeekData) => {
     this.setState({
-      highlight: data.seekTime
+      highlightSeconds: data.seekTime
     });
   };
 
@@ -210,9 +216,8 @@ class RegisterSongScreen extends Component<IProps, IStates> {
 
   private register = async () => {
     const { showToast } = this.props.toastStore;
-    const { selectedTrackItem, highlight: highlightSeconds } = this.state;
+    const { selectedTrackItem, highlightSeconds, singerName } = this.state;
     const title = selectedTrackItem?.title;
-    const singerName = selectedTrackItem?.user?.username;
     const url = selectedTrackItem?.stream_url;
 
     if (![title, singerName, url].some(value => !!value)) {
