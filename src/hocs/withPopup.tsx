@@ -28,24 +28,6 @@ const Container = styled.View`
   flex: 1;
 `;
 
-const PopupContainer = styled.View`
-  position: absolute;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 99;
-`;
-
-const PopupTouchableOverlay = styled.TouchableOpacity.attrs({
-  activeOpacity: 1
-})`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-`;
-
 const INITIAL_STATES = {
   PopupComponent: null,
   closeCallback: _.identity,

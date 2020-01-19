@@ -13,6 +13,7 @@ interface IProps extends IBackHandlerProps {
   backdropDragViewStyle?: ViewProps["style"];
   isFirstShow?: boolean;
   backdropHeight?: number;
+  hideMinBackdropHeight?: number;
   overlayOpacity?: number | boolean;
   showHandleBar?: boolean;
   children?: React.ReactNode;
@@ -161,12 +162,14 @@ class Backdrop extends React.Component<IProps> {
             style
           ]}
         >
-          <BackDropDragView
-            style={backdropDragViewStyle}
-            {...this.panResponder.panHandlers}
-          >
-            {showHandleBar ? <BackDropDragHandleBar /> : null}
-          </BackDropDragView>
+          {showHandleBar ? (
+            <BackDropDragView
+              style={backdropDragViewStyle}
+              {...this.panResponder.panHandlers}
+            >
+              <BackDropDragHandleBar />
+            </BackDropDragView>
+          ) : null}
           <Content style={contentStyle}>{children}</Content>
         </Container>
       </React.Fragment>
@@ -196,7 +199,11 @@ class Backdrop extends React.Component<IProps> {
   }
 
   private hideBackdrop(callback?: () => any) {
-    this.animateBackdrop(this.backdropHeight, callback);
+    const { hideMinBackdropHeight } = this.props;
+    this.animateBackdrop(
+      this.backdropHeight - (hideMinBackdropHeight ?? 0),
+      callback
+    );
   }
 
   private onBackgroundPress = () => {

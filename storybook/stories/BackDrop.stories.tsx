@@ -14,13 +14,6 @@ const Container = styled.View`
   background-color: #eee;
 `;
 
-const ScrollView = styled.ScrollView``;
-
-const Height2000View = styled.View`
-  height: 2000px;
-  background-color: #eee;
-`;
-
 const BackDropView = styled(BackDrop)`
   padding-top: 20px;
 `;
@@ -42,10 +35,8 @@ storiesOf("BackDrop", module)
   ))
   .add("with SingersSubmitBackDrop", () => (
     <Container>
-      <ScrollView>
-        <Height2000View />
-      </ScrollView>
       <SingersSubmitBackDrop
+        showMinimumSubmit={false}
         selectedSingers={[]}
         onSubmit={action("onSubmit")}
         onSelectedItem={action("onSelectedItem")}

@@ -19,11 +19,11 @@ interface IState {
   scrollDirection: ScrollDirection;
 }
 
-const SENSITIVITY = 5;
-
-function withScrollDirection<T extends IScrollDirectionProps>(
+const withScrollDirection = ({ sensitivity = 5 }: { sensitivity: number }) => <
+  T extends IScrollDirectionProps
+>(
   Component: React.ComponentType<T>
-): any {
+): any => {
   class WithScrollDirection extends React.Component<T, IState> {
     public scrollY = 0;
     public state = {
@@ -64,7 +64,7 @@ function withScrollDirection<T extends IScrollDirectionProps>(
       if (this.state.scrollDirection !== scrollDirection) {
         const diff = Math.abs(currentScrollY - prevScrollY);
 
-        if (diff > SENSITIVITY) {
+        if (diff > sensitivity) {
           this.setState({ scrollDirection });
         }
       }
@@ -75,6 +75,6 @@ function withScrollDirection<T extends IScrollDirectionProps>(
 
   hoistNonReactStatics(WithScrollDirection, Component);
   return WithScrollDirection;
-}
+};
 
 export default withScrollDirection;
