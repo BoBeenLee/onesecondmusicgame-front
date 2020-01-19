@@ -81,6 +81,26 @@ export class RequiredError extends Error {
 /**
  * 
  * @export
+ * @interface GameRequest
+ */
+export interface GameRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof GameRequest
+     */
+    numOfHighlightPerGame?: number;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof GameRequest
+     */
+    singerList?: Array<string>;
+}
+
+/**
+ * 
+ * @export
  * @interface HeartResponse
  */
 export interface HeartResponse {
@@ -96,6 +116,50 @@ export interface HeartResponse {
      * @memberof HeartResponse
      */
     leftTime?: number;
+}
+
+/**
+ * 
+ * @export
+ * @interface HighlightDTO
+ */
+export interface HighlightDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof HighlightDTO
+     */
+    artworkUrl?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof HighlightDTO
+     */
+    id?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof HighlightDTO
+     */
+    millisecond?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof HighlightDTO
+     */
+    singer?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof HighlightDTO
+     */
+    title?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof HighlightDTO
+     */
+    trackId?: number;
 }
 
 /**
@@ -359,6 +423,26 @@ export interface ResponseDTOHeartResponse {
 /**
  * 
  * @export
+ * @interface ResponseDTOListHighlightDTO
+ */
+export interface ResponseDTOListHighlightDTO {
+    /**
+     * 
+     * @type {Array<HighlightDTO>}
+     * @memberof ResponseDTOListHighlightDTO
+     */
+    body?: Array<HighlightDTO>;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResponseDTOListHighlightDTO
+     */
+    status?: number;
+}
+
+/**
+ * 
+ * @export
  * @interface ResponseDTOListItem
  */
 export interface ResponseDTOListItem {
@@ -522,6 +606,12 @@ export interface Reward {
  * @interface Song
  */
 export interface Song {
+    /**
+     * 
+     * @type {string}
+     * @memberof Song
+     */
+    artworkUrl?: string;
     /**
      * 
      * @type {boolean}
@@ -1202,6 +1292,115 @@ export class BasicErrorControllerApi extends BaseAPI {
      */
     public errorUsingPUT(options?: any) {
         return BasicErrorControllerApiFp(this.configuration).errorUsingPUT(options)(this.fetch, this.basePath);
+    }
+
+}
+
+/**
+ * GameControllerApi - fetch parameter creator
+ * @export
+ */
+export const GameControllerApiFetchParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary getHighlightList
+         * @param {GameRequest} gameRequest gameRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getHighlightListUsingGET(gameRequest: GameRequest, options: any = {}): FetchArgs {
+            // verify required parameter 'gameRequest' is not null or undefined
+            if (gameRequest === null || gameRequest === undefined) {
+                throw new RequiredError('gameRequest','Required parameter gameRequest was null or undefined when calling getHighlightListUsingGET.');
+            }
+            const localVarPath = `/game/highlight`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            const needsSerialization = (<any>"GameRequest" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(gameRequest || {}) : (gameRequest || "");
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * GameControllerApi - functional programming interface
+ * @export
+ */
+export const GameControllerApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary getHighlightList
+         * @param {GameRequest} gameRequest gameRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getHighlightListUsingGET(gameRequest: GameRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOListHighlightDTO> {
+            const localVarFetchArgs = GameControllerApiFetchParamCreator(configuration).getHighlightListUsingGET(gameRequest, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+    }
+};
+
+/**
+ * GameControllerApi - factory interface
+ * @export
+ */
+export const GameControllerApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
+    return {
+        /**
+         * 
+         * @summary getHighlightList
+         * @param {GameRequest} gameRequest gameRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getHighlightListUsingGET(gameRequest: GameRequest, options?: any) {
+            return GameControllerApiFp(configuration).getHighlightListUsingGET(gameRequest, options)(fetch, basePath);
+        },
+    };
+};
+
+/**
+ * GameControllerApi - object-oriented interface
+ * @export
+ * @class GameControllerApi
+ * @extends {BaseAPI}
+ */
+export class GameControllerApi extends BaseAPI {
+    /**
+     * 
+     * @summary getHighlightList
+     * @param {GameRequest} gameRequest gameRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof GameControllerApi
+     */
+    public getHighlightListUsingGET(gameRequest: GameRequest, options?: any) {
+        return GameControllerApiFp(this.configuration).getHighlightListUsingGET(gameRequest, options)(this.fetch, this.basePath);
     }
 
 }
@@ -2119,6 +2318,29 @@ export const SingerControllerApiFetchParamCreator = function (configuration?: Co
     return {
         /**
          * 
+         * @summary getAllRegisteredSingerName
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllRegisteredSingerNameUsingGET(options: any = {}): FetchArgs {
+            const localVarPath = `/singer/registered`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary getAllSingerName
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2151,6 +2373,24 @@ export const SingerControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary getAllRegisteredSingerName
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllRegisteredSingerNameUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOListstring> {
+            const localVarFetchArgs = SingerControllerApiFetchParamCreator(configuration).getAllRegisteredSingerNameUsingGET(options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
          * @summary getAllSingerName
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2178,6 +2418,15 @@ export const SingerControllerApiFactory = function (configuration?: Configuratio
     return {
         /**
          * 
+         * @summary getAllRegisteredSingerName
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllRegisteredSingerNameUsingGET(options?: any) {
+            return SingerControllerApiFp(configuration).getAllRegisteredSingerNameUsingGET(options)(fetch, basePath);
+        },
+        /**
+         * 
          * @summary getAllSingerName
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2195,6 +2444,17 @@ export const SingerControllerApiFactory = function (configuration?: Configuratio
  * @extends {BaseAPI}
  */
 export class SingerControllerApi extends BaseAPI {
+    /**
+     * 
+     * @summary getAllRegisteredSingerName
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SingerControllerApi
+     */
+    public getAllRegisteredSingerNameUsingGET(options?: any) {
+        return SingerControllerApiFp(this.configuration).getAllRegisteredSingerNameUsingGET(options)(this.fetch, this.basePath);
+    }
+
     /**
      * 
      * @summary getAllSingerName
