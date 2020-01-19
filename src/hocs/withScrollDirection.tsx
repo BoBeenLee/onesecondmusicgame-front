@@ -27,20 +27,20 @@ const withScrollDirection = ({ sensitivity = 5 }: { sensitivity: number }) => <
     public state = {
       scrollDirection: ScrollDirection.IDLE
     };
+    public scrollDirectionProps: IScrollDirectionProps;
 
-    public render() {
-      return (
-        <Component
-          {...this.props}
-          scrollDirectionProps={this.scrollDirectionProps}
-        />
-      );
+    constructor(props: T) {
+      super(props);
+
+      this.scrollDirectionProps = {
+        scrollDirectionProps: {
+          onScroll: this.onScroll
+        }
+      };
     }
 
-    private get scrollDirectionProps() {
-      return {
-        onScroll: this.onScroll
-      };
+    public render() {
+      return <Component {...this.props} {...this.scrollDirectionProps} />;
     }
 
     private onScroll = (
