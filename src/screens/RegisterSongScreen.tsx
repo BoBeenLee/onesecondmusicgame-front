@@ -21,6 +21,7 @@ import { makePlayStreamUri } from "src/configs/soundCloudAPI";
 import ButtonLoading from "src/components/loading/ButtonLoading";
 import AudioPlayer from "src/components/AudioPlayer";
 import MockButton from "src/components/button/MockButton";
+import OSMGTextInput from "src/components/input/OSMGTextInput";
 
 interface IInject {
   toastStore: IToastStore;
@@ -39,6 +40,7 @@ interface IStates {
   selectedTrackItem: ITrackItem | null;
   duration: number;
   highlight: number;
+  singer: string;
 }
 
 const Container = styled(ContainerWithStatusBar)`
@@ -62,6 +64,8 @@ const GameSongPlayer = styled(GameAudioPlayer)`
 const RegisterSongDescription = styled(Bold12)`
   text-align: center;
 `;
+
+const SingerTextInput = styled(OSMGTextInput)``;
 
 const Thumnail = styled.Image`
   width: 50px;
@@ -115,12 +119,13 @@ class RegisterSongScreen extends Component<IProps, IStates> {
     this.state = {
       selectedTrackItem: props?.selectedTrackItem ?? null,
       duration: 0,
-      highlight: 0
+      highlight: 0,
+      singer: ""
     };
   }
 
   public render() {
-    const { selectedTrackItem, duration, highlight } = this.state;
+    const { selectedTrackItem, duration, highlight, singer } = this.state;
     return (
       <Container>
         <BackTopBar title="노래 등록" onBackPress={this.back} />
@@ -138,6 +143,10 @@ class RegisterSongScreen extends Component<IProps, IStates> {
             {`원하는 노래 구간을 지정해주세요!
 미 지정 시, 랜덤으로 구간 지정됩니다.`}
           </RegisterSongDescription>
+          <SingerTextInput
+            onChangeText={this.onSingerChangeText}
+            value={singer}
+          />
           <Thumnail
             source={{
               uri:
@@ -177,6 +186,10 @@ class RegisterSongScreen extends Component<IProps, IStates> {
       </RegisterSongButtonLoading>
     );
   }
+
+  private onSingerChangeText = (text: string) => {
+    this.setState({ singer: text });
+  };
 
   private onSeek = (data: OnSeekData) => {
     this.setState({
