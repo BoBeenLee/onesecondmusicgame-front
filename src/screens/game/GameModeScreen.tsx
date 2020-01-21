@@ -103,12 +103,6 @@ class GameModeScreen extends Component<IProps> {
             </GameModeDescription>
           </GameModeSection>
         </Content>
-        <Footer>
-          <RegisterSongButton
-            name="음원 등록하기"
-            onPress={this.navigateToRegisterSong}
-          />
-        </Footer>
       </Container>
     );
   }

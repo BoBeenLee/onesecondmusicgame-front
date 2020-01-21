@@ -27,6 +27,7 @@ import GameModeScreen from "src/screens/game/GameModeScreen";
 import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
+import FloatingButton from "src/components/button/FloatingButton";
 
 interface IInject {
   store: IStore;
@@ -62,10 +63,18 @@ const HeartRemainTime = styled(TimerText)``;
 
 const GameItems = styled.View`
   position: absolute;
+  width: 100px;
   top: 20px;
   right: 31px;
   flex-direction: column;
 `;
+
+const GameItemButton = styled.View`
+  padding: 10px;
+  background-color: #eee;
+`;
+
+const GameItemButtonText = styled(Bold12)``;
 
 const Content = styled.View`
   flex: 1;
@@ -153,14 +162,20 @@ class MainScreen extends Component<IProps> {
             </HeartRemain>
           </HeartStatus>
           <GameItems>
-            <MockButton name="아이템" onPress={_.identity} />
-            {_.map(userItemViews, item => (
-              <MockButton
-                key={item.name}
-                name={`${item.name}(${item.count})`}
-                onPress={this.itemToOnPress[item.itemType]}
-              />
-            ))}
+            <FloatingButton
+              ButtonComponent={
+                <GameItemButton>
+                  <GameItemButtonText>아이템</GameItemButtonText>
+                </GameItemButton>
+              }
+              ItemComponents={_.map(userItemViews, item => (
+                <MockButton
+                  key={item.name}
+                  name={`${item.name}(${item.count})`}
+                  onPress={this.itemToOnPress[item.itemType]}
+                />
+              ))}
+            />
           </GameItems>
           <Logo>알쏭달쏭</Logo>
           <MockButton name="가수선택" onPress={this.navigateToGameMode} />
