@@ -1,4 +1,3 @@
-declare module "*.json";
 declare module "moment/min/moment-with-locales";
 
 type Subtract<T, V> = Pick<T, Exclude<keyof T, keyof V>>;
@@ -16,13 +15,3 @@ type RequireProperty<T, P extends keyof T> = T & { [K in P]-?: T[P] };
 type NoUndefinedField<T> = {
   [P in keyof T]-?: NoUndefinedField<NonNullable<T[P]>>;
 };
-
-declare module "*.svg" {
-  import { SvgProps } from "react-native-svg";
-  const content: React.ComponentClass<SvgProps, any>;
-  export default content;
-}
-
-declare module "console" {
-  export = typeof import("console");
-}
