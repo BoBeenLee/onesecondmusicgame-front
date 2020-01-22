@@ -110,21 +110,12 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
     });
   }
 
-  public singers: ISingers;
-
   constructor(props: IProps) {
     super(props);
-    this.singers = Singers.create({
-      singers: props.singerStore.singerViews
-    });
 
     this.state = { selectedSingers: {}, showMinimumSubmit: false };
 
     this.onResultScroll = _.debounce(this.onResultScroll, 210);
-  }
-
-  public async componentDidMount() {
-    await this.singers.initialize({ q: "" });
   }
 
   public render() {
@@ -171,6 +162,10 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
         />
       </Container>
     );
+  }
+
+  private get singers() {
+    return this.props.singerStore.singers;
   }
 
   private onResultScroll = (scrollDirection: ScrollDirection) => {

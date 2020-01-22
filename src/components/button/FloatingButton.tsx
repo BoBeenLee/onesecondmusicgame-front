@@ -53,7 +53,9 @@ function FloatingButton(props: IProps) {
 
   return (
     <Container style={style}>
-      <ButtonView onPress={onToggle}>{ButtonComponent}</ButtonView>
+      <ButtonView onPress={_.partial(onToggle, !isShow)}>
+        {ButtonComponent}
+      </ButtonView>
       {isShow
         ? _.map(ItemComponents, (ItemComponent, index) => {
             return (

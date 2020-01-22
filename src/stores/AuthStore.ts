@@ -221,11 +221,11 @@ const AuthStore = types
       setUserID(self.accessId);
     });
 
-    const updateAuthInfo = flow(function*() {
+    const updateAuthInfo = () => {
       setItem(FIELD.ACCESS_ID, self.accessId);
       setItem(FIELD.ACCESS_TOKEN, self.accessToken);
       setItem(FIELD.PROVIDER_TYPE, self.provider);
-    });
+    };
 
     const signOut = () => {
       clear();

@@ -10,6 +10,10 @@ import LevelBadge from "src/components/badge/LevelBadge";
 import XEIcon from "src/components/icon/XEIcon";
 import { ISinger } from "src/apis/singer";
 import SearchSingerCard from "src/components/card/SearchSingerCard";
+import useShowAnimation, {
+  IAnimationFuncParams
+} from "src/hooks/useShowAnimation";
+import { delay } from "src/utils/common";
 
 interface IProps {
   showMinimumSubmit: boolean;
@@ -69,10 +73,8 @@ function SingersSubmitBackDrop(props: IProps) {
   const singerOpacityRef = useRef<Animated.Value>(
     new Animated.Value(showMinimumSubmit ? 0 : 1)
   );
-  const [showSingers, setShowSingers] = useState(!showMinimumSubmit);
-
   const showSingerOpacity = useCallback(
-    (toValue: number, callback?: () => any) => {
+    ({ isShow, toValue, callback }: IAnimationFuncParams) => {
       Animated.timing(singerOpacityRef.current, {
         duration: 200,
         toValue,
@@ -82,22 +84,22 @@ function SingersSubmitBackDrop(props: IProps) {
     []
   );
 
+  const { isShow, onToggle } = useShowAnimation({
+    initialIsShow: !showMinimumSubmit,
+    activeToValue: 1,
+    inActiveToValue: 0,
+    animationFunc: showSingerOpacity
+  });
+
   useEffect(() => {
-    if (showSingers) {
-      showSingerOpacity(1);
-    }
-  }, [showSingerOpacity, showSingers]);
-  useEffect(() => {
-    if (showMinimumSubmit) {
-      backdropRef.current?.hideBackdrop?.(() => {
-        setShowSingers(false);
-      });
-      showSingerOpacity(0);
+    if (!showMinimumSubmit) {
+      backdropRef.current?.showBackdrop?.();
+      onToggle(true);
       return;
     }
-    backdropRef.current?.showBackdrop?.();
-    setShowSingers(true);
-  }, [showMinimumSubmit, showSingerOpacity]);
+    backdropRef.current?.hideBackdrop?.();
+    onToggle(false);
+  }, [onToggle, showMinimumSubmit, showSingerOpacity]);
 
   return (
     <BackdropView
@@ -108,7 +110,7 @@ function SingersSubmitBackDrop(props: IProps) {
       hideMinBackdropHeight={106}
       onClose={onSubmit}
     >
-      {showSingers ? (
+      {isShow ? (
         <SingersView style={{ opacity: singerOpacityRef.current }}>
           {_.times(3, index => {
             const existsSinger = index < selectedSingers.length;

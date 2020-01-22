@@ -7,6 +7,7 @@ export interface IAnimationFuncParams {
 }
 
 interface IAnimationConfig {
+  initialIsShow?: boolean;
   activeToValue: number;
   inActiveToValue: number;
   animationFunc: (params: IAnimationFuncParams) => void;
@@ -15,7 +16,7 @@ interface IAnimationConfig {
 
 function useShowAnimation(config: IAnimationConfig) {
   const { activeToValue, inActiveToValue, animationFunc } = config;
-  const [isShow, setIsShowItems] = useState(false);
+  const [isShow, setIsShowItems] = useState(Boolean(config.initialIsShow));
 
   useEffect(() => {
     if (isShow) {
@@ -26,21 +27,23 @@ function useShowAnimation(config: IAnimationConfig) {
     }
   }, [activeToValue, animationFunc, isShow]);
 
-  const onToggle = useCallback(() => {
-    const reverseIsShow = !isShow;
-    config.onToggle?.(reverseIsShow);
-    if (reverseIsShow) {
-      setIsShowItems(reverseIsShow);
-      return;
-    }
-    animationFunc({
-      isShow: reverseIsShow,
-      toValue: inActiveToValue,
-      callback: () => {
-        setIsShowItems(reverseIsShow);
+  const onToggle = useCallback(
+    (isShow: boolean) => {
+      config.onToggle?.(isShow);
+      if (isShow) {
+        setIsShowItems(isShow);
+        return;
       }
-    });
-  }, [animationFunc, config.onToggle, inActiveToValue, isShow]);
+      animationFunc({
+        isShow,
+        toValue: inActiveToValue,
+        callback: () => {
+          setIsShowItems(isShow);
+        }
+      });
+    },
+    [animationFunc, config.onToggle, inActiveToValue]
+  );
 
   return {
     isShow,

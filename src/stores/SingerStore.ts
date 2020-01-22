@@ -1,23 +1,20 @@
 import _ from "lodash";
 import { flow, types } from "mobx-state-tree";
 
-import { singers, ISinger } from "src/apis/singer";
+import { singers } from "src/apis/singer";
+import Singers from "src/stores/Singers";
 
 const SingerStore = types
   .model("SingerStore", {
-    singers: types.optional(types.array(types.frozen<ISinger>()), [])
-  })
-  .views(self => {
-    return {
-      get singerViews() {
-        return Array.from(self.singers);
-      }
-    };
+    singers: types.optional(Singers, {})
   })
   .actions(self => {
     const initialize = flow(function*() {
       const response: RetrieveAsyncFunc<typeof singers> = yield singers();
-      self.singers.replace(response);
+      self.singers = Singers.create({
+        singers: response
+      });
+      self.singers.initialize({ q: "" });
     });
 
     return {
