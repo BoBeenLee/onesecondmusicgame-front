@@ -4,7 +4,24 @@
 
 > Additional information or tag line
 
-A brief description of your project, what it is used for.
+## 폴더 구조
+
+- src
+  - apis : rest api 요청들
+  - components : 컴포넌트 단위 분리
+  - configs : firebase, 내부환경..etc 설정 관련 파일들
+  - decorators : 추상화된 데코레이터
+  - hocs : higher order component
+  - hooks : react hooks 함수들
+  - images : 이미지 저장소
+  - interfaces : ts 공통인터페이스
+  - screens : 앱내 화면들
+  - stores : 도메인 기반 stores
+  - styles : 컬러 테마, zIndex
+  - utils : 유틸리티 함수들
+- storybook 스토리북
+  - stories 각 컴포넌트별 스토리북 화면
+- typings d.ts 타입 정의
 
 ## Installing / Getting started
 
