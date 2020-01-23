@@ -12,7 +12,7 @@ import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 // import { getRootStore } from "src/stores/Store";
 
 configure(() => {
-  require("./stories");
+  require("../src/components/index.stories.tsx");
 }, module);
 
 addDecorator(story => (
