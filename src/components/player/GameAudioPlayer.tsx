@@ -78,10 +78,13 @@ function GameAudioPlayer(props: IProps) {
     >
       <AudioPlayer
         ref={audioRef as any}
+        audioOnly={true}
         ignoreSilentSwitch={"ignore"}
         playInBackground={true}
         playWhenInactive={true}
         controls={false}
+        fullscreen={false}
+        repeat={false}
         onLoadStart={_.partial(onLoad, {
           audio: false
         })}
