@@ -92,6 +92,8 @@ const ResultEmpty = styled.View`
 
 const ResultEmptyText = styled(Bold12)``;
 
+const SELECTED_SINGERS_MAX_LENGTH = 3;
+
 @inject(
   ({ store }: { store: IStore }): IInject => ({
     singerStore: store.singerStore,
@@ -199,6 +201,10 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
     return filterNull(_.values(selectedSingers));
   }
 
+  private hasSelectedSingersByName = (name: string) => {
+    return Boolean(this.state.selectedSingers[name]);
+  };
+
   private singerKeyExtreactor = (item: ISinger, index: number) => {
     return String(item.name) + index;
   };
@@ -219,6 +225,12 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
   };
 
   private onSelectedItem = (item: ISinger) => {
+    if (
+      !this.hasSelectedSingersByName(item.name) &&
+      this.selectedSingers.length >= SELECTED_SINGERS_MAX_LENGTH
+    ) {
+      return;
+    }
     this.setState(prevState => {
       return {
         selectedSingers: {
