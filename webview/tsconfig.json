@@ -17,8 +17,5 @@
       "@shared/*": ["../shared/lib/*"]
     }
   },
-  "include": [
-    ".",
-    "../shared"
-  ]
+  "include": ["."]
 }

@@ -1,9 +1,5 @@
 import React, { Component } from "react";
-import {
-  getStorybookUI,
-  configure,
-  addDecorator
-} from "@storybook/react-native";
+import { getStorybookUI, configure } from "@storybook/react-native";
 import { Navigation } from "react-native-navigation";
 import SplashScreen from "react-native-splash-screen";
 
@@ -15,15 +11,11 @@ configure(() => {
   require("../src/components/index.stories.tsx");
 }, module);
 
-addDecorator(story => (
-  <ContainerWithStatusBar>{story()}</ContainerWithStatusBar>
-));
-
 const StorybookUIRoot = getStorybookUI({
   port: 7007,
-  onDeviceUI: true,
+  onDeviceUI: false,
   resetStorybook: true,
-  shouldPersistSelection: true
+  disableWebsockets: true
 });
 
 class StorybookUIHMRRoot extends Component {
@@ -32,7 +24,11 @@ class StorybookUIHMRRoot extends Component {
   }
 
   render() {
-    return <StorybookUIRoot />;
+    return (
+      <ContainerWithStatusBar>
+        <StorybookUIRoot />
+      </ContainerWithStatusBar>
+    );
   }
 }
 
