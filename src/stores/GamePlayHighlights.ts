@@ -1,21 +1,21 @@
-import { HighlightDTO } from "__generate__/api";
+import { GamePlayHighlightDTO } from "__generate__/api";
 import _ from "lodash";
 import { types, flow } from "mobx-state-tree";
-import { getHighlightListUsingGET } from "src/apis/game";
+import { getHighlightListUsingPOST } from "src/apis/game";
 import { ISinger } from "src/apis/singer";
 
-export interface IGameHighlightItem extends HighlightDTO {
+export interface IGamePlayHighlightItem extends GamePlayHighlightDTO {
   gameStep: number;
   userAnswer?: string;
 }
 
 const GAME_ROUND_NUM = 5;
 
-const GameHighlights = types
+const GamePlayHighlights = types
   .model("GameHighlights", {
     currentStep: types.optional(types.number, 0),
     gameHighlights: types.optional(
-      types.array(types.frozen<IGameHighlightItem>()),
+      types.array(types.frozen<IGamePlayHighlightItem>()),
       []
     )
   })
@@ -50,14 +50,14 @@ const GameHighlights = types
   })
   .actions(self => {
     const initialize = flow(function*(selectedSingers: ISinger[]) {
-      const response: RetrieveAsyncFunc<typeof getHighlightListUsingGET> = yield getHighlightListUsingGET(
+      const response: RetrieveAsyncFunc<typeof getHighlightListUsingPOST> = yield getHighlightListUsingPOST(
         {
           numOfHighlightPerGame: GAME_ROUND_NUM,
           singerList: _.map(selectedSingers, singer => singer.name)
         }
       );
       self.gameHighlights.replace(
-        _.map(response, (item, index) => {
+        _.map(response.playHighlightList, (item, index) => {
           return { ...item, gameStep: index };
         })
       );
@@ -90,6 +90,6 @@ const GameHighlights = types
     return { initialize, setStep, nextStep, answer };
   });
 
-export type IGameHighlights = typeof GameHighlights.Type;
+export type IGamePlayHighlights = typeof GamePlayHighlights.Type;
 
-export default GameHighlights;
+export default GamePlayHighlights;

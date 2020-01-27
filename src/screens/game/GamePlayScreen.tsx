@@ -25,7 +25,9 @@ import GameSearchSingerScreen from "src/screens/game/GameSearchSingerScreen";
 import { ISinger } from "src/apis/singer";
 import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
-import GameHighlights, { IGameHighlightItem } from "src/stores/GameHighlights";
+import GamePlayHighlights, {
+  IGamePlayHighlightItem
+} from "src/stores/GamePlayHighlights";
 import { makePlayStreamUriByTrackId } from "src/configs/soundCloudAPI";
 
 interface IInject {
@@ -47,7 +49,7 @@ interface IStates {
   songAnswerInput: string;
 }
 
-interface ICarouselItem extends ICarousel, IGameHighlightItem {}
+interface ICarouselItem extends ICarousel, IGamePlayHighlightItem {}
 
 const Container = styled(ContainerWithStatusBar)`
   flex: 1;
@@ -145,7 +147,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   }
 
   public gamePlayersRef = React.createRef<OSMGCarousel<any>>();
-  public gameHighlights = GameHighlights.create({});
+  public gamePlayHighlights = GamePlayHighlights.create({});
 
   constructor(props: IProps) {
     super(props);
@@ -161,14 +163,14 @@ class GamePlayScreen extends Component<IProps, IStates> {
 
   public componentDidMount() {
     const { selectedSingers } = this.props;
-    this.gameHighlights.initialize(selectedSingers);
+    this.gamePlayHighlights.initialize(selectedSingers);
   }
 
   public render() {
     const userItem = this.props.authStore.user?.userItemsByItemType(
       Item.ItemTypeEnum.SKIP
     );
-    const { currentStep } = this.gameHighlights;
+    const { currentStep } = this.gamePlayHighlights;
     const { songAnswerInput } = this.state;
     return (
       <Container>
@@ -210,7 +212,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   }
 
   private get gameHighlightViews(): ICarouselItem[] {
-    return _.map(this.gameHighlights.gameHighlightViews, item => ({
+    return _.map(this.gamePlayHighlights.gameHighlightViews, item => ({
       ...item,
       key: String(item.id)
     }));
@@ -247,7 +249,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private onSnapToItem = (index: number) => {
-    this.gameHighlights.setStep(index);
+    this.gamePlayHighlights.setStep(index);
   };
 
   private onLimitTimeEnd = () => {
@@ -271,7 +273,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private submitAnswer = () => {
-    const { answer, checkAnswer } = this.gameHighlights;
+    const { answer, checkAnswer } = this.gamePlayHighlights;
     const { songAnswerInput } = this.state;
     const { showToast } = this.props.toastStore;
 
@@ -295,7 +297,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private nextStep = () => {
-    const { isFinish } = this.gameHighlights;
+    const { isFinish } = this.gamePlayHighlights;
     if (isFinish) {
       this.onFinishPopup();
       return;
