@@ -1,5 +1,5 @@
 import _ from "lodash";
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { Animated, ViewProps } from "react-native";
 import styled from "styled-components/native";
 import useShowAnimation, {
@@ -27,6 +27,13 @@ function FloatingButton(props: IProps) {
   const animations = useRef(
     _.times(ItemComponents.length, () => new Animated.Value(0))
   );
+
+  useEffect(() => {
+    animations.current = _.times(
+      ItemComponents.length,
+      () => new Animated.Value(0)
+    );
+  }, [ItemComponents.length]);
 
   const animateItems = ({
     isShow,

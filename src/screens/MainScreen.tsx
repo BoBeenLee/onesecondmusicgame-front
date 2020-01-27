@@ -142,7 +142,7 @@ class MainScreen extends Component<IProps> {
   };
 
   public render() {
-    const userItemViews = this.props.authStore.user?.userItemViews;
+    const userItemViews = this.props.authStore.user?.userItemViews ?? [];
     const heart = this.props.authStore.user?.heart;
     return (
       <Container>
