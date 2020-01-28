@@ -5,6 +5,7 @@ import { mst } from "reactotron-mst";
 import Reactotron, {
   asyncStorage,
   openInEditor,
+  networking,
   trackGlobalErrors
 } from "reactotron-react-native";
 
@@ -20,6 +21,7 @@ export const setupReactotron = (store: IStore) => {
     name: "app"
   })
     .use(asyncStorage({}))
+    .use(networking({}))
     .use(trackGlobalErrors({}))
     .use(openInEditor())
     .use(mst())
