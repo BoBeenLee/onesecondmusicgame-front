@@ -202,8 +202,8 @@
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
-      "prettier './src/**/*.{js,ts,tsx}' --write",
-      "./node_modules/.bin/eslint './src/**/*.{js,ts,tsx}' --fix",
+      "npm run prettier",
+      "npm run eslint:fix",
       "git add"
     ]
   }
