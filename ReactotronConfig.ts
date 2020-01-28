@@ -23,6 +23,7 @@ export const setupReactotron = (store: IStore) => {
     .use(trackGlobalErrors({}))
     .use(openInEditor())
     .use(mst())
+    .useReactNative()
     .connect();
   (Reactotron as any).trackMstNode(store);
   overlay = (Reactotron as any).overlay;
