@@ -2,7 +2,11 @@ import AsyncStorage from "@react-native-community/async-storage";
 import _ from "lodash";
 import React from "react";
 import { mst } from "reactotron-mst";
-import Reactotron, { trackGlobalErrors } from "reactotron-react-native";
+import Reactotron, {
+  asyncStorage,
+  openInEditor,
+  trackGlobalErrors
+} from "reactotron-react-native";
 
 import { IStore } from "./src/stores/Store";
 
@@ -12,12 +16,12 @@ export const isReactotron = () => {
 
 let overlay = _.identity;
 export const setupReactotron = (store: IStore) => {
-  Reactotron.setAsyncStorageHandler(AsyncStorage)
-    .configure({
-      name: "app"
-    })
+  Reactotron.configure({
+    name: "app"
+  })
+    .use(asyncStorage({}))
     .use(trackGlobalErrors({}))
-    .useReactNative()
+    .use(openInEditor())
     .use(mst())
     .connect();
   (Reactotron as any).trackMstNode(store);
