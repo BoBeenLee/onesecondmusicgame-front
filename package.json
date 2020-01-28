@@ -34,7 +34,6 @@
     "androidstudio": "open -a /Applications/Android\\ Studio.app ./android",
     "androidrectotronconnect": "adb reverse tcp:9090 tcp:9090",
     "storybook": "(adb reverse tcp:7007 tcp:7007 || true) && start-storybook",
-    "prepush": "npm run eslint",
     "postinstall": "npx jetify",
     "postbuildnumber:ios": "RNV=ios react-native-version",
     "changelog": "auto-changelog -p && git add CHANGELOG.md",
@@ -154,6 +153,7 @@
     "husky": "3.1.0",
     "jest": "^24.8.0",
     "jetifier": "^1.6.4",
+    "lint-staged": "^10.0.3",
     "metro-react-native-babel-preset": "^0.56.3",
     "prettier": "^1.19.1",
     "react-dom": "^16.11.0",
@@ -197,7 +197,15 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "npm run prepush"
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": [
+      "prettier './src/**/*.{js,ts,tsx}' --write",
+      "stylelint './src/**/*.tsx'",
+      "./node_modules/.bin/eslint './src/**/*.{js,ts,tsx}' --fix",
+      "git add"
+    ]
   }
 }
