@@ -1,4 +1,4 @@
-import { Item, HighlightDTO } from "__generate__/api";
+import { Item } from "__generate__/api";
 import _ from "lodash";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
