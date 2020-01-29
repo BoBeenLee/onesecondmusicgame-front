@@ -225,8 +225,6 @@ class RegisterSongScreen extends Component<IProps, IStates> {
     }
     try {
       await addNewSongUsingPOST({
-        title,
-        singerName,
         url,
         highlightSeconds: [highlightSeconds]
       });
