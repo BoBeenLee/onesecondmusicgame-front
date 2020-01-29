@@ -21,7 +21,7 @@ import TimerText from "src/components/text/TimerText";
 import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
 import ChargeSkipItemPopup from "src/components/popup/ChargeSkipItemPopup";
 import { makeAppShareLink } from "src/utils/dynamicLink";
-import RegisterSongScreen from "src/screens/RegisterSongScreen";
+import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
 import GameRankingScreen from "src/screens/game/GameRankingScreen";
 import GameModeScreen from "src/screens/game/GameModeScreen";
 import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";

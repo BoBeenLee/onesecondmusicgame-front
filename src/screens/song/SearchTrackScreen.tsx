@@ -18,6 +18,7 @@ import { makePlayStreamUri } from "src/configs/soundCloudAPI";
 
 interface IParams {
   componentId: string;
+  prefixSearchText?: string;
   onResult: (selectedTrackItem: ITrackItem) => void;
 }
 
@@ -55,12 +56,11 @@ const ItemSeperator = styled.View`
 @observer
 class SearchTrackScreen extends Component<IProps, IStates> {
   public static open(params: IParams) {
+    const { componentId, ...restParams } = params;
     return push({
-      componentId: params.componentId,
+      componentId,
       nextComponentId: SCREEN_IDS.SearchTrackScreen,
-      params: {
-        onResult: params.onResult
-      }
+      params: restParams
     });
   }
 
@@ -104,11 +104,12 @@ class SearchTrackScreen extends Component<IProps, IStates> {
 
   private onSearchChangeText = (text: string) => {
     const { search } = this.tracks;
+    const { prefixSearchText } = this.props;
     this.setState(
       {
         searchText: text
       },
-      _.partial(search, { q: text })
+      _.partial(search, { q: `${prefixSearchText} ${text}` })
     );
   };
 

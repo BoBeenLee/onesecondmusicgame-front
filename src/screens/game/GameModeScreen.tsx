@@ -7,7 +7,7 @@ import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
 import { TOP_BAR_HEIGHT } from "src/components/topbar/OSMGTopBar";
 import colors from "src/styles/colors";
-import RegisterSongScreen from "src/screens/RegisterSongScreen";
+import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
 import LevelBadge from "src/components/badge/LevelBadge";
 import GamePlayScreen from "src/screens/game/GamePlayScreen";
 import MockButton from "src/components/button/MockButton";

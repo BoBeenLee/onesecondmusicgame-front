@@ -13,7 +13,8 @@ import { push, popTo, pop, getCurrentComponentId } from "src/utils/navigator";
 import BackTopBar from "src/components/topbar/BackTopBar";
 import colors from "src/styles/colors";
 import { ITrackItem } from "src/apis/soundcloud/interface";
-import SearchTrackScreen from "src/screens/SearchTrackScreen";
+import SearchTrackScreen from "src/screens/song/SearchTrackScreen";
+import SearchSingerScreen from "src/screens/song/SearchSingerScreen";
 import { IToastStore } from "src/stores/ToastStore";
 import { addNewSongUsingPOST } from "src/apis/song";
 import GameAudioPlayer from "src/components/player/GameAudioPlayer";
@@ -22,6 +23,7 @@ import ButtonLoading from "src/components/loading/ButtonLoading";
 import AudioPlayer from "src/components/AudioPlayer";
 import MockButton from "src/components/button/MockButton";
 import OSMGTextInput from "src/components/input/OSMGTextInput";
+import { ISinger } from "src/apis/singer";
 
 interface IInject {
   toastStore: IToastStore;
@@ -34,13 +36,13 @@ interface IParams {
 interface IProps extends IInject, IParams {
   parentComponentId: string;
   selectedTrackItem?: ITrackItem;
+  singerName: string;
 }
 
 interface IStates {
   selectedTrackItem: ITrackItem | null;
   duration: number;
   highlightSeconds: number;
-  singerName: string;
 }
 
 const Container = styled(ContainerWithStatusBar)`
@@ -102,18 +104,30 @@ const RegisterSongButtonText = styled(Bold12)``;
 @observer
 class RegisterSongScreen extends Component<IProps, IStates> {
   public static open(params: IParams) {
-    SearchTrackScreen.open({
+    const navigateToRegisterSong = (
+      selectedTrackItem: ITrackItem,
+      singerName: string
+    ) => {
+      push({
+        componentId: getCurrentComponentId(),
+        nextComponentId: SCREEN_IDS.RegisterSongScreen,
+        params: {
+          parentComponentId: params.componentId,
+          selectedTrackItem,
+          singerName
+        }
+      });
+    };
+    const navigateToSearchTrack = (selectedSinger: ISinger) => {
+      SearchTrackScreen.open({
+        componentId: getCurrentComponentId(),
+        prefixSearchText: selectedSinger.name,
+        onResult: _.partial(navigateToRegisterSong, _, selectedSinger.name)
+      });
+    };
+    SearchSingerScreen.open({
       componentId: params.componentId,
-      onResult: (selectedTrackItem: ITrackItem) => {
-        push({
-          componentId: getCurrentComponentId(),
-          nextComponentId: SCREEN_IDS.RegisterSongScreen,
-          params: {
-            parentComponentId: params.componentId,
-            selectedTrackItem
-          }
-        });
-      }
+      onResult: navigateToSearchTrack
     });
   }
 
@@ -122,18 +136,13 @@ class RegisterSongScreen extends Component<IProps, IStates> {
     this.state = {
       selectedTrackItem: props?.selectedTrackItem ?? null,
       duration: 0,
-      highlightSeconds: 0,
-      singerName: props?.selectedTrackItem?.user?.username ?? ""
+      highlightSeconds: 0
     };
   }
 
   public render() {
-    const {
-      selectedTrackItem,
-      duration,
-      highlightSeconds,
-      singerName
-    } = this.state;
+    const { selectedTrackItem, duration, highlightSeconds } = this.state;
+    const { singerName } = this.props;
     return (
       <Container>
         <BackTopBar title="노래 등록" onBackPress={this.back} />
@@ -151,11 +160,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
             {`원하는 노래 구간을 지정해주세요!
 미 지정 시, 랜덤으로 구간 지정됩니다.`}
           </RegisterSongDescription>
-          <SingerTextInput
-            placeholder="가수이름 입력"
-            onChangeText={this.onSingerNameChangeText}
-            value={singerName}
-          />
+          <SingerTextInput placeholder="가수이름 입력" value={singerName} />
           <Thumnail
             source={{
               uri:
@@ -193,10 +198,6 @@ class RegisterSongScreen extends Component<IProps, IStates> {
     );
   }
 
-  private onSingerNameChangeText = (text: string) => {
-    this.setState({ singerName: text });
-  };
-
   private onSeek = (data: OnSeekData) => {
     this.setState({
       highlightSeconds: data.seekTime
@@ -216,7 +217,8 @@ class RegisterSongScreen extends Component<IProps, IStates> {
 
   private register = async () => {
     const { showToast } = this.props.toastStore;
-    const { selectedTrackItem, highlightSeconds, singerName } = this.state;
+    const { selectedTrackItem, highlightSeconds } = this.state;
+    const { singerName } = this.props;
     const title = selectedTrackItem?.title;
     const url = selectedTrackItem?.uri;
 
@@ -225,7 +227,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
     }
     try {
       await addNewSongUsingPOST({
-        singerName: title,
+        singerName,
         url,
         highlightSeconds: [highlightSeconds]
       });
