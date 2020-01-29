@@ -7,7 +7,7 @@ import topbars from "src/screens/styles/topbars";
 import colors from "src/styles/colors";
 import { delay } from "src/utils/common";
 
-let isLoading = false;
+const isLoadingByComponentId: { [key in string]: boolean } = {};
 let currentComponentId: string | null = null;
 let currentComponentName: string | null = null;
 
@@ -52,18 +52,20 @@ const getCurrentComponentId = () => {
   return currentComponentId!;
 };
 
-export const protectedMultiClick = (func: any, milliseconds = 500) => async (
-  ...args: any[]
-) => {
-  if (isLoading) {
+export const protectedMultiClick = (
+  func: any,
+  componentId: string,
+  milliseconds = 500
+) => async (...args: any[]) => {
+  if (isLoadingByComponentId[componentId]) {
     return;
   }
-  if (!isLoading) {
-    isLoading = true;
+  if (!isLoadingByComponentId[componentId]) {
+    isLoadingByComponentId[componentId] = true;
   }
   func(...args);
   await delay(milliseconds);
-  isLoading = false;
+  isLoadingByComponentId[componentId] = false;
 };
 
 const setStackRoot = async ({
@@ -87,7 +89,7 @@ const setStackRoot = async ({
         passProps: params
       }
     });
-  })(componentId, nextComponentId, params);
+  }, componentId)(componentId, nextComponentId, params);
 
 const setMainStackRoots = async ({
   componentId,
@@ -98,7 +100,7 @@ const setMainStackRoots = async ({
 }) =>
   await protectedMultiClick(async () => {
     await Navigation.setStackRoot(componentId, layouts);
-  })(componentId, layouts);
+  }, componentId)(componentId, layouts);
 
 const setModalStackRoot = async ({
   nextComponentId,
@@ -120,7 +122,7 @@ const setModalStackRoot = async ({
         ]
       }
     });
-  })(nextComponentId, params);
+  }, nextComponentId)(nextComponentId, params);
 
 const push = async ({
   componentId,
@@ -143,7 +145,7 @@ const push = async ({
         passProps: params
       }
     });
-  })(componentId, nextComponentId, params);
+  }, nextComponentId)(componentId, nextComponentId, params);
 
 const pushOptions = async ({
   componentId,
@@ -169,7 +171,7 @@ const pushOptions = async ({
         passProps: params
       }
     });
-  })(componentId, nextComponentId, params);
+  }, nextComponentId)(componentId, nextComponentId, params);
 
 const pop = (componentId: string) => {
   Navigation.pop(componentId);
@@ -182,7 +184,7 @@ const popTo = (componentId: string) => {
 const showModal = async (params: Layout) =>
   await protectedMultiClick(async () => {
     await Navigation.showModal(params);
-  })(params);
+  }, String(params.component?.name) ?? "showModal")(params);
 
 const showStackModal = async (componentId: string, params?: object) =>
   await protectedMultiClick(async () => {
@@ -198,7 +200,7 @@ const showStackModal = async (componentId: string, params?: object) =>
         ]
       }
     });
-  })(params);
+  }, componentId)(params);
 
 const dismissModal = (componentId: string) => {
   Navigation.dismissModal(componentId);
@@ -211,7 +213,7 @@ const dismissAllModals = () => {
 const showOverlay = async (params: Layout) =>
   await protectedMultiClick(async () => {
     await Navigation.showOverlay(params);
-  })(params);
+  }, String(params.component?.name) ?? "showOverlay")(params);
 
 const showOverlayTransparent = async (componentId: string, params?: object) => {
   await showOverlay({

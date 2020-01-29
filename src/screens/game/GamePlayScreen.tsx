@@ -29,7 +29,7 @@ import GamePlayHighlights, {
   IGamePlayHighlightItem
 } from "src/stores/GamePlayHighlights";
 import { makePlayStreamUriByTrackId } from "src/configs/soundCloudAPI";
-import { gameResultUsingPOST } from "src/apis/game";
+import GamePlayTutorialOverlay from "src/screens/tutorial/GamePlayTutorialOverlay";
 
 interface IInject {
   authStore: IAuthStore;
@@ -160,6 +160,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
       onRewarded: this.onRewarded
     });
     props.authStore.user?.heart?.useHeart?.();
+    GamePlayTutorialOverlay.open({});
   }
 
   public componentDidMount() {
