@@ -17,7 +17,8 @@ const GamePlayHighlights = types
     gameHighlights: types.optional(
       types.array(types.frozen<IGamePlayHighlightItem>()),
       []
-    )
+    ),
+    playToken: types.optional(types.string, "")
   })
   .views(self => {
     return {
@@ -42,6 +43,12 @@ const GamePlayHighlights = types
       get isFinish() {
         return self.currentStep === this.gameTotalRoundNum - 1;
       },
+      get toGameAnswers() {
+        return this.gameHighlightViews.map(item => ({
+          answer: item.userAnswer,
+          id: item.id
+        }));
+      },
       checkAnswer(userAnswer: string) {
         const item = self.gameHighlights[self.currentStep];
         return item.title?.toLowerCase?.() === userAnswer.toLowerCase();
@@ -61,6 +68,7 @@ const GamePlayHighlights = types
           return { ...item, gameStep: index };
         })
       );
+      self.playToken = response.playToken ?? "";
     });
 
     const answer = (userAnswer: string) => {

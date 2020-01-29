@@ -29,6 +29,7 @@ import GamePlayHighlights, {
   IGamePlayHighlightItem
 } from "src/stores/GamePlayHighlights";
 import { makePlayStreamUriByTrackId } from "src/configs/soundCloudAPI";
+import { gameResultUsingPOST } from "src/apis/game";
 
 interface IInject {
   authStore: IAuthStore;
@@ -335,11 +336,24 @@ class GamePlayScreen extends Component<IProps, IStates> {
     }
   };
 
-  private finish = () => {
+  private finish = async () => {
     const { closePopup } = this.props.popupProps;
     const { componentId } = this.props;
-    closePopup();
-    GameResultScreen.open({ componentId });
+    const { toGameAnswers, playToken } = this.gamePlayHighlights;
+    const { showToast } = this.props.toastStore;
+
+    try {
+      await gameResultUsingPOST({
+        gameAnswerList: toGameAnswers,
+        playToken
+      });
+      closePopup();
+      GameResultScreen.open({ componentId });
+    } catch (error) {
+      showToast(error.message);
+    } finally {
+      // TODO
+    }
   };
 }
 
