@@ -19,6 +19,11 @@ storiesOf("Progress", module)
   })
   .add("LimitTimeProgress", () => {
     return (
-      <LimitTimeProgress key="1" seconds={60} onTimeEnd={action("onTimeEnd")} />
+      <LimitTimeProgress
+        key="1"
+        pause={false}
+        seconds={60}
+        onTimeEnd={action("onTimeEnd")}
+      />
     );
   });

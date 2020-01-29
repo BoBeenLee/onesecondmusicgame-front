@@ -1,5 +1,5 @@
 import _ from "lodash";
-import React from "react";
+import React, { useEffect } from "react";
 import { ViewProps } from "react-native";
 import styled from "styled-components/native";
 
@@ -10,6 +10,7 @@ import TimeProgress from "src/components/progress/TimeProgress";
 interface IProps {
   style?: ViewProps["style"];
   key: string;
+  pause: boolean;
   seconds: number;
   onTimeEnd: () => void;
 }
@@ -26,8 +27,16 @@ const TimeText = styled(Bold12)`
 const HUNDRED_PERCENTAGE = 100;
 
 function LimitTimeProgress(props: IProps) {
-  const { style, seconds, onTimeEnd } = props;
-  const { timeLeft } = useTimer({ seconds, onTimeEnd });
+  const { style, seconds, pause, onTimeEnd } = props;
+  const { timeLeft, stop, start } = useTimer({ seconds, onTimeEnd });
+
+  useEffect(() => {
+    if (pause) {
+      stop();
+      return;
+    }
+    start();
+  }, [pause, start, stop]);
 
   return (
     <Container style={style}>

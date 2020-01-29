@@ -1,7 +1,8 @@
 import _ from "lodash";
-import React, { useRef, useEffect } from "react";
-import { ViewProps, Animated } from "react-native";
+import React from "react";
+import { ViewProps } from "react-native";
 import styled from "styled-components/native";
+import * as Progress from "react-native-progress";
 
 import useComponentSize from "src/hooks/useComponentSize";
 
@@ -16,25 +17,19 @@ const Container = styled.View`
   background-color: #d8d8d8;
 `;
 
-const ActiveProgressBar = styled(Animated.View)`
-  height: 11px;
-  background-color: #b5b5b5;
-`;
+const ActiveProgressBar = styled(Progress.Bar)``;
 
 function TimeProgress(props: IProps) {
   const { style, activePercentage } = props;
   const { size, onLayout } = useComponentSize();
-  const activeWidth = useRef(new Animated.Value(0));
-
-  useEffect(() => {
-    activeWidth.current?.setValue(
-      _.round(size.width * (activePercentage * 0.01))
-    );
-  }, [size.width, activePercentage]);
 
   return (
     <Container style={style} onLayout={onLayout}>
-      <ActiveProgressBar style={{ width: activeWidth.current }} />
+      <ActiveProgressBar
+        width={size.width}
+        height={11}
+        progress={activePercentage * 0.01}
+      />
     </Container>
   );
 }

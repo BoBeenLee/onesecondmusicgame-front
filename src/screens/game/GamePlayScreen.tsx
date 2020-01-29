@@ -173,13 +173,14 @@ class GamePlayScreen extends Component<IProps, IStates> {
       Item.ItemTypeEnum.SKIP
     );
     const { currentStep } = this.gamePlayHighlights;
-    const { songAnswerInput } = this.state;
+    const { currentStepStatus, songAnswerInput } = this.state;
     return (
       <Container>
         <Header>
           <Lifes circles={["active", "inactive", "check"]} />
           <LimitTimeProgress
             key={`${currentStep}`}
+            pause={currentStepStatus !== "play"}
             seconds={DEFAULT_LIMIT_TIME}
             onTimeEnd={this.onLimitTimeEnd}
           />
