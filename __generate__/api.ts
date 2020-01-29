@@ -846,6 +846,12 @@ export interface SongRegisterRequest {
    * @type {string}
    * @memberof SongRegisterRequest
    */
+  singerName?: string;
+  /**
+   *
+   * @type {string}
+   * @memberof SongRegisterRequest
+   */
   url?: string;
 }
 

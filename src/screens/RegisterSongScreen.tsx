@@ -218,13 +218,14 @@ class RegisterSongScreen extends Component<IProps, IStates> {
     const { showToast } = this.props.toastStore;
     const { selectedTrackItem, highlightSeconds, singerName } = this.state;
     const title = selectedTrackItem?.title;
-    const url = selectedTrackItem?.stream_url;
+    const url = selectedTrackItem?.uri;
 
     if (![title, singerName, url].some(value => !!value)) {
       return;
     }
     try {
       await addNewSongUsingPOST({
+        singerName: title,
         url,
         highlightSeconds: [highlightSeconds]
       });
