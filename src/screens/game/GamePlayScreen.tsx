@@ -339,21 +339,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
   private finish = async () => {
     const { closePopup } = this.props.popupProps;
     const { componentId } = this.props;
-    const { toGameAnswers, playToken } = this.gamePlayHighlights;
-    const { showToast } = this.props.toastStore;
 
-    try {
-      await gameResultUsingPOST({
-        gameAnswerList: toGameAnswers,
-        playToken
-      });
-      closePopup();
-      GameResultScreen.open({ componentId });
-    } catch (error) {
-      showToast(error.message);
-    } finally {
-      // TODO
-    }
+    closePopup();
+    GameResultScreen.open({
+      componentId,
+      gamePlayHighlights: () => this.gamePlayHighlights
+    });
   };
 }
 

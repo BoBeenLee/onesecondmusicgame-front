@@ -24,6 +24,10 @@ import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import { makeAppShareLink } from "src/utils/dynamicLink";
 import GamePlayScreen from "src/screens/game/GamePlayScreen";
+import GamePlayHighlights, {
+  IGamePlayHighlights
+} from "src/stores/GamePlayHighlights";
+import { gameResultUsingPOST } from "src/apis/game";
 
 interface IInject {
   authStore: IAuthStore;
@@ -32,9 +36,15 @@ interface IInject {
 
 interface IParams {
   componentId: string;
+  gamePlayHighlights: () => IGamePlayHighlights;
 }
 
 interface IProps extends IInject, IParams, IPopupProps {}
+
+interface IStates {
+  gainPointOfThisGame: number;
+  totalPoint: number;
+}
 
 const Container = styled(ContainerWithStatusBar)`
   flex: 1;
@@ -122,24 +132,40 @@ const RetryPlayButtonText = styled(Bold12)``;
   })
 )
 @observer
-class GameResultScreen extends Component<IProps> {
+class GameResultScreen extends Component<IProps, IStates> {
   public static open(params: IParams) {
+    const { componentId, ...restParams } = params;
     return push({
-      componentId: params.componentId,
-      nextComponentId: SCREEN_IDS.GameResultScreen
+      componentId,
+      nextComponentId: SCREEN_IDS.GameResultScreen,
+      params: restParams
     });
   }
+
+  public gamePlayHighlights: IGamePlayHighlights;
 
   constructor(props: IProps) {
     super(props);
 
+    this.state = {
+      gainPointOfThisGame: 0,
+      totalPoint: 0
+    };
+
     loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
       onRewarded: this.onRewarded
     });
+    this.gamePlayHighlights =
+      props?.gamePlayHighlights?.() ?? GamePlayHighlights.create({});
+  }
+
+  public componentDidMount() {
+    this.initialize();
   }
 
   public render() {
     const heart = this.props.authStore.user?.heart;
+    const { gainPointOfThisGame, totalPoint } = this.state;
 
     return (
       <Container>
@@ -149,10 +175,10 @@ class GameResultScreen extends Component<IProps> {
         <Content>
           <ScoreView>
             <GainScoreView size={200}>
-              <GainScore>20</GainScore>
+              <GainScore>{gainPointOfThisGame}</GainScore>
               <GainScoreText>점</GainScoreText>
             </GainScoreView>
-            <TotalScore>380점</TotalScore>
+            <TotalScore>{totalPoint}점</TotalScore>
           </ScoreView>
           <ScoreDescription>{`놀랍네요!
 혹시 당신 트둥이 아닌가요?`}</ScoreDescription>
@@ -181,6 +207,18 @@ class GameResultScreen extends Component<IProps> {
       </Container>
     );
   }
+
+  private initialize = async () => {
+    const { toGameAnswers, playToken } = this.gamePlayHighlights;
+    const response = await gameResultUsingPOST({
+      gameAnswerList: toGameAnswers,
+      playToken
+    });
+    this.setState({
+      gainPointOfThisGame: response.gainPointOfThisGame ?? 0,
+      totalPoint: response.totalPoint ?? 0
+    });
+  };
 
   private onChargeFullHeartPopup = () => {
     const { showPopup, closePopup } = this.props.popupProps;

@@ -95,6 +95,7 @@ const GamePlayHighlights = types
       }
       self.currentStep += 1;
     };
+
     return { initialize, setStep, nextStep, answer };
   });
 
