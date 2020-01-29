@@ -89,8 +89,9 @@ const Logo = styled(Bold36)`
 const Footer = styled.View`
   height: 100px;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
+  padding-horizontal: 25px;
 `;
 
 @inject(
@@ -181,8 +182,7 @@ class MainScreen extends Component<IProps> {
           <MockButton name="가수선택" onPress={this.navigateToGameMode} />
         </Content>
         <Footer>
-          <MockButton name="친구초대" onPress={this.onInvitePopup} />
-          <MockButton name="음악 등록" onPress={this.navigateToRegisterSong} />
+          <MockButton name="노래 제안" onPress={this.navigateToRegisterSong} />
           <MockButton name="개인 랭킹" onPress={this.navigateToRanking} />
         </Footer>
       </Container>
