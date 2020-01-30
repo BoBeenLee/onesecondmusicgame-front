@@ -26,7 +26,7 @@
     "appdistribution:android": "npm run build:android && firebase appdistribution:distribute ./android/app/build/outputs/apk/release/app-release.apk --app 1:858680448613:android:4dfa8696bcc65cc20ed88c --token 1//0eJGW5rUC4NBRCgYIARAAGA4SNwF-L9IraQk7cq7VUh660mt0OCTG_JWyQfMzkwVxm3ngcWrRQRYRHvEZTx4hRHDdxhZd1Eq3FGw",
     "appdistribution:ios": "firebase appdistribution:distribute $BITRISE_IPA_PATH --app 1:833905792974:ios:1ec7739544849fc8 --token 1/Imdv27tKHLaob8Y1o4h6CA6-kn_zbXZXQi6e_-Xfuus",
     "codepush:android:production": "code-push release-react onesecondmusicgame/onesecondmusicgame-android android -d Production -m true --privateKeyPath ~/private.pem",
-    "codepush:android:ios": "code-push release-react onesecondmusicgame/onesecondmusicgame-ios ios -d Production -m true --privateKeyPath ~/private.pem --plistFile ios/RNApp/Info.plist",
+    "codepush:ios:production": "code-push release-react onesecondmusicgame/onesecondmusicgame-ios ios -d Production -m true --privateKeyPath ~/private.pem --plistFile ios/RNApp/Info.plist",
     "prettier": "prettier './src/**/*.{js,ts,tsx}' --write",
     "lint:css": "stylelint './src/**/*.tsx'",
     "eslint": "./node_modules/.bin/eslint './src/**/*.{js,ts,tsx}'",
