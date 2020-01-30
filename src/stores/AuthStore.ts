@@ -66,10 +66,21 @@ const AuthStore = types
     };
 
     const initialize = flow(function*() {
-      self.provider = yield defaultItemToString(FIELD.PROVIDER_TYPE, "NONE");
-      self.accessId = yield defaultItemToString(FIELD.ACCESS_ID, "");
-      self.accessToken = yield defaultItemToString(FIELD.ACCESS_TOKEN, "");
-      self.refreshToken = yield defaultItemToString(FIELD.REFRESH_TOKEN, "");
+      const [
+        provider,
+        accessId,
+        accessToken,
+        refreshToken
+      ] = yield Promise.all([
+        defaultItemToString(FIELD.PROVIDER_TYPE, "NONE"),
+        defaultItemToString(FIELD.ACCESS_ID, ""),
+        defaultItemToString(FIELD.ACCESS_TOKEN, ""),
+        defaultItemToString(FIELD.REFRESH_TOKEN, "")
+      ]);
+      self.provider = provider;
+      self.accessId = accessId;
+      self.accessToken = accessToken;
+      self.refreshToken = refreshToken;
       yield clearIfProviderExpiredToken();
       if (self.provider === "NONE") {
         return;

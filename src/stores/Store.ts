@@ -36,10 +36,12 @@ const Store = types
       initializeAnalytics();
       initializeAdmob();
       self.linkingStore.initialize();
-      self.codePushStore.initialize();
       self.pushNotificationStore.initialize();
-      yield self.authStore.initialize();
-      yield initializeSoundCloudAPI();
+      yield Promise.all([
+        self.codePushStore.initialize(),
+        self.authStore.initialize(),
+        initializeSoundCloudAPI()
+      ]);
       initializeRequestAPI();
     });
 
