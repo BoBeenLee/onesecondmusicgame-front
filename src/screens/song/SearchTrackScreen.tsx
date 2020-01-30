@@ -72,6 +72,8 @@ class SearchTrackScreen extends Component<IProps, IStates> {
       searchText: ""
     };
     this.tracks = Tracks.create();
+    const { search } = this.tracks;
+    props.prefixSearchText && search({ q: props.prefixSearchText });
   }
 
   public render() {
