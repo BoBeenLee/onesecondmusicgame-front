@@ -65,8 +65,8 @@ const Header = styled.View`
   padding-horizontal: 16px;
 `;
 
-const Lifes = styled(CircleCheckGroup)`
-  margin-bottom: 21px;
+const GamePlayStep = styled(CircleCheckGroup)`
+  margin-bottom: 32px;
 `;
 
 const GamePlayers = styled(OSMGCarousel)``;
@@ -92,11 +92,16 @@ const SongInput = styled.View`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  border-bottom-width: 1px;
-  border-bottom-color: ${"#000"};
+  border-bottom-width: 4px;
+  border-bottom-color: ${colors.blueberry};
 `;
 
-const SongTextInput = styled(OSMGTextInput)``;
+const SongTextInput = styled(OSMGTextInput).attrs({
+  focusStyle: { color: colors.paleGrey }
+})`
+  font-size: 22px;
+  text-align: center;
+`;
 
 const AnswerView = styled.View`
   flex: 1;
@@ -106,10 +111,27 @@ const AnswerView = styled.View`
 
 const AnswerText = styled(Bold12)``;
 
-const GameItems = styled.View`
-  position: absolute;
-  bottom: 30px;
-  right: 20px;
+const Footer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-horizontal: 14px;
+  padding-bottom: 22px;
+`;
+
+const AnswerButton = styled.TouchableOpacity`
+  flex: 1;
+  height: 56px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: solid 3px ${colors.lightMagenta};
+  background-color: ${colors.pinkyPurple};
+  margin-right: 7px;
+`;
+
+const AnswerButtonText = styled(Bold20)`
+  color: ${colors.white};
 `;
 
 const DEFAULT_LIMIT_TIME = 40;
@@ -172,12 +194,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const userItem = this.props.authStore.user?.userItemsByItemType(
       Item.ItemTypeEnum.SKIP
     );
-    const { currentStep } = this.gamePlayHighlights;
+    const { currentStep, gamePlayStepStatuses } = this.gamePlayHighlights;
     const { currentStepStatus, songAnswerInput } = this.state;
     return (
       <Container>
         <Header>
-          <Lifes circles={["active", "inactive", "check"]} />
+          <GamePlayStep circles={gamePlayStepStatuses} />
           <LimitTimeProgress
             key={`${currentStep}`}
             pause={currentStepStatus !== "play"}
@@ -203,13 +225,16 @@ class GamePlayScreen extends Component<IProps, IStates> {
           </SongInput>
           {this.renderAnswer}
         </Content>
-        <GameItems>
+        <Footer>
+          <AnswerButton onPress={this.submitAnswer}>
+            <AnswerButtonText>입력확인</AnswerButtonText>
+          </AnswerButton>
           <MockButton
             disabled={(userItem?.count ?? 0) === 0}
             name={`스킵(${userItem?.count ?? 0})`}
             onPress={this.useSkipItem}
           />
-        </GameItems>
+        </Footer>
       </Container>
     );
   }
@@ -225,9 +250,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const { currentStepStatus } = this.state;
     return (
       <AnswerView>
-        {currentStepStatus === "play" ? (
-          <MockButton name="확인" onPress={this.submitAnswer} />
-        ) : (
+        {currentStepStatus === "play" ? null : (
           <AnswerText>정답입니다~</AnswerText>
         )}
       </AnswerView>

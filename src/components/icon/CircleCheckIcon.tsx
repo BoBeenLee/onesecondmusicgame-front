@@ -1,40 +1,42 @@
+/* eslint-disable react/display-name */
 import React, { Component } from "react";
 import { ViewProps } from "react-native";
 import styled, { css } from "styled-components/native";
 
 import colors from "src/styles/colors";
+import XEIcon from "src/components/icon/XEIcon";
 
-export type CircleCheck = "active" | "inactive" | "check";
+export type CircleCheck = "o" | "x" | "correct";
 
 interface IProps {
   style?: ViewProps["style"];
+  active: boolean;
   check: CircleCheck;
 }
 
-const Container = styled.View<{ check: CircleCheck }>`
-  width: 8px;
-  height: 8px;
-  border-radius: 4px;
-  ${({ check }) => css`
-    ${check === "active" &&
-      css`
-        background-color: ${colors.gray900};
-      `}
-    ${check === "inactive" &&
-      css`
-        background-color: ${colors.gray500};
-      `}
-    ${check === "check" &&
-      css`
-        background-color: transparent;
-        border: 1px solid ${colors.gray900};
-      `}
-  `}
-`;
+const DEFAULT_SIZE = 15;
+const ACTIVE_SIZE = 19;
+
+const CircleCheckByType: {
+  [key in CircleCheck]: (size: number) => React.ReactNode;
+} = {
+  correct: size => (
+    <XEIcon name="radiobox-blank" size={size} color={colors.darkIndigo} />
+  ),
+  o: size => (
+    <XEIcon name="radiobox-blank" size={size} color={colors.pinkyPurple} />
+  ),
+  x: size => <XEIcon name="close" size={size} color={colors.pinkyPurple} />
+};
+
+const Container = styled.View``;
 
 function CircleCheckIcon(props: IProps) {
-  const { style, check } = props;
-  return <Container style={style} check={check} />;
+  const { style, active, check } = props;
+  const CircleCheckComponent = CircleCheckByType[check](
+    active ? ACTIVE_SIZE : DEFAULT_SIZE
+  );
+  return <Container style={style}>{CircleCheckComponent}</Container>;
 }
 
 export default CircleCheckIcon;

@@ -21,7 +21,8 @@ const fontTypeToFont: { [key in FontType]: string } = {
   REGULAR: "BMHANNAAirOTF"
 };
 
-const Container = styled.TextInput`
+const Container = styled.TextInput<{ fontName: string }>`
+  font-family: ${({ fontName }) => fontName};
   color: ${colors.gray450};
   padding: 0;
   margin: 0;
@@ -60,16 +61,8 @@ class OSMGTextInput extends React.Component<IProps, IStates> {
     return (
       <Container
         ref={this.textInputRef}
-        style={[
-          style,
-          currentStyle,
-          {
-            ...Platform.select({
-              android: {},
-              ios: { fontFamily: fontTypeToFont[fontType] }
-            })
-          }
-        ]}
+        style={[style, currentStyle]}
+        fontName={fontTypeToFont[fontType]}
         placeholderTextColor={colors.gray500}
         onFocus={this.onFocus}
         onBlur={this.onBlur}

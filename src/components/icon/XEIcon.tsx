@@ -40,6 +40,7 @@ export type XEIconType =
   | "check-circle"
   | "check-circle-o"
   | "radiobox-blank"
+  | "radiobox-checked"
   | "checkbox-blank"
   | "check-square-o"
   | "check-square"

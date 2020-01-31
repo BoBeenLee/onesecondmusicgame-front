@@ -94,7 +94,7 @@ class GameModeScreen extends Component<IProps> {
             <GameModeDescription>
               무작위로 문제가 출제됩니다.
             </GameModeDescription>
-            <LevelBadgeView level="hard" />
+            <LevelBadgeView level="HARD" />
           </GameModeSection>
           <GameModeSection onPress={this.navigateToSelectedSingersGamePlay}>
             <GameModeTitle>자신있는 가수 선택하기</GameModeTitle>

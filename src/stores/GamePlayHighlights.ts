@@ -3,6 +3,7 @@ import _ from "lodash";
 import { types, flow } from "mobx-state-tree";
 import { getHighlightListUsingPOST } from "src/apis/game";
 import { ISinger } from "src/apis/singer";
+import { ICircleCheckItem } from "src/components/icon/CircleCheckGroup";
 
 export interface IGamePlayHighlightItem extends GamePlayHighlightDTO {
   gameStep: number;
@@ -22,6 +23,25 @@ const GamePlayHighlights = types
   })
   .views(self => {
     return {
+      get gamePlayStepStatuses(): ICircleCheckItem[] {
+        return self.gameHighlights.map((item, index) => {
+          if (self.currentStep < index) {
+            return {
+              check: "o",
+              active: false
+            };
+          }
+          return {
+            check:
+              item.title?.toLowerCase?.() ===
+                item?.userAnswer?.toLowerCase?.() ||
+              item?.userAnswer?.toLowerCase?.() === undefined
+                ? "o"
+                : "x",
+            active: self.currentStep === index
+          };
+        });
+      },
       get gameTotalRoundNum() {
         return self.gameHighlights.length;
       },

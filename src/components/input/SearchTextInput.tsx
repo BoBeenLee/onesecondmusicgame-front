@@ -20,12 +20,15 @@ const Container = styled.View`
   height: 40px;
   flex-direction: row;
   align-items: center;
-  border-bottom-width: 1px;
+  border-bottom-width: 3px;
   border-bottom-color: ${colors.blueberry};
 `;
 
-const Input = styled(OSMGTextInput)`
+const Input = styled(OSMGTextInput).attrs({
+  focusStyle: { color: colors.paleGrey }
+})`
   flex: 1;
+  font-size: 16px;
   margin-right: 3px;
 `;
 

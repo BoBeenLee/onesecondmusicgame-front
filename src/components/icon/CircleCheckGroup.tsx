@@ -7,27 +7,37 @@ import CircleCheckIcon, {
   CircleCheck
 } from "src/components/icon/CircleCheckIcon";
 
+export interface ICircleCheckItem {
+  check: CircleCheck;
+  active: boolean;
+}
+
 interface IProps {
   style?: ViewProps["style"];
-  circles: CircleCheck[];
+  circles: ICircleCheckItem[];
 }
 
 const Container = styled.View`
   flex-direction: row;
+  align-items: center;
 `;
 
 const CircleCheckItem = styled(CircleCheckIcon)`
-  margin-left: 4px;
-  margin-right: 4px;
+  margin-left: 12px;
+  margin-right: 12px;
 `;
 
 function CircleCheckGroup(props: IProps) {
   const { style, circles } = props;
   return (
     <Container style={style}>
-      {_.map(circles, (circleCheck, index) => {
+      {_.map(circles, (item, index) => {
         return (
-          <CircleCheckItem key={`indicator${index}`} check={circleCheck} />
+          <CircleCheckItem
+            key={`indicator${index}`}
+            check={item.check}
+            active={item.active}
+          />
         );
       })}
     </Container>

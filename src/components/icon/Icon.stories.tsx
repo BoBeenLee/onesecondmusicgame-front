@@ -19,5 +19,22 @@ storiesOf("Icon", module)
     return <HeartGroup hearts={["active", "inactive"]} />;
   })
   .add("CircleCheckGroup", () => {
-    return <CircleCheckGroup circles={["active", "inactive", "check"]} />;
+    return (
+      <CircleCheckGroup
+        circles={[
+          {
+            check: "o",
+            active: false
+          },
+          {
+            check: "x",
+            active: false
+          },
+          {
+            check: "correct",
+            active: false
+          }
+        ]}
+      />
+    );
   });
