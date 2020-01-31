@@ -41,6 +41,11 @@ export const Bold16 = styled(Bold)`
   line-height: 24px;
 `;
 
+export const Bold17 = styled(Bold)`
+  font-size: 17px;
+  line-height: 26px;
+`;
+
 export const Bold18 = styled(Bold)`
   font-size: 18px;
   line-height: 26px;

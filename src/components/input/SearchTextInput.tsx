@@ -29,6 +29,7 @@ const Input = styled(OSMGTextInput).attrs({
 })`
   flex: 1;
   font-size: 16px;
+  color: ${colors.paleGrey};
   margin-right: 3px;
 `;
 

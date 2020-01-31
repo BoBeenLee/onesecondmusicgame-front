@@ -3,6 +3,7 @@ import React, { Component, ComponentClass } from "react";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
 import { FlatListProps, FlatList, ListRenderItem } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import {
@@ -41,6 +42,14 @@ const Container = styled(ContainerWithStatusBar)`
   flex: 1;
   flex-direction: column;
 `;
+
+const InnerContainer = styled(KeyboardAwareScrollView).attrs({
+  contentContainerStyle: {
+    flex: 1,
+    flexDirection: "column",
+    height: "100%"
+  }
+})``;
 
 const Header = styled.View`
   justify-content: center;
@@ -135,37 +144,39 @@ class SearchSingerScreen extends Component<IProps> {
     return (
       <Container>
         <BackTopBar title="검색" onBackPress={this.back} />
-        <Header>
-          <Title>원하는 곡이 등록되었는지 확인해보세요 </Title>
-          <Description>먼저 가수명으로 검색해주세요</Description>
-        </Header>
-        <SearchView>
-          <SearchTextInput
-            placeholder="가수명을 검색해주세요"
-            onChangeInput={this.search}
-            onSearch={this.search}
-          />
-        </SearchView>
-        <Content>
-          <ResultText>전체 {singerViews.length}</ResultText>
-          <Result
-            data={singerViews}
-            numColumns={4}
-            renderItem={this.renderSingerItem}
-            keyExtractor={this.singerKeyExtreactor}
-            refreshing={isRefresh}
-            onRefresh={refresh}
-            ListEmptyComponent={
-              <ResultEmpty>
-                <ResultEmptyTitle>검색결과가 없습니다.</ResultEmptyTitle>
-                <ResultEmptyDescription>
-                  {`음원 등록에서 찾으시는 곡을 검색해
+        <InnerContainer enableOnAndroid={true} enableAutomaticScroll={false}>
+          <Header>
+            <Title>원하는 곡이 등록되었는지 확인해보세요 </Title>
+            <Description>먼저 가수명으로 검색해주세요</Description>
+          </Header>
+          <SearchView>
+            <SearchTextInput
+              placeholder="가수명을 검색해주세요"
+              onChangeInput={this.search}
+              onSearch={this.search}
+            />
+          </SearchView>
+          <Content>
+            <ResultText>전체 {singerViews.length}</ResultText>
+            <Result
+              data={singerViews}
+              numColumns={4}
+              renderItem={this.renderSingerItem}
+              keyExtractor={this.singerKeyExtreactor}
+              refreshing={isRefresh}
+              onRefresh={refresh}
+              ListEmptyComponent={
+                <ResultEmpty>
+                  <ResultEmptyTitle>검색결과가 없습니다.</ResultEmptyTitle>
+                  <ResultEmptyDescription>
+                    {`음원 등록에서 찾으시는 곡을 검색해
   를 눌러주시면 곡을 등록하실 수 있습니다.`}
-                </ResultEmptyDescription>
-              </ResultEmpty>
-            }
-          />
-        </Content>
+                  </ResultEmptyDescription>
+                </ResultEmpty>
+              }
+            />
+          </Content>
+        </InnerContainer>
       </Container>
     );
   }

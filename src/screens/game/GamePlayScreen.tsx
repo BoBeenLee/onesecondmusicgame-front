@@ -3,9 +3,10 @@ import _ from "lodash";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
-import { Bold12, Bold20 } from "src/components/text/Typographies";
+import { Bold12, Bold17, Bold20 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop, getCurrentComponentId } from "src/utils/navigator";
 import CircleCheckGroup from "src/components/icon/CircleCheckGroup";
@@ -30,6 +31,7 @@ import GamePlayHighlights, {
 } from "src/stores/GamePlayHighlights";
 import { makePlayStreamUriByTrackId } from "src/configs/soundCloudAPI";
 import GamePlayTutorialOverlay from "src/screens/tutorial/GamePlayTutorialOverlay";
+import XEIcon from "src/components/icon/XEIcon";
 
 interface IInject {
   authStore: IAuthStore;
@@ -56,6 +58,14 @@ const Container = styled(ContainerWithStatusBar)`
   flex: 1;
   flex-direction: column;
 `;
+
+const InnerContainer = styled(KeyboardAwareScrollView).attrs({
+  contentContainerStyle: {
+    flex: 1,
+    flexDirection: "column",
+    height: "100%"
+  }
+})``;
 
 const Header = styled.View`
   justify-content: center;
@@ -98,6 +108,7 @@ const SongInput = styled.View`
 const SongTextInput = styled(OSMGTextInput).attrs({
   focusStyle: { color: colors.paleGrey }
 })`
+  color: ${colors.paleGrey};
   font-size: 22px;
   text-align: center;
 `;
@@ -133,7 +144,34 @@ const AnswerButtonText = styled(Bold20)`
   color: ${colors.white};
 `;
 
+const NextStepGroup = styled.View`
+  flex-direction: column;
+  justify-content: flex-end;
+`;
+
+const NextStepButton = styled.TouchableOpacity`
+  flex: 1;
+  height: 56px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 14px;
+  border: solid 3px ${colors.lightBlueGrey};
+  background-color: ${colors.paleLavender};
+`;
+
+const NextStepButtonText = styled(Bold20)`
+  color: ${colors.white};
+  margin-right: 11px;
+`;
+
+const NextStepArrowIcon = styled(XEIcon)``;
+
+const NextStepCaption = styled(Bold17)`
+  margin-bottom: 12px;
+`;
+
 const DEFAULT_LIMIT_TIME = 40;
+const NEXT_STEP_SECONDS = 5000;
 
 @inject(
   ({ store }: { store: IStore }): IInject => ({
@@ -190,30 +228,44 @@ class GamePlayScreen extends Component<IProps, IStates> {
   }
 
   public render() {
+    const { currentStep, gamePlayStepStatuses } = this.gamePlayHighlights;
+    const { currentStepStatus } = this.state;
+    return (
+      <Container>
+        <InnerContainer enableOnAndroid={true} enableAutomaticScroll={false}>
+          <Header>
+            <GamePlayStep circles={gamePlayStepStatuses} />
+            <LimitTimeProgress
+              key={`${currentStep}`}
+              pause={currentStepStatus !== "play"}
+              seconds={DEFAULT_LIMIT_TIME}
+              onTimeEnd={this.onLimitTimeEnd}
+            />
+          </Header>
+          <GamePlayers
+            scrollEnabled={false}
+            ref={this.gamePlayersRef}
+            data={this.gameHighlightViews}
+            itemWidth={240}
+            renderItem={this.renderItem}
+            onSnapToItem={this.onSnapToItem}
+          />
+          {currentStepStatus === "play"
+            ? this.renderGamePlay
+            : this.renderAnswer}
+        </InnerContainer>
+      </Container>
+    );
+  }
+
+  private get renderGamePlay() {
+    const { songAnswerInput } = this.state;
     const userItem = this.props.authStore.user?.userItemsByItemType(
       Item.ItemTypeEnum.SKIP
     );
-    const { currentStep, gamePlayStepStatuses } = this.gamePlayHighlights;
-    const { currentStepStatus, songAnswerInput } = this.state;
+
     return (
-      <Container>
-        <Header>
-          <GamePlayStep circles={gamePlayStepStatuses} />
-          <LimitTimeProgress
-            key={`${currentStep}`}
-            pause={currentStepStatus !== "play"}
-            seconds={DEFAULT_LIMIT_TIME}
-            onTimeEnd={this.onLimitTimeEnd}
-          />
-        </Header>
-        <GamePlayers
-          scrollEnabled={false}
-          ref={this.gamePlayersRef}
-          data={this.gameHighlightViews}
-          itemWidth={240}
-          renderItem={this.renderItem}
-          onSnapToItem={this.onSnapToItem}
-        />
+      <>
         <Content>
           <SongInput>
             <SongTextInput
@@ -222,7 +274,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
               onChangeText={this.onSongAnswerChangeText}
             />
           </SongInput>
-          {this.renderAnswer}
         </Content>
         <Footer>
           <AnswerButton onPress={this.submitAnswer}>
@@ -234,7 +285,32 @@ class GamePlayScreen extends Component<IProps, IStates> {
             onPress={this.useSkipItem}
           />
         </Footer>
-      </Container>
+      </>
+    );
+  }
+
+  private get renderAnswer() {
+    return (
+      <>
+        <Content>
+          <AnswerView>
+            <AnswerText>정답입니다~</AnswerText>
+          </AnswerView>
+        </Content>
+        <Footer>
+          <NextStepGroup>
+            <NextStepCaption>5초 뒤 다음 문제</NextStepCaption>
+            <NextStepButton>
+              <NextStepButtonText>다음 문제</NextStepButtonText>
+              <NextStepArrowIcon
+                name="angle-right"
+                size={16}
+                color={colors.pinkyPurpleThree}
+              />
+            </NextStepButton>
+          </NextStepGroup>
+        </Footer>
+      </>
     );
   }
 
@@ -243,17 +319,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
       ...item,
       key: String(item.id)
     }));
-  }
-
-  private get renderAnswer() {
-    const { currentStepStatus } = this.state;
-    return (
-      <AnswerView>
-        {currentStepStatus === "play" ? null : (
-          <AnswerText>정답입니다~</AnswerText>
-        )}
-      </AnswerView>
-    );
   }
 
   private onSongAnswerChangeText = (text: string) => {
@@ -318,7 +383,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
         },
         this.nextStep
       );
-    }, 2000);
+    }, NEXT_STEP_SECONDS);
   };
 
   private nextStep = () => {

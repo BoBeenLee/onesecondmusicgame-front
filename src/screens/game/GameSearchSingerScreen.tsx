@@ -3,6 +3,7 @@ import React, { Component, ComponentClass } from "react";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
 import { FlatListProps, FlatList, ListRenderItem } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import {
@@ -50,6 +51,14 @@ const Container = styled(ContainerWithStatusBar)`
   flex: 1;
   flex-direction: column;
 `;
+
+const InnerContainer = styled(KeyboardAwareScrollView).attrs({
+  contentContainerStyle: {
+    flex: 1,
+    flexDirection: "column",
+    height: "100%"
+  }
+})``;
 
 const Header = styled.View`
   justify-content: center;
@@ -157,50 +166,52 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
 
     return (
       <Container>
-        <Header>
-          <Title>어떤 가수의 음악이 자신있으세요?</Title>
-          <Description>최대 3명의 가수를 선택하실 수 있습니다.</Description>
-        </Header>
-        <SearchView>
-          <SearchTextInput
-            placeholder="가수명"
-            onChangeInput={this.search}
-            onSearch={this.search}
-          />
-        </SearchView>
-        <Content>
-          <ResultText>전체 {singerViews.length}</ResultText>
-          <Result
-            data={singerViews}
-            numColumns={4}
-            renderItem={this.renderSingerItem}
-            keyExtractor={this.singerKeyExtreactor}
-            refreshing={isRefresh}
-            onRefresh={refresh}
-            ListEmptyComponent={
-              <ResultEmpty>
-                <ResultEmptyTitle>검색결과가 없습니다.</ResultEmptyTitle>
-                <ResultEmptyDescription>
-                  {`음원 등록에서 찾으시는 곡을 검색해
+        <InnerContainer enableOnAndroid={true} enableAutomaticScroll={false}>
+          <Header>
+            <Title>어떤 가수의 음악이 자신있으세요?</Title>
+            <Description>최대 3명의 가수를 선택하실 수 있습니다.</Description>
+          </Header>
+          <SearchView>
+            <SearchTextInput
+              placeholder="가수명"
+              onChangeInput={this.search}
+              onSearch={this.search}
+            />
+          </SearchView>
+          <Content>
+            <ResultText>전체 {singerViews.length}</ResultText>
+            <Result
+              data={singerViews}
+              numColumns={4}
+              renderItem={this.renderSingerItem}
+              keyExtractor={this.singerKeyExtreactor}
+              refreshing={isRefresh}
+              onRefresh={refresh}
+              ListEmptyComponent={
+                <ResultEmpty>
+                  <ResultEmptyTitle>검색결과가 없습니다.</ResultEmptyTitle>
+                  <ResultEmptyDescription>
+                    {`음원 등록에서 찾으시는 곡을 검색해
   를 눌러주시면 곡을 등록하실 수 있습니다.`}
-                </ResultEmptyDescription>
-                <RegisterSongButton onPress={this.navigateToRegisterSong}>
-                  <RegisterSongButtonText>
-                    음원등록 하러가기
-                  </RegisterSongButtonText>
-                </RegisterSongButton>
-              </ResultEmpty>
-            }
-            scrollEventThrottle={16}
-            onScroll={onScroll(this.onResultScroll)}
+                  </ResultEmptyDescription>
+                  <RegisterSongButton onPress={this.navigateToRegisterSong}>
+                    <RegisterSongButtonText>
+                      음원등록 하러가기
+                    </RegisterSongButtonText>
+                  </RegisterSongButton>
+                </ResultEmpty>
+              }
+              scrollEventThrottle={16}
+              onScroll={onScroll(this.onResultScroll)}
+            />
+          </Content>
+          <SingersSubmitBackDrop
+            showMinimumSubmit={showMinimumSubmit}
+            selectedSingers={this.selectedSingers}
+            onSubmit={this.submit}
+            onSelectedItem={this.onSelectedItem}
           />
-        </Content>
-        <SingersSubmitBackDrop
-          showMinimumSubmit={showMinimumSubmit}
-          selectedSingers={this.selectedSingers}
-          onSubmit={this.submit}
-          onSelectedItem={this.onSelectedItem}
-        />
+        </InnerContainer>
       </Container>
     );
   }
