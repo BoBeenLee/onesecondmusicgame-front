@@ -27,6 +27,7 @@ import withScrollDirection, {
   IScrollDirectionProps
 } from "src/hocs/withScrollDirection";
 import { ScrollDirection } from "src/utils/scrollView";
+import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
 
 interface IInject {
   singerStore: ISingerStore;
@@ -183,7 +184,7 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
                   {`음원 등록에서 찾으시는 곡을 검색해
   를 눌러주시면 곡을 등록하실 수 있습니다.`}
                 </ResultEmptyDescription>
-                <RegisterSongButton>
+                <RegisterSongButton onPress={this.navigateToRegisterSong}>
                   <RegisterSongButtonText>
                     음원등록 하러가기
                   </RegisterSongButtonText>
@@ -286,6 +287,13 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
     const { onResult } = this.props;
     const { selectedSingers } = this.state;
     onResult(this.selectedSingers);
+  };
+
+  private navigateToRegisterSong = () => {
+    const { componentId } = this.props;
+    RegisterSongScreen.open({
+      componentId
+    });
   };
 
   private back = () => {

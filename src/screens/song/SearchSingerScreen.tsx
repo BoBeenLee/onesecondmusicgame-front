@@ -84,7 +84,6 @@ const SearchSingerCardView = styled(SearchSingerCard)`
 
 const ResultEmpty = styled.View`
   flex: 1;
-  height: 400px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -163,11 +162,6 @@ class SearchSingerScreen extends Component<IProps> {
                   {`음원 등록에서 찾으시는 곡을 검색해
   를 눌러주시면 곡을 등록하실 수 있습니다.`}
                 </ResultEmptyDescription>
-                <RegisterSongButton>
-                  <RegisterSongButtonText>
-                    음원등록 하러가기
-                  </RegisterSongButtonText>
-                </RegisterSongButton>
               </ResultEmpty>
             }
           />

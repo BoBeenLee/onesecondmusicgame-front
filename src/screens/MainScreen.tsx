@@ -50,12 +50,17 @@ interface IProps extends IInject, IPopupProps {
 
 const Container = styled(ContainerWithStatusBar)``;
 
-const HeartStatus = styled.View`
-  position: absolute;
+const Header = styled.View`
   flex-direction: row;
   align-items: center;
-  top: 20px;
-  left: 21px;
+  justify-content: space-between;
+  padding-top: 14px;
+  padding-horizontal: 17px;
+`;
+
+const HeartStatus = styled.View`
+  flex-direction: row;
+  align-items: center;
 `;
 
 const HeartRemain = styled.View`
@@ -197,7 +202,7 @@ class MainScreen extends Component<IProps> {
     const heart = this.props.authStore.user?.heart;
     return (
       <Container>
-        <Content>
+        <Header>
           <HeartStatus>
             <HeartGroup
               hearts={_.times(5, index =>
@@ -228,6 +233,8 @@ class MainScreen extends Component<IProps> {
               ))}
             />
           </GameItems>
+        </Header>
+        <Content>
           <Logo>알쏭달쏭</Logo>
         </Content>
         <GameModeView>

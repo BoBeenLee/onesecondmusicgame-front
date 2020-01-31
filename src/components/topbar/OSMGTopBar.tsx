@@ -44,7 +44,7 @@ function FMTopBar({
   style: containerStyle,
   title,
   titleStyle,
-  iconColor = colors.gray900,
+  iconColor = colors.white,
   iconName,
   RightComponent,
   onBackPress

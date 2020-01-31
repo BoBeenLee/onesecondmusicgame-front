@@ -78,16 +78,11 @@ class SplashScreen extends React.Component<IProps> {
 
   private navigateTo = () => {
     const { isGuest } = this.props.authStore;
-    const { componentId } = this.props;
-    GameResultScreen.open({
-      componentId,
-      gamePlayHighlights: () => GamePlayHighlights.create({})
-    });
-    // if (isGuest) {
-    //   SignInScreen.open();
-    //   return;
-    // }
-    // MainScreen.open();
+    if (isGuest) {
+      SignInScreen.open();
+      return;
+    }
+    MainScreen.open();
   };
 }
 
