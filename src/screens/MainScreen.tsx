@@ -229,7 +229,6 @@ class MainScreen extends Component<IProps> {
             />
           </GameItems>
           <Logo>알쏭달쏭</Logo>
-          <MockButton name="가수선택" onPress={this.navigateToGameMode} />
         </Content>
         <GameModeView>
           <GameModeSection onPress={this.navigateToGamePlay}>

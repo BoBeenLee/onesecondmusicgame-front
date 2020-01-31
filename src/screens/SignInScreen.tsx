@@ -11,6 +11,7 @@ import { IToastStore } from "src/stores/ToastStore";
 import { SCREEN_IDS } from "src/screens/constant";
 import { setRoot } from "src/utils/navigator";
 import MainScreen from "src/screens/MainScreen";
+import colors from "src/styles/colors";
 
 interface IInject {
   authStore: IAuthStore;
@@ -32,7 +33,9 @@ const Content = styled.View`
   align-items: center;
 `;
 
-const Logo = styled(Bold14)``;
+const Logo = styled(Bold14)`
+  color: ${colors.white};
+`;
 
 const Bottom = styled.View`
   justify-content: center;
@@ -42,7 +45,9 @@ const Bottom = styled.View`
 
 const SignInButton = styled.TouchableOpacity``;
 
-const ButtonText = styled(Bold12)``;
+const ButtonText = styled(Bold12)`
+  color: ${colors.white};
+`;
 
 @inject(
   ({ store }: { store: IStore }): IInject => ({

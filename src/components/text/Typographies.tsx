@@ -61,6 +61,12 @@ export const Bold24 = styled(Bold)`
   line-height: 26px;
 `;
 
+export const Bold27 = styled(Bold)`
+  font-size: 27px;
+  line-height: 26px;
+  letter-spacing: -0.7px;
+`;
+
 export const Bold36 = styled(Bold)`
   font-size: 36px;
 `;
@@ -132,5 +138,10 @@ export const Regular16 = styled(Regular)`
 
 export const Regular20 = styled(Regular)`
   font-size: 20px;
+  line-height: 26px;
+`;
+
+export const Regular24 = styled(Regular)`
+  font-size: 24px;
   line-height: 26px;
 `;

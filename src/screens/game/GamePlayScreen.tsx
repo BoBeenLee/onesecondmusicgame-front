@@ -75,7 +75,6 @@ const GamePlayerView = styled.View`
   width: 100%;
   justify-content: center;
   align-items: center;
-  background-color: #eee;
 `;
 
 const Content = styled.View`

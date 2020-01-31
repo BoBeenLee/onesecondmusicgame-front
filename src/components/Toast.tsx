@@ -2,7 +2,7 @@ import React from "react";
 import { Animated, ViewProps } from "react-native";
 import styled from "styled-components/native";
 
-import { Regular14 } from "src/components/text/Typographies";
+import { Regular14, Bold14 } from "src/components/text/Typographies";
 import colors from "src/styles/colors";
 
 interface IProps {
@@ -56,18 +56,13 @@ const Container = styled(Animated.View)`
   padding-horizontal: 16px;
   align-items: center;
   justify-content: center;
-  background-color: rgba(85, 85, 85, 0.85);
-  shadow-color: ${colors.gray900};
-  shadow-offset: 0px 2px;
-  shadow-opacity: 0.1;
-  shadow-radius: 6;
-  elevation: 6;
+  background-color: ${colors.white};
 `;
 
 const ToastView = styled.TouchableWithoutFeedback``;
 
-const ToastText = styled(Regular14)`
-  color: ${colors.white};
+const ToastText = styled(Bold14)`
+  color: ${colors.darkTwo};
   text-align: center;
 `;
 

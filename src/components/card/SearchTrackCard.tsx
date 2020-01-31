@@ -4,6 +4,7 @@ import styled from "styled-components/native";
 
 import { Bold10, Bold12 } from "src/components/text/Typographies";
 import MiniAudioPlayer from "src/components/player/MiniAudioPlayer";
+import colors from "src/styles/colors";
 
 interface IProps {
   style?: ViewProps["style"];
@@ -43,11 +44,17 @@ const MiniAudioPlayerView = styled(MiniAudioPlayer)`
   margin-right: 10px;
 `;
 
-const Title = styled(Bold12)``;
+const Title = styled(Bold12)`
+  color: ${colors.lightGrey};
+`;
 
-const Author = styled(Bold10)``;
+const Author = styled(Bold10)`
+  color: ${colors.lightGrey};
+`;
 
-const Date = styled(Bold10)``;
+const Date = styled(Bold10)`
+  color: ${colors.lightGrey};
+`;
 
 const DateView = styled.View``;
 

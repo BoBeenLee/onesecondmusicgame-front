@@ -107,7 +107,7 @@ const ResultEmptyDescription = styled(Regular12)`
   margin-bottom: 31px;
 `;
 
-const RegisterSongButton = styled.View`
+const RegisterSongButton = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   width: 153px;

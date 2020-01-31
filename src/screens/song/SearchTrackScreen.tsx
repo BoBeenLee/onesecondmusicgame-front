@@ -40,6 +40,7 @@ const Content = styled.View`
 
 const SearchInput = styled(OSMGTextInput)`
   width: 100%;
+  color: ${colors.lightGrey};
 `;
 
 const Result = styled<ComponentClass<FlatListProps<ITrackItem>>>(FlatList)`

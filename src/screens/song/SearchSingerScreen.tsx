@@ -9,7 +9,9 @@ import {
   Bold12,
   Bold14,
   Bold20,
-  Regular12
+  Regular12,
+  Regular14,
+  Bold18
 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
@@ -45,11 +47,13 @@ const Header = styled.View`
   align-items: center;
 `;
 
-const Title = styled(Bold20)`
+const Title = styled(Bold18)`
+  color: ${colors.lightGrey};
   margin-top: 35px;
 `;
 
-const Description = styled(Bold14)`
+const Description = styled(Regular14)`
+  color: ${colors.lightGrey};
   margin-top: 16px;
 `;
 
@@ -133,12 +137,12 @@ class SearchSingerScreen extends Component<IProps> {
       <Container>
         <BackTopBar title="검색" onBackPress={this.back} />
         <Header>
-          <Title>어떤 가수의 음악이 자신있으세요?</Title>
-          <Description>최대 3명의 가수를 선택하실 수 있습니다.</Description>
+          <Title>원하는 곡이 등록되었는지 확인해보세요 </Title>
+          <Description>먼저 가수명으로 검색해주세요</Description>
         </Header>
         <SearchView>
           <SearchTextInput
-            placeholder="가수명"
+            placeholder="가수명을 검색해주세요"
             onChangeInput={this.search}
             onSearch={this.search}
           />
