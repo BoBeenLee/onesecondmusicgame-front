@@ -18,8 +18,8 @@ const start = () => {
       orientation: ["portrait"]
     },
     statusBar: {
-      backgroundColor: colors.green50,
-      style: "dark"
+      backgroundColor: colors.darkIndigo,
+      style: "light"
     },
     topBar: topbars.emptyTopBar()
   });
