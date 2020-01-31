@@ -17,3 +17,8 @@ export const singers = async (): Promise<ISinger[]> => {
   const response = await singerControllerApi.getAllSingerNameUsingGET();
   return _.map(response.body, name => ({ name }));
 };
+
+export const registeredSingers = async (): Promise<ISinger[]> => {
+  const response = await singerControllerApi.getAllRegisteredSingerNameUsingGET();
+  return _.map(response.body, name => ({ name }));
+};

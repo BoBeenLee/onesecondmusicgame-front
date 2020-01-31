@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { flow, types } from "mobx-state-tree";
 
-import { singers } from "src/apis/singer";
+import { registeredSingers } from "src/apis/singer";
 import Singers from "src/stores/Singers";
 
 const SingerStore = types
@@ -10,7 +10,7 @@ const SingerStore = types
   })
   .actions(self => {
     const initialize = flow(function*() {
-      const response: RetrieveAsyncFunc<typeof singers> = yield singers();
+      const response: RetrieveAsyncFunc<typeof registeredSingers> = yield registeredSingers();
       self.singers = Singers.create({
         singers: response
       });
