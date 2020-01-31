@@ -21,7 +21,7 @@ const Container = styled.View`
   flex-direction: row;
   align-items: center;
   border-bottom-width: 1px;
-  border-bottom-color: ${"#000"};
+  border-bottom-color: ${colors.blueberry};
 `;
 
 const Input = styled(OSMGTextInput)`
@@ -31,8 +31,8 @@ const Input = styled(OSMGTextInput)`
 
 const SearchIcon = styled(XEIconButton).attrs({
   iconName: "search",
-  iconSize: 24,
-  iconColor: "#000"
+  iconSize: 20,
+  iconColor: colors.warmBlue
 })``;
 
 function SearchTextInput(props: IProps) {

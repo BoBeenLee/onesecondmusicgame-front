@@ -69,9 +69,8 @@ const Container = styled(Animated.View)<{ backdropHeight?: number }>`
   height: ${({ backdropHeight }) =>
     backdropHeight ? `${backdropHeight}px;` : `${DEFAULT_BACKDROP_HEIGHT}px`};
   bottom: 0;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  background-color: #fff;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
 `;
 
 const Content = styled.View`

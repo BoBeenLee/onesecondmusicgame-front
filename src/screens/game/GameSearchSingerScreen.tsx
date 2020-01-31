@@ -5,13 +5,18 @@ import styled from "styled-components/native";
 import { FlatListProps, FlatList, ListRenderItem } from "react-native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
-import { Bold12, Bold14, Bold20 } from "src/components/text/Typographies";
+import {
+  Bold12,
+  Regular14,
+  Bold18,
+  Bold14,
+  Regular12
+} from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
 import colors from "src/styles/colors";
 import SearchTextInput from "src/components/input/SearchTextInput";
 import { ISinger } from "src/apis/singer";
-import Singers, { ISingers } from "src/stores/Singers";
 import SearchSingerCard from "src/components/card/SearchSingerCard";
 import { filterNull } from "src/utils/common";
 import SingersSubmitBackDrop from "src/components/backdrop/SingersSubmitBackDrop";
@@ -50,11 +55,13 @@ const Header = styled.View`
   align-items: center;
 `;
 
-const Title = styled(Bold20)`
+const Title = styled(Bold18)`
+  color: ${colors.lightGrey};
   margin-top: 35px;
 `;
 
-const Description = styled(Bold14)`
+const Description = styled(Regular14)`
+  color: ${colors.lightGrey};
   margin-top: 16px;
 `;
 
@@ -65,12 +72,12 @@ const SearchView = styled.View`
 
 const Content = styled.View`
   flex: 1;
-  padding-horizontal: 16px;
+  padding-horizontal: 21px;
   margin-top: 37px;
 `;
 
 const ResultText = styled(Bold12)`
-  color: ${colors.black};
+  color: ${colors.lightGrey};
   margin-bottom: 20px;
 `;
 
@@ -85,12 +92,34 @@ const SearchSingerCardView = styled(SearchSingerCard)`
 
 const ResultEmpty = styled.View`
   flex: 1;
-  height: 400px;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
-const ResultEmptyText = styled(Bold12)``;
+const ResultEmptyTitle = styled(Bold12)`
+  color: ${colors.lightGreyTwo};
+  margin-bottom: 21px;
+`;
+
+const ResultEmptyDescription = styled(Regular12)`
+  color: ${colors.lightGreyTwo};
+  margin-bottom: 31px;
+`;
+
+const RegisterSongButton = styled.View`
+  justify-content: center;
+  align-items: center;
+  width: 153px;
+  height: 37px;
+  border-radius: 8px;
+  border: solid 3px ${colors.lightMagenta};
+  background-color: ${colors.pinkyPurple};
+`;
+
+const RegisterSongButtonText = styled(Bold14)`
+  color: ${colors.lightGrey};
+`;
 
 const SELECTED_SINGERS_MAX_LENGTH = 3;
 
@@ -149,7 +178,16 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
             onRefresh={refresh}
             ListEmptyComponent={
               <ResultEmpty>
-                <ResultEmptyText>검색결과가 없습니다.</ResultEmptyText>
+                <ResultEmptyTitle>검색결과가 없습니다.</ResultEmptyTitle>
+                <ResultEmptyDescription>
+                  {`음원 등록에서 찾으시는 곡을 검색해
+  를 눌러주시면 곡을 등록하실 수 있습니다.`}
+                </ResultEmptyDescription>
+                <RegisterSongButton>
+                  <RegisterSongButtonText>
+                    음원등록 하러가기
+                  </RegisterSongButtonText>
+                </RegisterSongButton>
               </ResultEmpty>
             }
             scrollEventThrottle={16}

@@ -5,7 +5,12 @@ import styled from "styled-components/native";
 import { FlatListProps, FlatList, ListRenderItem } from "react-native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
-import { Bold12, Bold14, Bold20 } from "src/components/text/Typographies";
+import {
+  Bold12,
+  Bold14,
+  Bold20,
+  Regular12
+} from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
 import colors from "src/styles/colors";
@@ -60,7 +65,7 @@ const Content = styled.View`
 `;
 
 const ResultText = styled(Bold12)`
-  color: ${colors.black};
+  color: ${colors.lightGreyTwo};
   margin-bottom: 20px;
 `;
 
@@ -76,11 +81,33 @@ const SearchSingerCardView = styled(SearchSingerCard)`
 const ResultEmpty = styled.View`
   flex: 1;
   height: 400px;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
-const ResultEmptyText = styled(Bold12)``;
+const ResultEmptyTitle = styled(Bold12)`
+  color: ${colors.lightGreyTwo};
+  margin-bottom: 21px;
+`;
+
+const ResultEmptyDescription = styled(Regular12)`
+  color: ${colors.lightGreyTwo};
+`;
+
+const RegisterSongButton = styled.View`
+  justify-content: center;
+  align-items: center;
+  width: 153px;
+  height: 37px;
+  border-radius: 8px;
+  border: solid 3px ${colors.lightMagenta};
+  background-color: ${colors.pinkyPurple};
+`;
+
+const RegisterSongButtonText = styled(Bold14)`
+  color: ${colors.lightGrey};
+`;
 
 @inject(
   ({ store }: { store: IStore }): IInject => ({
@@ -127,7 +154,16 @@ class SearchSingerScreen extends Component<IProps> {
             onRefresh={refresh}
             ListEmptyComponent={
               <ResultEmpty>
-                <ResultEmptyText>검색결과가 없습니다.</ResultEmptyText>
+                <ResultEmptyTitle>검색결과가 없습니다.</ResultEmptyTitle>
+                <ResultEmptyDescription>
+                  {`음원 등록에서 찾으시는 곡을 검색해
+  를 눌러주시면 곡을 등록하실 수 있습니다.`}
+                </ResultEmptyDescription>
+                <RegisterSongButton>
+                  <RegisterSongButtonText>
+                    음원등록 하러가기
+                  </RegisterSongButtonText>
+                </RegisterSongButton>
               </ResultEmpty>
             }
           />

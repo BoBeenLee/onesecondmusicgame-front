@@ -2,7 +2,8 @@ import React from "react";
 import { ViewProps } from "react-native";
 import styled from "styled-components/native";
 
-import { Bold12 } from "src/components/text/Typographies";
+import { Regular12 } from "src/components/text/Typographies";
+import colors from "src/styles/colors";
 
 interface IProps {
   style?: ViewProps["style"];
@@ -17,12 +18,16 @@ const Container = styled.TouchableOpacity`
 `;
 
 const SingerImage = styled.Image`
-  width: 72px;
+  width: 76px;
   height: 72px;
-  margin-bottom: 10px;
+  border-radius: 8px;
+  border: solid 1px ${colors.lightGrey};
+  margin-bottom: 4px;
 `;
 
-const Name = styled(Bold12)``;
+const Name = styled(Regular12)`
+  color: ${colors.lightGrey};
+`;
 
 function SearchSingerCard(props: IProps) {
   const { style, image, name, onPress } = props;

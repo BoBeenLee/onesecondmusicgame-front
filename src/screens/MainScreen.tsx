@@ -34,10 +34,8 @@ import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
 import FloatingButton from "src/components/button/FloatingButton";
-import LinearGradient from "react-native-linear-gradient";
 import LevelBadge from "src/components/badge/LevelBadge";
 import GamePlayScreen from "./game/GamePlayScreen";
-import { iosStatusBarHeight } from "src/utils/device";
 
 interface IInject {
   store: IStore;
@@ -50,13 +48,7 @@ interface IProps extends IInject, IPopupProps {
   componentId: string;
 }
 
-const Container = styled(LinearGradient).attrs({
-  colors: [colors.darkIndigo, colors.almostBlack]
-})`
-  flex: 1;
-  flex-direction: column;
-  padding-top: ${iosStatusBarHeight(false)}px;
-`;
+const Container = styled(ContainerWithStatusBar)``;
 
 const HeartStatus = styled.View`
   position: absolute;

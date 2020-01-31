@@ -5,8 +5,6 @@ import styled from "styled-components/native";
 
 import colors from "src/styles/colors";
 import Backdrop, { IBackDropMethod } from "src/components/backdrop/BackDrop";
-import MockButton from "src/components/button/MockButton";
-import LevelBadge from "src/components/badge/LevelBadge";
 import XEIcon from "src/components/icon/XEIcon";
 import { ISinger } from "src/apis/singer";
 import SearchSingerCard from "src/components/card/SearchSingerCard";
@@ -14,6 +12,7 @@ import useShowAnimation, {
   IAnimationFuncParams
 } from "src/hooks/useShowAnimation";
 import { delay } from "src/utils/common";
+import { Bold14, Bold18 } from "src/components/text/Typographies";
 
 interface IProps {
   showMinimumSubmit: boolean;
@@ -24,15 +23,16 @@ interface IProps {
 
 const BackdropView = styled(Backdrop)`
   justify-content: center;
-  align-items: center;
   padding-top: 20px;
-  background-color: ${colors.white};
-  border: solid 1px ${colors.warmGrey};
+  padding-horizontal: 41px;
+  background-color: ${colors.darkTwo};
 `;
 
 const SingersView = styled(Animated.View)`
   flex-direction: row;
   align-items: center;
+  justify-content: center;
+  margin-bottom: 21px;
 `;
 
 const AddSingerView = styled.View`
@@ -50,16 +50,18 @@ const SearchSingerCardView = styled(SearchSingerCard)`
   margin: 8px;
 `;
 
-const LevelBadgeView = styled.View`
+const SubmitButton = styled.TouchableOpacity`
+  width: 100%;
+  height: 52px;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
-  margin-bottom: 15px;
+  border-radius: 8px;
+  border: solid 3px ${colors.lightMagenta};
+  background-color: ${colors.pinkyPurple};
 `;
 
-const SubmitButton = styled(MockButton)`
-  justify-content: center;
-  align-items: center;
+const SubmitButtonText = styled(Bold18)`
+  color: ${colors.lightGrey};
 `;
 
 function SingersSubmitBackDrop(props: IProps) {
@@ -106,8 +108,8 @@ function SingersSubmitBackDrop(props: IProps) {
       ref={backdropRef as any}
       showHandleBar={false}
       overlayOpacity={false}
-      backdropHeight={255}
-      hideMinBackdropHeight={106}
+      backdropHeight={225}
+      hideMinBackdropHeight={76}
       onClose={onSubmit}
     >
       {isShow ? (
@@ -133,10 +135,9 @@ function SingersSubmitBackDrop(props: IProps) {
           })}
         </SingersView>
       ) : null}
-      <LevelBadgeView>
-        <LevelBadge level="hard" />
-      </LevelBadgeView>
-      <SubmitButton name="시작하기" onPress={onSubmit} />
+      <SubmitButton onPress={onSubmit}>
+        <SubmitButtonText>시작하기</SubmitButtonText>
+      </SubmitButton>
     </BackdropView>
   );
 }

@@ -4,6 +4,7 @@ import styled from "styled-components/native";
 
 import colors from "src/styles/colors";
 import { iosStatusBarHeight } from "src/utils/device";
+import LinearGradient from "react-native-linear-gradient";
 
 interface IProps {
   children?: React.ReactNode;
@@ -11,7 +12,9 @@ interface IProps {
   statusBarColor?: string;
 }
 
-const Container = styled.View`
+const Container = styled(LinearGradient).attrs({
+  colors: [colors.darkIndigo, colors.almostBlack]
+})`
   flex: 1;
   background-color: ${colors.white};
   padding-top: ${iosStatusBarHeight(false)}px;
