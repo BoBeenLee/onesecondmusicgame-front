@@ -116,9 +116,8 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>xeicon.ttf</string>
-		<string>NotoSansKR-Bold.otf</string>
-		<string>NotoSansKR-Medium.otf</string>
-		<string>NotoSansKR-Regular.otf</string>
+		<string>BMHANNAAirOTF.otf</string>
+		<string>BMHANNAProOTF.otf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

@@ -5,17 +5,17 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* RNAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RNAppTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		271A90B423E3CB0500CCDFFE /* BMHANNAProOTF.otf in Resources */ = {isa = PBXBuildFile; fileRef = 271A90B223E3CB0500CCDFFE /* BMHANNAProOTF.otf */; };
+		271A90B523E3CB0500CCDFFE /* BMHANNAAirOTF.otf in Resources */ = {isa = PBXBuildFile; fileRef = 271A90B323E3CB0500CCDFFE /* BMHANNAAirOTF.otf */; };
 		27445B3C237727E9008FE69F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27445B3B237727E9008FE69F /* GoogleService-Info.plist */; };
 		278A080623781BC50060AE74 /* xeicon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 278A080223781BC40060AE74 /* xeicon.ttf */; };
-		278A080723781BC50060AE74 /* NotoSansKR-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 278A080323781BC40060AE74 /* NotoSansKR-Medium.otf */; };
-		278A080823781BC50060AE74 /* NotoSansKR-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 278A080423781BC40060AE74 /* NotoSansKR-Regular.otf */; };
-		278A080923781BC50060AE74 /* NotoSansKR-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 278A080523781BC40060AE74 /* NotoSansKR-Bold.otf */; };
 		27D6037B2377E0C5002F89F7 /* empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D6037A2377E0C5002F89F7 /* empty.swift */; };
 		289D61A5B66DE60350B904D0 /* libPods-RNApp-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43519DCBACEAF715FC6D7DDC /* libPods-RNApp-tvOSTests.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -24,8 +24,8 @@
 		2DCD954D1E0B4F2C00145EB5 /* RNAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* RNAppTests.m */; };
 		8402D22E1431A0C0B3550D47 /* libPods-RNApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07A9C0BD3802F80454502B3E /* libPods-RNApp.a */; };
 		9289DF76EDA80F91DD7AA321 /* libPods-RNAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41AF54386D04D17C53D97B29 /* libPods-RNAppTests.a */; };
-		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 		B1C2F6F461CC452DB0F163B2 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B156D08A83E44CB5BF08BC42 /* libz.tbd */; };
+		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,12 +58,11 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = RNApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RNApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = RNApp/main.m; sourceTree = "<group>"; };
+		271A90B223E3CB0500CCDFFE /* BMHANNAProOTF.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = BMHANNAProOTF.otf; path = ../../assets/fonts/BMHANNAProOTF.otf; sourceTree = "<group>"; };
+		271A90B323E3CB0500CCDFFE /* BMHANNAAirOTF.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = BMHANNAAirOTF.otf; path = ../../assets/fonts/BMHANNAAirOTF.otf; sourceTree = "<group>"; };
 		27445B3B237727E9008FE69F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "RNApp/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		274E81CE2377C05500337C8F /* RNApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = RNApp.entitlements; path = RNApp/RNApp.entitlements; sourceTree = "<group>"; };
 		278A080223781BC40060AE74 /* xeicon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = xeicon.ttf; path = ../../assets/fonts/xeicon.ttf; sourceTree = "<group>"; };
-		278A080323781BC40060AE74 /* NotoSansKR-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NotoSansKR-Medium.otf"; path = "../../assets/fonts/NotoSansKR-Medium.otf"; sourceTree = "<group>"; };
-		278A080423781BC40060AE74 /* NotoSansKR-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NotoSansKR-Regular.otf"; path = "../../assets/fonts/NotoSansKR-Regular.otf"; sourceTree = "<group>"; };
-		278A080523781BC40060AE74 /* NotoSansKR-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "NotoSansKR-Bold.otf"; path = "../../assets/fonts/NotoSansKR-Bold.otf"; sourceTree = "<group>"; };
 		27D603792377E0C4002F89F7 /* RNApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		27D6037A2377E0C5002F89F7 /* empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = empty.swift; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* RNApp-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RNApp-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,11 +73,11 @@
 		43519DCBACEAF715FC6D7DDC /* libPods-RNApp-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RNApp-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E52097BE22E1395D3913EE2 /* Pods-RNApp-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNApp-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNApp-tvOSTests/Pods-RNApp-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		926D1BCD375A70BFE16A6A97 /* Pods-RNApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-RNApp/Pods-RNApp.release.xcconfig"; sourceTree = "<group>"; };
+		B156D08A83E44CB5BF08BC42 /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		D9FEFA606D060F344710EF90 /* Pods-RNAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNAppTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RNAppTests/Pods-RNAppTests.release.xcconfig"; sourceTree = "<group>"; };
 		DA366496A9EA89C326F202ED /* Pods-RNApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNApp/Pods-RNApp.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		B156D08A83E44CB5BF08BC42 /* libz.tbd */ = {isa = PBXFileReference; name = "libz.tbd"; path = "usr/lib/libz.tbd"; sourceTree = SDKROOT; fileEncoding = undefined; lastKnownFileType = sourcecode.text-based-dylib-definition; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,9 +153,8 @@
 		278A080123781B950060AE74 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				278A080523781BC40060AE74 /* NotoSansKR-Bold.otf */,
-				278A080323781BC40060AE74 /* NotoSansKR-Medium.otf */,
-				278A080423781BC40060AE74 /* NotoSansKR-Regular.otf */,
+				271A90B323E3CB0500CCDFFE /* BMHANNAAirOTF.otf */,
+				271A90B223E3CB0500CCDFFE /* BMHANNAProOTF.otf */,
 				278A080223781BC40060AE74 /* xeicon.ttf */,
 			);
 			path = Resources;
@@ -222,14 +220,6 @@
 				2D02E4901E0B4A5D006451C7 /* RNApp-tvOSTests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		FEB45BAFC1054701A57A693E /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			path = Application;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -378,12 +368,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				271A90B523E3CB0500CCDFFE /* BMHANNAAirOTF.otf in Resources */,
 				278A080623781BC50060AE74 /* xeicon.ttf in Resources */,
-				278A080923781BC50060AE74 /* NotoSansKR-Bold.otf in Resources */,
+				271A90B423E3CB0500CCDFFE /* BMHANNAProOTF.otf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				278A080723781BC50060AE74 /* NotoSansKR-Medium.otf in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				278A080823781BC50060AE74 /* NotoSansKR-Regular.otf in Resources */,
 				27445B3C237727E9008FE69F /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -418,7 +407,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		03A55A822B27B608816F76CD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -574,12 +563,12 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
-			name = "Upload Debug Symbols to Sentry";
 			inputPaths = (
 			);
+			name = "Upload Debug Symbols to Sentry";
 			outputPaths = (
 			);
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export SENTRY_PROPERTIES=sentry.properties\n../node_modules/@sentry/cli/bin/sentry-cli upload-dsym";
 		};

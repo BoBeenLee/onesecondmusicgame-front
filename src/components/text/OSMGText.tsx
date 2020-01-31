@@ -12,9 +12,9 @@ export interface ITextProps extends TextProps {
 }
 
 const fontTypeToFont: { [key in FontType]: string } = {
-  BOLD: "NotoSansKR-Bold",
-  MEDIUM: "NotoSansKR-Medium",
-  REGULAR: "NotoSansKR-Regular"
+  BOLD: "BMHANNAProOTF",
+  MEDIUM: "BMHANNAProOTF",
+  REGULAR: "BMHANNAAirOTF"
 };
 
 const Text = styled.Text<{ fontType: FontType }>`

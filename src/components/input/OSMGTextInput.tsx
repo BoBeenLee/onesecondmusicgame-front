@@ -16,9 +16,9 @@ import colors from "src/styles/colors";
 type FontType = "BOLD" | "MEDIUM" | "REGULAR";
 
 const fontTypeToFont: { [key in FontType]: string } = {
-  BOLD: "NotoSansKR-Bold",
-  MEDIUM: "NotoSansKR-Medium",
-  REGULAR: "NotoSansKR-Regular"
+  BOLD: "BMHANNAProOTF",
+  MEDIUM: "BMHANNAProOTF",
+  REGULAR: "BMHANNAAirOTF"
 };
 
 const Container = styled.TextInput`
