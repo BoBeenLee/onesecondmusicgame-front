@@ -4,6 +4,7 @@ import { ViewProps } from "react-native";
 
 import XEIcon from "src/components/icon/XEIcon";
 import _ from "lodash";
+import colors from "src/styles/colors";
 
 export type HeartCheck = "active" | "inactive";
 
@@ -17,10 +18,7 @@ const Container = styled.View`
   align-items: center;
 `;
 
-const HeartItem = styled(XEIcon)`
-  margin-left: 4px;
-  margin-right: 4px;
-`;
+const HeartItem = styled(XEIcon)``;
 
 function HeartGroup(props: IProps) {
   const { style, hearts } = props;
@@ -30,9 +28,11 @@ function HeartGroup(props: IProps) {
         return (
           <HeartItem
             key={`indicator${index}`}
-            name={heart === "active" ? "heart" : "heart-o"}
-            size={24}
-            color={"#000"}
+            name={"heart"}
+            size={36}
+            color={
+              heart === "active" ? colors.pinkyPurple : colors.pinkyPurple03
+            }
           />
         );
       })}

@@ -6,7 +6,13 @@ import { InteractionManager, Clipboard } from "react-native";
 import styled from "styled-components/native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
-import { Bold12, Bold20, Bold36 } from "src/components/text/Typographies";
+import {
+  Bold12,
+  Bold36,
+  Regular10,
+  Regular12,
+  Bold20
+} from "src/components/text/Typographies";
 import { IStore } from "src/stores/Store";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
@@ -28,6 +34,10 @@ import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
 import FloatingButton from "src/components/button/FloatingButton";
+import LinearGradient from "react-native-linear-gradient";
+import LevelBadge from "src/components/badge/LevelBadge";
+import GamePlayScreen from "./game/GamePlayScreen";
+import { iosStatusBarHeight } from "src/utils/device";
 
 interface IInject {
   store: IStore;
@@ -40,26 +50,34 @@ interface IProps extends IInject, IPopupProps {
   componentId: string;
 }
 
-const Container = styled(ContainerWithStatusBar)`
+const Container = styled(LinearGradient).attrs({
+  colors: [colors.darkIndigo, colors.almostBlack]
+})`
   flex: 1;
   flex-direction: column;
+  padding-top: ${iosStatusBarHeight(false)}px;
 `;
 
 const HeartStatus = styled.View`
   position: absolute;
+  flex-direction: row;
+  align-items: center;
   top: 20px;
   left: 21px;
 `;
 
 const HeartRemain = styled.View`
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
   margin-left: 5px;
 `;
 
-const HeartRemainText = styled(Bold12)``;
+const HeartRemainText = styled(Regular10)`
+  color: ${colors.paleLavender};
+`;
 
-const HeartRemainTime = styled(TimerText)``;
+const HeartRemainTime = styled(TimerText)`
+  color: ${colors.white};
+`;
 
 const GameItems = styled.View`
   position: absolute;
@@ -70,7 +88,7 @@ const GameItems = styled.View`
 `;
 
 const GameItemButton = styled.View`
-  padding: 10px;
+  padding: 5px;
   background-color: #eee;
 `;
 
@@ -83,7 +101,46 @@ const Content = styled.View`
 `;
 
 const Logo = styled(Bold36)`
+  color: ${colors.white};
   margin-bottom: 20px;
+`;
+
+const GameModeView = styled.View`
+  flex-direction: column;
+  align-items: center;
+  padding-horizontal: 30px;
+`;
+
+const GameModeSection = styled.TouchableOpacity`
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 18px;
+  background-color: ${colors.dark};
+  margin-top: 35px;
+  padding-top: 15px;
+  padding-bottom: 21px;
+`;
+
+const GameModeTitle = styled(Bold20)`
+  color: ${colors.white};
+`;
+
+const GameModeDescription = styled(Regular12)`
+  color: ${colors.white};
+`;
+
+const LevelBadgesView = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LevelBadgeView = styled(LevelBadge)`
+  width: 82px;
+  margin-horizontal: 3.5px;
+  margin-bottom: 16px;
 `;
 
 const Footer = styled.View`
@@ -94,6 +151,7 @@ const Footer = styled.View`
   padding-horizontal: 25px;
 `;
 
+// https://app.zeplin.io/project/5e1988a010ae36bcd391ba27/screen/5e335b9266ed997dfeb5627a
 @inject(
   ({ store }: { store: IStore }): IInject => ({
     store,
@@ -181,6 +239,28 @@ class MainScreen extends Component<IProps> {
           <Logo>알쏭달쏭</Logo>
           <MockButton name="가수선택" onPress={this.navigateToGameMode} />
         </Content>
+        <GameModeView>
+          <GameModeSection onPress={this.navigateToGamePlay}>
+            <LevelBadgesView>
+              <LevelBadgeView level="SUPER HARD" />
+            </LevelBadgesView>
+            <GameModeTitle>랜덤으로 시작하기</GameModeTitle>
+            <GameModeDescription>
+              무작위로 문제가 출제됩니다.
+            </GameModeDescription>
+          </GameModeSection>
+          <GameModeSection onPress={this.navigateToSelectedSingersGamePlay}>
+            <LevelBadgesView>
+              <LevelBadgeView level="HARD" />
+              <LevelBadgeView level="MEDIUM" />
+              <LevelBadgeView level="EASY" />
+            </LevelBadgesView>
+            <GameModeTitle>자신있는 가수 선택하기</GameModeTitle>
+            <GameModeDescription>
+              선택한 가수의 곡이 출제됩니다.
+            </GameModeDescription>
+          </GameModeSection>
+        </GameModeView>
         <Footer>
           <MockButton name="노래 제안" onPress={this.navigateToRegisterSong} />
           <MockButton name="개인 랭킹" onPress={this.navigateToRanking} />
@@ -261,6 +341,16 @@ class MainScreen extends Component<IProps> {
     Clipboard.setString(shortLink);
     showToast("공유 링크 복사 완료");
     closePopup();
+  };
+
+  private navigateToGamePlay = () => {
+    const { componentId } = this.props;
+    GamePlayScreen.open({ componentId });
+  };
+
+  private navigateToSelectedSingersGamePlay = () => {
+    const { componentId } = this.props;
+    GamePlayScreen.openSelectedSingers({ componentId });
   };
 
   private navigateToRegisterSong = () => {

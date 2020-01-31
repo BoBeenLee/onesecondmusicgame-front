@@ -2,8 +2,8 @@ import React from "react";
 import { ViewProps } from "react-native";
 import styled from "styled-components/native";
 
-import OSMGText from "src/components/text/OSMGText";
 import useTimer from "src/hooks/useTimer";
+import { Bold14 } from "src/components/text/Typographies";
 
 interface IProps {
   style?: ViewProps["style"];
@@ -11,7 +11,7 @@ interface IProps {
   onTimeEnd: () => void;
 }
 
-const Container = styled(OSMGText)``;
+const Container = styled(Bold14)``;
 
 function TimerText(props: IProps) {
   const { style, seconds, onTimeEnd } = props;

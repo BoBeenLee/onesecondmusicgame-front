@@ -5,7 +5,7 @@ import styled from "styled-components/native";
 import { Bold10 } from "src/components/text/Typographies";
 import colors from "src/styles/colors";
 
-type Level = "hard" | "medium" | "easy";
+type Level = "SUPER HARD" | "HARD" | "MEDIUM" | "EASY";
 
 interface IProps {
   style?: ViewProps["style"];
@@ -13,13 +13,16 @@ interface IProps {
 }
 
 const Container = styled.View`
-  border-radius: 13px;
-  border: solid 1px ${colors.warmGrey};
-  padding-horizontal: 18px;
-  padding-vertical: 7px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 17px;
+  padding-vertical: 5px;
+  background-color: ${colors.purply};
 `;
 
-const Text = styled(Bold10)``;
+const Text = styled(Bold10)`
+  color: ${colors.paleLavender};
+`;
 
 function LevelBadge(props: IProps) {
   const { style, level } = props;
