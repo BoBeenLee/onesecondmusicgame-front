@@ -49,6 +49,7 @@ import com.reactnativecommunity.rnpermissions.RNPermissionsPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
+import com.guichaguri.trackplayer.TrackPlayer;
 
 public class MainApplication extends NavigationApplication {
     @Override
@@ -106,7 +107,8 @@ public class MainApplication extends NavigationApplication {
                 new RNGoogleSigninPackage(),
                 new ReactVideoPackage(),
                 new FBSDKPackage(),
-                new RNSentryPackage()
+                new RNSentryPackage(),
+                new TrackPlayer()
         );
     }
 
