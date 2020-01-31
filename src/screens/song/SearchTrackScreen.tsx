@@ -127,6 +127,7 @@ class SearchTrackScreen extends Component<IProps, IStates> {
         title={item.title}
         author={item.user.username}
         uri={makePlayStreamUri(item?.stream_url ?? "")}
+        isRegistered={false}
         onPress={_.partial(this.selected, item)}
       />
     );

@@ -78,6 +78,7 @@ const Title = styled(Bold27)`
 `;
 
 const GamePlayStep = styled(CircleCheckGroup)`
+  margin-top: 19px;
   margin-bottom: 32px;
 `;
 

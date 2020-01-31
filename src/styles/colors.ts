@@ -29,6 +29,7 @@ const colors = {
   darkGreyBlue: "#333173",
   veryLightPurple: "#fcf6fe",
   darkThree: "#252548",
+  brightMagenta: "#ff30ff",
   black: "#000",
   black70: "rgba(33,33,33,.7)",
   white: "#ffffff",

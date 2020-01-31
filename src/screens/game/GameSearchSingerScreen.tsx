@@ -166,7 +166,11 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
 
     return (
       <Container>
-        <InnerContainer enableOnAndroid={true} enableAutomaticScroll={false}>
+        <InnerContainer
+          scrollEnabled={false}
+          enableOnAndroid={true}
+          enableAutomaticScroll={false}
+        >
           <Header>
             <Title>어떤 가수의 음악이 자신있으세요?</Title>
             <Description>최대 3명의 가수를 선택하실 수 있습니다.</Description>

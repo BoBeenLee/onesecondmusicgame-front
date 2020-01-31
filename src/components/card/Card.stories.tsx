@@ -13,16 +13,31 @@ const CenterView = styled.View`
   align-items: center;
 `;
 
+const Container = styled.View`
+  width: 100%;
+  flex-direction: column;
+`;
+
 storiesOf("Card", module)
   .addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
   .add("SearchTrackCard", () => {
     return (
-      <SearchTrackCard
-        thumnail="https://via.placeholder.com/150"
-        title="Hello World"
-        author="Hello"
-        uri="https://api.soundcloud.com/tracks/736765723/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
-      />
+      <Container>
+        <SearchTrackCard
+          thumnail="https://via.placeholder.com/150"
+          title="Hello World"
+          author="Hello"
+          uri="https://api.soundcloud.com/tracks/736765723/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
+          isRegistered={false}
+        />
+        <SearchTrackCard
+          thumnail="https://via.placeholder.com/150"
+          title="Hello World"
+          author="Hello"
+          uri="https://api.soundcloud.com/tracks/736765723/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
+          isRegistered={true}
+        />
+      </Container>
     );
   })
   .add("GameRankCard", () => {

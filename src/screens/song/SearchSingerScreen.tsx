@@ -144,7 +144,11 @@ class SearchSingerScreen extends Component<IProps> {
     return (
       <Container>
         <BackTopBar title="검색" onBackPress={this.back} />
-        <InnerContainer enableOnAndroid={true} enableAutomaticScroll={false}>
+        <InnerContainer
+          scrollEnabled={false}
+          enableOnAndroid={true}
+          enableAutomaticScroll={false}
+        >
           <Header>
             <Title>원하는 곡이 등록되었는지 확인해보세요 </Title>
             <Description>먼저 가수명으로 검색해주세요</Description>
