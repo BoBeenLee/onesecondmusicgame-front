@@ -11,6 +11,7 @@ import {
 import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
 import colors from "src/styles/colors";
 import XEIcon from "src/components/icon/XEIcon";
+import SkipIcon from "src/components/icon/SkipIcon";
 
 interface IProps {
   style?: ViewProps["style"];
@@ -54,21 +55,6 @@ const PlusIcon = styled(XEIcon)`
   margin-horizontal: 17px;
 `;
 
-const ArrowIcon = styled(XEIcon)`
-  margin-horizontal: -7px;
-`;
-
-const Box = styled.View`
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-  border: solid 3px ${colors.lightBlueGrey};
-  background-color: ${colors.paleLavender};
-`;
-
 function InviteFriendsPopup(props: IProps) {
   const { style, onConfirm, onCancel } = props;
   return (
@@ -87,18 +73,7 @@ function InviteFriendsPopup(props: IProps) {
           <ProcessView>
             <HeartIcon name="heart" size={60} color={colors.pinkyPurple} />
             <PlusIcon name="plus" size={26} color={colors.pinkyPurple} />
-            <Box>
-              <ArrowIcon
-                name="angle-right"
-                size={26}
-                color={colors.pinkyPurpleThree}
-              />
-              <ArrowIcon
-                name="angle-right"
-                size={26}
-                color={colors.pinkyPurpleThree}
-              />
-            </Box>
+            <SkipIcon />
           </ProcessView>
         </PopupContainer>
       }

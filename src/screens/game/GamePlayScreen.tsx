@@ -6,7 +6,12 @@ import styled from "styled-components/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
-import { Bold12, Bold17, Bold20 } from "src/components/text/Typographies";
+import {
+  Bold12,
+  Bold17,
+  Bold20,
+  Bold18
+} from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop, getCurrentComponentId } from "src/utils/navigator";
 import CircleCheckGroup from "src/components/icon/CircleCheckGroup";
@@ -32,6 +37,7 @@ import GamePlayHighlights, {
 import { makePlayStreamUriByTrackId } from "src/configs/soundCloudAPI";
 import GamePlayTutorialOverlay from "src/screens/tutorial/GamePlayTutorialOverlay";
 import XEIcon from "src/components/icon/XEIcon";
+import SkipIcon from "src/components/icon/SkipIcon";
 
 interface IInject {
   authStore: IAuthStore;
@@ -123,10 +129,10 @@ const AnswerText = styled(Bold12)``;
 
 const Footer = styled.View`
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   padding-horizontal: 14px;
-  padding-bottom: 22px;
+  padding-bottom: 14px;
 `;
 
 const AnswerButton = styled.TouchableOpacity`
@@ -168,6 +174,33 @@ const NextStepArrowIcon = styled(XEIcon)``;
 
 const NextStepCaption = styled(Bold17)`
   margin-bottom: 12px;
+`;
+
+const SkipButton = styled.TouchableOpacity`
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SkipButtonText = styled(Bold12)`
+  color: ${colors.pinkyPurpleThree};
+  margin-top: 2px;
+`;
+
+const SkipBadge = styled.View`
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  background-color: ${colors.pinkyPurple};
+`;
+
+const SkipBadgeText = styled(Bold18)`
+  color: ${colors.paleLavender};
 `;
 
 const DEFAULT_LIMIT_TIME = 40;
@@ -279,11 +312,16 @@ class GamePlayScreen extends Component<IProps, IStates> {
           <AnswerButton onPress={this.submitAnswer}>
             <AnswerButtonText>입력확인</AnswerButtonText>
           </AnswerButton>
-          <MockButton
+          <SkipButton
             disabled={(userItem?.count ?? 0) === 0}
-            name={`스킵(${userItem?.count ?? 0})`}
             onPress={this.useSkipItem}
-          />
+          >
+            <SkipIcon />
+            <SkipButtonText>SKIP</SkipButtonText>
+            <SkipBadge>
+              <SkipBadgeText>{userItem?.count ?? 0}</SkipBadgeText>
+            </SkipBadge>
+          </SkipButton>
         </Footer>
       </>
     );

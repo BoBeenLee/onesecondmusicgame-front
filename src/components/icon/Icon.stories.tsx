@@ -6,6 +6,7 @@ import styled from "styled-components/native";
 import HeartGroup from "src/components/icon/HeartGroup";
 import colors from "src/styles/colors";
 import CircleCheckGroup from "src/components/icon/CircleCheckGroup";
+import SkipIcon from "src/components/icon/SkipIcon";
 
 const CenterView = styled.View`
   flex: 1;
@@ -15,6 +16,9 @@ const CenterView = styled.View`
 
 storiesOf("Icon", module)
   .addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
+  .add("SkipIcon", () => {
+    return <SkipIcon />;
+  })
   .add("HeartGroup", () => {
     return <HeartGroup hearts={["active", "inactive"]} />;
   })

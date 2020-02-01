@@ -30,7 +30,7 @@ const BackdropView = styled(Backdrop)`
 
 const SingersView = styled(Animated.View)`
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   margin-bottom: 21px;
 `;
