@@ -26,7 +26,7 @@ interface IProps {
 const Container = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
-  height: 50px;
+  padding-vertical: 11px;
   border-bottom-width: 1px;
   border-bottom-color: ${colors.darkTwo};
 `;

@@ -401,10 +401,18 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private submitAnswer = () => {
-    const { answer, checkAnswer } = this.gamePlayHighlights;
+    const {
+      answer,
+      checkAnswer,
+      currentGameHighlight
+    } = this.gamePlayHighlights;
     const { songAnswerInput } = this.state;
     const { showToast } = this.props.toastStore;
 
+    if (currentGameHighlight === null) {
+      showToast("게임 플레이곡이 없습니다");
+      return;
+    }
     if (!checkAnswer(songAnswerInput)) {
       showToast("오답입니다ㅠㅜ");
       return;
