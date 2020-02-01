@@ -283,8 +283,10 @@ class MainScreen extends Component<IProps> {
 
   private onUseFullHeartPopup = () => {
     const { showPopup, closePopup } = this.props.popupProps;
+    const heart = this.props.authStore.user?.heart!;
     showPopup(
       <UseFullHeartPopup
+        heart={heart}
         onConfirm={this.useFullHeart}
         onChargeFullHeart={this.requestHeartRewardAD}
         onCancel={closePopup}

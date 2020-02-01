@@ -141,6 +141,11 @@ export const Regular16 = styled(Regular)`
   line-height: 24px;
 `;
 
+export const Regular17 = styled(Regular)`
+  font-size: 17px;
+  line-height: 24px;
+`;
+
 export const Regular20 = styled(Regular)`
   font-size: 20px;
   line-height: 26px;

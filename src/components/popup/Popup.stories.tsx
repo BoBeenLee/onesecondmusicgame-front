@@ -7,6 +7,8 @@ import ConfirmPopup from "src/components/popup/ConfirmPopup";
 import colors from "src/styles/colors";
 import ChargeSkipItemPopup from "src/components/popup/ChargeSkipItemPopup";
 import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
+import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
+import Heart from "src/stores/model/Heart";
 
 const CenterView = styled.View`
   flex: 1;
@@ -40,6 +42,16 @@ storiesOf("Popup", module)
       <InviteFriendsPopup
         onCancel={action("onCancel")}
         onConfirm={action("onConfirm")}
+      />
+    );
+  })
+  .add("UseFullHeartPopup", () => {
+    return (
+      <UseFullHeartPopup
+        heart={Heart.create({ heartCount: 3 })}
+        onCancel={action("onCancel")}
+        onConfirm={action("onConfirm")}
+        onChargeFullHeart={action("onChargeFullHeart")}
       />
     );
   });

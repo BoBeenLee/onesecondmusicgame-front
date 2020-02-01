@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 
 import colors from "src/styles/colors";
 import { ViewProps } from "react-native";
-import { Bold12 } from "src/components/text/Typographies";
+import { Bold12, Bold17 } from "src/components/text/Typographies";
 import XEIconButton from "src/components/button/XEIconButton";
 
 interface IProps {
@@ -22,9 +22,10 @@ const OutterContainer = styled.View`
 const Container = styled.View`
   width: 100%;
   flex-direction: column;
-  border-radius: 6px;
-  background-color: #eee;
-  padding: 10px;
+  border-radius: 17px;
+  background-color: ${colors.paleGrey};
+  padding-horizontal: 16px;
+  padding-vertical: 11px;
 `;
 
 const Content = styled.View`
@@ -38,25 +39,28 @@ const Bottom = styled.View`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  margin-bottom: 20px;
 `;
 
-const Button = styled.TouchableOpacity`
+const ConfirmButton = styled.TouchableOpacity`
+  flex: 1;
+  height: 50px;
   justify-content: center;
   align-items: center;
-  background-color: ${colors.gray500};
-  padding-vertical: 15px;
-  padding-horizontal: 10px;
-  margin-bottom: 33px;
+  border-radius: 14px;
+  border: solid 3px ${colors.lightMagenta};
+  background-color: ${colors.pinkyPurple};
 `;
 
-const ButtonText = styled(Bold12)``;
-
-const ConfirmButtonText = styled(ButtonText)``;
+const ConfirmButtonText = styled(Bold17)`
+  text-align: center;
+  color: ${colors.white};
+`;
 
 const CloseButton = styled(XEIconButton)`
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 11px;
+  right: 16px;
 `;
 
 function OnlyConfirmPopup(props: IProps) {
@@ -67,9 +71,9 @@ function OnlyConfirmPopup(props: IProps) {
       <Container style={style}>
         <Content>{ContentComponent}</Content>
         <Bottom>
-          <Button onPress={onConfirm}>
+          <ConfirmButton onPress={onConfirm}>
             <ConfirmButtonText>{confirmText}</ConfirmButtonText>
-          </Button>
+          </ConfirmButton>
         </Bottom>
         <CloseButton
           iconName="close"
