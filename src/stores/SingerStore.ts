@@ -1,20 +1,28 @@
 import _ from "lodash";
 import { flow, types } from "mobx-state-tree";
 
-import { registeredSingers } from "src/apis/singer";
+import { singers, registeredSingers } from "src/apis/singer";
 import Singers from "src/stores/Singers";
 
 const SingerStore = types
   .model("SingerStore", {
-    singers: types.optional(Singers, {})
+    registeredSingers: types.optional(Singers, {}),
+    allSingers: types.optional(Singers, {})
   })
   .actions(self => {
     const initialize = flow(function*() {
-      const response: RetrieveAsyncFunc<typeof registeredSingers> = yield registeredSingers();
-      self.singers = Singers.create({
-        singers: response
+      const [responseRegisteredSingers, responseSingers]: [
+        RetrieveAsyncFunc<typeof registeredSingers>,
+        RetrieveAsyncFunc<typeof singers>
+      ] = yield Promise.all([registeredSingers(), singers()]);
+      self.registeredSingers = Singers.create({
+        singers: responseRegisteredSingers
       });
-      self.singers.initialize({ q: "" });
+      self.allSingers = Singers.create({
+        singers: responseSingers
+      });
+      self.registeredSingers.initialize({ q: "" });
+      self.allSingers.initialize({ q: "" });
     });
 
     return {

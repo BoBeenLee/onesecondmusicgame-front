@@ -107,20 +107,6 @@ const ResultEmptyDescription = styled(Regular12)`
   color: ${colors.lightGreyTwo};
 `;
 
-const RegisterSongButton = styled.TouchableOpacity`
-  justify-content: center;
-  align-items: center;
-  width: 153px;
-  height: 37px;
-  border-radius: 8px;
-  border: solid 3px ${colors.lightMagenta};
-  background-color: ${colors.pinkyPurple};
-`;
-
-const RegisterSongButtonText = styled(Bold14)`
-  color: ${colors.lightGrey};
-`;
-
 @inject(
   ({ store }: { store: IStore }): IInject => ({
     singerStore: store.singerStore,
@@ -186,7 +172,7 @@ class SearchSingerScreen extends Component<IProps> {
   }
 
   private get singers() {
-    return this.props.singerStore.singers;
+    return this.props.singerStore.allSingers;
   }
 
   private singerKeyExtreactor = (item: ISinger, index: number) => {

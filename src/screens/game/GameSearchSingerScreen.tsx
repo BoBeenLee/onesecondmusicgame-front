@@ -221,7 +221,7 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
   }
 
   private get singers() {
-    return this.props.singerStore.singers;
+    return this.props.singerStore.registeredSingers;
   }
 
   private onResultScroll = (scrollDirection: ScrollDirection) => {
