@@ -124,6 +124,11 @@ class SearchSingerScreen extends Component<IProps> {
     });
   }
 
+  constructor(props: IProps) {
+    super(props);
+    this.singers.initialize({ q: "" });
+  }
+
   public render() {
     const { singerViews, refresh, isRefresh } = this.singers;
 
