@@ -443,9 +443,11 @@ class GamePlayScreen extends Component<IProps, IStates> {
 
   private onFinishPopup = () => {
     const { showPopup } = this.props.popupProps;
+    const heart = this.props.authStore.user?.heart!;
     showPopup(
       <ChargeFullHeartPopup
-        onConfirm={this.requestHeartRewardAD}
+        heart={heart}
+        onChargeFullHeart={this.requestHeartRewardAD}
         onCancel={this.finish}
       />,
       true,

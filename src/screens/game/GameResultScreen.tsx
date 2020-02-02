@@ -42,6 +42,8 @@ import { gameResultUsingPOST } from "src/apis/game";
 import CircleCheckGroup from "src/components/icon/CircleCheckGroup";
 import XEIcon from "src/components/icon/XEIcon";
 import TimerText from "src/components/text/TimerText";
+import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
+import { Item } from "__generate__/api";
 
 interface IInject {
   authStore: IAuthStore;
@@ -327,7 +329,7 @@ class GameResultScreen extends Component<IProps, IStates> {
                 <Score>4355점</Score>
               </ResultSectionMyRankRow>
             </ResultSection>
-            <ResultSection onPress={this.onChargeFullHeartPopup}>
+            <ResultSection onPress={this.onUseFullHeartPopup}>
               <ResultSectionHeaderRow>
                 <ResultSectionHeaderTitle>
                   잔여 하트갯수
@@ -389,14 +391,30 @@ class GameResultScreen extends Component<IProps, IStates> {
     });
   };
 
-  private onChargeFullHeartPopup = () => {
+  private onUseFullHeartPopup = () => {
     const { showPopup, closePopup } = this.props.popupProps;
+    const heart = this.props.authStore.user?.heart!;
     showPopup(
-      <ChargeFullHeartPopup
-        onConfirm={this.requestHeartRewardAD}
+      <UseFullHeartPopup
+        heart={heart}
+        onConfirm={this.useFullHeart}
+        onChargeFullHeart={this.requestHeartRewardAD}
         onCancel={closePopup}
       />
     );
+  };
+
+  private useFullHeart = () => {
+    const { showToast } = this.props.toastStore;
+    const userItem = this.props.authStore.user?.userItemsByItemType?.(
+      Item.ItemTypeEnum.CHARGEALLHEART
+    );
+
+    const { closePopup } = this.props.popupProps;
+    userItem?.useItemType?.();
+    this.props.authStore.user?.heart?.fetchHeart();
+    showToast("하트 풀충전 완료!");
+    closePopup();
   };
 
   private requestHeartRewardAD = () => {

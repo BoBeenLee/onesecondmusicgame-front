@@ -1,39 +1,102 @@
+import _ from "lodash";
 import React from "react";
 import styled from "styled-components/native";
 import { ViewProps } from "react-native";
 
-import { Bold12, Bold20, Bold36 } from "src/components/text/Typographies";
-import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
+import {
+  Bold15,
+  Bold24,
+  Bold36,
+  Regular17
+} from "src/components/text/Typographies";
+import OSMGPopup from "src/components/popup/OSMGPopup";
+import colors from "src/styles/colors";
+import HeartGroup from "src/components/icon/HeartGroup";
+import { IHeart } from "src/stores/model/Heart";
+import XEIcon from "src/components/icon/XEIcon";
 
 interface IProps {
   style?: ViewProps["style"];
-  onConfirm: () => void;
+  heart: IHeart;
+  onChargeFullHeart: () => void;
   onCancel: () => void;
 }
 
 const PopupContainer = styled.View`
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
-const PopupDescription = styled(Bold12)`
-  margin-bottom: 47px;
+const PopupTitle = styled(Bold24)`
+  text-align: center;
+  color: ${colors.dark};
+  margin-top: 48px;
+  margin-bottom: 5px;
+`;
+
+const PopupDescription = styled(Bold15)`
+  text-align: center;
+  color: ${colors.slateGrey};
+  margin-bottom: 7px;
+`;
+
+const PopupHighlightDescription = styled(Bold15)`
+  color: ${colors.lightMagentaThree};
+`;
+
+const HeartGroupView = styled(HeartGroup)`
+  margin-top: 29px;
+`;
+
+const ChargeFullHeartButton = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+  height: 37px;
+  border-radius: 8px;
+  border: solid 2px ${colors.lightBlueGrey};
+  background-color: ${colors.paleLavender};
+  padding-horizontal: 13px;
+  margin-top: 29px;
+  margin-bottom: 20px;
+`;
+
+const ChargeFullHeartButtonText = styled(Regular17)`
+  color: ${colors.purply};
+`;
+
+const ArrowIcon = styled(XEIcon)`
+  margin-left: 6px;
 `;
 
 function ChargeFullHeartPopup(props: IProps) {
-  const { style, onConfirm, onCancel } = props;
+  const { style, heart, onChargeFullHeart, onCancel } = props;
   return (
-    <OnlyConfirmPopup
+    <OSMGPopup
       style={style}
       ContentComponent={
         <PopupContainer>
-          <PopupDescription>{`하트를 모두 사용했네요!
-광고를 보고
-하트 Full 충전 받으시겠어요?`}</PopupDescription>
+          <PopupTitle>하트를 모두 소진했어요!</PopupTitle>
+          <PopupDescription>
+            광고 보고{" "}
+            <PopupHighlightDescription>
+              하트 풀충전 아이템
+            </PopupHighlightDescription>
+            을{"\n"}선물 받으세요!
+          </PopupDescription>
+          <HeartGroupView
+            hearts={_.times(5, index =>
+              index <= (heart.heartCount ?? 0) ? "active" : "inactive"
+            )}
+          />
+          <ChargeFullHeartButton onPress={onChargeFullHeart}>
+            <ChargeFullHeartButtonText>
+              광고보고 아이템받기
+            </ChargeFullHeartButtonText>
+            <ArrowIcon name="angle-right" size={15} color={colors.purply} />
+          </ChargeFullHeartButton>
         </PopupContainer>
       }
-      confirmText={"광고보기"}
-      onConfirm={onConfirm}
       onCancel={onCancel}
     />
   );

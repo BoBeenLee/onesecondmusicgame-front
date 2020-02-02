@@ -11,7 +11,8 @@ import {
   Bold36,
   Regular10,
   Regular12,
-  Bold20
+  Bold20,
+  Bold28
 } from "src/components/text/Typographies";
 import { IStore } from "src/stores/Store";
 import { IAuthStore } from "src/stores/AuthStore";
@@ -56,6 +57,18 @@ const Header = styled.View`
   justify-content: space-between;
   padding-top: 14px;
   padding-horizontal: 17px;
+`;
+
+const Profile = styled.View`
+  flex-direction: column;
+`;
+
+const Nickname = styled(Bold28)`
+  color: ${colors.lightGrey};
+`;
+
+const Description = styled(Bold20)`
+  color: ${colors.lightGrey};
 `;
 
 const HeartStatus = styled.View`
@@ -235,6 +248,10 @@ class MainScreen extends Component<IProps> {
           </GameItems>
         </Header>
         <Content>
+          <Profile>
+            <Nickname>Hyen님</Nickname>
+            <Description>오늘도 같이 음악 맞춰요 </Description>
+          </Profile>
           <Logo>알쏭달쏭</Logo>
         </Content>
         <GameModeView>
