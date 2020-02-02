@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import { ViewProps } from "react-native";
 import { useForm, OnSubmit } from "react-hook-form";
 import styled from "styled-components/native";
@@ -79,7 +79,11 @@ const UserProfileForm = (props: IProps) => {
     IForm
   >();
 
-  const onSubmit: OnSubmit<IForm> = async data => {
+  useEffect(() => {
+    register({ name: "nickname" }, { required: true });
+  }, [register]);
+
+  const onSubmit: OnSubmit<IForm> = async (data: IForm) => {
     try {
       await onConfirm(data);
     } catch (error) {
@@ -93,15 +97,6 @@ const UserProfileForm = (props: IProps) => {
         <Title>게임에 사용할 닉네임을 설정해주세요</Title>
         <NicknameInput>
           <NicknameTextInput
-            forwardRef={
-              register({
-                name: "nickname",
-                required: {
-                  value: true,
-                  message: "닉네임을 입력해 주세요."
-                }
-              }) as any
-            }
             onChangeText={text => setValue("nickname", text, true)}
             placeholder="닉네임 입력 (최소 3글자 이상)"
           />

@@ -41,6 +41,7 @@ const Content = styled.View`
   flex-direction: column;
   align-items: center;
   padding-top: 70px;
+  padding-bottom: 31px;
   padding-horizontal: 70px;
 `;
 
