@@ -219,7 +219,6 @@
 				A1997785999682047247089F /* Pods-RNAppTests.debug.xcconfig */,
 				2C861B4AF25DA85295D52331 /* Pods-RNAppTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -823,6 +822,8 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PODS_PODFILE_DIR_PATH = "${SRCROOT}/.";
+				PODS_ROOT = "${SRCROOT}/Pods";
 				PRODUCT_BUNDLE_IDENTIFIER = kr.nexters.onesecondmusicgame;
 				PRODUCT_NAME = RNApp;
 				PROVISIONING_PROFILE_SPECIFIER = OneSecondMusicGame;
@@ -961,6 +962,8 @@
 					"-ObjC",
 					"-lc++",
 				);
+				PODS_PODFILE_DIR_PATH = "${SRCROOT}/.";
+				PODS_ROOT = "${SRCROOT}/Pods";
 				PRODUCT_BUNDLE_IDENTIFIER = kr.nexters.onesecondmusicgame;
 				PRODUCT_NAME = RNApp;
 				PROVISIONING_PROFILE_SPECIFIER = OneSecondMusicGame;
