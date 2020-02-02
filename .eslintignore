@@ -1,1 +1,7 @@
 __generate__/
+ios/
+android/
+fastlane/
+assets/
+scripts/
+webview/
