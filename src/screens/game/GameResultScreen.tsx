@@ -111,8 +111,8 @@ const GainScoreView = styled.View<{ size: number }>`
     shadow-color: ${colors.robinEggBlue};
     shadow-offset: 0px 0px;
     shadow-opacity: 1;
-    shadow-radius: ${_.round(size / 2)}px;
-    elevation: 4;
+    shadow-radius: 25px;
+    elevation: 3;
   `}
   background-color: ${colors.darkGreyBlue};
 `;
