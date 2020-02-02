@@ -33,7 +33,6 @@ interface IStates {
 const Container = styled(ContainerWithStatusBar)`
   flex: 1;
   flex-direction: column;
-  padding-horizontal: 21px;
 `;
 
 const Content = styled.View`
@@ -42,7 +41,7 @@ const Content = styled.View`
   align-items: center;
   padding-top: 70px;
   padding-bottom: 31px;
-  padding-horizontal: 70px;
+  padding-horizontal: 41px;
 `;
 
 @inject(
@@ -65,11 +64,11 @@ class UserProfileScreen extends Component<IProps, IStates> {
   public render() {
     const { onConfirm } = this.props;
     return (
-      <ContainerWithStatusBar>
+      <Container>
         <Content>
           <UserProfileForm onConfirm={onConfirm} />
         </Content>
-      </ContainerWithStatusBar>
+      </Container>
     );
   }
 }

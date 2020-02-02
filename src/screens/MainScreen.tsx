@@ -36,7 +36,9 @@ import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
 import FloatingButton from "src/components/button/FloatingButton";
 import LevelBadge from "src/components/badge/LevelBadge";
-import GamePlayScreen from "./game/GamePlayScreen";
+import XEIconButton from "src/components/button/XEIconButton";
+import GamePlayScreen from "src/screens/game/GamePlayScreen";
+import UserProfileScreen from "src/screens/user/UserProfileScreen";
 
 interface IInject {
   store: IStore;
@@ -66,9 +68,16 @@ const Profile = styled.View`
   flex-direction: column;
 `;
 
+const NicknameView = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
 const Nickname = styled(Bold28)`
   color: ${colors.lightGrey};
 `;
+
+const SettingButton = styled(XEIconButton)``;
 
 const Description = styled(Bold20)`
   color: ${colors.lightGrey};
@@ -252,7 +261,15 @@ class MainScreen extends Component<IProps> {
         </Header>
         <Content>
           <Profile>
-            <Nickname>Hyen님</Nickname>
+            <NicknameView>
+              <Nickname>Hyen님</Nickname>
+              <SettingButton
+                iconName="cog"
+                iconSize={20}
+                iconColor={colors.white}
+                onPress={this.onSetting}
+              />
+            </NicknameView>
             <Description>오늘도 같이 음악 맞춰요 </Description>
           </Profile>
           <Logo>알쏭달쏭</Logo>
@@ -292,6 +309,14 @@ class MainScreen extends Component<IProps> {
     if (_.isEmpty(heart?.leftTime)) {
       heart?.fetchHeart?.();
     }
+  };
+
+  private onSetting = () => {
+    const { componentId } = this.props;
+    UserProfileScreen.open({
+      componentId,
+      onConfirm: _.identity
+    });
   };
 
   private onSkipItemPopup = () => {
