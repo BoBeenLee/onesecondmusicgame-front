@@ -81,7 +81,6 @@ const UserProfileForm = (props: IProps) => {
 
   const onSubmit: OnSubmit<IForm> = async data => {
     try {
-      console.tron.log(data);
       await onConfirm(data);
     } catch (error) {
       setError("nickname", error.message);

@@ -297,7 +297,7 @@ class MainScreen extends Component<IProps> {
   private onSkipItemPopup = () => {
     const { showPopup, closePopup } = this.props.popupProps;
     showPopup(
-      <ChargeSkipItemPopup onConfirm={this.invite} onCancel={closePopup} />
+      <ChargeSkipItemPopup onInvite={this.invite} onCancel={closePopup} />
     );
   };
 

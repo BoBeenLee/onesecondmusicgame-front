@@ -7,7 +7,8 @@ import {
   Bold15,
   Bold24,
   Bold36,
-  Regular17
+  Regular17,
+  Bold17
 } from "src/components/text/Typographies";
 import OSMGPopup from "src/components/popup/OSMGPopup";
 import colors from "src/styles/colors";
@@ -46,7 +47,7 @@ const PopupHighlightDescription = styled(Bold15)`
 `;
 
 const HeartGroupView = styled(HeartGroup)`
-  margin-top: 29px;
+  margin-top: 19px;
 `;
 
 const ChargeFullHeartButton = styled.TouchableOpacity`
@@ -61,7 +62,7 @@ const ChargeFullHeartButton = styled.TouchableOpacity`
   margin-bottom: 20px;
 `;
 
-const ChargeFullHeartButtonText = styled(Regular17)`
+const ChargeFullHeartButtonText = styled(Bold17)`
   color: ${colors.purply};
 `;
 

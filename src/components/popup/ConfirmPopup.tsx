@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 
 import colors from "src/styles/colors";
 import { ViewProps } from "react-native";
-import { Bold12 } from "src/components/text/Typographies";
+import { Bold12, Bold17, Bold20 } from "src/components/text/Typographies";
 
 interface IProps {
   style?: ViewProps["style"];
@@ -16,20 +16,24 @@ interface IProps {
 
 const Container = styled.View`
   flex-direction: column;
-  height: 180px;
-  border-radius: 6px;
-  background-color: #eee;
-  padding: 10px;
+  border-radius: 17px;
+  background-color: ${colors.paleGrey};
+  padding-horizontal: 24px;
+  padding-bottom: 31px;
 `;
 
 const Content = styled.View`
-  flex: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
 
-const Message = styled(Bold12)``;
+const Message = styled(Bold20)`
+  text-align: center;
+  color: ${colors.black};
+  padding-top: 47px;
+  padding-bottom: 52px;
+`;
 
 const Bottom = styled.View`
   width: 100%;
@@ -37,18 +41,34 @@ const Bottom = styled.View`
   align-items: center;
 `;
 
-const Button = styled.TouchableOpacity`
+const CancelButton = styled.TouchableOpacity`
+  width: 126px;
   justify-content: center;
   align-items: center;
-  width: 100px;
-  height: 40px;
-  background-color: #ee0;
-  margin-horizontal: 10px;
+  height: 50px;
+  border-radius: 14px;
+  border: solid 3px ${colors.lightBlueGrey};
+  background-color: ${colors.paleLavender};
+  margin-right: 8px;
 `;
 
-const ButtonText = styled(Bold12)``;
+const CancelButtonText = styled(Bold17)`
+  color: ${colors.purply};
+`;
 
-const ConfirmButtonText = styled(ButtonText)``;
+const ConfirmButton = styled.TouchableOpacity`
+  width: 126px;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  border-radius: 14px;
+  border: solid 3px ${colors.lightMagentaThree};
+  background-color: ${colors.pinkyPurple};
+`;
+
+const ConfirmButtonText = styled(Bold17)`
+  color: ${colors.white};
+`;
 
 function ConfirmPopup(props: IProps) {
   const {
@@ -62,16 +82,14 @@ function ConfirmPopup(props: IProps) {
 
   return (
     <Container style={style}>
-      <Content>
-        <Message>{message}</Message>
-      </Content>
+      <Message>{message}</Message>
       <Bottom>
-        <Button onPress={onConfirm}>
+        <CancelButton onPress={onCancel}>
+          <CancelButtonText>{cancelText}</CancelButtonText>
+        </CancelButton>
+        <ConfirmButton onPress={onConfirm}>
           <ConfirmButtonText>{confirmText}</ConfirmButtonText>
-        </Button>
-        <Button onPress={onCancel}>
-          <ButtonText>{cancelText}</ButtonText>
-        </Button>
+        </ConfirmButton>
       </Bottom>
     </Container>
   );
