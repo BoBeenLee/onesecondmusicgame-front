@@ -6,6 +6,7 @@ import { InteractionManager, Clipboard } from "react-native";
 import styled from "styled-components/native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
+import { iosStatusBarHeight } from "src/utils/device";
 import {
   Bold12,
   Bold36,
@@ -104,7 +105,7 @@ const HeartRemainTime = styled(TimerText)`
 const GameItems = styled.View`
   position: absolute;
   width: 100px;
-  top: 20px;
+  top: ${iosStatusBarHeight(false) + 20}px;
   right: 31px;
   flex-direction: column;
 `;
@@ -242,22 +243,6 @@ class MainScreen extends Component<IProps> {
               />
             </HeartRemain>
           </HeartStatus>
-          <GameItems>
-            <FloatingButton
-              ButtonComponent={
-                <GameItemButton>
-                  <GameItemButtonText>아이템</GameItemButtonText>
-                </GameItemButton>
-              }
-              ItemComponents={_.map(userItemViews, item => (
-                <MockButton
-                  key={item.name}
-                  name={`${item.name}(${item.count})`}
-                  onPress={this.itemToOnPress[item.itemType]}
-                />
-              ))}
-            />
-          </GameItems>
         </Header>
         <Content>
           <Profile>
@@ -300,6 +285,22 @@ class MainScreen extends Component<IProps> {
           <MockButton name="노래 제안" onPress={this.navigateToRegisterSong} />
           <MockButton name="개인 랭킹" onPress={this.navigateToRanking} />
         </Footer>
+        <GameItems>
+          <FloatingButton
+            ButtonComponent={
+              <GameItemButton>
+                <GameItemButtonText>아이템</GameItemButtonText>
+              </GameItemButton>
+            }
+            ItemComponents={_.map(userItemViews, item => (
+              <MockButton
+                key={item.name}
+                name={`${item.name}(${item.count})`}
+                onPress={this.itemToOnPress[item.itemType]}
+              />
+            ))}
+          />
+        </GameItems>
       </Container>
     );
   }
