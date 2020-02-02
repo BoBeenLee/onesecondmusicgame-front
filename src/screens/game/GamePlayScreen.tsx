@@ -20,7 +20,6 @@ import colors from "src/styles/colors";
 import OSMGCarousel, { ICarousel } from "src/components/carousel/OSMGCarousel";
 import GameAudioPlayer from "src/components/player/GameAudioPlayer";
 import OSMGTextInput from "src/components/input/OSMGTextInput";
-import MockButton from "src/components/button/MockButton";
 import { IPopupProps } from "src/hocs/withPopup";
 import ChargeFullHeartPopup from "src/components/popup/ChargeFullHeartPopup";
 import { IAuthStore } from "src/stores/AuthStore";
@@ -460,11 +459,11 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private onRewarded = async () => {
-    const { updateUserInfo } = this.props.authStore;
+    const { updateUserReward } = this.props.authStore;
     const { showToast } = this.props.toastStore;
     try {
       await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
-      await updateUserInfo();
+      updateUserReward();
       showToast("보상 완료!");
     } catch (error) {
       showToast(error.message);

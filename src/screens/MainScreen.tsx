@@ -60,6 +60,9 @@ const Header = styled.View`
 `;
 
 const Profile = styled.View`
+  position: absolute;
+  top: 32px;
+  left: 32px;
   flex-direction: column;
 `;
 
@@ -330,11 +333,11 @@ class MainScreen extends Component<IProps> {
 
   private onRewarded = async () => {
     const { closePopup } = this.props.popupProps;
-    const { updateUserInfo } = this.props.authStore;
+    const { updateUserReward } = this.props.authStore;
     const { showToast } = this.props.toastStore;
     try {
       await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
-      await updateUserInfo();
+      updateUserReward();
       showToast("보상 완료!");
     } catch (error) {
       showToast(error.message);

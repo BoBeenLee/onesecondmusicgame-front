@@ -26,6 +26,7 @@ import GameResultScreen from "src/screens/game/GameResultScreen";
 import GameSearchSingerScreen from "src/screens/game/GameSearchSingerScreen";
 import GamePlayTutorialOverlay from "src/screens/tutorial/GamePlayTutorialOverlay";
 import SearchSingerScreen from "src/screens/song/SearchSingerScreen";
+import UserProfileScreen from "src/screens/user/UserProfileScreen";
 
 interface IScreenProps {
   id: string;
@@ -111,6 +112,10 @@ const screens: IScreenProps[] = [
   {
     Component: SearchSingerScreen,
     id: SCREEN_IDS.SearchSingerScreen
+  },
+  {
+    Component: UserProfileScreen,
+    id: SCREEN_IDS.UserProfileScreen
   }
 ];
 

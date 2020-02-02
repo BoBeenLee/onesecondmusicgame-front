@@ -102,8 +102,7 @@ const AuthStore = types
       self.accessToken = tokenResponse.accessToken;
       self.provider = "KAKAO";
       self.user = User.create({
-        accessId: self.accessId,
-        nickname: profileResponse.nickname
+        accessId: self.accessId
       });
       yield signIn();
     });
@@ -127,8 +126,7 @@ const AuthStore = types
         self.accessToken = tokenInfo.accessToken;
         self.provider = "GOOGLE";
         self.user = User.create({
-          accessId: self.accessId,
-          nickname: userInfo.user.name ?? userInfo.user.email
+          accessId: self.accessId
         });
         yield signIn();
       } catch (error) {
@@ -162,37 +160,24 @@ const AuthStore = types
       self.accessToken = data?.accessToken?.toString?.() ?? "";
       self.provider = "FACEBOOK";
       self.user = User.create({
-        accessId: self.accessId,
-        nickname: data?.userID ?? ""
+        accessId: self.accessId
       });
       yield signIn();
     });
 
     const signIn = flow(function*() {
-      try {
-        const signInResponse: RetrieveAsyncFunc<typeof signInUsingPOST> = yield signInUsingPOST(
-          {
-            accessId: self.accessId,
-            accessToken: self.accessToken
-          }
-        );
-        updateUserAccessToken(signInResponse);
-        updateUserInfo();
-        updateAuthInfo();
-      } catch (error) {
-        if (
-          [ErrorCode.NOT_FOUND, ErrorCode.FORBIDDEN_ERROR].some(
-            status => status === error.status
-          )
-        ) {
-          yield fallbackSignUpAndSignIn();
-          return;
+      const signInResponse: RetrieveAsyncFunc<typeof signInUsingPOST> = yield signInUsingPOST(
+        {
+          accessId: self.accessId,
+          accessToken: self.accessToken
         }
-        throw error;
-      }
+      );
+      updateUserAccessToken(signInResponse);
+      updateUserInfo(signInResponse);
+      updateAuthInfo();
     });
 
-    const fallbackSignUpAndSignIn = flow(function*() {
+    const signUp = flow(function*({ nickname }: { nickname: string }) {
       const deviceId = getUniqueID();
       const sharedAccessId = yield defaultItemToString(
         FIELD.SHARED_ACCESS_ID,
@@ -201,7 +186,7 @@ const AuthStore = types
       yield signUpUsingPOST({
         accessId: self.accessId,
         deviceId: deviceId,
-        nickname: self.user?.nickname ?? self.accessId,
+        nickname,
         socialType: self.provider,
         ...(sharedAccessId ? { invitedBy: sharedAccessId } : {})
       });
@@ -212,7 +197,7 @@ const AuthStore = types
         }
       );
       updateUserAccessToken(signInResponse);
-      updateUserInfo();
+      updateUserInfo(signInResponse);
       updateAuthInfo();
     });
 
@@ -225,12 +210,17 @@ const AuthStore = types
       self.user?.setUserAccessToken(signInResponse.token);
     };
 
-    const updateUserInfo = flow(function*() {
+    const updateUserInfo = flow(function*(signInResponse: LoggedInMusicUser) {
       const response: RetrieveAsyncFunc<typeof findItemAllUsingGET> = yield findItemAllUsingGET();
+      self.user?.setNickname(signInResponse?.nickname ?? "");
       self.user?.setUserItems(response);
       self.user?.heart.fetchHeart();
       setUserID(self.accessId);
     });
+
+    const updateUserReward = () => {
+      self.user?.heart.fetchHeart();
+    };
 
     const updateAuthInfo = () => {
       setItem(FIELD.ACCESS_ID, self.accessId);
@@ -245,10 +235,12 @@ const AuthStore = types
     return {
       initialize,
       facebookSignIn,
+      updateUserReward,
       updateUserInfo,
       kakaoSignIn,
       googleSignIn,
-      signOut
+      signOut,
+      signUp
     };
   });
 

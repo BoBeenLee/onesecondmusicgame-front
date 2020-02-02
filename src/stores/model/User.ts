@@ -7,7 +7,7 @@ import Heart from "src/stores/model/Heart";
 const User = types
   .model("User", {
     accessId: types.identifier,
-    nickname: types.string,
+    nickname: types.optional(types.string, ""),
     userAccessToken: types.optional(types.string, ""),
     userItems: types.optional(types.map(UserItem), {}),
     heart: types.optional(Heart, {})
@@ -24,6 +24,9 @@ const User = types
   })
   .actions(self => {
     return {
+      setNickname: (nickname: string) => {
+        self.nickname = nickname;
+      },
       setUserAccessToken: (userAccessToken: string) => {
         self.userAccessToken = userAccessToken;
       },

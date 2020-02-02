@@ -1,13 +1,11 @@
 import _ from "lodash";
-import React from "react";
+import React, { RefObject } from "react";
 import {
-  Platform,
   TextInputProps,
   TextStyle,
   TextInput,
   NativeSyntheticEvent,
-  TextInputFocusEventData,
-  InteractionManager
+  TextInputFocusEventData
 } from "react-native";
 import styled from "styled-components/native";
 
@@ -33,6 +31,7 @@ interface IProps extends TextInputProps {
   focusStyle?: TextStyle;
   fontType: FontType;
   onTextBlur?: (text: string) => void;
+  forwardRef?: RefObject<TextInput>;
 }
 export type OSMGTextInputProps = IProps;
 
@@ -48,19 +47,22 @@ class OSMGTextInput extends React.Component<IProps, IStates> {
     fontType: "REGULAR"
   };
 
-  public textInputRef = React.createRef<TextInput>();
-
   constructor(props: IProps) {
     super(props);
     this.state = { currentStyle: null };
   }
 
   public render() {
-    const { style, fontType = "REGULAR", ...otherProps } = this.props;
+    const {
+      style,
+      fontType = "REGULAR",
+      forwardRef,
+      ...otherProps
+    } = this.props;
     const { currentStyle } = this.state;
     return (
       <Container
-        ref={this.textInputRef}
+        ref={forwardRef}
         style={[style, currentStyle]}
         fontName={fontTypeToFont[fontType]}
         placeholderTextColor={colors.gray500}
@@ -71,14 +73,6 @@ class OSMGTextInput extends React.Component<IProps, IStates> {
       />
     );
   }
-
-  private clearText = () => {
-    this.textInputRef.current?.clear();
-  };
-
-  private focus = () => {
-    this.textInputRef.current?.focus();
-  };
 
   private onFocus = (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
     const { onFocus, focusStyle } = this.props;
@@ -102,8 +96,8 @@ class OSMGTextInput extends React.Component<IProps, IStates> {
   };
 
   private nativeText = () => {
-    const { defaultValue } = this.props;
-    return _.get(this.textInputRef.current, ["_lastNativeText"], defaultValue);
+    const { defaultValue, forwardRef } = this.props;
+    return _.get(forwardRef?.current, ["_lastNativeText"], defaultValue);
   };
 }
 
