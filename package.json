@@ -43,6 +43,7 @@
     "release": "release-it --ci"
   },
   "dependencies": {
+    "@invertase/react-native-apple-authentication": "^0.1.1",
     "@react-native-community/art": "^1.1.2",
     "@react-native-community/async-storage": "^1.4.2",
     "@react-native-community/google-signin": "^3.0.3",

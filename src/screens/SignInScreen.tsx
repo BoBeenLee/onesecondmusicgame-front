@@ -1,8 +1,10 @@
 import _ from "lodash";
 import React, { Component } from "react";
+import { Platform } from "react-native";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
 import { GoogleSigninButton } from "@react-native-community/google-signin";
+import { AppleButton } from "@invertase/react-native-apple-authentication";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import { Bold12, Bold14 } from "src/components/text/Typographies";
@@ -77,6 +79,7 @@ class SignInScreen extends Component<IProps> {
     this.facebookSignIn = enhancedLoginFlow(this.facebookSignIn);
     this.googleSignIn = enhancedLoginFlow(this.googleSignIn);
     this.kakaoSignIn = enhancedLoginFlow(this.kakaoSignIn);
+    this.appleSignIn = enhancedLoginFlow(this.appleSignIn);
   }
 
   public render() {
@@ -86,6 +89,17 @@ class SignInScreen extends Component<IProps> {
           <Logo>Logo</Logo>
         </Content>
         <Bottom>
+          {Platform.select({
+            android: null,
+            ios: (
+              <AppleButton
+                cornerRadius={5}
+                buttonStyle={AppleButton.Style.WHITE}
+                buttonType={AppleButton.Type.CONTINUE}
+                onPress={this.appleSignIn}
+              />
+            )
+          })}
           <SignInButton onPress={this.kakaoSignIn}>
             <ButtonText>카카오 로그인</ButtonText>
           </SignInButton>
@@ -162,6 +176,12 @@ class SignInScreen extends Component<IProps> {
   private kakaoSignIn = async () => {
     const { kakaoSignIn } = this.props.authStore;
     await kakaoSignIn();
+    MainScreen.open();
+  };
+
+  private appleSignIn = async () => {
+    const { appleSignIn } = this.props.authStore;
+    await appleSignIn();
     MainScreen.open();
   };
 }

@@ -7,6 +7,13 @@ import {
 } from "@react-native-community/google-signin";
 import firebase, { RNFirebase, AuthCredential } from "react-native-firebase";
 import { LoginManager, AccessToken } from "react-native-fbsdk";
+import appleAuth, {
+  AppleAuthRealUserStatus,
+  AppleAuthCredentialState,
+  AppleAuthRequestOperation,
+  AppleAuthRequestScope,
+  AppleAuthError
+} from "@invertase/react-native-apple-authentication";
 
 import { defaultItemToString, FIELD, setItem } from "src/utils/storage";
 import { signInUsingPOST, signUpUsingPOST } from "src/apis/user";
@@ -17,7 +24,7 @@ import { findItemAllUsingGET } from "src/apis/item";
 import { setUserID } from "src/configs/analytics";
 import { LoggedInMusicUser } from "__generate__/api";
 
-export type AUTH_PROVIDER = "KAKAO" | "GOOGLE" | "FACEBOOK" | "NONE";
+export type AUTH_PROVIDER = "APPLE" | "KAKAO" | "GOOGLE" | "FACEBOOK" | "NONE";
 
 const AuthStore = types
   .model("AuthStore", {
@@ -165,6 +172,43 @@ const AuthStore = types
       yield signIn();
     });
 
+    const appleSignIn = flow(function*() {
+      const appleAuthRequestResponse: RetrieveAsyncFunc<typeof appleAuth.performRequest> = yield appleAuth.performRequest(
+        {
+          requestedOperation: AppleAuthRequestOperation.LOGIN,
+          requestedScopes: [
+            AppleAuthRequestScope.EMAIL,
+            AppleAuthRequestScope.FULL_NAME
+          ]
+        }
+      );
+
+      const {
+        user,
+        email,
+        nonce,
+        identityToken,
+        realUserStatus /* etc */
+      } = appleAuthRequestResponse;
+      const credentialStateResponse: RetrieveAsyncFunc<typeof appleAuth.getCredentialStateForUser> = yield appleAuth.getCredentialStateForUser(
+        user
+      );
+
+      if (!identityToken) {
+        throw new Error("not exists identityToken");
+      }
+      if (credentialStateResponse !== AppleAuthCredentialState.AUTHORIZED) {
+        throw new Error("not AUTHORIZED");
+      }
+      self.accessId = user;
+      self.accessToken = identityToken;
+      self.provider = "APPLE";
+      self.user = User.create({
+        accessId: self.accessId
+      });
+      yield signIn();
+    });
+
     const signIn = flow(function*() {
       const signInResponse: RetrieveAsyncFunc<typeof signInUsingPOST> = yield signInUsingPOST(
         {
@@ -234,6 +278,7 @@ const AuthStore = types
 
     return {
       initialize,
+      appleSignIn,
       facebookSignIn,
       updateUserReward,
       updateUserInfo,
