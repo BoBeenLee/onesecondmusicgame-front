@@ -52,6 +52,8 @@ class OSMGTextInput extends React.Component<IProps, IStates> {
     this.state = { currentStyle: null };
   }
 
+  public textInputRef = React.createRef<TextInput>();
+
   public render() {
     const {
       style,
@@ -62,7 +64,7 @@ class OSMGTextInput extends React.Component<IProps, IStates> {
     const { currentStyle } = this.state;
     return (
       <Container
-        ref={forwardRef}
+        ref={this.currentRef}
         style={[style, currentStyle]}
         fontName={fontTypeToFont[fontType]}
         placeholderTextColor={colors.gray500}
@@ -72,6 +74,10 @@ class OSMGTextInput extends React.Component<IProps, IStates> {
         {..._.omit(otherProps, ["onFocus", "onBlur"])}
       />
     );
+  }
+
+  private get currentRef() {
+    return this.props.forwardRef ?? this.textInputRef;
   }
 
   private onFocus = (event: NativeSyntheticEvent<TextInputFocusEventData>) => {
@@ -96,8 +102,8 @@ class OSMGTextInput extends React.Component<IProps, IStates> {
   };
 
   private nativeText = () => {
-    const { defaultValue, forwardRef } = this.props;
-    return _.get(forwardRef?.current, ["_lastNativeText"], defaultValue);
+    const { defaultValue } = this.props;
+    return _.get(this.currentRef?.current, ["_lastNativeText"], defaultValue);
   };
 }
 
