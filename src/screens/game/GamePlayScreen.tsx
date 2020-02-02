@@ -53,7 +53,7 @@ interface IProps extends IInject, IPopupProps {
 }
 
 interface IStates {
-  currentStepStatus: "play" | "answer";
+  currentStepStatus: "play" | "stop" | "answer";
   songAnswerInput: string;
 }
 
@@ -244,14 +244,18 @@ class GamePlayScreen extends Component<IProps, IStates> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      currentStepStatus: "play",
+      currentStepStatus: "stop",
       songAnswerInput: ""
     };
     loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
       onRewarded: this.onRewarded
     });
     props.authStore.user?.heart?.useHeart?.();
-    GamePlayTutorialOverlay.open({});
+    GamePlayTutorialOverlay.open({
+      onAfterClose: () => {
+        this.setState({ currentStepStatus: "play" });
+      }
+    });
   }
 
   public componentDidMount() {
