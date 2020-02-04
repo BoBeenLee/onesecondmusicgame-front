@@ -33,6 +33,7 @@ const colors = {
   slateGrey: "#57566e",
   lightMagentaThree: "#f75ed6",
   darkIndigoTwo: "#060a1e",
+  paleCyan: "#b7ffff",
   black: "#000",
   black70: "rgba(33,33,33,.7)",
   white: "#ffffff",

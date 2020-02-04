@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import React, { Component } from "react";
+import React from "react";
 import { ViewProps } from "react-native";
 import styled, { css } from "styled-components/native";
 
@@ -29,13 +29,27 @@ const CircleCheckByType: {
   x: size => <XEIcon name="close" size={size} color={colors.pinkyPurple} />
 };
 
+const Current = styled.View<{ size: number }>`
+  border: solid 4px ${colors.purpleishPink};
+  background-color: ${colors.robinEggBlue};
+  ${({ size }) => css`
+    width: ${size}px;
+    height: ${size}px;
+  `}
+`;
+
 const Container = styled.View``;
 
 function CircleCheckIcon(props: IProps) {
   const { style, active, check } = props;
-  const CircleCheckComponent = CircleCheckByType[check](
-    active ? ACTIVE_SIZE : DEFAULT_SIZE
-  );
+  if (active) {
+    return (
+      <Container style={style}>
+        <Current size={ACTIVE_SIZE} />
+      </Container>
+    );
+  }
+  const CircleCheckComponent = CircleCheckByType[check](DEFAULT_SIZE);
   return <Container style={style}>{CircleCheckComponent}</Container>;
 }
 

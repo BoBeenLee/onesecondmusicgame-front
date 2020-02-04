@@ -6,6 +6,7 @@ import styled from "styled-components/native";
 import SearchTrackCard from "src/components/card/SearchTrackCard";
 import GameRankCard from "src/components/card/GameRankCard";
 import GameTopRankCard from "src/components/card/GameTopRankCard";
+import SearchSingerCard from "src/components/card/SearchSingerCard";
 
 const CenterView = styled.View`
   flex: 1;
@@ -57,6 +58,16 @@ storiesOf("Card", module)
         profileImage="https://via.placeholder.com/350x350"
         name="jasmin"
         score={83}
+      />
+    );
+  })
+  .add("SearchSingerCard", () => {
+    return (
+      <SearchSingerCard
+        selected={true}
+        image="https://via.placeholder.com/350x350"
+        name="jasmin"
+        onPress={action("onPress")}
       />
     );
   });

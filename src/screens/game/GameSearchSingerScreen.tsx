@@ -265,8 +265,10 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
 
   private renderSingerItem: ListRenderItem<ISinger> = ({ item }) => {
     const { name } = item;
+    const { selectedSingers } = this.state;
     return (
       <SearchSingerCardView
+        selected={Boolean(selectedSingers[item.name])}
         image={"https://via.placeholder.com/150"}
         name={name}
         onPress={_.partial(this.onSelectedItem, item)}

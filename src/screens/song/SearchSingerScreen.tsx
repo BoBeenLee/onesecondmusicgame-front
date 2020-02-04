@@ -188,6 +188,7 @@ class SearchSingerScreen extends Component<IProps> {
     const { name } = item;
     return (
       <SearchSingerCardView
+        selected={false}
         image={"https://via.placeholder.com/150"}
         name={name}
         onPress={_.partial(this.onSelectedItem, item)}
