@@ -72,6 +72,12 @@ export const Bold27 = styled(Bold)`
   letter-spacing: -0.7px;
 `;
 
+export const Bold28 = styled(Bold)`
+  font-size: 28px;
+  line-height: 26px;
+  letter-spacing: -0.7px;
+`;
+
 export const Bold36 = styled(Bold)`
   font-size: 36px;
 `;

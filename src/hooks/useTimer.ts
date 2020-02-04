@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 
 function useTimer({
   seconds,
+  defaultTimeLeft,
   onTimeEnd
 }: {
   seconds: number;
+  defaultTimeLeft?: number;
   onTimeEnd?: () => void;
 }) {
-  const [timeLeft, setTimeLeft] = useState(seconds);
+  const [timeLeft, setTimeLeft] = useState(defaultTimeLeft ?? seconds);
   const [status, setStatus] = useState<"start" | "stop">("start");
 
   const start = () => {

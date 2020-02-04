@@ -13,6 +13,7 @@ interface IProps {
   key: string;
   pause: boolean;
   seconds: number;
+  defaultTimeLeft?: number;
   onTimeEnd: () => void;
 }
 
@@ -29,8 +30,12 @@ const TimeText = styled(Bold14)`
 const HUNDRED_PERCENTAGE = 100;
 
 function LimitTimeProgress(props: IProps) {
-  const { style, seconds, pause, onTimeEnd } = props;
-  const { timeLeft, stop, start } = useTimer({ seconds, onTimeEnd });
+  const { style, seconds, defaultTimeLeft, pause, onTimeEnd } = props;
+  const { timeLeft, stop, start } = useTimer({
+    seconds,
+    defaultTimeLeft,
+    onTimeEnd
+  });
 
   useEffect(() => {
     if (pause) {

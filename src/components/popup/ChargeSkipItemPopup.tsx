@@ -2,12 +2,20 @@ import React from "react";
 import styled from "styled-components/native";
 import { ViewProps } from "react-native";
 
-import { Bold12, Bold20, Bold36 } from "src/components/text/Typographies";
-import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
+import {
+  Bold12,
+  Bold24,
+  Bold15,
+  Bold17
+} from "src/components/text/Typographies";
+import OSMGPopup from "src/components/popup/OSMGPopup";
+import colors from "src/styles/colors";
+import SkipIcon from "src/components/icon/SkipIcon";
+import XEIcon from "src/components/icon/XEIcon";
 
 interface IProps {
   style?: ViewProps["style"];
-  onConfirm: () => void;
+  onInvite: () => void;
   onCancel: () => void;
 }
 
@@ -16,29 +24,73 @@ const PopupContainer = styled.View`
   align-items: center;
 `;
 
-const PopupTitle = styled(Bold20)`
+const PopupTitle = styled(Bold24)`
+  color: ${colors.dark};
   margin-top: 33px;
-  margin-bottom: 33px;
+  margin-bottom: 5px;
 `;
 
-const PopupDescription = styled(Bold12)`
-  margin-bottom: 47px;
+const PopupDescription = styled(Bold15)`
+  color: ${colors.slateGrey};
+  text-align: center;
+  margin-bottom: 20px;
 `;
+
+const StatusView = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 26px;
+`;
+
+const StatusText = styled(Bold15)`
+  margin-left: 16px;
+  color: ${colors.slateGrey};
+`;
+
+const InviteButton = styled.TouchableOpacity`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 37px;
+  border-radius: 8px;
+  border: solid 2px ${colors.lightBlueGrey};
+  background-color: ${colors.paleLavender};
+  padding-horizontal: 13px;
+  margin-bottom: 49px;
+`;
+
+const InviteButtonText = styled(Bold17)`
+  color: ${colors.purply};
+  margin-right: 7px;
+`;
+
+const ArrowIcon = styled(XEIcon)``;
 
 function ChargeSkipItemPopup(props: IProps) {
-  const { style, onConfirm, onCancel } = props;
+  const { style, onCancel, onInvite } = props;
   return (
-    <OnlyConfirmPopup
+    <OSMGPopup
       style={style}
       ContentComponent={
         <PopupContainer>
-          <PopupTitle>스킵 아이템</PopupTitle>
-          <PopupDescription>{`게임 중 모르는 노래를 skip하고
-정답 처리받을 수 있어요!`}</PopupDescription>
+          <PopupTitle>SKIP 아이템</PopupTitle>
+          <PopupDescription>
+            게임 중 모르는 노래를 스킵하고{"\n"}
+            정답 처리 받을 수 있어요!
+          </PopupDescription>
+          <StatusView>
+            <SkipIcon />
+            <StatusText>
+              현재{"\n"}
+              5개 보유
+            </StatusText>
+          </StatusView>
+          <InviteButton onPress={onInvite}>
+            <InviteButtonText>친구 초대하고 아이템 받기</InviteButtonText>
+            <ArrowIcon name="angle-right" size={15} color={colors.purply} />
+          </InviteButton>
         </PopupContainer>
       }
-      confirmText={"친구초대하고 아이템받기 >"}
-      onConfirm={onConfirm}
       onCancel={onCancel}
     />
   );

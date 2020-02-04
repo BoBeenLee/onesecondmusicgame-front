@@ -1,7 +1,10 @@
+import _ from "lodash";
 import React, { Component } from "react";
+import { Platform } from "react-native";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
 import { GoogleSigninButton } from "@react-native-community/google-signin";
+import { AppleButton } from "@invertase/react-native-apple-authentication";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import { Bold12, Bold14 } from "src/components/text/Typographies";
@@ -12,6 +15,9 @@ import { SCREEN_IDS } from "src/screens/constant";
 import { setRoot } from "src/utils/navigator";
 import MainScreen from "src/screens/MainScreen";
 import colors from "src/styles/colors";
+import { ErrorCode } from "src/configs/error";
+import UserProfileScreen from "src/screens/user/UserProfileScreen";
+import { IForm } from "src/components/form/UserProfileForm";
 
 interface IInject {
   authStore: IAuthStore;
@@ -63,6 +69,19 @@ class SignInScreen extends Component<IProps> {
     });
   }
 
+  constructor(props: IProps) {
+    super(props);
+
+    const enhancedLoginFlow = _.flow([
+      this.enhancedErrorIfSignInError,
+      this.enhancedIfSignIn
+    ]);
+    this.facebookSignIn = enhancedLoginFlow(this.facebookSignIn);
+    this.googleSignIn = enhancedLoginFlow(this.googleSignIn);
+    this.kakaoSignIn = enhancedLoginFlow(this.kakaoSignIn);
+    this.appleSignIn = enhancedLoginFlow(this.appleSignIn);
+  }
+
   public render() {
     return (
       <Container>
@@ -70,6 +89,17 @@ class SignInScreen extends Component<IProps> {
           <Logo>Logo</Logo>
         </Content>
         <Bottom>
+          {Platform.select({
+            android: null,
+            ios: (
+              <AppleButton
+                cornerRadius={5}
+                buttonStyle={AppleButton.Style.WHITE}
+                buttonType={AppleButton.Type.CONTINUE}
+                onPress={this.appleSignIn}
+              />
+            )
+          })}
           <SignInButton onPress={this.kakaoSignIn}>
             <ButtonText>카카오 로그인</ButtonText>
           </SignInButton>
@@ -87,40 +117,72 @@ class SignInScreen extends Component<IProps> {
     );
   }
 
-  private facebookSignIn = async () => {
-    const { facebookSignIn } = this.props.authStore;
+  private enhancedIfSignIn = (func: any) => async (...args: any[]) => {
+    try {
+      await func(...args);
+    } catch (error) {
+      const { showToast } = this.props.toastStore;
+      showToast(error.message);
+    }
+  };
+
+  private enhancedErrorIfSignInError = (func: any) => async (
+    ...args: any[]
+  ) => {
+    try {
+      return await func(...args);
+    } catch (error) {
+      const { componentId } = this.props;
+
+      if (
+        [ErrorCode.NOT_FOUND, ErrorCode.FORBIDDEN_ERROR].some(
+          status => status === error.status
+        )
+      ) {
+        UserProfileScreen.open({
+          componentId,
+          onConfirm: this.fallbackSignUpAndSignIn
+        });
+        return;
+      }
+      throw error;
+    }
+  };
+
+  private fallbackSignUpAndSignIn = async (data: IForm) => {
+    const { signUp } = this.props.authStore;
     const { showToast } = this.props.toastStore;
 
     try {
-      await facebookSignIn();
+      await signUp(data);
       MainScreen.open();
     } catch (error) {
       showToast(error.message);
     }
+  };
+
+  private facebookSignIn = async () => {
+    const { facebookSignIn } = this.props.authStore;
+    await facebookSignIn();
+    MainScreen.open();
   };
 
   private googleSignIn = async () => {
     const { googleSignIn } = this.props.authStore;
-    const { showToast } = this.props.toastStore;
-
-    try {
-      await googleSignIn();
-      MainScreen.open();
-    } catch (error) {
-      showToast(error.message);
-    }
+    await googleSignIn();
+    MainScreen.open();
   };
 
   private kakaoSignIn = async () => {
     const { kakaoSignIn } = this.props.authStore;
-    const { showToast } = this.props.toastStore;
+    await kakaoSignIn();
+    MainScreen.open();
+  };
 
-    try {
-      await kakaoSignIn();
-      MainScreen.open();
-    } catch (error) {
-      showToast(error.message);
-    }
+  private appleSignIn = async () => {
+    const { appleSignIn } = this.props.authStore;
+    await appleSignIn();
+    MainScreen.open();
   };
 }
 

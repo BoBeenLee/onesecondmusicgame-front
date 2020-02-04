@@ -6,12 +6,14 @@ import { InteractionManager, Clipboard } from "react-native";
 import styled from "styled-components/native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
+import { iosStatusBarHeight } from "src/utils/device";
 import {
   Bold12,
   Bold36,
   Regular10,
   Regular12,
-  Bold20
+  Bold20,
+  Bold28
 } from "src/components/text/Typographies";
 import { IStore } from "src/stores/Store";
 import { IAuthStore } from "src/stores/AuthStore";
@@ -35,7 +37,9 @@ import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
 import FloatingButton from "src/components/button/FloatingButton";
 import LevelBadge from "src/components/badge/LevelBadge";
-import GamePlayScreen from "./game/GamePlayScreen";
+import XEIconButton from "src/components/button/XEIconButton";
+import GamePlayScreen from "src/screens/game/GamePlayScreen";
+import UserProfileScreen from "src/screens/user/UserProfileScreen";
 
 interface IInject {
   store: IStore;
@@ -56,6 +60,28 @@ const Header = styled.View`
   justify-content: space-between;
   padding-top: 14px;
   padding-horizontal: 17px;
+`;
+
+const Profile = styled.View`
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  flex-direction: column;
+`;
+
+const NicknameView = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+const Nickname = styled(Bold28)`
+  color: ${colors.lightGrey};
+`;
+
+const SettingButton = styled(XEIconButton)``;
+
+const Description = styled(Bold20)`
+  color: ${colors.lightGrey};
 `;
 
 const HeartStatus = styled.View`
@@ -79,7 +105,7 @@ const HeartRemainTime = styled(TimerText)`
 const GameItems = styled.View`
   position: absolute;
   width: 100px;
-  top: 20px;
+  top: ${iosStatusBarHeight(false) + 20}px;
   right: 31px;
   flex-direction: column;
 `;
@@ -217,24 +243,20 @@ class MainScreen extends Component<IProps> {
               />
             </HeartRemain>
           </HeartStatus>
-          <GameItems>
-            <FloatingButton
-              ButtonComponent={
-                <GameItemButton>
-                  <GameItemButtonText>아이템</GameItemButtonText>
-                </GameItemButton>
-              }
-              ItemComponents={_.map(userItemViews, item => (
-                <MockButton
-                  key={item.name}
-                  name={`${item.name}(${item.count})`}
-                  onPress={this.itemToOnPress[item.itemType]}
-                />
-              ))}
-            />
-          </GameItems>
         </Header>
         <Content>
+          <Profile>
+            <NicknameView>
+              <Nickname>Hyen님</Nickname>
+              <SettingButton
+                iconName="cog"
+                iconSize={20}
+                iconColor={colors.white}
+                onPress={this.onSetting}
+              />
+            </NicknameView>
+            <Description>오늘도 같이 음악 맞춰요 </Description>
+          </Profile>
           <Logo>알쏭달쏭</Logo>
         </Content>
         <GameModeView>
@@ -263,6 +285,22 @@ class MainScreen extends Component<IProps> {
           <MockButton name="노래 제안" onPress={this.navigateToRegisterSong} />
           <MockButton name="개인 랭킹" onPress={this.navigateToRanking} />
         </Footer>
+        <GameItems>
+          <FloatingButton
+            ButtonComponent={
+              <GameItemButton>
+                <GameItemButtonText>아이템</GameItemButtonText>
+              </GameItemButton>
+            }
+            ItemComponents={_.map(userItemViews, item => (
+              <MockButton
+                key={item.name}
+                name={`${item.name}(${item.count})`}
+                onPress={this.itemToOnPress[item.itemType]}
+              />
+            ))}
+          />
+        </GameItems>
       </Container>
     );
   }
@@ -274,10 +312,18 @@ class MainScreen extends Component<IProps> {
     }
   };
 
+  private onSetting = () => {
+    const { componentId } = this.props;
+    UserProfileScreen.open({
+      componentId,
+      onConfirm: _.identity
+    });
+  };
+
   private onSkipItemPopup = () => {
     const { showPopup, closePopup } = this.props.popupProps;
     showPopup(
-      <ChargeSkipItemPopup onConfirm={this.invite} onCancel={closePopup} />
+      <ChargeSkipItemPopup onInvite={this.invite} onCancel={closePopup} />
     );
   };
 
@@ -313,11 +359,11 @@ class MainScreen extends Component<IProps> {
 
   private onRewarded = async () => {
     const { closePopup } = this.props.popupProps;
-    const { updateUserInfo } = this.props.authStore;
+    const { updateUserReward } = this.props.authStore;
     const { showToast } = this.props.toastStore;
     try {
       await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
-      await updateUserInfo();
+      updateUserReward();
       showToast("보상 완료!");
     } catch (error) {
       showToast(error.message);

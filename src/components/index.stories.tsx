@@ -12,3 +12,4 @@ import "src/components/backdrop/BackDrop.stories";
 import "src/components/image/Image.stories";
 import "src/components/progress/Progress.stories";
 import "src/components/tab/Tab.stories";
+import "src/components/form/Form.stories";

@@ -419,6 +419,8 @@ PODS:
     - React
   - rn-fetch-blob (0.11.2):
     - React-Core
+  - RNAppleAuthentication (0.1.1):
+    - React
   - RNCAsyncStorage (1.6.3):
     - React
   - RNDeviceInfo (5.3.1):
@@ -513,6 +515,7 @@ DEPENDENCIES:
   - "ReactNativeART (from `../node_modules/@react-native-community/art`)"
   - ReactNativeNavigation (from `../node_modules/react-native-navigation/ReactNativeNavigation.podspec`)
   - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
+  - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNFirebase (from `../node_modules/react-native-firebase/ios`)
@@ -640,6 +643,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native-navigation/ReactNativeNavigation.podspec"
   rn-fetch-blob:
     :path: "../node_modules/rn-fetch-blob"
+  RNAppleAuthentication:
+    :path: "../node_modules/@invertase/react-native-apple-authentication"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-community/async-storage"
   RNDeviceInfo:
@@ -735,6 +740,7 @@ SPEC CHECKSUMS:
   ReactNativeART: c496c53089b3149663215d74d6f1adb3a62e07eb
   ReactNativeNavigation: fb74494c1b6f0abd36a17c7af40f804f77d3181f
   rn-fetch-blob: f525a73a78df9ed5d35e67ea65e79d53c15255bc
+  RNAppleAuthentication: 9cca53676f5f010ffbf33eb99604383bfe0eb020
   RNCAsyncStorage: 6b57de0f6cb0dcfd17521af1681fa39001d3efff
   RNDeviceInfo: e5976ab5c3bed0b5c78f188e0b8abb139b33a9da
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6

@@ -20,7 +20,6 @@ import colors from "src/styles/colors";
 import OSMGCarousel, { ICarousel } from "src/components/carousel/OSMGCarousel";
 import GameAudioPlayer from "src/components/player/GameAudioPlayer";
 import OSMGTextInput from "src/components/input/OSMGTextInput";
-import MockButton from "src/components/button/MockButton";
 import { IPopupProps } from "src/hocs/withPopup";
 import ChargeFullHeartPopup from "src/components/popup/ChargeFullHeartPopup";
 import { IAuthStore } from "src/stores/AuthStore";
@@ -54,7 +53,7 @@ interface IProps extends IInject, IPopupProps {
 }
 
 interface IStates {
-  currentStepStatus: "play" | "answer";
+  currentStepStatus: "play" | "stop" | "answer";
   songAnswerInput: string;
 }
 
@@ -245,14 +244,18 @@ class GamePlayScreen extends Component<IProps, IStates> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      currentStepStatus: "play",
+      currentStepStatus: "stop",
       songAnswerInput: ""
     };
     loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
       onRewarded: this.onRewarded
     });
     props.authStore.user?.heart?.useHeart?.();
-    GamePlayTutorialOverlay.open({});
+    GamePlayTutorialOverlay.open({
+      onAfterClose: () => {
+        this.setState({ currentStepStatus: "play" });
+      }
+    });
   }
 
   public componentDidMount() {
@@ -443,9 +446,11 @@ class GamePlayScreen extends Component<IProps, IStates> {
 
   private onFinishPopup = () => {
     const { showPopup } = this.props.popupProps;
+    const heart = this.props.authStore.user?.heart!;
     showPopup(
       <ChargeFullHeartPopup
-        onConfirm={this.requestHeartRewardAD}
+        heart={heart}
+        onChargeFullHeart={this.requestHeartRewardAD}
         onCancel={this.finish}
       />,
       true,
@@ -458,11 +463,11 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private onRewarded = async () => {
-    const { updateUserInfo } = this.props.authStore;
+    const { updateUserReward } = this.props.authStore;
     const { showToast } = this.props.toastStore;
     try {
       await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
-      await updateUserInfo();
+      updateUserReward();
       showToast("보상 완료!");
     } catch (error) {
       showToast(error.message);

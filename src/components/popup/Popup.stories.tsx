@@ -8,6 +8,7 @@ import colors from "src/styles/colors";
 import ChargeSkipItemPopup from "src/components/popup/ChargeSkipItemPopup";
 import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
 import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
+import ChargeFullHeartPopup from "src/components/popup/ChargeFullHeartPopup";
 import Heart from "src/stores/model/Heart";
 
 const CenterView = styled.View`
@@ -21,7 +22,7 @@ storiesOf("Popup", module)
   .add("ConfirmPopup", () => {
     return (
       <ConfirmPopup
-        message="tedsfsdsdfsst"
+        message="정말 그만두시겠어요?"
         cancelText="취소"
         onCancel={action("onCancel")}
         confirmText="확인"
@@ -33,7 +34,7 @@ storiesOf("Popup", module)
     return (
       <ChargeSkipItemPopup
         onCancel={action("onCancel")}
-        onConfirm={action("onConfirm")}
+        onInvite={action("onConfirm")}
       />
     );
   })
@@ -42,6 +43,15 @@ storiesOf("Popup", module)
       <InviteFriendsPopup
         onCancel={action("onCancel")}
         onConfirm={action("onConfirm")}
+      />
+    );
+  })
+  .add("ChargeFullHeartPopup", () => {
+    return (
+      <ChargeFullHeartPopup
+        heart={Heart.create({ heartCount: 3 })}
+        onCancel={action("onCancel")}
+        onChargeFullHeart={action("onChargeFullHeart")}
       />
     );
   })

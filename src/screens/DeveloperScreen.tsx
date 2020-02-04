@@ -193,11 +193,11 @@ class DeveloperScreen extends Component<IProps> {
   };
 
   private onRewarded = async () => {
-    const { updateUserInfo } = this.props.authStore;
+    const { updateUserReward } = this.props.authStore;
     const { showToast } = this.props.toastStore;
     try {
       await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
-      await updateUserInfo();
+      updateUserReward();
       showToast("보상 완료!");
     } catch (error) {
       showToast(error.message);
