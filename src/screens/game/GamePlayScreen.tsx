@@ -111,6 +111,7 @@ const SongInput = styled.View`
 `;
 
 const SongTextInput = styled(OSMGTextInput).attrs({
+  fontType: "BOLD",
   focusStyle: { color: colors.paleGrey }
 })`
   color: ${colors.paleGrey};
@@ -131,7 +132,7 @@ const Footer = styled.View`
   align-items: flex-start;
   justify-content: space-between;
   padding-horizontal: 14px;
-  padding-bottom: 14px;
+  padding-bottom: 31px;
 `;
 
 const AnswerButton = styled.TouchableOpacity`
@@ -305,7 +306,8 @@ class GamePlayScreen extends Component<IProps, IStates> {
         <Content>
           <SongInput>
             <SongTextInput
-              placeholder="노래 명"
+              placeholder="노래명을 맞춰주세요!"
+              placeholderTextColor={colors.blueyGrey}
               value={songAnswerInput}
               onChangeText={this.onSongAnswerChangeText}
             />

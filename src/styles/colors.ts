@@ -34,6 +34,7 @@ const colors = {
   lightMagentaThree: "#f75ed6",
   darkIndigoTwo: "#060a1e",
   paleCyan: "#b7ffff",
+  blueyGrey: "#a7a6c5",
   black: "#000",
   black70: "rgba(33,33,33,.7)",
   white: "#ffffff",
