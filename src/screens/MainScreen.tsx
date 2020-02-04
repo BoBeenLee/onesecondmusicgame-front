@@ -181,6 +181,7 @@ const Footer = styled.View`
   justify-content: space-between;
   align-items: center;
   padding-horizontal: 25px;
+  margin-top: 42px;
 `;
 
 const FooterButtonGroup = styled.TouchableOpacity`

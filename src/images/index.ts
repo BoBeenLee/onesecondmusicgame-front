@@ -5,6 +5,7 @@ const images = {
   baselineCasinoBlack18Dp: require("./baselineCasinoBlack18Dp.png"),
   baselineQueueMusicBlack18Dp: require("./baselineQueueMusicBlack18Dp.png"),
   baselineEmojiEventsBlack18Dp: require("./baselineEmojiEventsBlack18Dp.png"),
-  imageCd: require("./imageCd.png")
+  imageCd: require("./imageCd.png"),
+  buttonHome: require("./buttonHome.png")
 };
 export default images;

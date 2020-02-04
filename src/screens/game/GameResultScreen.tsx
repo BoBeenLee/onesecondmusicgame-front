@@ -44,6 +44,8 @@ import XEIcon from "src/components/icon/XEIcon";
 import TimerText from "src/components/text/TimerText";
 import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
 import { Item } from "__generate__/api";
+import IconButton from "src/components/button/IconButton";
+import images from "src/images";
 
 interface IInject {
   authStore: IAuthStore;
@@ -184,6 +186,7 @@ const ResultSectionMyRankRow = styled.View`
 
 const Rank = styled(Bold16)`
   color: ${colors.paleLavender};
+  margin-right: 7px;
 `;
 
 const Name = styled(Bold16)`
@@ -228,7 +231,12 @@ const FooterRow1 = styled.View`
   margin-vertical: 10px;
 `;
 
-const HomeButton = styled(MockButton)`
+const HomeButton = styled(IconButton)`
+  width: 42px;
+  height: 36px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin-right: 20px;
 `;
 
@@ -361,7 +369,7 @@ class GameResultScreen extends Component<IProps, IStates> {
               </ResultSectionRemainHeartRow>
             </ResultSection>
             <FooterRow1>
-              <HomeButton name="홈" onPress={this.home} />
+              <HomeButton source={images.buttonHome} />
               <RetryPlayButton onPress={this.navigateToGamePlay}>
                 <RetryPlayButtonText>다시 게임하기</RetryPlayButtonText>
               </RetryPlayButton>

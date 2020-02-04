@@ -58,16 +58,16 @@ const Header = styled.View`
 
 const Title = styled(Bold18)`
   color: ${colors.lightGrey};
-  margin-top: 35px;
+  margin-top: 34px;
 `;
 
 const Description = styled(Regular14)`
   color: ${colors.lightGrey};
-  margin-top: 16px;
+  margin-top: 12px;
 `;
 
 const SearchView = styled.View`
-  margin-top: 50px;
+  margin-top: 39px;
   margin-horizontal: 44px;
 `;
 
@@ -141,8 +141,8 @@ class SearchSingerScreen extends Component<IProps> {
           enableAutomaticScroll={false}
         >
           <Header>
-            <Title>원하는 곡이 등록되었는지 확인해보세요 </Title>
-            <Description>먼저 가수명으로 검색해주세요</Description>
+            <Title>먼저 원하는 곡이 등록되었는지 확인해보세요</Title>
+            <Description>하트가 N개 이상이 되면 등록됩니다</Description>
           </Header>
           <SearchView>
             <SearchTextInput
