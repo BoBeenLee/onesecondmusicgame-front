@@ -264,7 +264,7 @@ class MainScreen extends Component<IProps> {
           <HeartStatus>
             <HeartGroup
               hearts={_.times(5, index =>
-                index <= (heart?.heartCount ?? 0) ? "active" : "inactive"
+                index + 1 <= (heart?.heartCount ?? 0) ? "active" : "inactive"
               )}
             />
             <HeartRemain>

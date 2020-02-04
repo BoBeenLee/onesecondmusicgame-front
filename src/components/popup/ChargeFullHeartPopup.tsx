@@ -87,7 +87,7 @@ function ChargeFullHeartPopup(props: IProps) {
           </PopupDescription>
           <HeartGroupView
             hearts={_.times(5, index =>
-              index <= (heart.heartCount ?? 0) ? "active" : "inactive"
+              index + 1 <= (heart.heartCount ?? 0) ? "active" : "inactive"
             )}
           />
           <ChargeFullHeartButton onPress={onChargeFullHeart}>

@@ -363,7 +363,9 @@ class GameResultScreen extends Component<IProps, IStates> {
                 </HeartRemain>
                 <HeartGroup
                   hearts={_.times(5, index =>
-                    index <= (heart?.heartCount ?? 0) ? "active" : "inactive"
+                    index + 1 <= (heart?.heartCount ?? 0)
+                      ? "active"
+                      : "inactive"
                   )}
                 />
               </ResultSectionRemainHeartRow>

@@ -77,7 +77,7 @@ function UseFullHeartPopup(props: IProps) {
           <PopupDescription>{`하트 갯수 만큼 게임을 할 수 있어요!`}</PopupDescription>
           <HeartGroupView
             hearts={_.times(5, index =>
-              index <= (heart.heartCount ?? 0) ? "active" : "inactive"
+              index + 1 <= (heart.heartCount ?? 0) ? "active" : "inactive"
             )}
           />
           <ChargeFullHeartButton onPress={onChargeFullHeart}>
