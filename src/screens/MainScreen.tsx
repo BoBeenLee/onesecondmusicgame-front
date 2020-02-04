@@ -40,6 +40,7 @@ import LevelBadge from "src/components/badge/LevelBadge";
 import XEIconButton from "src/components/button/XEIconButton";
 import GamePlayScreen from "src/screens/game/GamePlayScreen";
 import UserProfileScreen from "src/screens/user/UserProfileScreen";
+import images from "src/images";
 
 interface IInject {
   store: IStore;
@@ -174,6 +175,27 @@ const Footer = styled.View`
   padding-horizontal: 25px;
 `;
 
+const FooterButtonGroup = styled.TouchableOpacity`
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const SuggestionIcon = styled.Image`
+  width: 44px;
+  height: 32px;
+  margin-bottom: 8px;
+`;
+
+const RankingIcon = styled.Image`
+  width: 36px;
+  height: 36px;
+  margin-bottom: 4px;
+`;
+
+const FooterButtonText = styled(Bold12)`
+  color: ${colors.white};
+`;
+
 // https://app.zeplin.io/project/5e1988a010ae36bcd391ba27/screen/5e335b9266ed997dfeb5627a
 @inject(
   ({ store }: { store: IStore }): IInject => ({
@@ -282,8 +304,14 @@ class MainScreen extends Component<IProps> {
           </GameModeSection>
         </GameModeView>
         <Footer>
-          <MockButton name="노래 제안" onPress={this.navigateToRegisterSong} />
-          <MockButton name="개인 랭킹" onPress={this.navigateToRanking} />
+          <FooterButtonGroup onPress={this.navigateToRegisterSong}>
+            <SuggestionIcon source={images.baselineQueueMusicBlack18Dp} />
+            <FooterButtonText>노래 제안</FooterButtonText>
+          </FooterButtonGroup>
+          <FooterButtonGroup onPress={this.navigateToRanking}>
+            <RankingIcon source={images.baselineEmojiEventsBlack18Dp} />
+            <FooterButtonText>개인 랭킹</FooterButtonText>
+          </FooterButtonGroup>
         </Footer>
         <GameItems>
           <FloatingButton

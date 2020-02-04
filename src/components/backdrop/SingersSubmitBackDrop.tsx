@@ -120,6 +120,7 @@ function SingersSubmitBackDrop(props: IProps) {
               const singer = selectedSingers[index];
               return (
                 <SearchSingerCardView
+                  selected={false}
                   key={singer.name}
                   image={"https://via.placeholder.com/150"}
                   name={singer.name}
