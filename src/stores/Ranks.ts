@@ -1,44 +1,18 @@
 import _ from "lodash";
 import { flow, types } from "mobx-state-tree";
 
-export interface IRankItem {
-  rank: number;
-  name: string;
-  profileImage: string;
-  score: number;
-}
+import { getRankingInfo } from "src/apis/rank";
 
-const mocks: IRankItem[] = [
-  {
-    rank: 1,
-    profileImage: "https://via.placeholder.com/350x350",
-    name: "jasmin",
-    score: 83
-  },
-  {
-    rank: 2,
-    profileImage: "https://via.placeholder.com/350x350",
-    name: "jasmin",
-    score: 83
-  },
-  {
-    rank: 3,
-    profileImage: "https://via.placeholder.com/350x350",
-    name: "jasmin",
-    score: 83
-  },
-  {
-    rank: 4,
-    profileImage: "https://via.placeholder.com/350x350",
-    name: "jasmin",
-    score: 83
-  }
-];
+export interface IRankItem {
+  nickname: string;
+  point: number;
+  rankDiff: number;
+}
 
 const Ranks = types
   .model("Ranks", {
     isRefresh: types.optional(types.boolean, false),
-    ranks: types.optional(types.array(types.frozen<IRankItem>()), mocks)
+    ranks: types.optional(types.array(types.frozen<IRankItem>()), [])
   })
   .views(self => {
     return {
@@ -54,8 +28,8 @@ const Ranks = types
     };
 
     const fetch = flow(function*() {
-      // const response: RetrieveAsyncFunc<typeof singers> = yield singers();
-      self.ranks.replace(mocks);
+      const response: RetrieveAsyncFunc<typeof singers> = yield getRankingInfo();
+      return response.rankViewList;
     });
 
     const initialize = flow(function*() {
@@ -80,6 +54,6 @@ const Ranks = types
     };
   });
 
-export type ISingers = typeof Ranks.Type;
+export type IRanks = typeof Ranks.Type;
 
 export default Ranks;
