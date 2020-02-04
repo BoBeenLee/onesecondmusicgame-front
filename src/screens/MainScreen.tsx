@@ -112,11 +112,19 @@ const GameItems = styled.View`
 `;
 
 const GameItemButton = styled.View`
-  padding: 5px;
-  background-color: #eee;
+  align-items: center;
+  justify-content: center;
 `;
 
-const GameItemButtonText = styled(Bold12)``;
+const GameItemIcon = styled.Image`
+  width: 40px;
+  height: 40px;
+  margin-bottom: 5px;
+`;
+
+const GameItemButtonText = styled(Bold12)`
+  color: ${colors.white};
+`;
 
 const Content = styled.View`
   flex: 1;
@@ -178,6 +186,7 @@ const Footer = styled.View`
 const FooterButtonGroup = styled.TouchableOpacity`
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 `;
 
 const SuggestionIcon = styled.Image`
@@ -317,6 +326,7 @@ class MainScreen extends Component<IProps> {
           <FloatingButton
             ButtonComponent={
               <GameItemButton>
+                <GameItemIcon source={images.baselineCasinoBlack18Dp} />
                 <GameItemButtonText>아이템</GameItemButtonText>
               </GameItemButton>
             }

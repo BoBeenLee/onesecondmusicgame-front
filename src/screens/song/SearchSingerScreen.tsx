@@ -134,7 +134,7 @@ class SearchSingerScreen extends Component<IProps> {
 
     return (
       <Container>
-        <BackTopBar title="검색" onBackPress={this.back} />
+        <BackTopBar title="음악 제안" onBackPress={this.back} />
         <InnerContainer
           scrollEnabled={false}
           enableOnAndroid={true}

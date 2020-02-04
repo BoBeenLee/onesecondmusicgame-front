@@ -11,6 +11,7 @@ import { IStore } from "src/stores/Store";
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import colors from "src/styles/colors";
 import UserProfileForm, { IForm } from "src/components/form/UserProfileForm";
+import BackTopBar from "src/components/topbar/BackTopBar";
 
 interface IInject {
   authStore: IAuthStore;
@@ -65,12 +66,18 @@ class UserProfileScreen extends Component<IProps, IStates> {
     const { onConfirm } = this.props;
     return (
       <Container>
+        <BackTopBar title="닉네임 설정" onBackPress={this.back} />
         <Content>
           <UserProfileForm onConfirm={onConfirm} />
         </Content>
       </Container>
     );
   }
+
+  private back = () => {
+    const { componentId } = this.props;
+    pop(componentId);
+  };
 }
 
 export default UserProfileScreen;

@@ -29,6 +29,7 @@ import withScrollDirection, {
 } from "src/hocs/withScrollDirection";
 import { ScrollDirection } from "src/utils/scrollView";
 import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
+import BackTopBar from "src/components/topbar/BackTopBar";
 
 interface IInject {
   singerStore: ISingerStore;
@@ -171,6 +172,7 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
           enableOnAndroid={true}
           enableAutomaticScroll={false}
         >
+          <BackTopBar title="가수선택" onBackPress={this.back} />
           <Header>
             <Title>어떤 가수의 음악이 자신있으세요?</Title>
             <Description>최대 3명의 가수를 선택하실 수 있습니다.</Description>
