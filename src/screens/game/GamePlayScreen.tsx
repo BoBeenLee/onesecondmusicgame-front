@@ -37,6 +37,7 @@ import { makePlayStreamUriByTrackId } from "src/configs/soundCloudAPI";
 import GamePlayTutorialOverlay from "src/screens/tutorial/GamePlayTutorialOverlay";
 import XEIcon from "src/components/icon/XEIcon";
 import SkipIcon from "src/components/icon/SkipIcon";
+import images from "src/images";
 
 interface IInject {
   authStore: IAuthStore;
@@ -117,6 +118,11 @@ const SongTextInput = styled(OSMGTextInput).attrs({
   color: ${colors.paleGrey};
   font-size: 22px;
   text-align: center;
+`;
+
+const AnswerStatus = styled.Image`
+  width: 227px;
+  height: 225px;
 `;
 
 const AnswerView = styled.View`
@@ -333,9 +339,13 @@ class GamePlayScreen extends Component<IProps, IStates> {
   }
 
   private get renderAnswer() {
+    const { checkAnswer } = this.gamePlayHighlights;
+    const { songAnswerInput } = this.state;
+    const isAnswer = checkAnswer(songAnswerInput);
     return (
       <>
         <Content>
+          {isAnswer ? null : <AnswerStatus source={images.imageCd} />}
           <AnswerView>
             <AnswerText>정답입니다~</AnswerText>
           </AnswerView>
@@ -386,7 +396,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private onLimitTimeEnd = () => {
-    this.gamePlayersRef.current?.snapToNext?.();
+    this.beforeNextStep();
   };
 
   private useSkipItem = () => {
@@ -422,10 +432,14 @@ class GamePlayScreen extends Component<IProps, IStates> {
       showToast("오답입니다ㅠㅜ");
       return;
     }
+    answer(songAnswerInput);
+    this.beforeNextStep();
+  };
+
+  private beforeNextStep = () => {
     this.setState({
       currentStepStatus: "answer"
     });
-    answer(songAnswerInput);
     setTimeout(() => {
       this.setState(
         {
