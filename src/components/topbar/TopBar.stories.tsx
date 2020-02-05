@@ -8,16 +8,8 @@ import colors from "src/styles/colors";
 
 storiesOf("TopBar", module)
   .add("ModalTopBar", () => (
-    <ModalTopBar
-      title="Hello World"
-      iconColor={colors.green500}
-      onBackPress={action("onBackPress")}
-    />
+    <ModalTopBar title="Hello World" onBackPress={action("onBackPress")} />
   ))
   .add("BackTopBar", () => (
-    <BackTopBar
-      title="Hello World"
-      iconColor={colors.green500}
-      onBackPress={action("onBackPress")}
-    />
+    <BackTopBar title="Hello World" onBackPress={action("onBackPress")} />
   ));
