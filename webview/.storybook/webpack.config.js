@@ -10,12 +10,12 @@ module.exports = ({ config }) => {
   // use @babel/preset-react for JSX and env (instead of staged presets)
   config.module.rules[0].use[0].options.presets = [
     require.resolve("@babel/preset-react"),
-    require.resolve("@babel/preset-env"),
+    require.resolve("@babel/preset-env")
   ];
 
   // use @babel/plugin-proposal-class-properties for class arrow functions
   config.module.rules[0].use[0].options.plugins = [
-    require.resolve("@babel/plugin-proposal-class-properties"),
+    require.resolve("@babel/plugin-proposal-class-properties")
   ];
 
   // Prefer Gatsby ES6 entrypoint (module) over commonjs (main) entrypoint
@@ -24,14 +24,19 @@ module.exports = ({ config }) => {
     test: /\.(ts|tsx)$/,
     loader: require.resolve("babel-loader"),
     options: {
-      presets: [["react-app", { flow: false, typescript: true }]],
-    },
+      presets: [["react-app", { flow: false, typescript: true }]]
+    }
   });
   config.resolve.modules = [
     ...(config.resolve.modules || []),
-    path.resolve("./"),
+    path.resolve("../")
   ];
+  config.resolve.alias = {
+    ...(config.resolve.alias || {}),
+    "react-native": path.resolve(__dirname, "../__mocks__/react-native"),
+    "@app": path.resolve(__dirname, "../../src"),
+    "@webview": path.resolve(__dirname, "../src")
+  };
   config.resolve.extensions.push(".ts", ".tsx");
-
   return config;
 };

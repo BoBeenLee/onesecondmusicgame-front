@@ -13,6 +13,7 @@ module.exports = {
         allExtensions: true // defaults to false
       }
     },
+    `gatsby-plugin-react-native-web`,
     `gatsby-plugin-react-helmet`,
     // {
     //   resolve: `gatsby-plugin-favicon`,
@@ -63,7 +64,7 @@ module.exports = {
       }
     },
     {
-      resolve: 'gatsby-plugin-react-svg',
+      resolve: "gatsby-plugin-react-svg",
       options: {
         rule: {
           include: /static/
@@ -77,10 +78,10 @@ module.exports = {
       }
     },
     {
-      resolve: 'gatsby-plugin-root-import',
+      resolve: "gatsby-plugin-root-import",
       options: {
-        src: path.join(__dirname, 'src'),
-        "@shared": path.resolve(__dirname, '../shared/lib')
+        root: path.join(__dirname, "../"),
+        "@webview": path.join(__dirname, "src")
       }
     }
   ]

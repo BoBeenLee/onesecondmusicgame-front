@@ -1,7 +1,10 @@
 import firebase from "firebase/app";
 import _ from "lodash";
 
-import { traverseObjectKeys, traverseObjectSliceStr } from "src/utils/string";
+import {
+  traverseObjectKeys,
+  traverseObjectSliceStr
+} from "@webview/utils/string";
 
 export type EventType = "test";
 

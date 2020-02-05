@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import styled, { ThemeProvider } from "styled-components";
 
-import Footer from "src/components/Footer";
-import Header from "src/components/Header";
+import Footer from "@webview/components/Footer";
+import Header from "@webview/components/Header";
 
 interface IProps {
   className?: string;

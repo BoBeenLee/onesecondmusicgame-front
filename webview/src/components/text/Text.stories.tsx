@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
 import React from "react";
 
-import ToastText from "src/components/text/ToastText";
+import ToastText from "@webview/components/text/ToastText";
 
 storiesOf("Text", module).add("ToastText", () => (
   <ToastText
