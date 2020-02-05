@@ -23,6 +23,10 @@
   - stories 각 컴포넌트별 스토리북 화면
 - typings d.ts 타입 정의
 
+## Storybook
+
+- http://onesecondmusicgame.surge.sh/
+
 ## Installing / Getting started
 
 A quick introduction of the minimal setup you need to get a OneSecondMusicGame up &
