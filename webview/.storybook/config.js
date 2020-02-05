@@ -20,8 +20,7 @@ window.___navigate = pathname => {
 };
 
 const GlobalStyle = createGlobalStyle`
-  @import url("https://fonts.googleapis.com/css?family=Heebo:400,700|Roboto:400,700&display=swap");
-  @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
+  @import url("https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css");
 
   @font-face { font-family: 'BMHANNAAirOTF'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.0/BMHANNAAir.woff') format('woff'); font-weight: normal; font-style: normal; }
 
