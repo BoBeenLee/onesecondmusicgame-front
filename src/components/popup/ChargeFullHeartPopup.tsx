@@ -23,6 +23,10 @@ interface IProps {
   onCancel: () => void;
 }
 
+const OuterContainer = styled(OSMGPopup)`
+  width: 307px;
+`;
+
 const PopupContainer = styled.View`
   flex-direction: column;
   justify-content: center;
@@ -73,7 +77,7 @@ const ArrowIcon = styled(XEIcon)`
 function ChargeFullHeartPopup(props: IProps) {
   const { style, heart, onChargeFullHeart, onCancel } = props;
   return (
-    <OSMGPopup
+    <OuterContainer
       style={style}
       ContentComponent={
         <PopupContainer>

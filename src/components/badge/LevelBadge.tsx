@@ -13,6 +13,7 @@ interface IProps {
 }
 
 const Container = styled.View`
+  min-width: 84px;
   justify-content: center;
   align-items: center;
   border-radius: 17px;

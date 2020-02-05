@@ -24,6 +24,10 @@ interface IProps {
   onCancel: () => void;
 }
 
+const OuterContainer = styled(OnlyConfirmPopup)`
+  width: 307px;
+`;
+
 const PopupContainer = styled.View`
   justify-content: center;
   align-items: center;
@@ -69,7 +73,7 @@ const ArrowIcon = styled(XEIcon)`
 function UseFullHeartPopup(props: IProps) {
   const { style, heart, onConfirm, onCancel, onChargeFullHeart } = props;
   return (
-    <OnlyConfirmPopup
+    <OuterContainer
       style={style}
       ContentComponent={
         <PopupContainer>

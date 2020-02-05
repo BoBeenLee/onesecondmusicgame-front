@@ -44,6 +44,12 @@ const GlobalStyle = createGlobalStyle`
     width: 100vw;
   }
 
+  #root {
+    background-image: linear-gradient(to bottom, #0d1233, #000);
+    padding: 20px;
+    overflow: scroll;
+  }
+
   #root * {
     display: flex;
   }
@@ -54,18 +60,11 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const Container = styled.div`
-  flex: 1;
-  width: 100%;
-  height: 100%;
-  background-image: linear-gradient(to bottom, #0d1233, #000);
-`;
-
 addDecorator(story => (
-  <Container>
+  <>
     <GlobalStyle />
     {story()}
-  </Container>
+  </>
 ));
 addDecorator(withKnobs);
 

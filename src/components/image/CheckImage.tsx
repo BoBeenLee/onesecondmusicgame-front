@@ -29,7 +29,7 @@ const Container = styled.View<{ checked: boolean }>`
 const Image = styled.Image`
   width: 100%;
   height: 100%;
-  border-radius: 5px;
+  border-radius: 3px;
 `;
 
 const CheckImage = (props: IProps) => {

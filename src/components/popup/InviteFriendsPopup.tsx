@@ -2,16 +2,12 @@ import React from "react";
 import styled from "styled-components/native";
 import { ViewProps } from "react-native";
 
-import {
-  Bold12,
-  Bold15,
-  Bold20,
-  Bold24
-} from "src/components/text/Typographies";
+import { Bold15, Bold24 } from "src/components/text/Typographies";
 import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
 import colors from "src/styles/colors";
-import XEIcon from "src/components/icon/XEIcon";
 import SkipIcon from "src/components/icon/SkipIcon";
+import OSMGText from "src/components/text/OSMGText";
+import images from "src/images";
 
 interface IProps {
   style?: ViewProps["style"];
@@ -19,7 +15,9 @@ interface IProps {
   onCancel: () => void;
 }
 
-const OuterContainer = styled(OnlyConfirmPopup)``;
+const OuterContainer = styled(OnlyConfirmPopup)`
+  width: 307px;
+`;
 
 const PopupContainer = styled.View`
   justify-content: center;
@@ -33,10 +31,18 @@ const PopupTitle = styled(Bold24)`
   margin-bottom: 5px;
 `;
 
+const PopupDescriptionGroup = styled.View`
+  margin-bottom: 7px;
+`;
+
+const PopupDescriptionRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
 const PopupDescription = styled(Bold15)`
   text-align: center;
   color: ${colors.slateGrey};
-  margin-bottom: 7px;
 `;
 
 const PopupHighlightDescription = styled(Bold15)`
@@ -49,10 +55,17 @@ const ProcessView = styled.View`
   margin-bottom: 23px;
 `;
 
-const HeartIcon = styled(XEIcon)``;
+const HeartImage = styled.Image`
+  width: 52px;
+  height: 48px;
+  resize-mode: contain;
+`;
 
-const PlusIcon = styled(XEIcon)`
-  margin-horizontal: 17px;
+const PlusText = styled(OSMGText)`
+  font-size: 36px;
+  color: ${colors.slateGrey};
+  margin-left: 21px;
+  margin-right: 17px;
 `;
 
 function InviteFriendsPopup(props: IProps) {
@@ -63,21 +76,24 @@ function InviteFriendsPopup(props: IProps) {
       ContentComponent={
         <PopupContainer>
           <PopupTitle>친구 초대하기</PopupTitle>
-          <PopupDescription>
-            친구를 초대하면{"\n"}
-            <PopupHighlightDescription>
-              하트 풀충전 + 스킵 아이템
-            </PopupHighlightDescription>
-            을{"\n"} 각각 1개씩 드려요!
-          </PopupDescription>
+          <PopupDescriptionGroup>
+            <PopupDescription>친구를 초대하면</PopupDescription>
+            <PopupDescriptionRow>
+              <PopupHighlightDescription>
+                하트 풀충전 + SKIP 아이템
+              </PopupHighlightDescription>
+              <PopupDescription>을</PopupDescription>
+            </PopupDescriptionRow>
+            <PopupDescription>각각 1개씩 드려요!</PopupDescription>
+          </PopupDescriptionGroup>
           <ProcessView>
-            <HeartIcon name="heart" size={60} color={colors.pinkyPurple} />
-            <PlusIcon name="plus" size={26} color={colors.pinkyPurple} />
+            <HeartImage source={images.inviteHeart} />
+            <PlusText>+</PlusText>
             <SkipIcon />
           </ProcessView>
         </PopupContainer>
       }
-      confirmText={"초대하기"}
+      confirmText={"친구 초대하기"}
       onConfirm={onConfirm}
       onCancel={onCancel}
     />

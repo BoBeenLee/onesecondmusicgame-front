@@ -19,6 +19,10 @@ interface IProps {
   onCancel: () => void;
 }
 
+const OuterContainer = styled(OSMGPopup)`
+  width: 307px;
+`;
+
 const PopupContainer = styled.View`
   justify-content: center;
   align-items: center;
@@ -69,7 +73,7 @@ const ArrowIcon = styled(XEIcon)``;
 function ChargeSkipItemPopup(props: IProps) {
   const { style, onCancel, onInvite } = props;
   return (
-    <OSMGPopup
+    <OuterContainer
       style={style}
       ContentComponent={
         <PopupContainer>

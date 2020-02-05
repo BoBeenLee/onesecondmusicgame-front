@@ -170,7 +170,6 @@ const LevelBadgesView = styled.View`
 `;
 
 const LevelBadgeView = styled(LevelBadge)`
-  width: 82px;
   margin-horizontal: 3.5px;
   margin-bottom: 16px;
 `;
