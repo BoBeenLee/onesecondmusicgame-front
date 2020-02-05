@@ -1,7 +1,7 @@
 import React from "react";
 import { configure, addDecorator } from "@storybook/react";
 import { withKnobs } from "@storybook/addon-knobs";
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 // automatically import all files ending in *.stories.js
 const req = require.context("../src", true, /.stories.tsx$/);
@@ -54,11 +54,18 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
+const Container = styled.div`
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to bottom, #0d1233, #000);
+`;
+
 addDecorator(story => (
-  <>
+  <Container>
     <GlobalStyle />
     {story()}
-  </>
+  </Container>
 ));
 addDecorator(withKnobs);
 

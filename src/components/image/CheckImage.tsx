@@ -9,6 +9,8 @@ interface IProps extends ImageProps {
 }
 
 const Container = styled.View<{ checked: boolean }>`
+  width: 100%;
+  height: 100%;
   ${({ checked }) =>
     checked
       ? css`
@@ -25,13 +27,15 @@ const Container = styled.View<{ checked: boolean }>`
 `;
 
 const Image = styled.Image`
+  width: 100%;
+  height: 100%;
   border-radius: 5px;
 `;
 
 const CheckImage = (props: IProps) => {
-  const { checked, ...rest } = props;
+  const { style, checked, ...rest } = props;
   return (
-    <Container checked={checked}>
+    <Container style={style} checked={checked}>
       <Image {...rest} />
     </Container>
   );

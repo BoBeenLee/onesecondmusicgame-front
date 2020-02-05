@@ -1,13 +1,27 @@
-import { storiesOf } from "@storybook/react";
 import { action } from "@storybook/addon-actions";
+import { storiesOf } from "@storybook/react";
 import React from "react";
+import styled from "styled-components/native";
 
-import ToastText from "@webview/components/text/ToastText";
+import { Regular12 } from "src/components/text/Typographies";
+import TimerText from "src/components/text/TimerText";
+import colors from "src/styles/colors";
 
-storiesOf("Text", module).add("ToastText", () => (
-  <ToastText
-    message="기본 배송지가 변경되었습니다."
-    delay={1000}
-    onFinish={action("onFinish")}
-  />
-));
+const BodyText = styled(Regular12)`
+  color: ${colors.gray700};
+`;
+
+storiesOf("Text", module)
+  .add("ReadMoreText", () => {
+    return (
+      <BodyText>
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis
+        numquam assumenda repudiandae porro quisquam dolorum, itaque est, fuga
+        hic aspernatur architecto excepturi aliquid suscipit odit officiis,
+        quaerat magni voluptates consectetur!
+      </BodyText>
+    );
+  })
+  .add("TimerText", () => {
+    return <TimerText seconds={10} onTimeEnd={action("onTimeEnd")} />;
+  });
