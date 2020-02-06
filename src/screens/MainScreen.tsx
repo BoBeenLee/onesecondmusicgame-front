@@ -287,7 +287,6 @@ class MainScreen extends Component<IProps> {
             </NicknameView>
             <Description>오늘도 같이 음악 맞춰요 </Description>
           </Profile>
-          <Logo>알쏭달쏭</Logo>
         </Content>
         <GameModeView>
           <GameModeSection onPress={this.navigateToGamePlay}>

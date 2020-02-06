@@ -32,6 +32,12 @@ const DEFAULT_BACKDROP_HEIGHT =
   getDeviceHeight() - (getStatusBarHeight(false) + BACKDROP_GAP);
 const ANIMATION_DURATION = 300;
 
+const OuterContainer = styled.View`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+`;
+
 const OverlayTouchabedView = styled.TouchableWithoutFeedback`
   position: absolute;
   width: 100%;
@@ -149,7 +155,7 @@ class Backdrop extends React.Component<IProps> {
     });
 
     return (
-      <React.Fragment>
+      <OuterContainer>
         {overlayOpacity !== false ? (
           <OverlayTouchabedView onPress={this.onBackgroundPress}>
             <OverlayView style={{ opacity: this.overlayOpacity }} />
@@ -171,7 +177,7 @@ class Backdrop extends React.Component<IProps> {
           ) : null}
           <Content style={contentStyle}>{children}</Content>
         </Container>
-      </React.Fragment>
+      </OuterContainer>
     );
   }
 

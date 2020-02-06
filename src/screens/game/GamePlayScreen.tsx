@@ -293,7 +293,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
             renderItem={this.renderItem}
             onSnapToItem={this.onSnapToItem}
           />
-          {currentStepStatus === "play"
+          {["play", "stop"].some(status => status === currentStepStatus)
             ? this.renderGamePlay
             : this.renderAnswer}
         </InnerContainer>

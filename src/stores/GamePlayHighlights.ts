@@ -70,6 +70,9 @@ const GamePlayHighlights = types
         }));
       },
       checkAnswer(userAnswer: string) {
+        if (self.gameHighlights.length <= self.currentStep) {
+          return false;
+        }
         const item = self.gameHighlights[self.currentStep];
         return item.title?.toLowerCase?.() === userAnswer.toLowerCase();
       }

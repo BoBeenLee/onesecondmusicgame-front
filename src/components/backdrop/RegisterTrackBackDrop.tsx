@@ -52,9 +52,9 @@ function RegisterTrackBackDrop(props: IProps) {
   return (
     <BackdropView
       ref={backdropRef as any}
-      showHandleBar={false}
-      overlayOpacity={false}
-      backdropHeight={399}
+      showHandleBar={true}
+      overlayOpacity={0.8}
+      backdropHeight={300}
     >
       <Header>
         <Title>가수명</Title>
