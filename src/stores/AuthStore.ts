@@ -16,7 +16,11 @@ import appleAuth, {
 } from "@invertase/react-native-apple-authentication";
 
 import { defaultItemToString, FIELD, setItem } from "src/utils/storage";
-import { signInUsingPOST, signUpUsingPOST } from "src/apis/user";
+import {
+  signInUsingPOST,
+  signUpUsingPOST,
+  nicknameModifyUsingPOST
+} from "src/apis/user";
 import { getUniqueID } from "src/utils/device";
 import User from "src/stores/model/User";
 import { ErrorCode } from "src/configs/error";
@@ -262,6 +266,11 @@ const AuthStore = types
       setUserID(self.accessId);
     });
 
+    const updateUser = flow(function*({ nickname }: { nickname: string }) {
+      self.user?.setNickname(nickname);
+      yield nicknameModifyUsingPOST({ newNickname: nickname });
+    });
+
     const updateUserReward = () => {
       self.user?.heart.fetchHeart();
     };
@@ -280,6 +289,7 @@ const AuthStore = types
       initialize,
       appleSignIn,
       facebookSignIn,
+      updateUser,
       updateUserReward,
       updateUserInfo,
       kakaoSignIn,

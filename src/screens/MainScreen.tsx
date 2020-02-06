@@ -41,6 +41,7 @@ import XEIconButton from "src/components/button/XEIconButton";
 import GamePlayScreen from "src/screens/game/GamePlayScreen";
 import UserProfileScreen from "src/screens/user/UserProfileScreen";
 import images from "src/images";
+import { IForm } from "src/components/form/UserProfileForm";
 
 interface IInject {
   store: IStore;
@@ -257,6 +258,7 @@ class MainScreen extends Component<IProps> {
   public render() {
     const userItemViews = this.props.authStore.user?.userItemViews ?? [];
     const heart = this.props.authStore.user?.heart;
+    const user = this.props.authStore.user;
     return (
       <Container>
         <Header>
@@ -278,7 +280,7 @@ class MainScreen extends Component<IProps> {
         <Content>
           <Profile>
             <NicknameView>
-              <Nickname>Hyen님</Nickname>
+              <Nickname>{user?.nickname ?? ""}님</Nickname>
               <SettingButton
                 iconName="cog"
                 iconSize={20}
@@ -352,10 +354,19 @@ class MainScreen extends Component<IProps> {
 
   private onSetting = () => {
     const { componentId } = this.props;
+
     UserProfileScreen.open({
       componentId,
-      onConfirm: _.identity
+      onConfirm: this.updateUser
     });
+  };
+
+  private updateUser = async (data: IForm) => {
+    const { showToast } = this.props.toastStore;
+    const { nickname } = data;
+    const { updateUser } = this.props.authStore;
+    await updateUser({ nickname });
+    showToast("닉네임 변경완료");
   };
 
   private onSkipItemPopup = () => {
