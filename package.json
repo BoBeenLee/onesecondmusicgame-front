@@ -202,17 +202,5 @@
     "modulePaths": [
       "<rootDir>"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,ts,tsx}": [
-      "npm run prettier",
-      "npm run eslint:fix",
-      "git add"
-    ]
   }
 }
