@@ -17,7 +17,7 @@ import images from "src/images";
 interface IProps {
   style?: ViewProps["style"];
   onInvite: () => void;
-  onRewarded: () => void;
+  onAD: () => void;
   onCancel: () => void;
 }
 
@@ -92,7 +92,7 @@ const ItemButtonText = styled(Bold17)`
 const ArrowIcon = styled(XEIcon)``;
 
 function UserItemPopup(props: IProps) {
-  const { style, onCancel, onInvite, onRewarded } = props;
+  const { style, onCancel, onInvite, onAD: onRewarded } = props;
   return (
     <OuterContainer
       style={style}

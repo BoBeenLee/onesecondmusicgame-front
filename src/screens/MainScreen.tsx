@@ -409,7 +409,7 @@ class MainScreen extends Component<IProps> {
     showPopup(
       <UserItemPopup
         onInvite={this.invite}
-        onRewarded={this.onRewarded}
+        onAD={this.requestHeartRewardAD}
         onCancel={closePopup}
       />
     );
