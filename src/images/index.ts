@@ -1,5 +1,3 @@
-import { Platform } from "react-native";
-
 // tslint:disable:object-literal-sort-keys
 const images = {
   animation: require("./animation.json"),

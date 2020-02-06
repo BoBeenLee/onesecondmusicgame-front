@@ -66,7 +66,7 @@
     "styled-theming": "^2.2.0",
     "swipe-js-iso": "^2.1.5",
     "uuid": "^3.3.3",
-    "react-native": "^0.60.5",
+    "react-native": "0.61.5",
     "react-native-vector-icons": "^6.4.1",
     "react-native-web": "^0.11.7",
     "gatsby-plugin-react-native-web": "^2.0.0-beta.0"
