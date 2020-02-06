@@ -16,16 +16,6 @@ module.exports = {
     tsconfigRootDir: "./",
     createDefaultProgram: true
   },
-  ignorePatterns: [
-    "node_modules/",
-    "__generate__/",
-    "ios/",
-    "android/",
-    "webview/",
-    "scripts/",
-    "assets/",
-    "fastlane/"
-  ],
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",
