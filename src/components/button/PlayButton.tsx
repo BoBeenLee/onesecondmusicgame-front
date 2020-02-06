@@ -32,8 +32,6 @@ const Container = styled.View<{ size: number }>`
 
 const PlayIconButton = styled(ScaleableButton)`
   z-index: ${zIndex.middle};
-  margin-left: 3px;
-  margin-top: -3px;
 `;
 
 const PlayIcon = styled.Image<{ size: number }>`
