@@ -35,8 +35,16 @@ storiesOf("Icon", module)
             active: false
           },
           {
-            check: "correct",
-            active: false
+            check: "?",
+            active: true
+          },
+          {
+            check: "x",
+            active: true
+          },
+          {
+            check: "o",
+            active: true
           }
         ]}
       />
