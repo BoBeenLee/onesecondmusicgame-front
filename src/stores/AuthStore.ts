@@ -21,7 +21,7 @@ import {
   signUpUsingPOST,
   nicknameModifyUsingPOST
 } from "src/apis/user";
-import { getUniqueID } from "src/utils/device";
+import { getUniqueID } from "src/configs/device";
 import User from "src/stores/model/User";
 import { ErrorCode } from "src/configs/error";
 import { findItemAllUsingGET } from "src/apis/item";

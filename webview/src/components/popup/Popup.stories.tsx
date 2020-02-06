@@ -10,6 +10,7 @@ import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
 import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
 import ChargeFullHeartPopup from "src/components/popup/ChargeFullHeartPopup";
 import ExhaustFullHeartPopup from "src/components/popup/ExhaustFullHeartPopup";
+import UserItemPopup from "src/components/popup/UserItemPopup";
 
 const CenterView = styled.View`
   flex: 1;
@@ -49,7 +50,7 @@ storiesOf("Popup", module)
   .add("ChargeFullHeartPopup", () => {
     return (
       <ChargeFullHeartPopup
-        heart={{ heartCount: 3 }}
+        heart={{ heartCount: 3 } as any}
         onCancel={action("onCancel")}
         onChargeFullHeart={action("onChargeFullHeart")}
       />
@@ -58,7 +59,7 @@ storiesOf("Popup", module)
   .add("UseFullHeartPopup", () => {
     return (
       <UseFullHeartPopup
-        heart={{ heartCount: 3 }}
+        heart={{ heartCount: 3 } as any}
         onCancel={action("onCancel")}
         onConfirm={action("onConfirm")}
         onChargeFullHeart={action("onChargeFullHeart")}
@@ -69,6 +70,15 @@ storiesOf("Popup", module)
     return (
       <ExhaustFullHeartPopup
         onInvite={action("onInvite")}
+        onCancel={action("onCancel")}
+      />
+    );
+  })
+  .add("UserItemPopup", () => {
+    return (
+      <UserItemPopup
+        onInvite={action("onInvite")}
+        onAD={action("onAD")}
         onCancel={action("onCancel")}
       />
     );

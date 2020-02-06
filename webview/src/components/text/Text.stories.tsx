@@ -38,6 +38,7 @@ import {
   Regular24
 } from "src/components/text/Typographies";
 import TimerText from "src/components/text/TimerText";
+import UnderlineText from "src/components/text/UnderlineText";
 import colors from "src/styles/colors";
 
 const CenterView = styled.View`
@@ -64,6 +65,13 @@ storiesOf("Text", module)
   })
   .add("TimerText", () => {
     return <TimerText seconds={10} onTimeEnd={action("onTimeEnd")} />;
+  })
+  .add("UnderlineText", () => {
+    return (
+      <UnderlineText
+        TextComponent={<Bold24 style={{ color: "white" }}>알쏭달쏭</Bold24>}
+      />
+    );
   })
   .add("Typographies", () => {
     const Typo = {

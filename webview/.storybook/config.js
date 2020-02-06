@@ -47,6 +47,7 @@ const GlobalStyle = createGlobalStyle`
   #root {
     background-image: linear-gradient(to bottom, #0d1233, #000);
     padding: 20px;
+    height: 100%;
     overflow: scroll;
   }
 

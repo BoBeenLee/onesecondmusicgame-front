@@ -345,7 +345,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     return (
       <>
         <Content>
-          {isAnswer ? null : <AnswerStatus source={images.imageCd} />}
+          {isAnswer ? null : <AnswerStatus source={images.correctCD} />}
           <AnswerView>
             <AnswerText>정답입니다~</AnswerText>
           </AnswerView>

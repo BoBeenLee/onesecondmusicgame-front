@@ -7,9 +7,7 @@ import {
   Notification,
   NotificationOpen
 } from "react-native-firebase/notifications";
-import { getUniqueID, isAndroid } from "src/utils/device";
-import { FIELD, setItem } from "src/utils/storage";
-import { defaultItemToBoolean } from "src/utils/storage";
+import { isAndroid } from "src/utils/device";
 
 const CHANNEL_ID = "onesecondmusicgame-channel";
 

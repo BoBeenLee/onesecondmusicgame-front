@@ -1,6 +1,5 @@
 import _ from "lodash";
 import { Dimensions, Platform, StatusBar } from "react-native";
-import DeviceInfo from "react-native-device-info";
 
 const getOS = (): string => Platform.OS;
 
@@ -55,12 +54,6 @@ const getDeviceWidth = () => Dimensions.get("window").width;
 
 const getDeviceHeight = () => Dimensions.get("window").height;
 
-const getVersion = () => DeviceInfo.getVersion();
-
-const getBuildNumber = () => DeviceInfo.getBuildNumber();
-
-const getUniqueID = () => DeviceInfo.getUniqueId();
-
 const conditionHeight = (
   androidHeight: number,
   iosHeight: number,
@@ -79,10 +72,7 @@ export {
   conditionHeight,
   isAndroid,
   isIOS,
-  getBuildNumber,
   getOS,
   getDeviceWidth,
-  getDeviceHeight,
-  getUniqueID,
-  getVersion
+  getDeviceHeight
 };
