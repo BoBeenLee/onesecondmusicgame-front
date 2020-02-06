@@ -1,6 +1,11 @@
 import _ from "lodash";
-import React from "react";
-import { ViewProps, TouchableOpacityProps } from "react-native";
+import React, { useRef, useEffect } from "react";
+import {
+  Animated,
+  ViewProps,
+  TouchableOpacityProps,
+  Easing
+} from "react-native";
 import styled, { css } from "styled-components/native";
 
 import XEIcon, { XEIconType } from "src/components/icon/XEIcon";
@@ -38,7 +43,7 @@ const PlayIcon = styled.Image<{ size: number }>`
   `}
 `;
 
-const CDBackground = styled.Image`
+const CDBackground = styled(Animated.Image)`
   position: absolute;
   top: 0px;
   left: 0px;
@@ -47,13 +52,46 @@ const CDBackground = styled.Image`
 `;
 
 function PlayButton(props: IProps) {
-  const { style, size, onPress, ...rest } = props;
+  const { style, size, playType, onPress, ...rest } = props;
+  const spinValue = useRef(new Animated.Value(0));
+  const loop = useRef<Animated.CompositeAnimation | null>(null);
+
+  const loopRotate = useCallback(() => {
+    spinValue.current.setValue(0);
+    loop.current = Animated.timing(spinValue.current, {
+      duration: 4000,
+      toValue: 1,
+      easing: Easing.inOut(Easing.linear),
+      useNativeDriver: true
+    });
+    loop.current.start(result => {
+      if (result.finished) {
+        loopRotate();
+      }
+    });
+  });
+  useEffect(() => {
+    if (playType === "play") {
+      loopRotate();
+      return;
+    }
+    loop.current?.stop?.();
+  }, [loopRotate, playType]);
+
+  const spin = spinValue.current.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "360deg"]
+  });
+
   return (
     <Container style={style} size={size} {...rest}>
       <PlayIconButton onPress={onPress}>
         <PlayIcon size={size} source={images.playButton} />
       </PlayIconButton>
-      <CDBackground source={images.playCD} />
+      <CDBackground
+        style={{ transform: [{ rotate: spin }] }}
+        source={images.playCD}
+      />
     </Container>
   );
 }
