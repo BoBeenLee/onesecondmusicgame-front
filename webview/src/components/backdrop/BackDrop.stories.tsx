@@ -6,6 +6,7 @@ import styled from "styled-components/native";
 
 import BackDrop from "src/components/backdrop/BackDrop";
 import SingersSubmitBackDrop from "src/components/backdrop/SingersSubmitBackDrop";
+import RegisterTrackBackDrop from "src/components/backdrop/RegisterTrackBackDrop";
 import { Bold12 } from "src/components/text/Typographies";
 import MockButton from "src/components/button/MockButton";
 
@@ -43,4 +44,11 @@ storiesOf("BackDrop", module)
         onSelectedItem={action("onSelectedItem")}
       />
     </Container>
-  ));
+  ))
+  .add("RegisterSongBackDrop", () => {
+    return (
+      <Container>
+        <RegisterTrackBackDrop tracks={[]} />
+      </Container>
+    );
+  });

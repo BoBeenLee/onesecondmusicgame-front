@@ -29,9 +29,7 @@ const Container = styled.View`
   align-items: center;
   padding-vertical: 11px;
   border-bottom-width: 1px;
-  border-bottom-color: ${colors.darkTwo};
-  padding-left: 21px;
-  padding-right: 38px;
+  border-bottom-color: ${colors.blueberry};
 `;
 
 const Content = styled.View`
@@ -79,7 +77,9 @@ const HeartView = styled.View`
   align-items: center;
 `;
 
-const HeartIcon = styled(XEIcon)``;
+const HeartIcon = styled(XEIcon)`
+  margin-right: 5px;
+`;
 
 const HeartCount = styled(Bold12)`
   color: ${colors.lightGrey};
