@@ -30,6 +30,8 @@ const Container = styled.View`
   padding-vertical: 11px;
   border-bottom-width: 1px;
   border-bottom-color: ${colors.darkTwo};
+  padding-left: 21px;
+  padding-right: 38px;
 `;
 
 const Content = styled.View`
@@ -42,7 +44,7 @@ const ThumnailView = styled.View`
   width: 76px;
   height: 72px;
   border-radius: 8px;
-  margin-right: 10px;
+  margin-right: 31px;
   overflow: hidden;
 `;
 
@@ -58,10 +60,6 @@ const TrackView = styled.View`
   padding-vertical: 0px;
 `;
 
-const MiniAudioPlayerView = styled.View`
-  margin-right: 10px;
-`;
-
 const Title = styled(Bold16)`
   color: ${colors.lightGrey};
 `;
@@ -74,14 +72,14 @@ const RegisteredSongText = styled(Regular14)`
   color: ${colors.brightMagenta};
 `;
 
+const PlayIcon = styled(XEIcon)``;
+
 const HeartView = styled.View`
   flex-direction: row;
   align-items: center;
 `;
 
-const HeartIcon = styled(XEIcon)`
-  margin-right: 5px;
-`;
+const HeartIcon = styled(XEIcon)``;
 
 const HeartCount = styled(Bold12)`
   color: ${colors.lightGrey};
@@ -90,6 +88,8 @@ const HeartCount = styled(Bold12)`
 const GroupButton = styled.TouchableOpacity`
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  margin-left: 40px;
 `;
 
 const ButtonText = styled(Regular12)`
@@ -128,18 +128,26 @@ function SearchTrackCard(props: IProps) {
             </HeartView>
           )}
         </TrackView>
-        <GroupButton>
-          <MiniAudioPlayerView />
-          <ButtonText>재생</ButtonText>
-        </GroupButton>
-        <GroupButton>
-          <HeartIcon
-            name={isLike ? "heart" : "heart-o"}
-            size={30}
-            color={colors.brightMagenta}
-          />
-          <ButtonText>좋아요</ButtonText>
-        </GroupButton>
+        {isRegistered ? null : (
+          <>
+            <GroupButton onPress={onPlayToggle}>
+              <PlayIcon
+                name={audioType === "play" ? "play" : "pause"}
+                size={30}
+                color={colors.brightMagenta}
+              />
+              <ButtonText>미리듣기</ButtonText>
+            </GroupButton>
+            <GroupButton onPress={onLikePress}>
+              <HeartIcon
+                name={isLike ? "heart" : "heart-o"}
+                size={30}
+                color={colors.brightMagenta}
+              />
+              <ButtonText>좋아요</ButtonText>
+            </GroupButton>
+          </>
+        )}
       </Content>
     </Container>
   );
