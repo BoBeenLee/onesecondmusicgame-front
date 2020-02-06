@@ -1,5 +1,5 @@
 import _ from "lodash";
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import {
   Animated,
   ViewProps,
@@ -69,7 +69,7 @@ function PlayButton(props: IProps) {
         loopRotate();
       }
     });
-  });
+  }, []);
   useEffect(() => {
     if (playType === "play") {
       loopRotate();
