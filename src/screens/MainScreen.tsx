@@ -9,6 +9,7 @@ import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import { iosStatusBarHeight } from "src/utils/device";
 import {
   Bold12,
+  Bold14,
   Bold36,
   Regular10,
   Regular12,
@@ -42,6 +43,8 @@ import GamePlayScreen from "src/screens/game/GamePlayScreen";
 import UserProfileScreen from "src/screens/user/UserProfileScreen";
 import images from "src/images";
 import { IForm } from "src/components/form/UserProfileForm";
+import UnderlineText from "src/components/text/UnderlineText";
+import UserItemPopup from "src/components/popup/UserItemPopup";
 
 interface IInject {
   store: IStore;
@@ -104,27 +107,20 @@ const HeartRemainTime = styled(TimerText)`
   color: ${colors.white};
 `;
 
-const GameItems = styled.View`
+const GameItemButton = styled.TouchableOpacity`
   position: absolute;
-  width: 100px;
   top: ${iosStatusBarHeight(false) + 20}px;
   right: 31px;
-  flex-direction: column;
-`;
-
-const GameItemButton = styled.View`
+  width: 93px;
+  height: 32px;
+  border-radius: 17px;
+  background-color: ${colors.purply};
   align-items: center;
   justify-content: center;
 `;
 
-const GameItemIcon = styled.Image`
-  width: 40px;
-  height: 40px;
-  margin-bottom: 5px;
-`;
-
-const GameItemButtonText = styled(Bold12)`
-  color: ${colors.white};
+const GameItemButtonText = styled(Bold14)`
+  color: ${colors.paleLavender};
 `;
 
 const Content = styled.View`
@@ -256,7 +252,6 @@ class MainScreen extends Component<IProps> {
   };
 
   public render() {
-    const userItemViews = this.props.authStore.user?.userItemViews ?? [];
     const heart = this.props.authStore.user?.heart;
     const user = this.props.authStore.user;
     return (
@@ -280,7 +275,9 @@ class MainScreen extends Component<IProps> {
         <Content>
           <Profile>
             <NicknameView>
-              <Nickname>{user?.nickname ?? ""}님</Nickname>
+              <UnderlineText
+                TextComponent={<Nickname>{user?.nickname ?? ""}님</Nickname>}
+              />
               <SettingButton
                 iconName="cog"
                 iconSize={20}
@@ -324,23 +321,9 @@ class MainScreen extends Component<IProps> {
             <FooterButtonText>개인 랭킹</FooterButtonText>
           </FooterButtonGroup>
         </Footer>
-        <GameItems>
-          <FloatingButton
-            ButtonComponent={
-              <GameItemButton>
-                <GameItemIcon source={images.baselineCasinoBlack18Dp} />
-                <GameItemButtonText>아이템</GameItemButtonText>
-              </GameItemButton>
-            }
-            ItemComponents={_.map(userItemViews, item => (
-              <MockButton
-                key={item.name}
-                name={`${item.name}(${item.count})`}
-                onPress={this.itemToOnPress[item.itemType]}
-              />
-            ))}
-          />
-        </GameItems>
+        <GameItemButton onPress={this.onUserItemPopup}>
+          <GameItemButtonText>하트 충전</GameItemButtonText>
+        </GameItemButton>
       </Container>
     );
   }
@@ -421,10 +404,14 @@ class MainScreen extends Component<IProps> {
     }
   };
 
-  private onInvitePopup = () => {
+  private onUserItemPopup = () => {
     const { showPopup, closePopup } = this.props.popupProps;
     showPopup(
-      <InviteFriendsPopup onConfirm={this.invite} onCancel={closePopup} />
+      <UserItemPopup
+        onInvite={this.invite}
+        onRewarded={this.onRewarded}
+        onCancel={closePopup}
+      />
     );
   };
 

@@ -17,7 +17,7 @@ import images from "src/images";
 interface IProps {
   style?: ViewProps["style"];
   onInvite: () => void;
-  onAD: () => void;
+  onRewarded: () => void;
   onCancel: () => void;
 }
 
@@ -92,7 +92,7 @@ const ItemButtonText = styled(Bold17)`
 const ArrowIcon = styled(XEIcon)``;
 
 function UserItemPopup(props: IProps) {
-  const { style, onCancel, onInvite, onAD } = props;
+  const { style, onCancel, onInvite, onRewarded } = props;
   return (
     <OuterContainer
       style={style}
@@ -104,7 +104,7 @@ function UserItemPopup(props: IProps) {
               <ItemTitle>SKIP</ItemTitle>
               <SkipIcon />
               <StatusText>5개</StatusText>
-              <ItemButton onPress={onAD}>
+              <ItemButton onPress={onRewarded}>
                 <ItemButtonRow>
                   <ItemButtonText>광고 보고</ItemButtonText>
                 </ItemButtonRow>

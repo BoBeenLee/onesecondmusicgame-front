@@ -78,7 +78,7 @@ storiesOf("Popup", module)
     return (
       <UserItemPopup
         onInvite={action("onInvite")}
-        onAD={action("onAD")}
+        onRewarded={action("onRewarded")}
         onCancel={action("onCancel")}
       />
     );
