@@ -26,6 +26,13 @@ import { ISingerStore } from "src/stores/SingerStore";
 import { IToastStore } from "src/stores/ToastStore";
 import BackTopBar from "src/components/topbar/BackTopBar";
 import RegisterTrackBackDrop from "src/components/backdrop/RegisterTrackBackDrop";
+import Tracks, { ITracks } from "src/stores/Tracks";
+import withScrollDirection, {
+  IScrollDirectionProps
+} from "src/hocs/withScrollDirection";
+import { ScrollDirection } from "src/utils/scrollView";
+import SearchTrackCard from "src/components/card/SearchTrackCard";
+import { ITrackItem } from "src/apis/soundcloud/interface";
 
 interface IInject {
   singerStore: ISingerStore;
@@ -34,10 +41,15 @@ interface IInject {
 
 interface IParams {
   componentId: string;
-  onResult: (selectedSinger: ISinger) => void;
 }
 
-interface IProps extends IParams, IInject {}
+interface IProps extends IParams, IInject, IScrollDirectionProps {}
+
+interface IStates {
+  showTrackBackdrop: boolean;
+  playingTrackId: string | null;
+  selectedSinger: ISinger | null;
+}
 
 const Container = styled(ContainerWithStatusBar)`
   flex: 1;
@@ -108,6 +120,10 @@ const ResultEmptyDescription = styled(Regular12)`
   color: ${colors.lightGreyTwo};
 `;
 
+const TracksView = styled<ComponentClass<FlatListProps<ITrackItem>>>(FlatList)`
+  padding-top: 11px;
+`;
+
 @inject(
   ({ store }: { store: IStore }): IInject => ({
     singerStore: store.singerStore,
@@ -115,7 +131,7 @@ const ResultEmptyDescription = styled(Regular12)`
   })
 )
 @observer
-class SearchSingerScreen extends Component<IProps> {
+class SearchSingerScreen extends Component<IProps, IStates> {
   public static open(params: IParams) {
     const { componentId, ...restParams } = params;
     return push({
@@ -125,13 +141,29 @@ class SearchSingerScreen extends Component<IProps> {
     });
   }
 
+  public tracks: ITracks;
+
   constructor(props: IProps) {
     super(props);
+    this.state = {
+      showTrackBackdrop: false,
+      playingTrackId: null,
+      selectedSinger: null
+    };
     this.singers.initialize({ q: "" });
+    this.tracks = Tracks.create();
   }
 
   public render() {
     const { singerViews, refresh, isRefresh } = this.singers;
+    const { onScroll } = this.props.scrollDirectionProps;
+    const { showTrackBackdrop, playingTrackId, selectedSinger } = this.state;
+    const {
+      trackViews,
+      append: appendTrack,
+      refresh: trackRefresh,
+      isRefresh: isTrackRefresh
+    } = this.tracks;
 
     return (
       <>
@@ -176,13 +208,49 @@ class SearchSingerScreen extends Component<IProps> {
           </InnerContainer>
         </Container>
         <RegisterTrackBackDrop
-          tracks={[]}
-          onLikePress={_.identity}
-          onPlayToggle={_.identity}
+          showBackdrop={showTrackBackdrop}
+          singerName={selectedSinger?.name ?? ""}
+          totalCount={this.tracks.trackViews.length}
+          ContentComponent={
+            <TracksView
+              data={trackViews}
+              renderItem={({ item }) => {
+                return (
+                  <SearchTrackCard
+                    thumnail={
+                      item.artwork_url ?? "https://via.placeholder.com/150"
+                    }
+                    title={item.title}
+                    author={item.user.username}
+                    isRegistered={true}
+                    isLike={true}
+                    onLikePress={_.partial(this.onLikePress, String(item.id))}
+                    audioType={
+                      playingTrackId === String(item.id) ? "play" : "stop"
+                    }
+                    onPlayToggle={_.partial(this.onPlayToggle, String(item.id))}
+                  />
+                );
+              }}
+              keyExtractor={this.trackKeyExtractor}
+              refreshing={isTrackRefresh}
+              onRefresh={trackRefresh}
+              onEndReached={appendTrack}
+            />
+          }
+          onBackgroundPress={this.onUnSelectedItem}
         />
       </>
     );
   }
+
+  private onLikePress = (id: string) => {
+    // NOTHING
+  };
+
+  private onPlayToggle = (id: string) => {
+    // NOTHING
+  };
 
   private get singers() {
     return this.props.singerStore.allSingers;
@@ -190,6 +258,10 @@ class SearchSingerScreen extends Component<IProps> {
 
   private singerKeyExtreactor = (item: ISinger, index: number) => {
     return String(item.name) + index;
+  };
+
+  private trackKeyExtractor = (item: ITrackItem, index: number) => {
+    return `${item.id}${index}`;
   };
 
   private renderSingerItem: ListRenderItem<ISinger> = ({ item }) => {
@@ -209,8 +281,15 @@ class SearchSingerScreen extends Component<IProps> {
   };
 
   private onSelectedItem = (item: ISinger) => {
-    const { onResult } = this.props;
-    onResult(item);
+    this.setState({ showTrackBackdrop: true, selectedSinger: item }, () => {
+      this.tracks.search({ q: item.name });
+    });
+  };
+
+  private onUnSelectedItem = () => {
+    this.setState({ showTrackBackdrop: false, selectedSinger: null }, () => {
+      this.tracks.clear();
+    });
   };
 
   private back = () => {
@@ -219,4 +298,4 @@ class SearchSingerScreen extends Component<IProps> {
   };
 }
 
-export default SearchSingerScreen;
+export default withScrollDirection({ sensitivity: 10 })(SearchSingerScreen);

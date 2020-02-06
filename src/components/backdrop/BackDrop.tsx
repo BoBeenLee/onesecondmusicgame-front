@@ -102,7 +102,7 @@ class Backdrop extends React.Component<IProps, IStates> {
     super(props);
 
     this.state = {
-      showContainer: props.isFirstShow
+      showContainer: props.isFirstShow ?? false
     };
     this.backdropHeight = _.defaultTo(
       props.backdropHeight,
