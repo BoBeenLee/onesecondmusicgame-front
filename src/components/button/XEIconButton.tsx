@@ -7,8 +7,8 @@ import { getHitSlop } from "src/utils/view";
 
 interface IProps extends TouchableOpacityProps {
   iconName: XEIconType;
-  iconColor?: string;
-  iconSize?: number;
+  iconColor: string;
+  iconSize: number;
 }
 
 const Container = styled.TouchableOpacity`

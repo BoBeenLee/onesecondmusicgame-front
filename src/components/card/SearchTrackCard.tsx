@@ -8,22 +8,23 @@ import {
   Regular14,
   Regular12
 } from "src/components/text/Typographies";
-import MiniAudioPlayer from "src/components/player/MiniAudioPlayer";
 import colors from "src/styles/colors";
 import XEIcon from "src/components/icon/XEIcon";
-import XEIconButton from "src/components/button/XEIconButton";
+import { AudioType } from "src/components/player/interface";
 
 interface IProps {
   style?: ViewProps["style"];
   thumnail: string;
   title: string;
   author: string;
-  uri: string;
   isRegistered: boolean;
-  onPress?: () => void;
+  isLike: boolean;
+  onLikePress: () => void;
+  audioType: AudioType;
+  onPlayToggle: () => void;
 }
 
-const Container = styled.TouchableOpacity`
+const Container = styled.View`
   flex-direction: row;
   align-items: center;
   padding-vertical: 11px;
@@ -57,7 +58,7 @@ const TrackView = styled.View`
   padding-vertical: 0px;
 `;
 
-const MiniAudioPlayerView = styled(MiniAudioPlayer)`
+const MiniAudioPlayerView = styled.View`
   margin-right: 10px;
 `;
 
@@ -96,9 +97,19 @@ const ButtonText = styled(Regular12)`
 `;
 
 function SearchTrackCard(props: IProps) {
-  const { style, thumnail, title, author, uri, isRegistered, onPress } = props;
+  const {
+    style,
+    thumnail,
+    title,
+    author,
+    isRegistered,
+    isLike,
+    onLikePress,
+    audioType,
+    onPlayToggle
+  } = props;
   return (
-    <Container style={style} onPress={onPress}>
+    <Container style={style}>
       <Content>
         <ThumnailView>
           <Thumnail source={{ uri: thumnail }} />
@@ -118,16 +129,15 @@ function SearchTrackCard(props: IProps) {
           )}
         </TrackView>
         <GroupButton>
-          <MiniAudioPlayerView
-            size={40}
-            source={{
-              uri
-            }}
-          />
+          <MiniAudioPlayerView />
           <ButtonText>재생</ButtonText>
         </GroupButton>
         <GroupButton>
-          <HeartIcon name="heart" size={30} color={colors.brightMagenta} />
+          <HeartIcon
+            name={isLike ? "heart" : "heart-o"}
+            size={30}
+            color={colors.brightMagenta}
+          />
           <ButtonText>좋아요</ButtonText>
         </GroupButton>
       </Content>
