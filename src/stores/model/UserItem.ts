@@ -18,6 +18,9 @@ const UserItem = types
       self.name = userItemToName.get(self.itemType) ?? "";
     };
     const useItemType = flow(function*() {
+      if (self.count === 0) {
+        return;
+      }
       yield useItemUsingPUT(String(self.itemType));
       self.count -= 1;
     });
