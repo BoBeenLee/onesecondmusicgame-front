@@ -73,9 +73,9 @@ class UserProfileScreen extends Component<IProps, IStates> {
     );
   }
 
-  private onConfirm = () => {
+  private onConfirm = async (data: IForm) => {
     const { onConfirm } = this.props;
-    onConfirm?.();
+    await onConfirm?.(data);
     this.back();
   };
 
