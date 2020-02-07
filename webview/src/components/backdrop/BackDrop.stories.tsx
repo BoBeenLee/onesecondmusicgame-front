@@ -62,7 +62,7 @@ storiesOf("BackDrop", module)
           totalCount={30}
           ContentComponent={
             <TracksView
-              data={mockTracks}
+              data={mockTracks as any}
               renderItem={({ item }: any) => {
                 return (
                   <SearchTrackCard
