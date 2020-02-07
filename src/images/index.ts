@@ -11,6 +11,11 @@ const images = {
   playButton: require("./button1.png"),
   pauseButton: require("./button.png"),
   buttonHome: require("./buttonHome.png"),
-  tooltip: require("./tooltip.png")
+  tooltip: require("./tooltip.png"),
+  mirrorball: require("./mirrorball.png"),
+  mirrorballLight: require("./mirrorballLight.png"),
+  btnKakao: require("./btn_kakao.png"),
+  btnFacebook: require("./btn_facebook.png"),
+  btnGoogle: require("./btn_google.png")
 };
 export default images;
