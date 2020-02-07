@@ -39,6 +39,8 @@ import GamePlayTutorialOverlay from "src/screens/tutorial/GamePlayTutorialOverla
 import XEIcon from "src/components/icon/XEIcon";
 import SkipIcon from "src/components/icon/SkipIcon";
 import images from "src/images";
+import IconButton from "src/components/button/IconButton";
+import ConfirmPopup from "src/components/popup/ConfirmPopup";
 
 interface IInject {
   authStore: IAuthStore;
@@ -80,6 +82,14 @@ const Header = styled.View`
   padding-top: 20px;
   padding-bottom: 20px;
   padding-horizontal: 16px;
+`;
+
+const GameStopButton = styled(IconButton)`
+  position: absolute;
+  top: 0px;
+  right: 15px;
+  width: 38px;
+  height: 38px;
 `;
 
 const GamePlayStep = styled(CircleCheckGroup)`
@@ -285,6 +295,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
               seconds={DEFAULT_LIMIT_TIME}
               onTimeEnd={this.onLimitTimeEnd}
             />
+            <GameStopButton source={images.pauseButton} onPress={this.exit} />
           </Header>
           <GamePlayers
             scrollEnabled={false}
@@ -497,6 +508,24 @@ class GamePlayScreen extends Component<IProps, IStates> {
       componentId,
       gamePlayHighlights: () => this.gamePlayHighlights
     });
+  };
+
+  private exit = () => {
+    const { showPopup, closePopup } = this.props.popupProps;
+    showPopup(
+      <ConfirmPopup
+        message="정말 그만두시겠어요?"
+        cancelText="취소"
+        onCancel={closePopup}
+        confirmText="확인"
+        onConfirm={this.back}
+      />
+    );
+  };
+
+  private back = () => {
+    const { componentId } = this.props;
+    pop(componentId);
   };
 }
 
