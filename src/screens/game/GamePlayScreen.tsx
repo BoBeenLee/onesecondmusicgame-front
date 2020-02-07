@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import TrackPlayer from "react-native-track-player";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import {
@@ -379,14 +380,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private renderItem = (props: { item: ICarouselItem; index: number }) => {
-    const { millisecond, trackId } = props.item;
     return (
       <GamePlayerView>
-        <GameAudioPlayer
-          highlightSeconds={_.round((millisecond ?? 0) / 1000)}
-          size={200}
-          source={{ uri: makePlayStreamUriByTrackId(String(trackId)) }}
-        />
+        <GameAudioPlayer size={200} gamePlayItem={props.item} />
       </GamePlayerView>
     );
   };

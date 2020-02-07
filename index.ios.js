@@ -1,4 +1,5 @@
 import { Navigation } from "react-native-navigation";
+import TrackPlayer from "react-native-track-player";
 
 import { isStorybook } from "src/configs/env";
 import { registerScreens } from "src/screens";
@@ -21,3 +22,5 @@ if (isStorybook()) {
 } else {
   start();
 }
+
+TrackPlayer.registerPlaybackService(() => require("./service"));

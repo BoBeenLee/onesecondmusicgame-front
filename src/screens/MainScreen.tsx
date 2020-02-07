@@ -6,7 +6,6 @@ import { InteractionManager, Clipboard } from "react-native";
 import styled from "styled-components/native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
-import { iosStatusBarHeight } from "src/utils/device";
 import {
   Bold12,
   Bold14,
@@ -109,7 +108,7 @@ const HeartRemainTime = styled(TimerText)`
 
 const GameItemButton = styled.TouchableOpacity`
   position: absolute;
-  top: ${iosStatusBarHeight(false) + 20}px;
+  top: 14px;
   right: 31px;
   width: 93px;
   height: 32px;

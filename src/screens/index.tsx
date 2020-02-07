@@ -10,6 +10,7 @@ import withNavigator from "src/hocs/withNavigator";
 import withPopup from "src/hocs/withPopup";
 import withSplash from "src/hocs/withSplash";
 import withStore from "src/hocs/withStore";
+import withSafeAreaView from "src/hocs/withSafeAreaView";
 import { SCREEN_IDS } from "src/screens/constant";
 import SplashScreen from "src/screens/SplashScreen";
 import { getRootStore } from "src/stores/Store";
@@ -38,7 +39,12 @@ const isDevelopment = isReactotron();
 const store = getRootStore();
 
 const enhanceOverlayScreen = (Component: React.ComponentType<any>) => {
-  return compose(withNavigator, withSplash, withStore(store))(Component);
+  return compose(
+    withNavigator,
+    withSplash,
+    withStore(store),
+    withSafeAreaView
+  )(Component);
 };
 
 const enhanceScreen = (Component: React.ComponentType<any>) => {
@@ -49,6 +55,7 @@ const enhanceScreen = (Component: React.ComponentType<any>) => {
     withNavigator,
     withSplash,
     withStore(store),
+    withSafeAreaView,
     isDevelopment ? withOverlay : _.identity
   )(Component);
 

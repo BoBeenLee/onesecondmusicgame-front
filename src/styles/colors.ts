@@ -37,6 +37,7 @@ const colors = {
   blueyGrey: "#a7a6c5",
   black: "#000",
   black70: "rgba(33,33,33,.7)",
+  darkBlueGrey: "#0d1233",
   white: "#ffffff",
   gray20: "#fafafa",
   gray50: "#f5f5f5",

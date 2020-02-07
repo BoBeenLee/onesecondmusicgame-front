@@ -5,6 +5,7 @@ import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
 import { FlatListProps, FlatList, ListRenderItem } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import TrackPlayer from "react-native-track-player";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import {
@@ -35,7 +36,6 @@ import { ScrollDirection } from "src/utils/scrollView";
 import SearchTrackCard from "src/components/card/SearchTrackCard";
 import { ITrackItem } from "src/apis/soundcloud/interface";
 import { addNewSongUsingPOST } from "src/apis/song";
-import TrackPlayer from "react-native-track-player";
 import { makePlayStreamUri } from "src/configs/soundCloudAPI";
 
 interface IInject {
@@ -158,13 +158,8 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     this.tracks = Tracks.create();
   }
 
-  public async componentDidMount() {
-    await TrackPlayer.setupPlayer();
-  }
-
   public render() {
     const { singerViews, refresh, isRefresh } = this.singers;
-    const { onScroll } = this.props.scrollDirectionProps;
     const { showTrackBackdrop, playingTrackItem, selectedSinger } = this.state;
     const {
       trackViews,
