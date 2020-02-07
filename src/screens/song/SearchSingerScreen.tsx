@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import _ from "lodash";
 import React, { Component, ComponentClass } from "react";
 import { inject, observer } from "mobx-react";
@@ -34,6 +35,8 @@ import { ScrollDirection } from "src/utils/scrollView";
 import SearchTrackCard from "src/components/card/SearchTrackCard";
 import { ITrackItem } from "src/apis/soundcloud/interface";
 import { addNewSongUsingPOST } from "src/apis/song";
+import TrackPlayer from "react-native-track-player";
+import { makePlayStreamUri } from "src/configs/soundCloudAPI";
 
 interface IInject {
   singerStore: ISingerStore;
@@ -48,7 +51,7 @@ interface IProps extends IParams, IInject, IScrollDirectionProps {}
 
 interface IStates {
   showTrackBackdrop: boolean;
-  playingTrackId: string | null;
+  playingTrackItem: ITrackItem | null;
   selectedSinger: ISinger | null;
 }
 
@@ -148,17 +151,21 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     super(props);
     this.state = {
       showTrackBackdrop: false,
-      playingTrackId: null,
+      playingTrackItem: null,
       selectedSinger: null
     };
     this.singers.initialize({ q: "" });
     this.tracks = Tracks.create();
   }
 
+  public async componentDidMount() {
+    await TrackPlayer.setupPlayer();
+  }
+
   public render() {
     const { singerViews, refresh, isRefresh } = this.singers;
     const { onScroll } = this.props.scrollDirectionProps;
-    const { showTrackBackdrop, playingTrackId, selectedSinger } = this.state;
+    const { showTrackBackdrop, playingTrackItem, selectedSinger } = this.state;
     const {
       trackViews,
       append: appendTrack,
@@ -227,7 +234,9 @@ class SearchSingerScreen extends Component<IProps, IStates> {
                     isLike={true}
                     onLikePress={_.partial(this.addNewSong, item)}
                     audioType={
-                      playingTrackId === String(item.id) ? "play" : "stop"
+                      `${playingTrackItem?.id}` === String(item.id)
+                        ? "play"
+                        : "stop"
                     }
                     onPlayToggle={_.partial(this.onPlayToggle, item)}
                   />
@@ -245,8 +254,27 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     );
   }
 
-  private onPlayToggle = (item: ITrackItem) => {
-    // NOTHING
+  private onPlayToggle = async (item: ITrackItem) => {
+    const { playingTrackItem } = this.state;
+    if (playingTrackItem?.id === item.id) {
+      await TrackPlayer.pause();
+      await TrackPlayer.reset();
+      this.setState({ playingTrackItem: null });
+      return;
+    }
+    if (playingTrackItem) {
+      await TrackPlayer.reset();
+    }
+    this.setState({ playingTrackItem: item });
+    const { id, stream_url, title, user, artwork_url } = item;
+    await TrackPlayer.add({
+      id: String(id),
+      url: makePlayStreamUri(stream_url),
+      title: title,
+      artist: user?.username,
+      artwork: artwork_url
+    });
+    await TrackPlayer.play();
   };
 
   private get singers() {

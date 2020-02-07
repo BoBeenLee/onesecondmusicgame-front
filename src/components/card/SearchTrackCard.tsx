@@ -130,7 +130,7 @@ function SearchTrackCard(props: IProps) {
           <>
             <GroupButton onPress={onPlayToggle}>
               <PlayIcon
-                name={audioType === "play" ? "play" : "pause"}
+                name={audioType === "play" ? "pause" : "play"}
                 size={30}
                 color={colors.brightMagenta}
               />
