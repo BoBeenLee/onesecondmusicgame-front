@@ -38,7 +38,13 @@ const Caption = styled(Bold12)`
 `;
 
 function RegisterTrackBackDrop(props: IProps) {
-  const { showBackdrop, singerName, totalCount, ContentComponent, onBackgroundPress } = props;
+  const {
+    showBackdrop,
+    singerName,
+    totalCount,
+    ContentComponent,
+    onBackgroundPress
+  } = props;
   const backdropRef = useRef<IBackDropMethod>();
 
   useEffect(() => {
