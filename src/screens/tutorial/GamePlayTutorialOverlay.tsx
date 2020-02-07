@@ -99,10 +99,10 @@ const PlayStep2HighlightTitle = styled(Bold20)`
 
 class GamePlayTutorialOverlay extends Component<IProps, IStates> {
   public static async open(params: IParams) {
-    // if (await defaultItemToBoolean(FIELD.DO_NOT_SHOW_GAME_PLAY, false)) {
-    //   params.onAfterClose?.();
-    //   return;
-    // }
+    if (await defaultItemToBoolean(FIELD.DO_NOT_SHOW_GAME_PLAY, false)) {
+      params.onAfterClose?.();
+      return;
+    }
     await showOverlayTransparent(SCREEN_IDS.GamePlayTutorialOverlay, params);
     await setItem(FIELD.DO_NOT_SHOW_GAME_PLAY, "true");
   }
