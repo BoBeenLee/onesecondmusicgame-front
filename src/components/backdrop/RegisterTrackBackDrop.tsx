@@ -61,7 +61,7 @@ function RegisterTrackBackDrop(props: IProps) {
       showHandleBar={true}
       isFirstShow={false}
       overlayOpacity={0.8}
-      backdropHeight={300}
+      backdropHeight={550}
       onBackgroundPress={onBackgroundPress}
     >
       <Header>

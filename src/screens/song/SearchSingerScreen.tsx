@@ -252,7 +252,6 @@ class SearchSingerScreen extends Component<IProps, IStates> {
   private onPlayToggle = async (item: ITrackItem) => {
     const { playingTrackItem } = this.state;
     if (playingTrackItem?.id === item.id) {
-      await TrackPlayer.pause();
       await TrackPlayer.reset();
       this.setState({ playingTrackItem: null });
       return;
@@ -307,9 +306,13 @@ class SearchSingerScreen extends Component<IProps, IStates> {
   };
 
   private onUnSelectedItem = () => {
-    this.setState({ showTrackBackdrop: false, selectedSinger: null }, () => {
-      this.tracks.clear();
-    });
+    this.setState(
+      { showTrackBackdrop: false, selectedSinger: null },
+      async () => {
+        this.tracks.clear();
+        await TrackPlayer.reset();
+      }
+    );
   };
 
   private addNewSong = async (trackItem: ITrackItem) => {
@@ -334,7 +337,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     }
   };
 
-  private back = () => {
+  private back = async () => {
     const { componentId } = this.props;
     pop(componentId);
   };
