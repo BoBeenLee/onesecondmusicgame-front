@@ -17,6 +17,7 @@ const images = {
   btnKakao: require("./btn_kakao.png"),
   btnFacebook: require("./btn_facebook.png"),
   btnGoogle: require("./btn_google.png"),
-  addEmpty: require("./group3Copy.png")
+  addEmpty: require("./group3Copy.png"),
+  closeIcon: require("./group.png")
 };
 export default images;

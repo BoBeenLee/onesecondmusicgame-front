@@ -49,8 +49,16 @@ const AddSingerPlusIcon = styled.Image`
   height: 100%;
 `;
 
-const SearchSingerCardView = styled(SearchSingerCard)`
+const SearchSingerCardView = styled.View`
   margin: 8px;
+`;
+
+const CloseSingerIcon = styled.Image`
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  width: 23px;
+  height: 23px;
 `;
 
 const SubmitButton = styled.TouchableOpacity`
@@ -122,13 +130,16 @@ function SingersSubmitBackDrop(props: IProps) {
             if (Boolean(existsSinger)) {
               const singer = selectedSingers[index];
               return (
-                <SearchSingerCardView
-                  selected={false}
-                  key={singer.name}
-                  image={"https://via.placeholder.com/150"}
-                  name={singer.name}
-                  onPress={_.partial(onSelectedItem, singer)}
-                />
+                <SearchSingerCardView>
+                  <SearchSingerCard
+                    selected={false}
+                    key={singer.name}
+                    image={"https://via.placeholder.com/150"}
+                    name={singer.name}
+                    onPress={_.partial(onSelectedItem, singer)}
+                  />
+                  <CloseSingerIcon source={images.closeIcon} />
+                </SearchSingerCardView>
               );
             }
             return (
