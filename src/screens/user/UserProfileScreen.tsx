@@ -63,16 +63,21 @@ class UserProfileScreen extends Component<IProps, IStates> {
   }
 
   public render() {
-    const { onConfirm } = this.props;
     return (
       <Container>
         <BackTopBar title="닉네임 설정" onBackPress={this.back} />
         <Content>
-          <UserProfileForm onConfirm={onConfirm} />
+          <UserProfileForm onConfirm={this.onConfirm} />
         </Content>
       </Container>
     );
   }
+
+  private onConfirm = () => {
+    const { onConfirm } = this.props;
+    onConfirm?.();
+    this.back();
+  };
 
   private back = () => {
     const { componentId } = this.props;
