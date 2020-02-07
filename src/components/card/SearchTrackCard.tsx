@@ -77,9 +77,7 @@ const HeartView = styled.View`
   align-items: center;
 `;
 
-const HeartIcon = styled(XEIcon)`
-  margin-right: 5px;
-`;
+const HeartIcon = styled(XEIcon)``;
 
 const HeartCount = styled(Bold12)`
   color: ${colors.lightGrey};

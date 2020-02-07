@@ -33,6 +33,7 @@ import withScrollDirection, {
 import { ScrollDirection } from "src/utils/scrollView";
 import SearchTrackCard from "src/components/card/SearchTrackCard";
 import { ITrackItem } from "src/apis/soundcloud/interface";
+import { addNewSongUsingPOST } from "src/apis/song";
 
 interface IInject {
   singerStore: ISingerStore;
@@ -222,13 +223,13 @@ class SearchSingerScreen extends Component<IProps, IStates> {
                     }
                     title={item.title}
                     author={item.user.username}
-                    isRegistered={true}
+                    isRegistered={false}
                     isLike={true}
-                    onLikePress={_.partial(this.onLikePress, String(item.id))}
+                    onLikePress={_.partial(this.addNewSong, item)}
                     audioType={
                       playingTrackId === String(item.id) ? "play" : "stop"
                     }
-                    onPlayToggle={_.partial(this.onPlayToggle, String(item.id))}
+                    onPlayToggle={_.partial(this.onPlayToggle, item)}
                   />
                 );
               }}
@@ -244,11 +245,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     );
   }
 
-  private onLikePress = (id: string) => {
-    // NOTHING
-  };
-
-  private onPlayToggle = (id: string) => {
+  private onPlayToggle = (item: ITrackItem) => {
     // NOTHING
   };
 
@@ -290,6 +287,28 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     this.setState({ showTrackBackdrop: false, selectedSinger: null }, () => {
       this.tracks.clear();
     });
+  };
+
+  private addNewSong = async (trackItem: ITrackItem) => {
+    const { showToast } = this.props.toastStore;
+    const { selectedSinger } = this.state;
+    const singerName = selectedSinger?.name ?? "";
+    const title = trackItem?.title;
+    const url = trackItem?.uri;
+
+    if (![title, singerName, url].some(value => !!value)) {
+      return;
+    }
+    try {
+      await addNewSongUsingPOST({
+        singerName,
+        url,
+        highlightSeconds: [0]
+      });
+      showToast("노래 등록 완료되었습니다!");
+    } catch (error) {
+      showToast(error.message);
+    }
   };
 
   private back = () => {
