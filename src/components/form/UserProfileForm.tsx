@@ -52,6 +52,7 @@ const NicknameInput = styled.View`
 const NicknameTextInput = styled(OSMGTextInput).attrs({
   focusStyle: { color: colors.paleGrey }
 })`
+  width: 100%;
   font-size: 16px;
   text-align: center;
   color: ${colors.brownishGrey};

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop, getCurrentComponentId } from "src/utils/navigator";
@@ -36,6 +37,14 @@ const Container = styled(ContainerWithStatusBar)`
   flex-direction: column;
 `;
 
+const InnerContainer = styled(KeyboardAwareScrollView).attrs({
+  contentContainerStyle: {
+    flex: 1,
+    flexDirection: "column",
+    height: "100%"
+  }
+})``;
+
 const Content = styled.View`
   flex: 1;
   flex-direction: column;
@@ -66,9 +75,15 @@ class UserProfileScreen extends Component<IProps, IStates> {
     return (
       <Container>
         <BackTopBar title="닉네임 설정" onBackPress={this.back} />
-        <Content>
-          <UserProfileForm onConfirm={this.onConfirm} />
-        </Content>
+        <InnerContainer
+          scrollEnabled={false}
+          enableOnAndroid={true}
+          enableAutomaticScroll={false}
+        >
+          <Content>
+            <UserProfileForm onConfirm={this.onConfirm} />
+          </Content>
+        </InnerContainer>
       </Container>
     );
   }

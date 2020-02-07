@@ -16,6 +16,7 @@ const images = {
   mirrorballLight: require("./mirrorballLight.png"),
   btnKakao: require("./btn_kakao.png"),
   btnFacebook: require("./btn_facebook.png"),
-  btnGoogle: require("./btn_google.png")
+  btnGoogle: require("./btn_google.png"),
+  addEmpty: require("./group3Copy.png")
 };
 export default images;

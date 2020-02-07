@@ -19,18 +19,10 @@ const Container = styled.TouchableOpacity`
   align-items: center;
 `;
 
-const SingerImageView = styled.View`
+const SingerImage = styled(CheckImage)`
   width: 76px;
   height: 72px;
-  border-radius: 8px;
-  border: solid 1px ${colors.lightGrey};
   margin-bottom: 4px;
-  overflow: hidden;
-`;
-
-const SingerImage = styled(CheckImage)`
-  width: 100%;
-  height: 100%;
 `;
 
 const Name = styled(Regular12)`
@@ -41,9 +33,7 @@ function SearchSingerCard(props: IProps) {
   const { style, selected, image, name, onPress } = props;
   return (
     <Container style={style} onPress={onPress}>
-      <SingerImageView>
-        <SingerImage checked={selected} source={{ uri: image }} />
-      </SingerImageView>
+      <SingerImage checked={selected} source={{ uri: image }} />
       <Name>{name}</Name>
     </Container>
   );

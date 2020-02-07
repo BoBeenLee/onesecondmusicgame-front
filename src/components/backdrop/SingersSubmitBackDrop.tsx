@@ -13,6 +13,7 @@ import useShowAnimation, {
 } from "src/hooks/useShowAnimation";
 import { delay } from "src/utils/common";
 import { Bold14, Bold18 } from "src/components/text/Typographies";
+import images from "src/images";
 
 interface IProps {
   showMinimumSubmit: boolean;
@@ -40,11 +41,13 @@ const AddSingerView = styled.View`
   align-items: center;
   width: 72px;
   height: 72px;
-  border: solid 1px ${colors.warmGrey};
   margin: 8px;
 `;
 
-const AddSingerPlusIcon = styled(XEIcon)``;
+const AddSingerPlusIcon = styled.Image`
+  width: 100%;
+  height: 100%;
+`;
 
 const SearchSingerCardView = styled(SearchSingerCard)`
   margin: 8px;
@@ -130,7 +133,7 @@ function SingersSubmitBackDrop(props: IProps) {
             }
             return (
               <AddSingerView key={`addsinger${index}`}>
-                <AddSingerPlusIcon name="plus" size={24} color={colors.black} />
+                <AddSingerPlusIcon source={images.addEmpty} />
               </AddSingerView>
             );
           })}

@@ -4,7 +4,6 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import TrackPlayer from "react-native-track-player";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import {
@@ -14,7 +13,7 @@ import {
   Bold18
 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
-import { push, pop, getCurrentComponentId } from "src/utils/navigator";
+import { push, popTo, getCurrentComponentId } from "src/utils/navigator";
 import CircleCheckGroup from "src/components/icon/CircleCheckGroup";
 import LimitTimeProgress from "src/components/progress/LimitTimeProgress";
 import colors from "src/styles/colors";
@@ -34,7 +33,6 @@ import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import GamePlayHighlights, {
   IGamePlayHighlightItem
 } from "src/stores/GamePlayHighlights";
-import { makePlayStreamUriByTrackId } from "src/configs/soundCloudAPI";
 import GamePlayTutorialOverlay from "src/screens/tutorial/GamePlayTutorialOverlay";
 import XEIcon from "src/components/icon/XEIcon";
 import SkipIcon from "src/components/icon/SkipIcon";
@@ -54,6 +52,7 @@ interface IParams {
 interface IProps extends IInject, IPopupProps {
   componentId: string;
   selectedSingers: ISinger[];
+  parentComponentId: string;
 }
 
 interface IStates {
@@ -236,7 +235,8 @@ class GamePlayScreen extends Component<IProps, IStates> {
       componentId: params.componentId,
       nextComponentId: SCREEN_IDS.GamePlayScreen,
       params: {
-        selectedSingers: []
+        selectedSingers: [],
+        parentComponentId: params.componentId
       }
     });
   }
@@ -249,7 +249,8 @@ class GamePlayScreen extends Component<IProps, IStates> {
           componentId: getCurrentComponentId(),
           nextComponentId: SCREEN_IDS.GamePlayScreen,
           params: {
-            selectedSingers
+            selectedSingers,
+            parentComponentId: params.componentId
           }
         });
       }
@@ -524,8 +525,8 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private back = () => {
-    const { componentId } = this.props;
-    pop(componentId);
+    const { componentId, parentComponentId } = this.props;
+    popTo(parentComponentId);
   };
 }
 
