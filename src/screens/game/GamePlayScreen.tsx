@@ -10,7 +10,10 @@ import {
   Bold12,
   Bold17,
   Bold20,
-  Bold18
+  Bold18,
+  Bold27,
+  Bold36,
+  Regular20
 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, popTo, getCurrentComponentId } from "src/utils/navigator";
@@ -47,6 +50,7 @@ interface IInject {
 
 interface IParams {
   componentId: string;
+  heartCount: number;
 }
 
 interface IProps extends IInject, IPopupProps {
@@ -141,7 +145,22 @@ const AnswerView = styled.View`
   padding-top: 60px;
 `;
 
-const AnswerText = styled(Bold12)``;
+const AnswerText = styled(Bold36)`
+  text-align: center;
+  color: ${colors.robinEggBlue};
+  margin-bottom: 51px;
+`;
+
+const AnswerSingerText = styled(Regular20)`
+  text-align: center;
+  color: ${colors.palePurple};
+  margin-bottom: 8px;
+`;
+
+const AnswerSongText = styled(Bold27)`
+  text-align: center;
+  color: ${colors.lavender};
+`;
 
 const Footer = styled.View`
   flex-direction: row;
@@ -166,14 +185,17 @@ const AnswerButtonText = styled(Bold20)`
   color: ${colors.white};
 `;
 
+const NextEmptyView = styled.View``;
+
 const NextStepGroup = styled.View`
   flex-direction: column;
-  justify-content: flex-end;
+  align-items: flex-end;
 `;
 
 const NextStepButton = styled.TouchableOpacity`
-  flex: 1;
+  width: 173px;
   height: 56px;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   border-radius: 14px;
@@ -182,13 +204,15 @@ const NextStepButton = styled.TouchableOpacity`
 `;
 
 const NextStepButtonText = styled(Bold20)`
-  color: ${colors.white};
+  color: ${colors.pinkyPurple};
   margin-right: 11px;
 `;
 
 const NextStepArrowIcon = styled(XEIcon)``;
 
 const NextStepCaption = styled(Bold17)`
+  text-align: center;
+  color: ${colors.lightBlueGrey};
   margin-bottom: 12px;
 `;
 
@@ -231,6 +255,9 @@ const NEXT_STEP_SECONDS = 5000;
 @observer
 class GamePlayScreen extends Component<IProps, IStates> {
   public static open(params: IParams) {
+    if (params.heartCount === 0) {
+      throw new Error("하트가 부족합니다.");
+    }
     return push({
       componentId: params.componentId,
       nextComponentId: SCREEN_IDS.GamePlayScreen,
@@ -242,6 +269,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
   }
 
   public static openSelectedSingers(params: IParams) {
+    if (params.heartCount === 0) {
+      throw new Error("하트가 부족합니다.");
+    }
     GameSearchSingerScreen.open({
       componentId: params.componentId,
       onResult: (selectedSingers: ISinger[]) => {
@@ -272,7 +302,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     props.authStore.user?.heart?.useHeart?.();
     GamePlayTutorialOverlay.open({
       onAfterClose: () => {
-        this.setState({ currentStepStatus: "play" });
+        this.setState({ currentStepStatus: "answer" });
       }
     });
   }
@@ -298,14 +328,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
             />
             <GameStopButton source={images.pauseButton} onPress={this.exit} />
           </Header>
-          <GamePlayers
-            scrollEnabled={false}
-            ref={this.gamePlayersRef}
-            data={this.gameHighlightViews}
-            itemWidth={240}
-            renderItem={this.renderItem}
-            onSnapToItem={this.onSnapToItem}
-          />
           {["play", "stop"].some(status => status === currentStepStatus)
             ? this.renderGamePlay
             : this.renderAnswer}
@@ -322,6 +344,14 @@ class GamePlayScreen extends Component<IProps, IStates> {
 
     return (
       <>
+        <GamePlayers
+          scrollEnabled={false}
+          ref={this.gamePlayersRef}
+          data={this.gameHighlightViews}
+          itemWidth={240}
+          renderItem={this.renderItem}
+          onSnapToItem={this.onSnapToItem}
+        />
         <Content>
           <SongInput>
             <SongTextInput
@@ -352,7 +382,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   }
 
   private get renderAnswer() {
-    const { checkAnswer } = this.gamePlayHighlights;
+    const { checkAnswer, currentGameHighlight } = this.gamePlayHighlights;
     const { songAnswerInput } = this.state;
     const isAnswer = checkAnswer(songAnswerInput);
     return (
@@ -360,10 +390,15 @@ class GamePlayScreen extends Component<IProps, IStates> {
         <Content>
           {isAnswer ? null : <AnswerStatus source={images.correctCD} />}
           <AnswerView>
-            <AnswerText>정답입니다~</AnswerText>
+            <AnswerText>정답입니다~!!</AnswerText>
+            <AnswerSingerText>
+              {currentGameHighlight?.singer ?? ""}
+            </AnswerSingerText>
+            <AnswerSongText>{currentGameHighlight?.title ?? ""}</AnswerSongText>
           </AnswerView>
         </Content>
         <Footer>
+          <NextEmptyView />
           <NextStepGroup>
             <NextStepCaption>5초 뒤 다음 문제</NextStepCaption>
             <NextStepButton>

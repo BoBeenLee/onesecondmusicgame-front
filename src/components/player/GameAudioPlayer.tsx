@@ -60,14 +60,13 @@ function GameAudioPlayer(props: IProps) {
     stop();
   };
 
-  const revertPlayType = playType === "play" ? "stop" : "play";
   return (
     <AudioView
       style={style}
       disabled={true}
-      size={size / 3}
-      playType={revertPlayType}
-      onPress={playType === "play" ? stop : play}
+      size={size}
+      playType={playType}
+      onPress={playType === "play" ? _.identity : play}
     />
   );
 }

@@ -425,12 +425,29 @@ class MainScreen extends Component<IProps> {
 
   private navigateToGamePlay = () => {
     const { componentId } = this.props;
-    GamePlayScreen.open({ componentId });
+    const { showToast } = this.props.toastStore;
+    const heart = this.props.authStore.user?.heart!;
+
+    try {
+      GamePlayScreen.open({ componentId, heartCount: heart?.heartCount ?? 0 });
+    } catch (error) {
+      showToast(error.message);
+    }
   };
 
   private navigateToSelectedSingersGamePlay = () => {
     const { componentId } = this.props;
-    GamePlayScreen.openSelectedSingers({ componentId });
+    const { showToast } = this.props.toastStore;
+    const heart = this.props.authStore.user?.heart!;
+
+    try {
+      GamePlayScreen.openSelectedSingers({
+        componentId,
+        heartCount: heart?.heartCount ?? 0
+      });
+    } catch (error) {
+      showToast(error.message);
+    }
   };
 
   private navigateToRegisterSong = () => {

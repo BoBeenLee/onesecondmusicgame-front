@@ -465,7 +465,13 @@ class GameResultScreen extends Component<IProps, IStates> {
 
   private navigateToGamePlay = () => {
     const { componentId } = this.props;
-    GamePlayScreen.open({ componentId });
+    const { showToast } = this.props.toastStore;
+    const heart = this.props.authStore.user?.heart!;
+    try {
+      GamePlayScreen.open({ componentId, heartCount: heart?.heartCount ?? 0 });
+    } catch (error) {
+      showToast(error.message);
+    }
   };
 
   private navigateToRanking = () => {
