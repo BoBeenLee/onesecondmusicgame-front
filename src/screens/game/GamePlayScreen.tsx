@@ -436,7 +436,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
 
   private renderItem = (props: { item: ICarouselItem; index: number }) => {
     return (
-      <GamePlayerView>
+      <GamePlayerView key={`gamePlayer${index}`}>
         <GameAudioPlayer size={200} gamePlayItem={props.item} />
       </GamePlayerView>
     );

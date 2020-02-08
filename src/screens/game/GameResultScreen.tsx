@@ -368,7 +368,7 @@ class GameResultScreen extends Component<IProps, IStates> {
               </ResultSectionRemainHeartRow>
             </ResultSection>
             <FooterRow1>
-              <HomeButton source={images.buttonHome} />
+              <HomeButton source={images.buttonHome} onPress={this.home} />
               <RetryPlayButton onPress={this.navigateToGamePlay}>
                 <RetryPlayButtonText>다시 게임하기</RetryPlayButtonText>
               </RetryPlayButton>
