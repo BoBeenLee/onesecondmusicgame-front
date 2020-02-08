@@ -273,10 +273,7 @@ class MainScreen extends Component<IProps> {
             />
             <HeartRemain>
               <HeartRemainText>충전까지 남은 시간 : </HeartRemainText>
-              <HeartRemainTime
-                seconds={heart?.leftTime ?? 0}
-                onTimeEnd={this.chargeTime}
-              />
+              <HeartRemainTime timeLeft={heart?.leftTime ?? 0} />
             </HeartRemain>
           </HeartStatus>
         </Header>

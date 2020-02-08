@@ -144,7 +144,8 @@ class DeveloperScreen extends Component<IProps> {
           />
           <ADButton
             onPress={_.partial(GamePlayScreen.open, {
-              componentId: componentId
+              componentId: componentId,
+              heartCount: 0
             })}
           >
             <ButtonText>게임플레이</ButtonText>

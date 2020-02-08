@@ -34,10 +34,12 @@ const Heart = types
       const onVisible = reaction(
         () => self.leftTime,
         async (leftTime: number) => {
-          if (leftTime > 0) {
-            await delay(leftTime * 1000);
+          if (leftTime === 0) {
             self.fetchHeart();
+            return;
           }
+          await delay(1000);
+          self.leftTime -= 1;
         }
       );
       addDisposer(self, onVisible);

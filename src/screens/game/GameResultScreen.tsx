@@ -356,10 +356,7 @@ class GameResultScreen extends Component<IProps, IStates> {
               <ResultSectionRemainHeartRow>
                 <HeartRemain>
                   <HeartRemainText>충전까지 남은 시간 : </HeartRemainText>
-                  <HeartRemainTime
-                    seconds={heart?.leftTime ?? 0}
-                    onTimeEnd={this.chargeTime}
-                  />
+                  <HeartRemainTime timeLeft={heart?.leftTime ?? 0} />
                 </HeartRemain>
                 <HeartGroup
                   hearts={_.times(5, index =>
