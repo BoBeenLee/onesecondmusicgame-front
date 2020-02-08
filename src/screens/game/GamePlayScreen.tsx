@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import TrackPlayer from "react-native-track-player";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import {
@@ -42,6 +43,7 @@ import SkipIcon from "src/components/icon/SkipIcon";
 import images from "src/images";
 import IconButton from "src/components/button/IconButton";
 import ConfirmPopup from "src/components/popup/ConfirmPopup";
+import { makePlayStreamUriByTrackId } from "src/configs/soundCloudAPI";
 
 interface IInject {
   authStore: IAuthStore;
@@ -307,9 +309,10 @@ class GamePlayScreen extends Component<IProps, IStates> {
     });
   }
 
-  public componentDidMount() {
+  public async componentDidMount() {
     const { selectedSingers } = this.props;
-    this.gamePlayHighlights.initialize(selectedSingers);
+    await this.gamePlayHighlights.initialize(selectedSingers);
+    await this.readyForPlay();
   }
 
   public render() {
@@ -436,10 +439,18 @@ class GamePlayScreen extends Component<IProps, IStates> {
 
   private renderItem = (props: { item: ICarouselItem; index: number }) => {
     return (
-      <GamePlayerView key={`gamePlayer${index}`}>
-        <GameAudioPlayer size={200} gamePlayItem={props.item} />
+      <GamePlayerView key={`gamePlayer${props.index}`}>
+        <GameAudioPlayer
+          size={200}
+          onPlay={_.partial(this.onPlayItem, props.item)}
+        />
       </GamePlayerView>
     );
+  };
+
+  private onPlayItem = async (item: IGamePlayHighlightItem) => {
+    await TrackPlayer.seekTo(_.round((item.millisecond ?? 0) / 1000));
+    await TrackPlayer.play();
   };
 
   private onSnapToItem = (index: number) => {
@@ -506,6 +517,22 @@ class GamePlayScreen extends Component<IProps, IStates> {
     this.setState({
       currentStepStatus: "play",
       songAnswerInput: ""
+    });
+  };
+
+  private readyForPlay = async () => {
+    const currentGameHighlight = this.gamePlayHighlights.currentGameHighlight;
+    if (currentGameHighlight === null) {
+      return;
+    }
+    const { id, title, trackId, singer, artworkUrl } = currentGameHighlight;
+    await TrackPlayer.reset();
+    await TrackPlayer.add({
+      id: String(id ?? "none"),
+      url: makePlayStreamUriByTrackId(String(trackId)),
+      title: title ?? "title",
+      artist: singer ?? "none",
+      artwork: artworkUrl
     });
   };
 

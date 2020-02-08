@@ -116,7 +116,7 @@ const GainScoreView = styled.View<{ size: number }>`
     shadow-radius: 25px;
     elevation: 3;
   `}
-  background-color: ${colors.darkGreyBlue};
+  background-color: transparent;
 `;
 
 const GainScoreTitle = styled(Bold14)`
