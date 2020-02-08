@@ -44,7 +44,7 @@ storiesOf("Player", module)
     return (
       <GameAudioPlayer
         size={200}
-        gamePlayItem={{} as any}
+        onPlay={action("onPlay")}
         onToggle={action("onToggle")}
       />
     );

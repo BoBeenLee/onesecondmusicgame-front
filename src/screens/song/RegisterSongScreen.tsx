@@ -148,7 +148,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
         <BackTopBar title="노래 등록" onBackPress={this.back} />
         <Content>
           <SongTitle>{selectedTrackItem?.title}</SongTitle>
-          <GameSongPlayer size={200} gamePlayItem={selectedTrackItem as any} />
+          <GameSongPlayer size={200} onPlay={_.identity} />
           <RegisterSongDescription>
             {`원하는 노래 구간을 지정해주세요!
 미 지정 시, 랜덤으로 구간 지정됩니다.`}
