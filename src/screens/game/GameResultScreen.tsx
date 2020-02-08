@@ -15,7 +15,8 @@ import {
   Bold24,
   Regular24,
   Bold16,
-  Regular10
+  Regular10,
+  Bold12
 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
@@ -116,7 +117,7 @@ const GainScoreView = styled.View<{ size: number }>`
     shadow-radius: 25px;
     elevation: 3;
   `}
-  background-color: transparent;
+  border: solid 2px ${colors.robinEggBlue};
 `;
 
 const GainScoreTitle = styled(Bold14)`
@@ -178,6 +179,12 @@ const ResultSectionHeaderRow = styled.View`
   padding-bottom: 12px;
 `;
 
+const RankingIcon = styled.Image`
+  width: 16px;
+  height: 18px;
+  margin-right: 11px;
+`;
+
 const ResultSectionMyRankRow = styled.View`
   flex-direction: row;
   align-items: center;
@@ -231,13 +238,21 @@ const FooterRow1 = styled.View`
   margin-vertical: 10px;
 `;
 
-const HomeButton = styled(IconButton)`
-  width: 42px;
-  height: 36px;
+const HomeButton = styled.TouchableOpacity`
   flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-right: 20px;
+`;
+
+const HomeIcon = styled.Image`
+  width: 42px;
+  height: 36px;
+  margin-bottom: 8px;
+`;
+
+const HomeButtonText = styled(Bold12)`
+  color: ${colors.white};
 `;
 
 const RetryPlayButton = styled.TouchableOpacity`
@@ -322,6 +337,7 @@ class GameResultScreen extends Component<IProps, IStates> {
           <Footer>
             <ResultSection onPress={this.navigateToRanking}>
               <ResultSectionHeaderRow>
+                <RankingIcon source={images.btnRankIcon} />
                 <ResultSectionHeaderTitle>개인랭킹</ResultSectionHeaderTitle>
                 <ArrowRightIcon
                   name="angle-right"
@@ -368,7 +384,10 @@ class GameResultScreen extends Component<IProps, IStates> {
               </ResultSectionRemainHeartRow>
             </ResultSection>
             <FooterRow1>
-              <HomeButton source={images.buttonHome} onPress={this.home} />
+              <HomeButton onPress={this.home}>
+                <HomeIcon source={images.combinedShape} />
+                <HomeButtonText>홈</HomeButtonText>
+              </HomeButton>
               <RetryPlayButton onPress={this.navigateToGamePlay}>
                 <RetryPlayButtonText>다시 게임하기</RetryPlayButtonText>
               </RetryPlayButton>

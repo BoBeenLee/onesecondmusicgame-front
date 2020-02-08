@@ -2,9 +2,9 @@ import React from "react";
 import { ViewProps } from "react-native";
 import styled from "styled-components/native";
 import SafeAreaView from "react-native-safe-area-view";
+import LinearGradient from "react-native-linear-gradient";
 
 import colors from "src/styles/colors";
-import LinearGradient from "react-native-linear-gradient";
 
 interface IProps {
   children?: React.ReactNode;
@@ -21,7 +21,6 @@ const Container = styled(LinearGradient).attrs({
   colors: [colors.darkIndigo, colors.almostBlack]
 })`
   flex: 1;
-  background-color: ${colors.white};
 `;
 
 function ContainerWithStatusBar({

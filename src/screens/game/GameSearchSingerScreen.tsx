@@ -30,6 +30,7 @@ import withScrollDirection, {
 import { ScrollDirection } from "src/utils/scrollView";
 import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
 import BackTopBar from "src/components/topbar/BackTopBar";
+import XEIcon from "src/components/icon/XEIcon";
 
 interface IInject {
   singerStore: ISingerStore;
@@ -112,6 +113,13 @@ const ResultEmptyTitle = styled(Bold12)`
   color: ${colors.lightGreyTwo};
   margin-bottom: 21px;
 `;
+
+const ResultEmptyRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+const HeartIcon = styled(XEIcon)``;
 
 const ResultEmptyDescription = styled(Regular12)`
   color: ${colors.lightGreyTwo};
@@ -196,13 +204,20 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
               ListEmptyComponent={
                 <ResultEmpty>
                   <ResultEmptyTitle>검색결과가 없습니다.</ResultEmptyTitle>
-                  <ResultEmptyDescription>
-                    {`음원 등록에서 찾으시는 곡을 검색해
-  를 눌러주시면 곡을 등록하실 수 있습니다.`}
-                  </ResultEmptyDescription>
+                  <ResultEmptyRow>
+                    <ResultEmptyDescription>
+                      음원 등록에서 찾으시는 곡을 검색해
+                    </ResultEmptyDescription>
+                  </ResultEmptyRow>
+                  <ResultEmptyRow>
+                    <HeartIcon name="heart" size={10} color={colors.red500} />
+                    <ResultEmptyDescription>
+                      를 눌러주시면 곡을 등록하실 수 있습니다.
+                    </ResultEmptyDescription>
+                  </ResultEmptyRow>
                   <RegisterSongButton onPress={this.navigateToRegisterSong}>
                     <RegisterSongButtonText>
-                      음원등록 하러가기
+                      노래제한 하러가기
                     </RegisterSongButtonText>
                   </RegisterSongButton>
                 </ResultEmpty>

@@ -278,6 +278,9 @@ class MainScreen extends Component<IProps> {
           </HeartStatus>
         </Header>
         <Content>
+          <MainMirrorBallView>
+            <MainMirrorBallBackground source={images.mainMirrorBall} />
+          </MainMirrorBallView>
           <Profile>
             <NicknameView>
               <UnderlineText
@@ -292,9 +295,6 @@ class MainScreen extends Component<IProps> {
             </NicknameView>
             <Description>오늘도 같이 음악 맞춰요 </Description>
           </Profile>
-          <MainMirrorBallView>
-            <MainMirrorBallBackground source={images.mainMirrorBall} />
-          </MainMirrorBallView>
         </Content>
         <GameModeView>
           <GameModeSection onPress={this.navigateToGamePlay}>

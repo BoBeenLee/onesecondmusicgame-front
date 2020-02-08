@@ -5,6 +5,7 @@ import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import TrackPlayer from "react-native-track-player";
+import LinearGradient from "react-native-linear-gradient";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import {
@@ -44,6 +45,7 @@ import images from "src/images";
 import IconButton from "src/components/button/IconButton";
 import ConfirmPopup from "src/components/popup/ConfirmPopup";
 import { makePlayStreamUriByTrackId } from "src/configs/soundCloudAPI";
+import { delay } from "src/utils/common";
 
 interface IInject {
   authStore: IAuthStore;
@@ -109,7 +111,7 @@ const GamePlayerView = styled.View`
   align-items: center;
 `;
 
-const Content = styled.View`
+const GameContent = styled.View`
   flex: 1;
   flex-direction: column;
   align-items: center;
@@ -134,6 +136,17 @@ const SongTextInput = styled(OSMGTextInput).attrs({
   color: ${colors.paleGrey};
   font-size: 22px;
   text-align: center;
+`;
+
+const AnswerContainer = styled(LinearGradient).attrs({
+  colors: [colors.darkIndigo, colors.almostBlack]
+})`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: white;
 `;
 
 const AnswerStatus = styled.Image`
@@ -170,6 +183,14 @@ const Footer = styled.View`
   justify-content: space-between;
   padding-horizontal: 14px;
   padding-bottom: 31px;
+`;
+
+const AnswerContent = styled.View`
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 38px;
+  padding-horizontal: 70px;
 `;
 
 const AnswerButton = styled.TouchableOpacity`
@@ -245,7 +266,7 @@ const SkipBadgeText = styled(Bold18)`
   color: ${colors.paleLavender};
 `;
 
-const DEFAULT_LIMIT_TIME = 40;
+const DEFAULT_LIMIT_TIME = 60;
 const NEXT_STEP_SECONDS = 5000;
 
 @inject(
@@ -316,26 +337,36 @@ class GamePlayScreen extends Component<IProps, IStates> {
   }
 
   public render() {
-    const { currentStep, gamePlayStepStatuses } = this.gamePlayHighlights;
     const { currentStepStatus } = this.state;
+    // console.tron.log(currentStepStatus);
     return (
       <Container>
         <InnerContainer enableOnAndroid={true} enableAutomaticScroll={false}>
-          <Header>
-            <GamePlayStep circles={gamePlayStepStatuses} />
-            <LimitTimeProgress
-              key={`${currentStep}`}
-              pause={currentStepStatus !== "play"}
-              seconds={DEFAULT_LIMIT_TIME}
-              onTimeEnd={this.onLimitTimeEnd}
-            />
-            <GameStopButton source={images.pauseButton} onPress={this.exit} />
-          </Header>
+          {this.renderHeader}
+          {this.renderGamePlay}
           {["play", "stop"].some(status => status === currentStepStatus)
-            ? this.renderGamePlay
+            ? null
             : this.renderAnswer}
         </InnerContainer>
       </Container>
+    );
+  }
+
+  private get renderHeader() {
+    const { currentStep, gamePlayStepStatuses } = this.gamePlayHighlights;
+    const { currentStepStatus } = this.state;
+    console.tron.log(currentStep);
+    return (
+      <Header>
+        <GamePlayStep circles={gamePlayStepStatuses} />
+        <LimitTimeProgress
+          key={`${currentStep}`}
+          pause={currentStepStatus !== "play"}
+          seconds={DEFAULT_LIMIT_TIME}
+          onTimeEnd={this.onLimitTimeEnd}
+        />
+        <GameStopButton source={images.pauseButton} onPress={this.exit} />
+      </Header>
     );
   }
 
@@ -344,7 +375,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const userItem = this.props.authStore.user?.userItemsByItemType(
       Item.ItemTypeEnum.SKIP
     );
-
     return (
       <>
         <GamePlayers
@@ -355,7 +385,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
           renderItem={this.renderItem}
           onSnapToItem={this.onSnapToItem}
         />
-        <Content>
+        <GameContent>
           <SongInput>
             <SongTextInput
               placeholder="노래명을 맞춰주세요!"
@@ -364,7 +394,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
               onChangeText={this.onSongAnswerChangeText}
             />
           </SongInput>
-        </Content>
+        </GameContent>
         <Footer>
           <AnswerButton onPress={this.submitAnswer}>
             <AnswerButtonText>입력확인</AnswerButtonText>
@@ -389,8 +419,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const { songAnswerInput } = this.state;
     const isAnswer = checkAnswer(songAnswerInput);
     return (
-      <>
-        <Content>
+      <AnswerContainer>
+        {this.renderHeader}
+        <AnswerContent>
           {isAnswer ? (
             <AnswerStatus source={images.correctCD} />
           ) : (
@@ -407,7 +438,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
             </AnswerSingerText>
             <AnswerSongText>{currentGameHighlight?.title ?? ""}</AnswerSongText>
           </AnswerView>
-        </Content>
+        </AnswerContent>
         <Footer>
           <NextEmptyView />
           <NextStepGroup>
@@ -422,7 +453,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
             </NextStepButton>
           </NextStepGroup>
         </Footer>
-      </>
+      </AnswerContainer>
     );
   }
 
@@ -457,8 +488,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
     this.gamePlayHighlights.setStep(index);
   };
 
-  private onLimitTimeEnd = () => {
-    this.beforeNextStep();
+  private onLimitTimeEnd = async () => {
+    const { answer } = this.gamePlayHighlights;
+    const { songAnswerInput } = this.state;
+    console.tron.log(answer, songAnswerInput);
+    answer(songAnswerInput);
+    await this.beforeNextStep();
   };
 
   private useSkipItem = () => {
@@ -468,16 +503,10 @@ class GamePlayScreen extends Component<IProps, IStates> {
     );
     userItem?.useItemType?.();
     closePopup();
-    this.setState(
-      {
-        currentStepStatus: "play",
-        songAnswerInput: ""
-      },
-      this.nextStep
-    );
+    this.nextStep();
   };
 
-  private submitAnswer = () => {
+  private submitAnswer = async () => {
     const {
       answer,
       checkAnswer,
@@ -495,10 +524,10 @@ class GamePlayScreen extends Component<IProps, IStates> {
       return;
     }
     answer(songAnswerInput);
-    this.beforeNextStep();
+    await this.beforeNextStep();
   };
 
-  private beforeNextStep = () => {
+  private beforeNextStep = async () => {
     const { isFinish } = this.gamePlayHighlights;
     this.setState({
       currentStepStatus: "answer"
@@ -507,17 +536,25 @@ class GamePlayScreen extends Component<IProps, IStates> {
       this.onFinishPopup();
       return;
     }
-    setTimeout(this.nextStep, NEXT_STEP_SECONDS);
+    await delay(NEXT_STEP_SECONDS);
+    await this.nextStep();
   };
 
   private nextStep = () => {
-    const { nextStep } = this.gamePlayHighlights;
-    nextStep();
-    this.gamePlayersRef.current?.snapToNext();
-    this.setState({
-      currentStepStatus: "play",
-      songAnswerInput: ""
-    });
+    if (this.state.currentStepStatus === "play") {
+      return;
+    }
+    this.setState(
+      {
+        currentStepStatus: "play",
+        songAnswerInput: ""
+      },
+      async () => {
+        this.gamePlayersRef.current?.snapToNext();
+        this.gamePlayHighlights.nextStep();
+        // await this.readyForPlay();
+      }
+    );
   };
 
   private readyForPlay = async () => {
