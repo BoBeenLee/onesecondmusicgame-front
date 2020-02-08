@@ -24,9 +24,15 @@ const Heart = types
       self.heartCount = response.heartCount ?? 0;
       self.leftTime = response.leftTime ?? 0;
     });
+
+    const useLeftTime = () => {
+      self.leftTime -= 1;
+    };
+
     return {
       fetchHeart,
-      useHeart
+      useHeart,
+      useLeftTime
     };
   })
   .actions(self => {
@@ -39,7 +45,7 @@ const Heart = types
             return;
           }
           await delay(1000);
-          self.leftTime -= 1;
+          self.useLeftTime();
         }
       );
       addDisposer(self, onVisible);
