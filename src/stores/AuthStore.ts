@@ -19,7 +19,7 @@ import { defaultItemToString, FIELD, setItem } from "src/utils/storage";
 import {
   signInUsingPOST,
   signUpUsingPOST,
-  nicknameModifyUsingPOST
+  myInfoChangeUsingPUT
 } from "src/apis/user";
 import { getUniqueID } from "src/configs/device";
 import User from "src/stores/model/User";
@@ -268,7 +268,7 @@ const AuthStore = types
 
     const updateUser = flow(function*({ nickname }: { nickname: string }) {
       self.user?.setNickname(nickname);
-      yield nicknameModifyUsingPOST({ newNickname: nickname });
+      yield myInfoChangeUsingPUT({ newNickname: nickname });
     });
 
     const updateUserReward = () => {
