@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 function useTimer({
   seconds,
@@ -7,34 +7,36 @@ function useTimer({
 }: {
   seconds: number;
   defaultTimeLeft?: number;
-  onTimeEnd?: () => void;
+  onTimeEnd?: (timeLeft: number) => void;
 }) {
   const [timeLeft, setTimeLeft] = useState(defaultTimeLeft ?? seconds);
-  const [status, setStatus] = useState<"start" | "stop">("start");
+  const [status, setStatus] = useState<"start" | "stop">("stop");
 
-  const start = () => {
+  const start = useCallback(() => {
     setStatus("start");
-  };
+  }, []);
 
-  const stop = () => {
+  const stop = useCallback(() => {
     setStatus("stop");
-  };
+  }, []);
 
   useEffect(() => {
-    if (!timeLeft) {
-      onTimeEnd && onTimeEnd();
+    if (status === "stop") {
       return;
     }
-    if (status === "stop") {
+    if (timeLeft === 0) {
+      onTimeEnd?.(0);
+      stop();
       return;
     }
     const intervalId = setInterval(() => {
       setTimeLeft(timeLeft - 1);
     }, 1000);
     return () => clearInterval(intervalId);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onTimeEnd, timeLeft, status]);
 
-  return { start, stop, timeLeft };
+  return { start, stop, timeLeft, status };
 }
 
 export default useTimer;

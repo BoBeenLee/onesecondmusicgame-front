@@ -46,6 +46,7 @@ import IconButton from "src/components/button/IconButton";
 import ConfirmPopup from "src/components/popup/ConfirmPopup";
 import { makePlayStreamUriByTrackId } from "src/configs/soundCloudAPI";
 import { delay } from "src/utils/common";
+import MainScreen from "src/screens/MainScreen";
 
 interface IInject {
   authStore: IAuthStore;
@@ -60,12 +61,12 @@ interface IParams {
 interface IProps extends IInject, IPopupProps {
   componentId: string;
   selectedSingers: ISinger[];
-  parentComponentId: string;
 }
 
 interface IStates {
   currentStepStatus: "play" | "stop" | "answer";
   songAnswerInput: string;
+  songAnswerSeconds: number;
 }
 
 interface ICarouselItem extends ICarousel, IGamePlayHighlightItem {}
@@ -266,7 +267,7 @@ const SkipBadgeText = styled(Bold18)`
   color: ${colors.paleLavender};
 `;
 
-const DEFAULT_LIMIT_TIME = 60;
+const DEFAULT_LIMIT_TIME = 5;
 const NEXT_STEP_SECONDS = 5000;
 
 @inject(
@@ -285,8 +286,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
       componentId: params.componentId,
       nextComponentId: SCREEN_IDS.GamePlayScreen,
       params: {
-        selectedSingers: [],
-        parentComponentId: params.componentId
+        selectedSingers: []
       }
     });
   }
@@ -302,8 +302,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
           componentId: getCurrentComponentId(),
           nextComponentId: SCREEN_IDS.GamePlayScreen,
           params: {
-            selectedSingers,
-            parentComponentId: params.componentId
+            selectedSingers
           }
         });
       }
@@ -312,12 +311,14 @@ class GamePlayScreen extends Component<IProps, IStates> {
 
   public gamePlayersRef = React.createRef<OSMGCarousel<any>>();
   public gamePlayHighlights = GamePlayHighlights.create({});
+  public intervalId: any;
 
   constructor(props: IProps) {
     super(props);
     this.state = {
       currentStepStatus: "stop",
-      songAnswerInput: ""
+      songAnswerInput: "",
+      songAnswerSeconds: DEFAULT_LIMIT_TIME
     };
     loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
       onRewarded: this.onRewarded
@@ -338,11 +339,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
 
   public render() {
     const { currentStepStatus } = this.state;
-    // console.tron.log(currentStepStatus);
     return (
       <Container>
         <InnerContainer enableOnAndroid={true} enableAutomaticScroll={false}>
-          {this.renderHeader}
           {this.renderGamePlay}
           {["play", "stop"].some(status => status === currentStepStatus)
             ? null
@@ -352,31 +351,23 @@ class GamePlayScreen extends Component<IProps, IStates> {
     );
   }
 
-  private get renderHeader() {
-    const { currentStep, gamePlayStepStatuses } = this.gamePlayHighlights;
-    const { currentStepStatus } = this.state;
-    console.tron.log(currentStep);
-    return (
-      <Header>
-        <GamePlayStep circles={gamePlayStepStatuses} />
-        <LimitTimeProgress
-          key={`${currentStep}`}
-          pause={currentStepStatus !== "play"}
-          seconds={DEFAULT_LIMIT_TIME}
-          onTimeEnd={this.onLimitTimeEnd}
-        />
-        <GameStopButton source={images.pauseButton} onPress={this.exit} />
-      </Header>
-    );
-  }
-
   private get renderGamePlay() {
-    const { songAnswerInput } = this.state;
+    const { currentStep, gamePlayStepStatuses } = this.gamePlayHighlights;
+    const { songAnswerInput, songAnswerSeconds } = this.state;
     const userItem = this.props.authStore.user?.userItemsByItemType(
       Item.ItemTypeEnum.SKIP
     );
     return (
       <>
+        <Header>
+          <GamePlayStep circles={gamePlayStepStatuses} />
+          <LimitTimeProgress
+            key={`${currentStep}`}
+            seconds={songAnswerSeconds}
+            totalSeconds={DEFAULT_LIMIT_TIME}
+          />
+          <GameStopButton source={images.pauseButton} onPress={this.exit} />
+        </Header>
         <GamePlayers
           scrollEnabled={false}
           ref={this.gamePlayersRef}
@@ -415,12 +406,24 @@ class GamePlayScreen extends Component<IProps, IStates> {
   }
 
   private get renderAnswer() {
-    const { checkAnswer, currentGameHighlight } = this.gamePlayHighlights;
-    const { songAnswerInput } = this.state;
+    const {
+      checkAnswer,
+      currentGameHighlight,
+      gamePlayStepStatuses
+    } = this.gamePlayHighlights;
+    const { songAnswerInput, songAnswerSeconds } = this.state;
     const isAnswer = checkAnswer(songAnswerInput);
     return (
       <AnswerContainer>
-        {this.renderHeader}
+        <Header>
+          <GamePlayStep circles={gamePlayStepStatuses} />
+          <LimitTimeProgress
+            key={`answer`}
+            seconds={songAnswerSeconds}
+            totalSeconds={DEFAULT_LIMIT_TIME}
+          />
+          <GameStopButton source={images.pauseButton} onPress={this.exit} />
+        </Header>
         <AnswerContent>
           {isAnswer ? (
             <AnswerStatus source={images.correctCD} />
@@ -488,22 +491,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
     this.gamePlayHighlights.setStep(index);
   };
 
-  private onLimitTimeEnd = async () => {
-    const { answer } = this.gamePlayHighlights;
-    const { songAnswerInput } = this.state;
-    console.tron.log(answer, songAnswerInput);
-    answer(songAnswerInput);
-    await this.beforeNextStep();
-  };
-
   private useSkipItem = () => {
-    const { closePopup } = this.props.popupProps;
     const userItem = this.props.authStore.user?.userItemsByItemType(
       Item.ItemTypeEnum.SKIP
     );
     userItem?.useItemType?.();
-    closePopup();
-    this.nextStep();
+    this.nextStep(true);
   };
 
   private submitAnswer = async () => {
@@ -512,7 +505,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
       checkAnswer,
       currentGameHighlight
     } = this.gamePlayHighlights;
-    const { songAnswerInput } = this.state;
+    const { songAnswerInput, songAnswerSeconds } = this.state;
     const { showToast } = this.props.toastStore;
 
     if (currentGameHighlight === null) {
@@ -523,7 +516,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
       showToast("오답입니다ㅠㅜ");
       return;
     }
-    answer(songAnswerInput);
+    answer(songAnswerInput, songAnswerSeconds);
     await this.beforeNextStep();
   };
 
@@ -540,19 +533,20 @@ class GamePlayScreen extends Component<IProps, IStates> {
     await this.nextStep();
   };
 
-  private nextStep = () => {
-    if (this.state.currentStepStatus === "play") {
+  private nextStep = (isSkipItem?: boolean) => {
+    if (this.state.currentStepStatus === "play" && !isSkipItem) {
       return;
     }
     this.setState(
       {
         currentStepStatus: "play",
-        songAnswerInput: ""
+        songAnswerInput: "",
+        songAnswerSeconds: DEFAULT_LIMIT_TIME
       },
-      async () => {
+      () => {
         this.gamePlayersRef.current?.snapToNext();
         this.gamePlayHighlights.nextStep();
-        // await this.readyForPlay();
+        this.readyForPlay();
       }
     );
   };
@@ -571,6 +565,24 @@ class GamePlayScreen extends Component<IProps, IStates> {
       artist: singer ?? "none",
       artwork: artworkUrl
     });
+    this.intervalId = setInterval(async () => {
+      const { songAnswerSeconds, currentStepStatus } = this.state;
+      if (songAnswerSeconds === 0) {
+        const { answer } = this.gamePlayHighlights;
+        const { songAnswerInput } = this.state;
+        answer(songAnswerInput, songAnswerSeconds);
+        await this.beforeNextStep();
+        clearInterval(this.intervalId);
+        return;
+      }
+      if (currentStepStatus === "answer") {
+        clearInterval(this.intervalId);
+        return;
+      }
+      this.setState({
+        songAnswerSeconds: songAnswerSeconds - 1
+      });
+    }, 1000);
   };
 
   private onFinishPopup = () => {
@@ -624,14 +636,13 @@ class GamePlayScreen extends Component<IProps, IStates> {
         cancelText="취소"
         onCancel={closePopup}
         confirmText="확인"
-        onConfirm={this.back}
+        onConfirm={this.home}
       />
     );
   };
 
-  private back = () => {
-    const { parentComponentId } = this.props;
-    popTo(parentComponentId);
+  private home = () => {
+    MainScreen.open();
   };
 }
 

@@ -18,12 +18,5 @@ storiesOf("Progress", module)
     return <TimeProgress activePercentage={60} />;
   })
   .add("LimitTimeProgress", () => {
-    return (
-      <LimitTimeProgress
-        key="1"
-        pause={false}
-        seconds={60}
-        onTimeEnd={action("onTimeEnd")}
-      />
-    );
+    return <LimitTimeProgress key="1" seconds={60} totalSeconds={60} />;
   });

@@ -40,18 +40,10 @@ const withPopup = <P extends IPopupProps>(
     Subtract<P, IPopupProps>,
     IStates
   > {
-    public popupProps: IPopupProps;
-
     constructor(props: Subtract<P, IPopupProps>) {
       super(props);
 
       this.state = INITIAL_STATES;
-      this.popupProps = {
-        popupProps: {
-          showPopup: this.showPopup,
-          closePopup: this.closePopup
-        }
-      };
     }
 
     public render() {
@@ -59,7 +51,10 @@ const withPopup = <P extends IPopupProps>(
         <Container>
           <TargetComponent
             {...(this.props as P)}
-            popupProps={this.popupProps.popupProps}
+            popupProps={{
+              showPopup: this.showPopup,
+              closePopup: this.closePopup
+            }}
           />
           {this.isShow ? this.Popup : null}
         </Container>

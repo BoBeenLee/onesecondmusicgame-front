@@ -8,6 +8,7 @@ import { ICircleCheckItem } from "src/components/icon/CircleCheckGroup";
 export interface IGamePlayHighlightItem extends GamePlayHighlightDTO {
   gameStep: number;
   userAnswer?: string;
+  userAnswerSeconds?: number;
 }
 
 const GAME_ROUND_NUM = 5;
@@ -94,7 +95,7 @@ const GamePlayHighlights = types
       self.playToken = response.playToken ?? "";
     });
 
-    const answer = (userAnswer: string) => {
+    const answer = (userAnswer: string, userAnswerSeconds: number) => {
       self.gameHighlights.replace(
         _.map(self.gameHighlightViews, (item, index) => {
           if (self.currentStep === index) {
