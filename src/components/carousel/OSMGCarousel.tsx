@@ -26,7 +26,7 @@ interface IStates {
 
 const windowWidth = getDeviceWidth();
 
-const CarouselView = styled.TouchableOpacity``;
+const CarouselView = styled.View``;
 
 const CarouselBox = styled(Carousel)``;
 
