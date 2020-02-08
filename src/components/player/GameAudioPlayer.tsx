@@ -12,7 +12,7 @@ import { delay } from "src/utils/common";
 interface IProps {
   style?: ViewProps["style"];
   size: number;
-  onPlay: () => Promise<void>;
+  onPlay: () => Promise<void> | void;
   onToggle?: (playType: AudioType) => void;
 }
 
