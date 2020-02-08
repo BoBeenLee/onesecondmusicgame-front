@@ -18,6 +18,9 @@ const images = {
   btnFacebook: require("./btn_facebook.png"),
   btnGoogle: require("./btn_google.png"),
   addEmpty: require("./group3Copy.png"),
-  closeIcon: require("./group.png")
+  closeIcon: require("./group.png"),
+  mainMirrorBall: require("./group12.png"),
+  btnRankIcon: require("./group14.png"),
+  btnCDIcon: require("./btn_cd.png")
 };
 export default images;

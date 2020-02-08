@@ -128,9 +128,18 @@ const Content = styled.View`
   align-items: center;
 `;
 
-const Logo = styled(Bold36)`
-  color: ${colors.white};
-  margin-bottom: 20px;
+const MainMirrorBallView = styled.View`
+  position: absolute;
+  top: 5px;
+  left: 0px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
+const MainMirrorBallBackground = styled.Image`
+  width: 244px;
+  height: 310px;
 `;
 
 const GameModeView = styled.View`
@@ -176,7 +185,7 @@ const Footer = styled.View`
   justify-content: space-between;
   align-items: center;
   padding-horizontal: 25px;
-  margin-top: 42px;
+  margin-top: 28px;
 `;
 
 const FooterButtonGroup = styled.TouchableOpacity`
@@ -186,14 +195,14 @@ const FooterButtonGroup = styled.TouchableOpacity`
 `;
 
 const SuggestionIcon = styled.Image`
-  width: 44px;
-  height: 32px;
-  margin-bottom: 8px;
+  width: 43px;
+  height: 43px;
+  margin-bottom: 7px;
 `;
 
 const RankingIcon = styled.Image`
   width: 36px;
-  height: 36px;
+  height: 40px;
   margin-bottom: 4px;
 `;
 
@@ -286,6 +295,9 @@ class MainScreen extends Component<IProps> {
             </NicknameView>
             <Description>오늘도 같이 음악 맞춰요 </Description>
           </Profile>
+          <MainMirrorBallView>
+            <MainMirrorBallBackground source={images.mainMirrorBall} />
+          </MainMirrorBallView>
         </Content>
         <GameModeView>
           <GameModeSection onPress={this.navigateToGamePlay}>
@@ -311,11 +323,11 @@ class MainScreen extends Component<IProps> {
         </GameModeView>
         <Footer>
           <FooterButtonGroup onPress={this.navigateToRegisterSong}>
-            <SuggestionIcon source={images.baselineQueueMusicBlack18Dp} />
+            <SuggestionIcon source={images.btnCDIcon} />
             <FooterButtonText>노래 제안</FooterButtonText>
           </FooterButtonGroup>
           <FooterButtonGroup onPress={this.navigateToRanking}>
-            <RankingIcon source={images.baselineEmojiEventsBlack18Dp} />
+            <RankingIcon source={images.btnRankIcon} />
             <FooterButtonText>개인 랭킹</FooterButtonText>
           </FooterButtonGroup>
         </Footer>
