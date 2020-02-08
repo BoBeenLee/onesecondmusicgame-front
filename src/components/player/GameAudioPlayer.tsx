@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import _ from "lodash";
 import React, { useState } from "react";
-import { ViewProps, InteractionManager } from "react-native";
+import { ViewProps } from "react-native";
 import styled, { css } from "styled-components/native";
 import TrackPlayer from "react-native-track-player";
 
@@ -32,7 +32,6 @@ function GameAudioPlayer(props: IProps) {
   const stop = async () => {
     setPlayType("stop");
     onToggle?.("stop");
-    await TrackPlayer.pause();
     await TrackPlayer.reset();
   };
 

@@ -40,7 +40,7 @@ const Heart = types
       const onVisible = reaction(
         () => self.leftTime,
         async (leftTime: number) => {
-          if (leftTime === 0) {
+          if (leftTime <= 0) {
             self.fetchHeart();
             return;
           }

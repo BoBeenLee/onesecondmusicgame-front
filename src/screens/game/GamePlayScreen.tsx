@@ -89,7 +89,7 @@ const Header = styled.View`
 
 const GameStopButton = styled(IconButton)`
   position: absolute;
-  top: 0px;
+  top: 12px;
   right: 15px;
   width: 38px;
   height: 38px;
@@ -302,7 +302,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     props.authStore.user?.heart?.useHeart?.();
     GamePlayTutorialOverlay.open({
       onAfterClose: () => {
-        this.setState({ currentStepStatus: "answer" });
+        this.setState({ currentStepStatus: "play" });
       }
     });
   }
@@ -388,9 +388,17 @@ class GamePlayScreen extends Component<IProps, IStates> {
     return (
       <>
         <Content>
-          {isAnswer ? null : <AnswerStatus source={images.correctCD} />}
+          {isAnswer ? (
+            <AnswerStatus source={images.correctCD} />
+          ) : (
+            <AnswerStatus source={images.wrongCD} />
+          )}
           <AnswerView>
-            <AnswerText>정답입니다~!!</AnswerText>
+            {isAnswer ? (
+              <AnswerText>정답입니다~!!</AnswerText>
+            ) : (
+              <AnswerText>오답입니다ㅠㅠ</AnswerText>
+            )}
             <AnswerSingerText>
               {currentGameHighlight?.singer ?? ""}
             </AnswerSingerText>
@@ -401,7 +409,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
           <NextEmptyView />
           <NextStepGroup>
             <NextStepCaption>5초 뒤 다음 문제</NextStepCaption>
-            <NextStepButton>
+            <NextStepButton onPress={this.nextStep}>
               <NextStepButtonText>다음 문제</NextStepButtonText>
               <NextStepArrowIcon
                 name="angle-right"
@@ -480,27 +488,25 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private beforeNextStep = () => {
+    const { isFinish } = this.gamePlayHighlights;
     this.setState({
       currentStepStatus: "answer"
     });
-    setTimeout(() => {
-      this.setState(
-        {
-          currentStepStatus: "play",
-          songAnswerInput: ""
-        },
-        this.nextStep
-      );
-    }, NEXT_STEP_SECONDS);
-  };
-
-  private nextStep = () => {
-    const { isFinish } = this.gamePlayHighlights;
     if (isFinish) {
       this.onFinishPopup();
       return;
     }
+    setTimeout(this.nextStep, NEXT_STEP_SECONDS);
+  };
+
+  private nextStep = () => {
+    const { nextStep } = this.gamePlayHighlights;
+    nextStep();
     this.gamePlayersRef.current?.snapToNext();
+    this.setState({
+      currentStepStatus: "play",
+      songAnswerInput: ""
+    });
   };
 
   private onFinishPopup = () => {
@@ -560,7 +566,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private back = () => {
-    const { componentId, parentComponentId } = this.props;
+    const { parentComponentId } = this.props;
     popTo(parentComponentId);
   };
 }
