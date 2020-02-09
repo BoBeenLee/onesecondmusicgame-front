@@ -326,9 +326,16 @@ class GamePlayScreen extends Component<IProps, IStates> {
     props.authStore.user?.heart?.useHeart?.();
     GamePlayTutorialOverlay.open({
       onAfterClose: () => {
-        this.setState({ currentStepStatus: "play" }, this.initialize);
+        this.setState({ currentStepStatus: "play" }, () => {
+          this.readyForPlay();
+        });
       }
     });
+  }
+
+  public async componentDidMount() {
+    const { selectedSingers } = this.props;
+    await this.gamePlayHighlights.initialize(selectedSingers);
   }
 
   public render() {
@@ -398,12 +405,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
       </>
     );
   }
-
-  public initialize = async () => {
-    const { selectedSingers } = this.props;
-    await this.gamePlayHighlights.initialize(selectedSingers);
-    await this.readyForPlay();
-  };
 
   private get renderAnswer() {
     const {
