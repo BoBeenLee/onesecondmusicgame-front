@@ -77,6 +77,8 @@ storiesOf("Popup", module)
   .add("UserItemPopup", () => {
     return (
       <UserItemPopup
+        skipCount={10}
+        fullHeartCount={11}
         onInvite={action("onInvite")}
         onAD={action("onAD")}
         onCancel={action("onCancel")}

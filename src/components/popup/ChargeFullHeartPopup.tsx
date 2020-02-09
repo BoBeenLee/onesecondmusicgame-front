@@ -5,6 +5,7 @@ import { ViewProps } from "react-native";
 
 import {
   Bold15,
+  Bold20,
   Bold24,
   Bold36,
   Regular17,
@@ -40,10 +41,15 @@ const PopupTitle = styled(Bold24)`
   margin-bottom: 5px;
 `;
 
+const PopupDescriptionRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+
 const PopupDescription = styled(Bold15)`
   text-align: center;
   color: ${colors.slateGrey};
-  margin-bottom: 7px;
 `;
 
 const PopupHighlightDescription = styled(Bold15)`
@@ -51,27 +57,25 @@ const PopupHighlightDescription = styled(Bold15)`
 `;
 
 const HeartGroupView = styled(HeartGroup)`
-  margin-top: 19px;
+  margin-top: 29px;
 `;
 
 const ChargeFullHeartButton = styled.TouchableOpacity`
+  width: 255px;
+  height: 56px;
   flex-direction: row;
   align-items: center;
-  height: 37px;
-  border-radius: 8px;
-  border: solid 2px ${colors.lightBlueGrey};
-  background-color: ${colors.paleLavender};
+  justify-content: center;
+  border-radius: 14px;
+  border: solid 3px ${colors.lightMagentaThree};
+  background-color: ${colors.pinkyPurple};
   padding-horizontal: 13px;
   margin-top: 29px;
   margin-bottom: 20px;
 `;
 
-const ChargeFullHeartButtonText = styled(Bold17)`
-  color: ${colors.purply};
-`;
-
-const ArrowIcon = styled(XEIcon)`
-  margin-left: 6px;
+const ChargeFullHeartButtonText = styled(Bold20)`
+  color: ${colors.lightGrey};
 `;
 
 function ChargeFullHeartPopup(props: IProps) {
@@ -82,13 +86,16 @@ function ChargeFullHeartPopup(props: IProps) {
       ContentComponent={
         <PopupContainer>
           <PopupTitle>하트를 모두 소진했어요!</PopupTitle>
-          <PopupDescription>
-            광고 보고{" "}
+          <PopupDescriptionRow>
+            <PopupDescription>{"광고 보고 "}</PopupDescription>
             <PopupHighlightDescription>
               하트 풀충전 아이템
             </PopupHighlightDescription>
-            을{"\n"}선물 받으세요!
-          </PopupDescription>
+            <PopupDescription>{"을"}</PopupDescription>
+          </PopupDescriptionRow>
+          <PopupDescriptionRow>
+            <PopupDescription>선물 받으세요!</PopupDescription>
+          </PopupDescriptionRow>
           <HeartGroupView
             hearts={_.times(5, index =>
               index + 1 <= (heart.heartCount ?? 0) ? "active" : "inactive"
@@ -98,7 +105,6 @@ function ChargeFullHeartPopup(props: IProps) {
             <ChargeFullHeartButtonText>
               광고보고 아이템받기
             </ChargeFullHeartButtonText>
-            <ArrowIcon name="angle-right" size={15} color={colors.purply} />
           </ChargeFullHeartButton>
         </PopupContainer>
       }

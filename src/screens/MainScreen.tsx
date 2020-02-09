@@ -413,8 +413,18 @@ class MainScreen extends Component<IProps> {
 
   private onUserItemPopup = () => {
     const { showPopup, closePopup } = this.props.popupProps;
+    const skipCount =
+      this.props.authStore.user?.userItemsByItemType(Item.ItemTypeEnum.SKIP)
+        ?.count ?? 0;
+    const fullHeartCount =
+      this.props.authStore.user?.userItemsByItemType(
+        Item.ItemTypeEnum.CHARGEALLHEART
+      )?.count ?? 0;
+
     showPopup(
       <UserItemPopup
+        skipCount={skipCount}
+        fullHeartCount={fullHeartCount}
         onInvite={this.invite}
         onAD={this.requestHeartRewardAD}
         onCancel={closePopup}

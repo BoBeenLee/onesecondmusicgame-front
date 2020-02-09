@@ -16,6 +16,8 @@ import images from "src/images";
 
 interface IProps {
   style?: ViewProps["style"];
+  skipCount: number;
+  fullHeartCount: number;
   onInvite: () => void;
   onAD: () => void;
   onCancel: () => void;
@@ -55,27 +57,47 @@ const ItemTitle = styled(Bold16)`
   margin-bottom: 8px;
 `;
 
-const HeartImage = styled.Image`
+const BadgeView = styled.View`
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  justify-content: center;
+  align-items: center;
+  width: 23px;
+  height: 23px;
+  background-color: ${colors.lightMagenta};
+  border-radius: 11px;
+`;
+
+const BadgeText = styled(Bold15)`
+  color: ${colors.white};
+`;
+
+const HeartIconView = styled.View`
   width: 52px;
   height: 48px;
-  resize-mode: contain;
   margin-bottom: 6px;
 `;
 
-const StatusText = styled(Bold15)`
-  color: ${colors.slateGrey};
-  margin-top: 6px;
-  margin-bottom: 20px;
+const HeartImage = styled.Image`
+  width: 100%;
+  height: 100%;
+  resize-mode: contain;
+`;
+
+const SkipIconView = styled.View`
+  width: 56px;
+  height: 56px;
 `;
 
 const ItemButton = styled.TouchableOpacity`
-  width: 126px;
+  min-width: 130px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border-radius: 8px;
-  border: solid 2px ${colors.lightBlueGrey};
-  background-color: ${colors.paleLavender};
+  border: solid 3px ${colors.lightMagentaThree};
+  background-color: ${colors.pinkyPurple};
   padding-horizontal: 13px;
 `;
 
@@ -85,14 +107,21 @@ const ItemButtonRow = styled.View`
 `;
 
 const ItemButtonText = styled(Bold17)`
-  color: ${colors.purply};
+  color: ${colors.white};
   margin-right: 7px;
 `;
 
 const ArrowIcon = styled(XEIcon)``;
 
 function UserItemPopup(props: IProps) {
-  const { style, onCancel, onInvite, onAD: onRewarded } = props;
+  const {
+    style,
+    skipCount,
+    fullHeartCount,
+    onCancel,
+    onInvite,
+    onAD: onRewarded
+  } = props;
   return (
     <OuterContainer
       style={style}
@@ -101,9 +130,13 @@ function UserItemPopup(props: IProps) {
           <PopupTitle>보유 아이템</PopupTitle>
           <StatusView>
             <ItemView>
+              <SkipIconView>
+                <SkipIcon />
+                <BadgeView>
+                  <BadgeText>{skipCount}</BadgeText>
+                </BadgeView>
+              </SkipIconView>
               <ItemTitle>SKIP</ItemTitle>
-              <SkipIcon />
-              <StatusText>5개</StatusText>
               <ItemButton onPress={onRewarded}>
                 <ItemButtonRow>
                   <ItemButtonText>광고 보고</ItemButtonText>
@@ -113,15 +146,19 @@ function UserItemPopup(props: IProps) {
                   <ArrowIcon
                     name="angle-right"
                     size={15}
-                    color={colors.purply}
+                    color={colors.white}
                   />
                 </ItemButtonRow>
               </ItemButton>
             </ItemView>
             <ItemView>
+              <HeartIconView>
+                <HeartImage source={images.inviteHeart} />
+                <BadgeView>
+                  <BadgeText>{fullHeartCount}</BadgeText>
+                </BadgeView>
+              </HeartIconView>
               <ItemTitle>FULL</ItemTitle>
-              <HeartImage source={images.inviteHeart} />
-              <StatusText>5개</StatusText>
               <ItemButton onPress={onInvite}>
                 <ItemButtonRow>
                   <ItemButtonText>친구 초대하고</ItemButtonText>
@@ -131,7 +168,7 @@ function UserItemPopup(props: IProps) {
                   <ArrowIcon
                     name="angle-right"
                     size={15}
-                    color={colors.purply}
+                    color={colors.white}
                   />
                 </ItemButtonRow>
               </ItemButton>
