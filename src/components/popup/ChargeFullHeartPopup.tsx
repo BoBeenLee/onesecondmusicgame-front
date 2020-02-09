@@ -46,7 +46,6 @@ const PopupDescriptionRow = styled.View`
   align-items: center;
 `;
 
-
 const PopupDescription = styled(Bold15)`
   text-align: center;
   color: ${colors.slateGrey};
