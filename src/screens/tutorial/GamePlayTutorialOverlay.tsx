@@ -9,6 +9,7 @@ import { Bold12, Bold18, Bold20 } from "src/components/text/Typographies";
 import colors from "src/styles/colors";
 import SkipIcon from "src/components/icon/SkipIcon";
 import LimitTimeProgress from "src/components/progress/LimitTimeProgress";
+import { iosStatusBarHeight } from "src/utils/device";
 
 interface IParams {
   onAfterClose?: () => void;
@@ -32,14 +33,12 @@ const ContainerTouchabledView = styled.TouchableWithoutFeedback`
   background-color: rgba(33, 33, 33, 0.8);
 `;
 
-const Text = styled(Bold12)``;
-
 const PlayStep1 = styled.View`
   position: absolute;
   flex-direction: column;
   align-items: flex-end;
   justify-content: flex-end;
-  bottom: 5px;
+  bottom: ${iosStatusBarHeight(true) + 20}px;
   right: 15px;
 `;
 
@@ -82,6 +81,7 @@ const PlayStep2 = styled.View`
   justify-content: center;
   align-items: center;
   width: 100%;
+  top: ${iosStatusBarHeight(true) + 70}px;
   padding-horizontal: 16px;
 `;
 
