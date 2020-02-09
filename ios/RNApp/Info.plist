@@ -19,7 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.8</string>
+	<string>1.0.9</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -51,7 +51,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>1</string>
 	<key>CodePushDeploymentKey</key>
 	<string>2WxyU4VY9EWOSe2E04vnj9P2NM1_mRdNE1HlX</string>
 	<key>CodePushPublicKey</key>
@@ -114,9 +114,9 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>라이브러리의 사진을 공유하고 카메라 롤에 사진을 저장할 수 있게 됩니다.</string>
 	<key>NSCameraUsageDescription</key>
-    <string>$(PRODUCT_NAME) would like to use your camera</string>
+	<string>$(PRODUCT_NAME) would like to use your camera</string>
 	<key>NSMicrophoneUsageDescription</key>
-    <string>$(PRODUCT_NAME) would like to use your microphone (for videos)</string>
+	<string>$(PRODUCT_NAME) would like to use your microphone (for videos)</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>xeicon.ttf</string>
