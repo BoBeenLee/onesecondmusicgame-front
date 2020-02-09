@@ -35,8 +35,13 @@ import withScrollDirection, {
 import { ScrollDirection } from "src/utils/scrollView";
 import SearchTrackCard from "src/components/card/SearchTrackCard";
 import { ITrackItem } from "src/apis/soundcloud/interface";
-import { addNewSongUsingPOST } from "src/apis/song";
 import { makePlayStreamUri } from "src/configs/soundCloudAPI";
+import {
+  getUserHistoryUsingGET,
+  dislikeUsingPOST,
+  likeUsingPOST
+} from "src/apis/like";
+import { LikeHistoryResponse } from "__generate__/api";
 
 interface IInject {
   singerStore: ISingerStore;
@@ -53,6 +58,7 @@ interface IStates {
   showTrackBackdrop: boolean;
   playingTrackItem: ITrackItem | null;
   selectedSinger: ISinger | null;
+  userLikeHistories: { [key in string]: LikeHistoryResponse | null };
 }
 
 const Container = styled(ContainerWithStatusBar)`
@@ -152,15 +158,20 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     this.state = {
       showTrackBackdrop: false,
       playingTrackItem: null,
-      selectedSinger: null
+      selectedSinger: null,
+      userLikeHistories: {}
     };
     this.singers.initialize({ q: "" });
     this.tracks = Tracks.create();
   }
 
+  public async componentDidMount() {
+    await this.initialize();
+  }
+
   public render() {
     const { singerViews, refresh, isRefresh } = this.singers;
-    const { showTrackBackdrop, playingTrackItem, selectedSinger } = this.state;
+    const { showTrackBackdrop, selectedSinger } = this.state;
     const {
       trackViews,
       append: appendTrack,
@@ -217,26 +228,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
           ContentComponent={
             <TracksView
               data={trackViews}
-              renderItem={({ item }) => {
-                return (
-                  <SearchTrackCard
-                    thumnail={
-                      item.artwork_url ?? "https://via.placeholder.com/150"
-                    }
-                    title={item.title}
-                    author={item.user.username}
-                    isRegistered={false}
-                    isLike={true}
-                    onLikePress={_.partial(this.addNewSong, item)}
-                    audioType={
-                      `${playingTrackItem?.id}` === String(item.id)
-                        ? "play"
-                        : "stop"
-                    }
-                    onPlayToggle={_.partial(this.onPlayToggle, item)}
-                  />
-                );
-              }}
+              renderItem={this.renderSearchTrackItem}
               keyExtractor={this.trackKeyExtractor}
               refreshing={isTrackRefresh}
               onRefresh={trackRefresh}
@@ -248,6 +240,41 @@ class SearchSingerScreen extends Component<IProps, IStates> {
       </>
     );
   }
+
+  private renderSearchTrackItem: ListRenderItem<ITrackItem> = ({ item }) => {
+    const { playingTrackItem } = this.state;
+    const isLike = Boolean(this.state.userLikeHistories[String(item?.id)]);
+    return (
+      <SearchTrackCard
+        thumnail={item.artwork_url ?? "https://via.placeholder.com/150"}
+        title={item.title}
+        author={item.user.username}
+        isRegistered={false}
+        isLike={isLike}
+        onLikePress={_.partial(this.toggleLike, item)}
+        audioType={
+          `${playingTrackItem?.id}` === String(item.id) ? "play" : "stop"
+        }
+        onPlayToggle={_.partial(this.onPlayToggle, item)}
+      />
+    );
+  };
+
+  private initialize = async () => {
+    const userHistories = await getUserHistoryUsingGET();
+    this.setState({
+      userLikeHistories: _.reduce(
+        userHistories,
+        (res, item) => {
+          return {
+            ...res,
+            [String(item.trackId)]: item
+          };
+        },
+        {}
+      )
+    });
+  };
 
   private onPlayToggle = async (item: ITrackItem) => {
     const { playingTrackItem } = this.state;
@@ -315,22 +342,48 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     );
   };
 
-  private addNewSong = async (trackItem: ITrackItem) => {
+  private toggleLike = async (trackItem: ITrackItem) => {
     const { showToast } = this.props.toastStore;
     const { selectedSinger } = this.state;
+    const artworkUrl = trackItem?.artwork_url;
     const singerName = selectedSinger?.name ?? "";
     const title = trackItem?.title;
     const url = trackItem?.uri;
+    const trackId = trackItem?.id;
 
     if (![title, singerName, url].some(value => !!value)) {
       return;
     }
+    const isLike = Boolean(this.state.userLikeHistories[String(trackId)]);
     try {
-      await addNewSongUsingPOST({
-        singerName,
-        url,
-        highlightSeconds: [0]
+      if (isLike) {
+        dislikeUsingPOST({
+          songUrl: url,
+          trackId
+        });
+        this.setState(prevState => ({
+          userLikeHistories: {
+            ...prevState.userLikeHistories,
+            [String(trackId)]: null
+          }
+        }));
+        return;
+      }
+      likeUsingPOST({
+        songUrl: url,
+        trackId
       });
+      this.setState(prevState => ({
+        userLikeHistories: {
+          ...prevState.userLikeHistories,
+          [String(trackId)]: {
+            artworkUrl: artworkUrl,
+            singer: singerName,
+            title,
+            trackId
+          }
+        }
+      }));
       showToast("노래 등록 완료되었습니다!");
     } catch (error) {
       showToast(error.message);

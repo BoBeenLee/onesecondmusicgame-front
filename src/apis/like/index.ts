@@ -29,9 +29,7 @@ export const getLikeHistoryUsingGET = async (trackId: number) => {
   return response.body;
 };
 
-export const getUserHistoryUsingGET = async (trackId: number) => {
-  const response = await likeHistoryControllerApi.getUserHistoryUsingGET(
-    trackId
-  );
+export const getUserHistoryUsingGET = async () => {
+  const response = await likeHistoryControllerApi.getUserHistoryUsingGET();
   return response.body;
 };
