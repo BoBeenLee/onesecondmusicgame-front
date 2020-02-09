@@ -358,6 +358,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     try {
       if (isLike) {
         dislikeUsingPOST({
+          singerName,
           songUrl: url,
           trackId
         });
@@ -370,6 +371,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
         return;
       }
       likeUsingPOST({
+        singerName,
         songUrl: url,
         trackId
       });
