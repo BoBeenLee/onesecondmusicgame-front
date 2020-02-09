@@ -540,20 +540,17 @@ class GamePlayScreen extends Component<IProps, IStates> {
     await this.nextStep();
   };
 
-  private nextStep = (isSkipItem?: boolean) => {
-    if (this.state.currentStepStatus === "play" && !isSkipItem) {
-      return;
-    }
+  private nextStep = () => {
     this.setState(
       {
         currentStepStatus: "play",
         songAnswerInput: "",
         songAnswerSeconds: DEFAULT_LIMIT_TIME
       },
-      () => {
+      async () => {
         this.gamePlayersRef.current?.snapToNext();
         this.gamePlayHighlights.nextStep();
-        this.readyForPlay();
+        await this.readyForPlay();
       }
     );
   };
