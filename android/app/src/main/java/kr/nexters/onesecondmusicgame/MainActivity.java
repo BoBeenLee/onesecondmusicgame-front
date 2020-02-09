@@ -13,7 +13,7 @@ import android.webkit.WebView;
 
 import org.devio.rn.splashscreen.SplashScreen;
 
-public class MainActivity extends NavigationActivity {
+public class MainActivity extends NavigationActivity implements OnImagePickerPermissionsCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.show(this);
@@ -36,5 +36,21 @@ public class MainActivity extends NavigationActivity {
             super.onBackPressed();
             moveTaskToBack(true);
         }
+    }
+
+    @Override
+    public void setPermissionListener(PermissionListener listener)
+    {
+        this.listener = listener;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+    {
+        if (listener != null)
+        {
+        listener.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }
