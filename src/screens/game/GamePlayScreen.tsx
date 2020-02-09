@@ -491,12 +491,18 @@ class GamePlayScreen extends Component<IProps, IStates> {
     this.gamePlayHighlights.setStep(index);
   };
 
-  private useSkipItem = () => {
+  private useSkipItem = async () => {
+    const { isFinish } = this.gamePlayHighlights;
     const userItem = this.props.authStore.user?.userItemsByItemType(
       Item.ItemTypeEnum.SKIP
     );
     userItem?.useItemType?.();
-    this.nextStep(true);
+    clearInterval(this.intervalId);
+    if (isFinish) {
+      this.onFinishPopup();
+      return;
+    }
+    await this.nextStep();
   };
 
   private submitAnswer = async () => {
@@ -522,6 +528,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
 
   private beforeNextStep = async () => {
     const { isFinish } = this.gamePlayHighlights;
+    clearInterval(this.intervalId);
     this.setState({
       currentStepStatus: "answer"
     });
@@ -566,17 +573,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
       artwork: artworkUrl
     });
     this.intervalId = setInterval(async () => {
-      const { songAnswerSeconds, currentStepStatus } = this.state;
+      const { songAnswerSeconds } = this.state;
       if (songAnswerSeconds === 0) {
         const { answer } = this.gamePlayHighlights;
         const { songAnswerInput } = this.state;
         answer(songAnswerInput, songAnswerSeconds);
         await this.beforeNextStep();
-        clearInterval(this.intervalId);
-        return;
-      }
-      if (currentStepStatus === "answer") {
-        clearInterval(this.intervalId);
         return;
       }
       this.setState({
