@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import kr.nexters.onesecondmusicgame.MainApplication;
 
+import com.facebook.react.modules.core.PermissionListener;
+import com.imagepicker.permissions.OnImagePickerPermissionsCallback;
 import com.reactnativenavigation.NavigationActivity;
 import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
@@ -14,6 +16,8 @@ import android.webkit.WebView;
 import org.devio.rn.splashscreen.SplashScreen;
 
 public class MainActivity extends NavigationActivity implements OnImagePickerPermissionsCallback {
+    private PermissionListener listener;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.show(this);
