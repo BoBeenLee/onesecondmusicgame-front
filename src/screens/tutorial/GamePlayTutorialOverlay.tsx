@@ -128,11 +128,7 @@ class GamePlayTutorialOverlay extends Component<IProps, IStates> {
         </SkipButton>
       </PlayStep1>,
       <PlayStep2 key="2">
-        <PlayStep2TimeProgress
-          key={`1`}
-          totalSeconds={40}
-          seconds={12}
-        />
+        <PlayStep2TimeProgress key={`1`} totalSeconds={40} seconds={12} />
         <PlayStep2Title>
           제한 시간은 노래 1곡 당{" "}
           <PlayStep2HighlightTitle>40초</PlayStep2HighlightTitle>!{"\n"}
