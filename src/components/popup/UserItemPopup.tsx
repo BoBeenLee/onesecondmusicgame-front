@@ -41,7 +41,6 @@ const PopupTitle = styled(Bold24)`
 const StatusView = styled.View`
   flex-direction: row;
   align-items: center;
-  margin-bottom: 26px;
 `;
 
 const ItemView = styled.View`

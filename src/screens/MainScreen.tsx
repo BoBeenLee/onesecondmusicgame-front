@@ -35,7 +35,6 @@ import GameModeScreen from "src/screens/game/GameModeScreen";
 import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
-import FloatingButton from "src/components/button/FloatingButton";
 import LevelBadge from "src/components/badge/LevelBadge";
 import XEIconButton from "src/components/button/XEIconButton";
 import GamePlayScreen from "src/screens/game/GamePlayScreen";
@@ -44,6 +43,7 @@ import images from "src/images";
 import { IForm } from "src/components/form/UserProfileForm";
 import UnderlineText from "src/components/text/UnderlineText";
 import UserItemPopup from "src/components/popup/UserItemPopup";
+import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 
 interface IInject {
   store: IStore;
@@ -403,12 +403,22 @@ class MainScreen extends Component<IProps> {
     try {
       await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
       updateUserReward();
-      showToast("보상 완료!");
+      closePopup();
+      this.onGainFullHeartPopup();
     } catch (error) {
       showToast(error.message);
-    } finally {
-      closePopup();
     }
+  };
+
+  private onGainFullHeartPopup = () => {
+    const { showPopup, closePopup } = this.props.popupProps;
+    const fullHeartCount =
+      this.props.authStore.user?.userItemsByItemType(
+        Item.ItemTypeEnum.CHARGEALLHEART
+      )?.count ?? 0;
+    showPopup(
+      <GainFullHeartPopup heartCount={fullHeartCount} onConfirm={closePopup} />
+    );
   };
 
   private onUserItemPopup = () => {

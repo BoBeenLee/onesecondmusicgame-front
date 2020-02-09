@@ -84,7 +84,6 @@ const ChargeFullHeartButton = styled.TouchableOpacity`
   background-color: ${colors.pinkyPurple};
   padding-horizontal: 13px;
   margin-top: 29px;
-  margin-bottom: 20px;
 `;
 
 const ChargeFullHeartButtonText = styled(Bold20)`

@@ -19,13 +19,7 @@ const Container = styled.View`
   border-radius: 17px;
   background-color: ${colors.paleGrey};
   padding-horizontal: 24px;
-  padding-bottom: 31px;
-`;
-
-const Content = styled.View`
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  padding-bottom: 32px;
 `;
 
 const Message = styled(Bold20)`

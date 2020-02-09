@@ -45,7 +45,7 @@ import XEIcon from "src/components/icon/XEIcon";
 import TimerText from "src/components/text/TimerText";
 import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
 import { Item } from "__generate__/api";
-import IconButton from "src/components/button/IconButton";
+import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import images from "src/images";
 
 interface IInject {
@@ -456,12 +456,22 @@ class GameResultScreen extends Component<IProps, IStates> {
     try {
       await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
       updateUserReward();
-      showToast("보상 완료!");
+      closePopup();
+      this.onGainFullHeartPopup();
     } catch (error) {
       showToast(error.message);
-    } finally {
-      closePopup();
     }
+  };
+
+  private onGainFullHeartPopup = () => {
+    const { showPopup, closePopup } = this.props.popupProps;
+    const fullHeartCount =
+      this.props.authStore.user?.userItemsByItemType(
+        Item.ItemTypeEnum.CHARGEALLHEART
+      )?.count ?? 0;
+    showPopup(
+      <GainFullHeartPopup heartCount={fullHeartCount} onConfirm={closePopup} />
+    );
   };
 
   private onInvitePopup = () => {

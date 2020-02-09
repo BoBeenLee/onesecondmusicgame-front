@@ -8,7 +8,7 @@ import XEIconButton from "src/components/button/XEIconButton";
 interface IProps {
   style?: ViewProps["style"];
   ContentComponent: React.ReactNode;
-  onCancel: () => void;
+  onCancel?: () => void;
 }
 
 const OutterContainer = styled.View`
@@ -22,7 +22,8 @@ const Container = styled.View`
   border-radius: 17px;
   background-color: ${colors.paleGrey};
   padding-horizontal: 16px;
-  padding-vertical: 11px;
+  padding-top: 11px;
+  padding-bottom: 32px;
 `;
 
 const CloseButton = styled(XEIconButton)`
@@ -38,12 +39,14 @@ function OSMGPopup(props: IProps) {
     <OutterContainer>
       <Container style={style}>
         {ContentComponent}
-        <CloseButton
-          iconName="close"
-          iconSize={24}
-          iconColor={colors.black}
-          onPress={onCancel}
-        />
+        {onCancel ? (
+          <CloseButton
+            iconName="close"
+            iconSize={24}
+            iconColor={colors.black}
+            onPress={onCancel}
+          />
+        ) : null}
       </Container>
     </OutterContainer>
   );

@@ -1,3 +1,4 @@
+import { InteractionManager } from "react-native";
 import { Item } from "__generate__/api";
 import _ from "lodash";
 import React, { Component } from "react";
@@ -47,7 +48,7 @@ import ConfirmPopup from "src/components/popup/ConfirmPopup";
 import { makePlayStreamUriByTrackId } from "src/configs/soundCloudAPI";
 import { delay } from "src/utils/common";
 import MainScreen from "src/screens/MainScreen";
-import { InteractionManager } from "react-native";
+import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 
 interface IInject {
   authStore: IAuthStore;
@@ -614,15 +615,26 @@ class GamePlayScreen extends Component<IProps, IStates> {
   private onRewarded = async () => {
     const { updateUserReward } = this.props.authStore;
     const { showToast } = this.props.toastStore;
+    const { closePopup } = this.props.popupProps;
     try {
       await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
       updateUserReward();
-      showToast("보상 완료!");
+      closePopup();
+      this.onGainFullHeartPopup();
     } catch (error) {
       showToast(error.message);
-    } finally {
-      this.finish();
     }
+  };
+
+  private onGainFullHeartPopup = () => {
+    const { showPopup } = this.props.popupProps;
+    const fullHeartCount =
+      this.props.authStore.user?.userItemsByItemType(
+        Item.ItemTypeEnum.CHARGEALLHEART
+      )?.count ?? 0;
+    showPopup(
+      <GainFullHeartPopup heartCount={fullHeartCount} onConfirm={this.finish} />
+    );
   };
 
   private finish = async () => {
