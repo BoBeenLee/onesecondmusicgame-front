@@ -16,6 +16,7 @@ import Ranks, { IRankItem } from "src/stores/Ranks";
 import { RankView } from "__generate__/api";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
+import { transformTimeToString } from "src/utils/date";
 
 interface IInject {
   toastStore: IToastStore;
@@ -107,7 +108,7 @@ class GameRankingScreen extends Component<IProps> {
   }
 
   public render() {
-    const { isRefresh, refresh, rankViews } = this.ranks;
+    const { isRefresh, refresh, rankViews, time } = this.ranks;
     return (
       <Container>
         <BackTopBar title="랭킹" onBackPress={this.back} />
@@ -134,7 +135,10 @@ class GameRankingScreen extends Component<IProps> {
                 score={83}
               />
             </TopRankView>
-            <RankCaption>*NN시 NN분 기준의 랭킹입니다. </RankCaption>
+            <RankCaption>
+              *{transformTimeToString(time, "YYYY-MM-DD HH시 mm분 ")}
+              기준의 랭킹입니다.{" "}
+            </RankCaption>
           </Header>
           <Result
             data={rankViews}

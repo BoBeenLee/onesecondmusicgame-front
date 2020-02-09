@@ -58,7 +58,7 @@ const Ranks = types
 
     const fetch = flow(function*() {
       const response: RetrieveAsyncFunc<typeof getRankingInfoUsingGET> = yield getRankingInfoUsingGET();
-      self.time = response?.time ?? 0;
+      self.time = (response?.time ?? 0) * 1000;
       self.ranks.replace(response?.rankViewList ?? []);
     });
 
