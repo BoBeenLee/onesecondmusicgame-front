@@ -2,7 +2,8 @@ import AsyncStorage from "@react-native-community/async-storage";
 import _ from "lodash";
 
 import { isJSON } from "src/utils/common";
-import { getOS, getVersion } from "src/utils/device";
+import { getOS } from "src/utils/device";
+import { getVersion } from "src/configs/device";
 
 // tslint:disable:object-literal-sort-keys
 export const FIELD = {

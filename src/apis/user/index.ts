@@ -1,7 +1,8 @@
 import {
   MusicUserControllerApiFactory,
   UserLoginRequest,
-  UserSignUpRequest
+  UserSignUpRequest,
+  MyInfoChangeRequest
 } from "__generate__/api";
 import { requestAPI } from "src/configs/requestAPI";
 
@@ -18,5 +19,10 @@ export const signInUsingPOST = async (request: UserLoginRequest) => {
 
 export const signUpUsingPOST = async (request: UserSignUpRequest) => {
   const response = await userControllerApi.signUpUsingPOST(request);
+  return response.body!;
+};
+
+export const myInfoChangeUsingPUT = async (request: MyInfoChangeRequest) => {
+  const response = await userControllerApi.myInfoChangeUsingPUT(request);
   return response.body!;
 };

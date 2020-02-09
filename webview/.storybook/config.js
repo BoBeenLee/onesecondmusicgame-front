@@ -1,7 +1,7 @@
 import React from "react";
 import { configure, addDecorator } from "@storybook/react";
 import { withKnobs } from "@storybook/addon-knobs";
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 // automatically import all files ending in *.stories.js
 const req = require.context("../src", true, /.stories.tsx$/);
@@ -9,8 +9,8 @@ function loadStories() {
   req.keys().forEach(filename => req(filename));
 }
 global.___loader = {
-  enqueue: () => { },
-  hovering: () => { }
+  enqueue: () => {},
+  hovering: () => {}
 };
 // Gatsby internal mocking to prevent unnecessary errors in storybook testing environment
 global.__PATH_PREFIX__ = "";
@@ -20,11 +20,44 @@ window.___navigate = pathname => {
 };
 
 const GlobalStyle = createGlobalStyle`
-  @import url("https://fonts.googleapis.com/css?family=Heebo:400,700|Roboto:400,700&display=swap");
-  @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css);
-  
-  * {
-    font-family: 'Spoqa Han Sans', 'Roboto';
+  @import url("https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css");
+
+  @font-face { font-family: 'BMHANNAAirOTF'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.0/BMHANNAAir.woff') format('woff'); font-weight: normal; font-style: normal; }
+
+  @font-face { font-family: 'BMHANNAProOTF'; src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.0/BMHANNAPro.woff') format('woff'); font-weight: normal; font-style: normal; }
+
+  *, html, body {
+    font-family: "BMHANNAAirOTF", sans-serif;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+    flex-direction: column;
+  }
+
+  html, body, #root {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  #root {
+    background-image: linear-gradient(to bottom, #0d1233, #000);
+    padding: 20px;
+    height: 100%;
+    overflow: scroll;
+  }
+
+  #root * {
+    display: flex;
+  }
+
+  input {
+    border-width: 0px;
+    background-color: transparent;
   }
 `;
 

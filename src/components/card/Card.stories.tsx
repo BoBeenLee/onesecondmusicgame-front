@@ -6,6 +6,7 @@ import styled from "styled-components/native";
 import SearchTrackCard from "src/components/card/SearchTrackCard";
 import GameRankCard from "src/components/card/GameRankCard";
 import GameTopRankCard from "src/components/card/GameTopRankCard";
+import SearchSingerCard from "src/components/card/SearchSingerCard";
 
 const CenterView = styled.View`
   flex: 1;
@@ -27,15 +28,21 @@ storiesOf("Card", module)
           thumnail="https://via.placeholder.com/150"
           title="Hello World"
           author="Hello"
-          uri="https://api.soundcloud.com/tracks/736765723/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
           isRegistered={false}
+          isLike={true}
+          onLikePress={action("onLikePress")}
+          audioType="play"
+          onPlayToggle={action("onPlayToggle")}
         />
         <SearchTrackCard
           thumnail="https://via.placeholder.com/150"
           title="Hello World"
           author="Hello"
-          uri="https://api.soundcloud.com/tracks/736765723/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
           isRegistered={true}
+          isLike={true}
+          onLikePress={action("onLikePress")}
+          audioType="play"
+          onPlayToggle={action("onPlayToggle")}
         />
       </Container>
     );
@@ -57,6 +64,16 @@ storiesOf("Card", module)
         profileImage="https://via.placeholder.com/350x350"
         name="jasmin"
         score={83}
+      />
+    );
+  })
+  .add("SearchSingerCard", () => {
+    return (
+      <SearchSingerCard
+        selected={true}
+        image="https://via.placeholder.com/350x350"
+        name="jasmin"
+        onPress={action("onPress")}
       />
     );
   });

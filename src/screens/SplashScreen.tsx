@@ -7,7 +7,6 @@ import XEIcon from "src/components/icon/XEIcon";
 import { Bold12, Bold20 } from "src/components/text/Typographies";
 import images from "src/images";
 import { IStore } from "src/stores/Store";
-import { iosStatusBarHeight } from "src/utils/device";
 import { IAuthStore } from "src/stores/AuthStore";
 import { ICodePushStore } from "src/stores/CodePushStore";
 import MainScreen from "src/screens/MainScreen";
@@ -31,7 +30,6 @@ const Container = styled.View`
   flex: 1;
   align-items: center;
   justify-content: center;
-  padding-top: ${iosStatusBarHeight(false)}px;
 `;
 
 const Title = styled(Bold20)`

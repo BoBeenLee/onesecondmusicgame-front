@@ -3,10 +3,12 @@ import { ViewProps } from "react-native";
 import styled from "styled-components/native";
 
 import { Regular12 } from "src/components/text/Typographies";
+import CheckImage from "src/components/image/CheckImage";
 import colors from "src/styles/colors";
 
 interface IProps {
   style?: ViewProps["style"];
+  selected: boolean;
   image: string;
   name: string;
   onPress: () => void;
@@ -17,18 +19,10 @@ const Container = styled.TouchableOpacity`
   align-items: center;
 `;
 
-const SingerImageView = styled.View`
+const SingerImage = styled(CheckImage)`
   width: 76px;
   height: 72px;
-  border-radius: 8px;
-  border: solid 1px ${colors.lightGrey};
   margin-bottom: 4px;
-  overflow: hidden;
-`;
-
-const SingerImage = styled.Image`
-  width: 100%;
-  height: 100%;
 `;
 
 const Name = styled(Regular12)`
@@ -36,12 +30,10 @@ const Name = styled(Regular12)`
 `;
 
 function SearchSingerCard(props: IProps) {
-  const { style, image, name, onPress } = props;
+  const { style, selected, image, name, onPress } = props;
   return (
     <Container style={style} onPress={onPress}>
-      <SingerImageView>
-        <SingerImage source={{ uri: image }} />
-      </SingerImageView>
+      <SingerImage checked={selected} source={{ uri: image }} />
       <Name>{name}</Name>
     </Container>
   );

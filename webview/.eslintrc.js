@@ -15,6 +15,7 @@ module.exports = {
     project: "./tsconfig.json",
     tsconfigRootDir: "./"
   },
+  ignorePatterns: ["node_modules/"],
   rules: {
     // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
     // e.g. "@typescript-eslint/explicit-function-return-type": "off",

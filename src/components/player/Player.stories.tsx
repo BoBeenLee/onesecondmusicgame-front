@@ -44,11 +44,7 @@ storiesOf("Player", module)
     return (
       <GameAudioPlayer
         size={200}
-        source={{
-          uri:
-            "https://api.soundcloud.com/tracks/736765723/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
-        }}
-        highlightSeconds={0}
+        onPlay={action("onPlay")}
         onToggle={action("onToggle")}
       />
     );

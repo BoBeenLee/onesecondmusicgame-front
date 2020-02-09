@@ -5,7 +5,7 @@ import styled from "styled-components/native";
 
 import XEIconButton from "src/components/button/XEIconButton";
 import { XEIconType } from "src/components/icon/XEIcon";
-import { Bold15 } from "src/components/text/Typographies";
+import { Bold18 } from "src/components/text/Typographies";
 import colors from "src/styles/colors";
 
 export const TOP_BAR_HEIGHT = 56;
@@ -31,20 +31,20 @@ const Container = styled.View`
 
 const IconButton = styled(XEIconButton)`
   position: absolute;
+  top: 12px;
   left: 16px;
   padding: 2px;
 `;
 
-const Title = styled(Bold15)`
-  color: ${colors.green550};
-  letter-spacing: -0.5px;
+const Title = styled(Bold18)`
+  color: ${colors.warmBlue};
 `;
 
-function FMTopBar({
+function OSMGTopBar({
   style: containerStyle,
   title,
   titleStyle,
-  iconColor = colors.white,
+  iconColor = colors.warmBlue,
   iconName,
   RightComponent,
   onBackPress
@@ -59,7 +59,7 @@ function FMTopBar({
       <IconButton
         iconName={iconName}
         iconColor={iconColor}
-        iconSize={24}
+        iconSize={29}
         onPress={onBackPress}
       />
       {RightComponent ? RightComponent : null}
@@ -67,4 +67,4 @@ function FMTopBar({
   );
 }
 
-export default FMTopBar;
+export default OSMGTopBar;

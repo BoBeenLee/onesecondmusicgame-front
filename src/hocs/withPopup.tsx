@@ -1,9 +1,8 @@
 import hoistNonReactStatic from "hoist-non-react-statics";
 import _ from "lodash";
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import styled from "styled-components/native";
 
-import withBackHandler, { IBackHandlerProps } from "src/hocs/withBackHandler";
 import TouchablePopup from "src/components/popup/TouchablePopup";
 
 interface IStates {
@@ -37,7 +36,7 @@ const INITIAL_STATES = {
 const withPopup = <P extends IPopupProps>(
   TargetComponent: React.ComponentType<P>
 ) => {
-  const WithPopup = class WithPopupAnonymous extends Component<
+  const WithPopup = class WithPopupAnonymous extends PureComponent<
     Subtract<P, IPopupProps>,
     IStates
   > {

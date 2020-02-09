@@ -27,10 +27,22 @@ export interface IBackDropMethod {
   hideBackdrop: (callback?: () => any) => void;
 }
 
+interface IStates {
+  showContainer: boolean;
+}
+
 const BACKDROP_GAP = 5;
 const DEFAULT_BACKDROP_HEIGHT =
   getDeviceHeight() - (getStatusBarHeight(false) + BACKDROP_GAP);
 const ANIMATION_DURATION = 300;
+
+const OuterContainer = styled.View`
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  height: 100%;
+`;
 
 const OverlayTouchabedView = styled.TouchableWithoutFeedback`
   position: absolute;
@@ -79,7 +91,7 @@ const Content = styled.View`
 
 const DEFAULT_OVERLAY_OPACITY = 0.6;
 
-class Backdrop extends React.Component<IProps> {
+class Backdrop extends React.Component<IProps, IStates> {
   public panResponder: any;
   public backDropContentDistance: Animated.Value;
   public backdropHeight: number;
@@ -89,6 +101,9 @@ class Backdrop extends React.Component<IProps> {
   constructor(props: IProps) {
     super(props);
 
+    this.state = {
+      showContainer: props.isFirstShow ?? false
+    };
     this.backdropHeight = _.defaultTo(
       props.backdropHeight,
       DEFAULT_BACKDROP_HEIGHT
@@ -121,7 +136,7 @@ class Backdrop extends React.Component<IProps> {
   }
 
   public async componentDidMount() {
-    const { onLoad, backHandlerProps, isFirstShow = true } = this.props;
+    const { onLoad, backHandlerProps, isFirstShow } = this.props;
 
     backHandlerProps?.addBackButtonListener(() => {
       this.onBackgroundPress();
@@ -142,19 +157,39 @@ class Backdrop extends React.Component<IProps> {
       showHandleBar,
       overlayOpacity = DEFAULT_OVERLAY_OPACITY
     } = this.props;
+    const { showContainer } = this.state;
     const translateY = this.backDropContentDistance.interpolate({
       extrapolate: "clamp",
       inputRange: [0, this.backdropHeight],
       outputRange: [0, this.backdropHeight]
     });
-
-    return (
-      <React.Fragment>
-        {overlayOpacity !== false ? (
+    if (overlayOpacity !== false) {
+      return showContainer ? (
+        <OuterContainer>
           <OverlayTouchabedView onPress={this.onBackgroundPress}>
             <OverlayView style={{ opacity: this.overlayOpacity }} />
           </OverlayTouchabedView>
-        ) : null}
+          <Container
+            style={[
+              { height: this.backdropHeight, transform: [{ translateY }] },
+              style
+            ]}
+          >
+            {showHandleBar ? (
+              <BackDropDragView
+                style={backdropDragViewStyle}
+                {...this.panResponder.panHandlers}
+              >
+                <BackDropDragHandleBar />
+              </BackDropDragView>
+            ) : null}
+            <Content style={contentStyle}>{children}</Content>
+          </Container>
+        </OuterContainer>
+      ) : null;
+    }
+    return (
+      <React.Fragment>
         <Container
           style={[
             { height: this.backdropHeight, transform: [{ translateY }] },
@@ -194,14 +229,22 @@ class Backdrop extends React.Component<IProps> {
   };
 
   private showBackdrop(callback?: () => any) {
-    this.animateBackdrop(0, callback);
+    this.setState(
+      {
+        showContainer: true
+      },
+      _.partial(this.animateBackdrop, 0, callback)
+    );
   }
 
   private hideBackdrop(callback?: () => any) {
     const { hideMinBackdropHeight } = this.props;
     this.animateBackdrop(
       this.backdropHeight - (hideMinBackdropHeight ?? 0),
-      callback
+      () => {
+        this.setState({ showContainer: false });
+        callback?.();
+      }
     );
   }
 

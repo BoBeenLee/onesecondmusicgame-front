@@ -9,6 +9,7 @@ import ChargeSkipItemPopup from "src/components/popup/ChargeSkipItemPopup";
 import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
 import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
 import ChargeFullHeartPopup from "src/components/popup/ChargeFullHeartPopup";
+import ExhaustFullHeartPopup from "src/components/popup/ExhaustFullHeartPopup";
 import Heart from "src/stores/model/Heart";
 
 const CenterView = styled.View`
@@ -62,6 +63,14 @@ storiesOf("Popup", module)
         onCancel={action("onCancel")}
         onConfirm={action("onConfirm")}
         onChargeFullHeart={action("onChargeFullHeart")}
+      />
+    );
+  })
+  .add("ExhaustFullHeartPopup", () => {
+    return (
+      <ExhaustFullHeartPopup
+        onInvite={action("onInvite")}
+        onCancel={action("onCancel")}
       />
     );
   });

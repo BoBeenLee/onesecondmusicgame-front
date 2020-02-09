@@ -6,9 +6,9 @@ import { InteractionManager, Clipboard } from "react-native";
 import styled from "styled-components/native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
-import { iosStatusBarHeight } from "src/utils/device";
 import {
   Bold12,
+  Bold14,
   Bold36,
   Regular10,
   Regular12,
@@ -40,6 +40,10 @@ import LevelBadge from "src/components/badge/LevelBadge";
 import XEIconButton from "src/components/button/XEIconButton";
 import GamePlayScreen from "src/screens/game/GamePlayScreen";
 import UserProfileScreen from "src/screens/user/UserProfileScreen";
+import images from "src/images";
+import { IForm } from "src/components/form/UserProfileForm";
+import UnderlineText from "src/components/text/UnderlineText";
+import UserItemPopup from "src/components/popup/UserItemPopup";
 
 interface IInject {
   store: IStore;
@@ -102,20 +106,21 @@ const HeartRemainTime = styled(TimerText)`
   color: ${colors.white};
 `;
 
-const GameItems = styled.View`
+const GameItemButton = styled.TouchableOpacity`
   position: absolute;
-  width: 100px;
-  top: ${iosStatusBarHeight(false) + 20}px;
+  top: 14px;
   right: 31px;
-  flex-direction: column;
+  width: 93px;
+  height: 32px;
+  border-radius: 17px;
+  background-color: ${colors.purply};
+  align-items: center;
+  justify-content: center;
 `;
 
-const GameItemButton = styled.View`
-  padding: 5px;
-  background-color: #eee;
+const GameItemButtonText = styled(Bold14)`
+  color: ${colors.paleLavender};
 `;
-
-const GameItemButtonText = styled(Bold12)``;
 
 const Content = styled.View`
   flex: 1;
@@ -123,9 +128,18 @@ const Content = styled.View`
   align-items: center;
 `;
 
-const Logo = styled(Bold36)`
-  color: ${colors.white};
-  margin-bottom: 20px;
+const MainMirrorBallView = styled.View`
+  position: absolute;
+  top: 5px;
+  left: 0px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
+const MainMirrorBallBackground = styled.Image`
+  width: 244px;
+  height: 310px;
 `;
 
 const GameModeView = styled.View`
@@ -161,7 +175,6 @@ const LevelBadgesView = styled.View`
 `;
 
 const LevelBadgeView = styled(LevelBadge)`
-  width: 82px;
   margin-horizontal: 3.5px;
   margin-bottom: 16px;
 `;
@@ -172,6 +185,29 @@ const Footer = styled.View`
   justify-content: space-between;
   align-items: center;
   padding-horizontal: 25px;
+  margin-top: 28px;
+`;
+
+const FooterButtonGroup = styled.TouchableOpacity`
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SuggestionIcon = styled.Image`
+  width: 43px;
+  height: 43px;
+  margin-bottom: 7px;
+`;
+
+const RankingIcon = styled.Image`
+  width: 36px;
+  height: 40px;
+  margin-bottom: 4px;
+`;
+
+const FooterButtonText = styled(Bold12)`
+  color: ${colors.white};
 `;
 
 // https://app.zeplin.io/project/5e1988a010ae36bcd391ba27/screen/5e335b9266ed997dfeb5627a
@@ -224,30 +260,32 @@ class MainScreen extends Component<IProps> {
   };
 
   public render() {
-    const userItemViews = this.props.authStore.user?.userItemViews ?? [];
     const heart = this.props.authStore.user?.heart;
+    const user = this.props.authStore.user;
     return (
       <Container>
         <Header>
           <HeartStatus>
             <HeartGroup
               hearts={_.times(5, index =>
-                index <= (heart?.heartCount ?? 0) ? "active" : "inactive"
+                index + 1 <= (heart?.heartCount ?? 0) ? "active" : "inactive"
               )}
             />
             <HeartRemain>
               <HeartRemainText>충전까지 남은 시간 : </HeartRemainText>
-              <HeartRemainTime
-                seconds={heart?.leftTime ?? 0}
-                onTimeEnd={this.chargeTime}
-              />
+              <HeartRemainTime timeLeft={heart?.leftTime ?? 0} />
             </HeartRemain>
           </HeartStatus>
         </Header>
         <Content>
+          <MainMirrorBallView>
+            <MainMirrorBallBackground source={images.mainMirrorBall} />
+          </MainMirrorBallView>
           <Profile>
             <NicknameView>
-              <Nickname>Hyen님</Nickname>
+              <UnderlineText
+                TextComponent={<Nickname>{user?.nickname ?? ""}님</Nickname>}
+              />
               <SettingButton
                 iconName="cog"
                 iconSize={20}
@@ -257,7 +295,6 @@ class MainScreen extends Component<IProps> {
             </NicknameView>
             <Description>오늘도 같이 음악 맞춰요 </Description>
           </Profile>
-          <Logo>알쏭달쏭</Logo>
         </Content>
         <GameModeView>
           <GameModeSection onPress={this.navigateToGamePlay}>
@@ -282,25 +319,18 @@ class MainScreen extends Component<IProps> {
           </GameModeSection>
         </GameModeView>
         <Footer>
-          <MockButton name="노래 제안" onPress={this.navigateToRegisterSong} />
-          <MockButton name="개인 랭킹" onPress={this.navigateToRanking} />
+          <FooterButtonGroup onPress={this.navigateToRegisterSong}>
+            <SuggestionIcon source={images.btnCDIcon} />
+            <FooterButtonText>노래 제안</FooterButtonText>
+          </FooterButtonGroup>
+          <FooterButtonGroup onPress={this.navigateToRanking}>
+            <RankingIcon source={images.btnRankIcon} />
+            <FooterButtonText>개인 랭킹</FooterButtonText>
+          </FooterButtonGroup>
         </Footer>
-        <GameItems>
-          <FloatingButton
-            ButtonComponent={
-              <GameItemButton>
-                <GameItemButtonText>아이템</GameItemButtonText>
-              </GameItemButton>
-            }
-            ItemComponents={_.map(userItemViews, item => (
-              <MockButton
-                key={item.name}
-                name={`${item.name}(${item.count})`}
-                onPress={this.itemToOnPress[item.itemType]}
-              />
-            ))}
-          />
-        </GameItems>
+        <GameItemButton onPress={this.onUserItemPopup}>
+          <GameItemButtonText>하트 충전</GameItemButtonText>
+        </GameItemButton>
       </Container>
     );
   }
@@ -314,10 +344,19 @@ class MainScreen extends Component<IProps> {
 
   private onSetting = () => {
     const { componentId } = this.props;
+
     UserProfileScreen.open({
       componentId,
-      onConfirm: _.identity
+      onConfirm: this.updateUser
     });
+  };
+
+  private updateUser = async (data: IForm) => {
+    const { showToast } = this.props.toastStore;
+    const { nickname } = data;
+    const { updateUser } = this.props.authStore;
+    await updateUser({ nickname });
+    showToast("닉네임 변경완료");
   };
 
   private onSkipItemPopup = () => {
@@ -372,10 +411,24 @@ class MainScreen extends Component<IProps> {
     }
   };
 
-  private onInvitePopup = () => {
+  private onUserItemPopup = () => {
     const { showPopup, closePopup } = this.props.popupProps;
+    const skipCount =
+      this.props.authStore.user?.userItemsByItemType(Item.ItemTypeEnum.SKIP)
+        ?.count ?? 0;
+    const fullHeartCount =
+      this.props.authStore.user?.userItemsByItemType(
+        Item.ItemTypeEnum.CHARGEALLHEART
+      )?.count ?? 0;
+
     showPopup(
-      <InviteFriendsPopup onConfirm={this.invite} onCancel={closePopup} />
+      <UserItemPopup
+        skipCount={skipCount}
+        fullHeartCount={fullHeartCount}
+        onInvite={this.invite}
+        onAD={this.requestHeartRewardAD}
+        onCancel={closePopup}
+      />
     );
   };
 
@@ -391,12 +444,29 @@ class MainScreen extends Component<IProps> {
 
   private navigateToGamePlay = () => {
     const { componentId } = this.props;
-    GamePlayScreen.open({ componentId });
+    const { showToast } = this.props.toastStore;
+    const heart = this.props.authStore.user?.heart!;
+
+    try {
+      GamePlayScreen.open({ componentId, heartCount: heart?.heartCount ?? 0 });
+    } catch (error) {
+      showToast(error.message);
+    }
   };
 
   private navigateToSelectedSingersGamePlay = () => {
     const { componentId } = this.props;
-    GamePlayScreen.openSelectedSingers({ componentId });
+    const { showToast } = this.props.toastStore;
+    const heart = this.props.authStore.user?.heart!;
+
+    try {
+      GamePlayScreen.openSelectedSingers({
+        componentId,
+        heartCount: heart?.heartCount ?? 0
+      });
+    } catch (error) {
+      showToast(error.message);
+    }
   };
 
   private navigateToRegisterSong = () => {

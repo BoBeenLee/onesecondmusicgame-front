@@ -69,3 +69,6 @@ yarn-error.log
 e2e/build
 tests_output
 chromedriver.log
+
+# Storybook
+storybook-static

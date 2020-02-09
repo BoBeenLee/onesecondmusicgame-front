@@ -21,8 +21,6 @@ const Container = styled.View<{ size: number }>`
   `}
 `;
 
-const AudioPlayer = styled(Video)``;
-
 const AudioView = styled(PlayButton)``;
 
 function MiniAudioPlayer(props: IProps) {
@@ -42,26 +40,10 @@ function MiniAudioPlayer(props: IProps) {
     onToggle?.(playType);
   };
 
-  const onLoad = (data: { audio?: boolean }) => {
-    setLoading(prevState => ({
-      audio: data?.audio ?? prevState.audio
-    }));
-  };
-
   const revertPlayType = playType === "play" ? "stop" : "play";
 
   return (
     <Container style={style} size={size}>
-      <AudioPlayer
-        ignoreSilentSwitch={"ignore"}
-        controls={false}
-        onEnd={_.partial(onTogglePlayType, "stop")}
-        onLoadStart={_.partial(onLoad, {
-          audio: false
-        })}
-        paused={playType === "stop"}
-        {...rest}
-      />
       <AudioView
         size={size}
         playType={revertPlayType}

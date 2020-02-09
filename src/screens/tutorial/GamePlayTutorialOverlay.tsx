@@ -33,14 +33,12 @@ const ContainerTouchabledView = styled.TouchableWithoutFeedback`
   background-color: rgba(33, 33, 33, 0.8);
 `;
 
-const Text = styled(Bold12)``;
-
 const PlayStep1 = styled.View`
   position: absolute;
   flex-direction: column;
   align-items: flex-end;
   justify-content: flex-end;
-  bottom: 15px;
+  bottom: ${iosStatusBarHeight(true) + 20}px;
   right: 15px;
 `;
 
@@ -79,11 +77,11 @@ const SkipBadgeText = styled(Bold18)`
 
 const PlayStep2 = styled.View`
   position: absolute;
-  top: ${iosStatusBarHeight(false) + 48}px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
+  top: ${iosStatusBarHeight(true) + 70}px;
   padding-horizontal: 16px;
 `;
 
@@ -101,10 +99,10 @@ const PlayStep2HighlightTitle = styled(Bold20)`
 
 class GamePlayTutorialOverlay extends Component<IProps, IStates> {
   public static async open(params: IParams) {
-    // if (await defaultItemToBoolean(FIELD.DO_NOT_SHOW_GAME_PLAY, false)) {
-    //   params.onAfterClose?.();
-    //   return;
-    // }
+    if (await defaultItemToBoolean(FIELD.DO_NOT_SHOW_GAME_PLAY, false)) {
+      params.onAfterClose?.();
+      return;
+    }
     await showOverlayTransparent(SCREEN_IDS.GamePlayTutorialOverlay, params);
     await setItem(FIELD.DO_NOT_SHOW_GAME_PLAY, "true");
   }
@@ -130,13 +128,7 @@ class GamePlayTutorialOverlay extends Component<IProps, IStates> {
         </SkipButton>
       </PlayStep1>,
       <PlayStep2 key="2">
-        <PlayStep2TimeProgress
-          key={`1`}
-          pause={true}
-          seconds={40}
-          defaultTimeLeft={12}
-          onTimeEnd={_.identity}
-        />
+        <PlayStep2TimeProgress key={`1`} totalSeconds={40} seconds={12} />
         <PlayStep2Title>
           제한 시간은 노래 1곡 당{" "}
           <PlayStep2HighlightTitle>40초</PlayStep2HighlightTitle>!{"\n"}

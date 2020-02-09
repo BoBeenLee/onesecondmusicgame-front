@@ -7,7 +7,12 @@ import { GoogleSigninButton } from "@react-native-community/google-signin";
 import { AppleButton } from "@invertase/react-native-apple-authentication";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
-import { Bold12, Bold14 } from "src/components/text/Typographies";
+import {
+  Bold12,
+  Bold14,
+  Bold24,
+  Regular24
+} from "src/components/text/Typographies";
 import { IStore } from "src/stores/Store";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
@@ -18,6 +23,8 @@ import colors from "src/styles/colors";
 import { ErrorCode } from "src/configs/error";
 import UserProfileScreen from "src/screens/user/UserProfileScreen";
 import { IForm } from "src/components/form/UserProfileForm";
+import images from "src/images";
+import IconButton from "src/components/button/IconButton";
 
 interface IInject {
   authStore: IAuthStore;
@@ -33,26 +40,51 @@ const Container = styled(ContainerWithStatusBar)`
   flex-direction: column;
 `;
 
+const MirrorBallView = styled.View`
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const MirrorBall = styled.Image`
+  width: 174px;
+  height: 87px;
+`;
+
+const MirrorBackground = styled.Image`
+  position: absolute;
+  top: 77px;
+  width: 100%;
+  height: 100%;
+`;
+
 const Content = styled.View`
   flex: 1;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
 `;
 
-const Logo = styled(Bold14)`
+const Description = styled(Regular24)`
+  color: ${colors.white};
+  text-align: center;
+  margin-bottom: 43px;
+`;
+
+const HightlightDescription = styled(Bold24)`
   color: ${colors.white};
 `;
 
-const Bottom = styled.View`
+const ButtonGroup = styled.View`
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  padding-bottom: 100px;
 `;
 
-const SignInButton = styled.TouchableOpacity``;
-
-const ButtonText = styled(Bold12)`
-  color: ${colors.white};
+const SignInButton = styled(IconButton)`
+  height: 49px;
+  margin-bottom: 9px;
 `;
 
 @inject(
@@ -85,34 +117,38 @@ class SignInScreen extends Component<IProps> {
   public render() {
     return (
       <Container>
+        <MirrorBackground source={images.mirrorballLight} />
+        <MirrorBallView>
+          <MirrorBall source={images.mirrorball} />
+        </MirrorBallView>
         <Content>
-          <Logo>Logo</Logo>
+          <Description>
+            <HightlightDescription>간편한 SNS 로그인</HightlightDescription>
+            으로{"\n"} 알쏭달쏭과 함께 음악을 맞춰봐요~
+          </Description>
+          <ButtonGroup>
+            {Platform.select({
+              android: null,
+              ios: (
+                <AppleButton
+                  cornerRadius={5}
+                  buttonStyle={AppleButton.Style.WHITE}
+                  buttonType={AppleButton.Type.CONTINUE}
+                  onPress={this.appleSignIn}
+                />
+              )
+            })}
+            <SignInButton source={images.btnKakao} onPress={this.kakaoSignIn} />
+            <SignInButton
+              source={images.btnFacebook}
+              onPress={this.facebookSignIn}
+            />
+            <SignInButton
+              source={images.btnGoogle}
+              onPress={this.googleSignIn}
+            />
+          </ButtonGroup>
         </Content>
-        <Bottom>
-          {Platform.select({
-            android: null,
-            ios: (
-              <AppleButton
-                cornerRadius={5}
-                buttonStyle={AppleButton.Style.WHITE}
-                buttonType={AppleButton.Type.CONTINUE}
-                onPress={this.appleSignIn}
-              />
-            )
-          })}
-          <SignInButton onPress={this.kakaoSignIn}>
-            <ButtonText>카카오 로그인</ButtonText>
-          </SignInButton>
-          <GoogleSigninButton
-            style={{ width: 192, height: 48 }}
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-            onPress={this.googleSignIn}
-          />
-          <SignInButton onPress={this.facebookSignIn}>
-            <ButtonText>페이스북 로그인</ButtonText>
-          </SignInButton>
-        </Bottom>
       </Container>
     );
   }

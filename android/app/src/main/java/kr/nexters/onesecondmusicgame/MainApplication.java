@@ -50,6 +50,9 @@ import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.guichaguri.trackplayer.TrackPlayer;
+import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
+import com.imagepicker.ImagePickerPackage;
+import fr.bamlab.rnimageresizer.ImageResizerPackage;
 
 public class MainApplication extends NavigationApplication {
     @Override
@@ -108,7 +111,10 @@ public class MainApplication extends NavigationApplication {
                 new ReactVideoPackage(),
                 new FBSDKPackage(),
                 new RNSentryPackage(),
-                new TrackPlayer()
+                new TrackPlayer(),
+                new SafeAreaContextPackage(),
+                new ImagePickerPackage(),
+                new ImageResizerPackage()
         );
     }
 

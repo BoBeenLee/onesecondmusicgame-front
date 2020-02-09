@@ -1,7 +1,25 @@
+@import url("https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css");
+
+@font-face {
+  font-family: "BMHANNAAirOTF";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.0/BMHANNAAir.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "BMHANNAProOTF";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_seven@1.0/BMHANNAPro.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 *,
 html,
 body {
-  font-family: "NanumSquare", sans-serif;
+  font-family: "BMHANNAAirOTF", sans-serif;
   font-size: 16px;
   outline: none;
   box-sizing: border-box;
@@ -27,7 +45,7 @@ div[role="group"] {
   box-sizing: border-box;
 }
 
-#___gatsby>div[role="group"] {
+#___gatsby > div[role="group"] {
   height: 100%;
   overflow-y: auto;
 }

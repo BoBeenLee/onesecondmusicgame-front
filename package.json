@@ -1,6 +1,6 @@
 {
   "name": "kr.nexters.onesecondmusicgame",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -29,8 +29,8 @@
     "codepush:ios:production": "code-push release-react onesecondmusicgame/onesecondmusicgame-ios ios -d Production -m true --privateKeyPath ~/private.pem --plistFile ios/RNApp/Info.plist",
     "prettier": "prettier './src/**/*.{js,ts,tsx}' --write",
     "lint:css": "stylelint './src/**/*.tsx'",
-    "eslint": "./node_modules/.bin/eslint './src/**/*.{js,ts,tsx}'",
-    "eslint:fix": "./node_modules/.bin/eslint './src/**/*.{js,ts,tsx}' --fix",
+    "eslint": "./node_modules/.bin/eslint --ext .js,.jsx,.ts,.tsx './src'",
+    "eslint:fix": "./node_modules/.bin/eslint --ext .js,.jsx,.ts,.tsx './src' --fix",
     "type-check": "tsc --noEmit",
     "xcode": "open ios/RNApp.xcworkspace",
     "androidstudio": "open -a /Applications/Android\\ Studio.app ./android",
@@ -68,7 +68,7 @@
     "qs": "^6.8.0",
     "react": "^16.11.0",
     "react-fast-compare": "^2.0.4",
-    "react-hook-form": "^4.8.0",
+    "react-hook-form": "^4.8.2",
     "react-native": "0.61.5",
     "react-native-actionsheet": "^2.4.2",
     "react-native-calendars": "^1.188.0",
@@ -79,6 +79,8 @@
     "react-native-firebase": "^5.5.6",
     "react-native-gesture-handler": "^1.2.1",
     "react-native-htmlview": "^0.14.0",
+    "react-native-image-picker": "^2.2.1",
+    "react-native-image-resizer": "^1.1.0",
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-keyboard-spacer": "^0.4.1",
     "react-native-linear-gradient": "^2.5.6",
@@ -88,6 +90,8 @@
     "react-native-progress": "^4.0.3",
     "react-native-rate": "^1.1.10",
     "react-native-reanimated": "^1.0.1",
+    "react-native-safe-area-context": "^0.7.2",
+    "react-native-safe-area-view": "^1.0.0",
     "react-native-scroll-into-view": "^1.0.3",
     "react-native-shimmer-placeholder": "^1.0.35",
     "react-native-snap-carousel": "^3.8.0",
@@ -104,7 +108,7 @@
     "reactotron-react-native": "^4.0.2",
     "recompose": "^0.30.0",
     "rn-fetch-blob": "^0.11.2",
-    "styled-components": "^4.2.0",
+    "styled-components": "^5.0.1",
     "yup": "^0.27.0"
   },
   "devDependencies": {
@@ -201,18 +205,6 @@
     },
     "modulePaths": [
       "<rootDir>"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,ts,tsx}": [
-      "npm run prettier",
-      "npm run eslint:fix",
-      "git add"
     ]
   }
 }

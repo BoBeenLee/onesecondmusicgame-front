@@ -114,12 +114,13 @@ class GameModeScreen extends Component<IProps> {
 
   private navigateToGamePlay = () => {
     const { componentId } = this.props;
-    GamePlayScreen.open({ componentId });
+
+    GamePlayScreen.open({ componentId, heartCount: 0 });
   };
 
   private navigateToSelectedSingersGamePlay = () => {
     const { componentId } = this.props;
-    GamePlayScreen.openSelectedSingers({ componentId });
+    GamePlayScreen.openSelectedSingers({ componentId, heartCount: 0 });
   };
 
   private back = () => {

@@ -6,6 +6,6 @@ export default class BackTopBar extends React.Component<
   Omit<ITopBarProps, "iconName">
 > {
   public render() {
-    return <OSMGTopBar {...this.props} iconName="arrow-left" />;
+    return <OSMGTopBar {...this.props} iconName="angle-left" />;
   }
 }

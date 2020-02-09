@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
+    "baseUrl": "..",
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "jsx": "react",
@@ -14,7 +14,7 @@
     "target": "esnext",
     "typeRoots": ["typings", "node_modules/@types"],
     "paths": {
-      "@shared/*": ["../shared/lib/*"]
+      "@webview/*": ["./webview/src/*"]
     }
   },
   "include": ["."]

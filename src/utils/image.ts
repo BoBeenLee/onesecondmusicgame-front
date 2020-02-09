@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { Image } from "react-native";
+import { Image, ImageEditor } from "react-native";
 
 const IMAGE_MAX_DIMENSION = 1440;
 const IMAGE_MAX_RATIOS = {

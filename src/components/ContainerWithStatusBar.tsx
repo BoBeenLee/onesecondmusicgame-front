@@ -1,10 +1,10 @@
 import React from "react";
 import { ViewProps } from "react-native";
 import styled from "styled-components/native";
+import SafeAreaView from "react-native-safe-area-view";
+import LinearGradient from "react-native-linear-gradient";
 
 import colors from "src/styles/colors";
-import { iosStatusBarHeight } from "src/utils/device";
-import LinearGradient from "react-native-linear-gradient";
 
 interface IProps {
   children?: React.ReactNode;
@@ -12,17 +12,15 @@ interface IProps {
   statusBarColor?: string;
 }
 
+const SafeAreaContainer = styled(SafeAreaView)`
+  flex: 1;
+  background-color: ${colors.darkBlueGrey};
+`;
+
 const Container = styled(LinearGradient).attrs({
   colors: [colors.darkIndigo, colors.almostBlack]
 })`
   flex: 1;
-  background-color: ${colors.white};
-  padding-top: ${iosStatusBarHeight(false)}px;
-`;
-
-const OutterContainer = styled.View<{ backgroundColor: string }>`
-  flex: 1;
-  background-color: ${({ backgroundColor }) => backgroundColor};
 `;
 
 function ContainerWithStatusBar({
@@ -31,9 +29,9 @@ function ContainerWithStatusBar({
   style
 }: IProps) {
   return (
-    <OutterContainer backgroundColor={statusBarColor}>
+    <SafeAreaContainer>
       <Container style={style}>{children}</Container>
-    </OutterContainer>
+    </SafeAreaContainer>
   );
 }
 

@@ -126,9 +126,11 @@ class SearchTrackScreen extends Component<IProps, IStates> {
         thumnail={item.artwork_url ?? "https://via.placeholder.com/150"}
         title={item.title}
         author={item.user.username}
-        uri={makePlayStreamUri(item?.stream_url ?? "")}
         isRegistered={false}
-        onPress={_.partial(this.selected, item)}
+        isLike={true}
+        onLikePress={_.partial(this.selected, item)}
+        audioType="play"
+        onPlayToggle={_.identity}
       />
     );
   };

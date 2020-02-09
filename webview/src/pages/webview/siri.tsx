@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
-import SiriWaveForm from "src/components/SiriWaveForm";
-import { makeQueryParams } from "src/utils/uri";
-import { isBrowser } from "src/utils/navigator";
+import SiriWaveForm from "@webview/components/SiriWaveForm";
+import { makeQueryParams } from "@webview/utils/uri";
+import { isBrowser } from "@webview/utils/navigator";
 
 interface IProps {
   location: Location;

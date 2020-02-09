@@ -24,6 +24,10 @@ interface IProps {
   onCancel: () => void;
 }
 
+const OuterContainer = styled(OnlyConfirmPopup)`
+  width: 307px;
+`;
+
 const PopupContainer = styled.View`
   justify-content: center;
   align-items: center;
@@ -69,7 +73,7 @@ const ArrowIcon = styled(XEIcon)`
 function UseFullHeartPopup(props: IProps) {
   const { style, heart, onConfirm, onCancel, onChargeFullHeart } = props;
   return (
-    <OnlyConfirmPopup
+    <OuterContainer
       style={style}
       ContentComponent={
         <PopupContainer>
@@ -77,7 +81,7 @@ function UseFullHeartPopup(props: IProps) {
           <PopupDescription>{`하트 갯수 만큼 게임을 할 수 있어요!`}</PopupDescription>
           <HeartGroupView
             hearts={_.times(5, index =>
-              index <= (heart.heartCount ?? 0) ? "active" : "inactive"
+              index + 1 <= (heart.heartCount ?? 0) ? "active" : "inactive"
             )}
           />
           <ChargeFullHeartButton onPress={onChargeFullHeart}>

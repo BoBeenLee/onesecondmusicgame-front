@@ -13,11 +13,11 @@ interface IProps {
 
 const OutterContainer = styled.View`
   width: 100%;
-  padding-horizontal: 50px;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Container = styled.View`
-  width: 100%;
   flex-direction: column;
   border-radius: 17px;
   background-color: ${colors.paleGrey};

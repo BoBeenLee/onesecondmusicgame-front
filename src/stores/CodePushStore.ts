@@ -4,7 +4,7 @@ import codePush from "react-native-code-push";
 
 import { getJSONValue } from "src/configs/remoteConfig";
 import { defaultItemTo, FIELD, setItem } from "src/utils/storage";
-import { getUniqueID } from "src/utils/device";
+import { getUniqueID } from "src/configs/device";
 
 interface ICodePushData {
   codePushBuild: number;

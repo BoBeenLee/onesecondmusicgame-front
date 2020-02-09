@@ -1,5 +1,6 @@
 import { flow, types } from "mobx-state-tree";
 import { AppState, AppStateStatus } from "react-native";
+import TrackPlayer from "react-native-track-player";
 
 import AuthStore from "src/stores/AuthStore";
 import ToastStore from "src/stores/ToastStore";
@@ -30,6 +31,7 @@ const Store = types
 
     const initializeApp = flow(function*() {
       yield Promise.all([
+        TrackPlayer.setupPlayer(),
         self.codePushStore.notifyAppReady(),
         initializeRemoteConfig()
       ]);

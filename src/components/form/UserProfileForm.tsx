@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { ViewProps } from "react-native";
 import { useForm, OnSubmit } from "react-hook-form";
 import styled from "styled-components/native";
@@ -52,6 +52,7 @@ const NicknameInput = styled.View`
 const NicknameTextInput = styled(OSMGTextInput).attrs({
   focusStyle: { color: colors.paleGrey }
 })`
+  width: 100%;
   font-size: 16px;
   text-align: center;
   color: ${colors.brownishGrey};
@@ -80,6 +81,7 @@ const UserProfileForm = (props: IProps) => {
   const { register, setValue, setError, handleSubmit, errors } = useForm<
     IForm
   >();
+  const [form, setForm] = useState<IForm>({ nickname: "" });
 
   useEffect(() => {
     register({ name: "nickname" }, { required: true });
@@ -99,8 +101,12 @@ const UserProfileForm = (props: IProps) => {
         <Title>게임에 사용할 닉네임을 설정해주세요</Title>
         <NicknameInput>
           <NicknameTextInput
-            onChangeText={text => setValue("nickname", text, true)}
+            onChangeText={text => {
+              setValue("nickname", text, true);
+              setForm({ ...form, nickname: text });
+            }}
             placeholder="닉네임 입력 (최소 3글자 이상)"
+            value={form.nickname}
           />
         </NicknameInput>
         {Boolean(errors.nickname?.message) ? (

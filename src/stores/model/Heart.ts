@@ -24,9 +24,15 @@ const Heart = types
       self.heartCount = response.heartCount ?? 0;
       self.leftTime = response.leftTime ?? 0;
     });
+
+    const useLeftTime = () => {
+      self.leftTime -= 1;
+    };
+
     return {
       fetchHeart,
-      useHeart
+      useHeart,
+      useLeftTime
     };
   })
   .actions(self => {
@@ -34,10 +40,12 @@ const Heart = types
       const onVisible = reaction(
         () => self.leftTime,
         async (leftTime: number) => {
-          if (leftTime > 0) {
-            await delay(leftTime * 1000);
+          if (leftTime <= 0) {
             self.fetchHeart();
+            return;
           }
+          await delay(1000);
+          self.useLeftTime();
         }
       );
       addDisposer(self, onVisible);

@@ -1,5 +1,12 @@
+import React from "react";
 import { createIconSetFromIcoMoon } from "react-native-vector-icons";
 import xeiconSelection from "./selection.json";
+
+interface IProps {
+  name: XEIconType;
+  color: string;
+  size: number;
+}
 
 // http://xpressengine.github.io/XEIcon/library-2.3.3.html
 const XEIcon = createIconSetFromIcoMoon(
@@ -57,6 +64,10 @@ export type XEIconType =
   | "search"
   | "spinner-1"
   | "plus"
-  | "cog";
+  | "cog"
+  | "play"
+  | "pause";
 
-export default XEIcon;
+const Icon = (props: IProps) => <XEIcon {...props} />;
+
+export default Icon;

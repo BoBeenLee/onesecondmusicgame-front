@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import ImagePicker from "react-native-image-picker";
 
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop, getCurrentComponentId } from "src/utils/navigator";
@@ -11,6 +13,8 @@ import { IStore } from "src/stores/Store";
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import colors from "src/styles/colors";
 import UserProfileForm, { IForm } from "src/components/form/UserProfileForm";
+import BackTopBar from "src/components/topbar/BackTopBar";
+import MockButton from "src/components/button/MockButton";
 
 interface IInject {
   authStore: IAuthStore;
@@ -28,12 +32,21 @@ interface IProps extends IInject, IParams, IPopupProps {
 
 interface IStates {
   nicknameInput: string;
+  profileImage: string;
 }
 
 const Container = styled(ContainerWithStatusBar)`
   flex: 1;
   flex-direction: column;
 `;
+
+const InnerContainer = styled(KeyboardAwareScrollView).attrs({
+  contentContainerStyle: {
+    flex: 1,
+    flexDirection: "column",
+    height: "100%"
+  }
+})``;
 
 const Content = styled.View`
   flex: 1;
@@ -42,6 +55,11 @@ const Content = styled.View`
   padding-top: 70px;
   padding-bottom: 31px;
   padding-horizontal: 41px;
+`;
+
+const ProfileImage = styled.Image`
+  width: 50px;
+  height: 50px;
 `;
 
 @inject(
@@ -61,16 +79,69 @@ class UserProfileScreen extends Component<IProps, IStates> {
     });
   }
 
+  constructor(props: IProps) {
+    super(props);
+
+    this.state = {
+      nicknameInput: "",
+      profileImage: ""
+    };
+  }
+
   public render() {
-    const { onConfirm } = this.props;
+    const { profileImage } = this.state;
     return (
       <Container>
-        <Content>
-          <UserProfileForm onConfirm={onConfirm} />
-        </Content>
+        <BackTopBar title="닉네임 설정" onBackPress={this.back} />
+        <InnerContainer
+          scrollEnabled={false}
+          enableOnAndroid={true}
+          enableAutomaticScroll={false}
+        >
+          <Content>
+            <ProfileImage source={{ uri: profileImage }} />
+            <MockButton name="이미지 불러오기" onPress={this.imagePicker} />
+            <UserProfileForm onConfirm={this.onConfirm} />
+          </Content>
+        </InnerContainer>
       </Container>
     );
   }
+
+  private imagePicker = () => {
+    const { showToast } = this.props.toastStore;
+    const options = {
+      title: "프로필 이미지 불러오기",
+      storageOptions: {
+        skipBackup: true,
+        path: "images"
+      }
+    };
+    ImagePicker.showImagePicker(options, response => {
+      if (response.didCancel) {
+        showToast("User cancelled image picker");
+      } else if (response.error) {
+        showToast("ImagePicker Error: " + response.error);
+      } else if (response.customButton) {
+        showToast("User tapped custom button: " + response.customButton);
+      } else {
+        this.setState({
+          profileImage: response.uri
+        });
+      }
+    });
+  };
+
+  private onConfirm = async (data: IForm) => {
+    const { onConfirm } = this.props;
+    await onConfirm?.(data);
+    this.back();
+  };
+
+  private back = () => {
+    const { componentId } = this.props;
+    pop(componentId);
+  };
 }
 
 export default UserProfileScreen;
