@@ -537,6 +537,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
       return;
     }
     await delay(NEXT_STEP_SECONDS);
+    if (this.state.currentStepStatus === "play") {
+      return;
+    }
     await this.nextStep();
   };
 
