@@ -7,7 +7,6 @@ import styled, { css } from "styled-components/native";
 import XEIcon, { XEIconType } from "src/components/icon/XEIcon";
 import PlayButton from "src/components/button/PlayButton";
 import { AudioType } from "src/components/player/interface";
-import { delay } from "src/utils/common";
 
 interface IProps {
   style?: ViewProps["style"];
@@ -35,14 +34,12 @@ function GameAudioPlayer(props: IProps) {
     setPlayType("play");
     onToggle?.("play");
     await onPlay();
-    await delay(2000);
     stop();
   };
 
   return (
     <AudioView
       style={style}
-      disabled={true}
       size={size}
       playType={playType}
       onPress={playType === "play" ? _.identity : play}

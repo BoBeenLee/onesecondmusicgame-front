@@ -1,11 +1,6 @@
 import _ from "lodash";
 import React, { useRef, useEffect, useCallback } from "react";
-import {
-  Animated,
-  ViewProps,
-  TouchableOpacityProps,
-  Easing
-} from "react-native";
+import { Animated, ViewProps, Easing } from "react-native";
 import styled, { css } from "styled-components/native";
 
 import XEIcon, { XEIconType } from "src/components/icon/XEIcon";
@@ -14,10 +9,11 @@ import colors from "src/styles/colors";
 import images from "src/images";
 import zIndex from "src/styles/zIndex";
 
-interface IProps extends TouchableOpacityProps {
+interface IProps extends ViewProps {
   style?: ViewProps["style"];
   size: number;
   playType: Extract<XEIconType, "play" | "pause" | "stop">;
+  onPress?: () => Promise<void> | void;
 }
 
 const Container = styled.View<{ size: number }>`
@@ -55,15 +51,15 @@ function PlayButton(props: IProps) {
   const loop = useRef<Animated.CompositeAnimation | null>(null);
 
   const loopRotate = useCallback(() => {
-    spinValue.current.setValue(0);
     loop.current = Animated.timing(spinValue.current, {
-      duration: 4000,
+      duration: 2000,
       toValue: 1,
       easing: Easing.inOut(Easing.linear),
       useNativeDriver: true
     });
     loop.current.start(result => {
       if (result.finished) {
+        spinValue.current.setValue(0);
         loopRotate();
       }
     });

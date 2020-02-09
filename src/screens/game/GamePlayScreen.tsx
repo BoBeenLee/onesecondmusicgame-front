@@ -486,6 +486,8 @@ class GamePlayScreen extends Component<IProps, IStates> {
   private onPlayItem = async (item: IGamePlayHighlightItem) => {
     await TrackPlayer.seekTo(_.round((item.millisecond ?? 0) / 1000));
     await TrackPlayer.play();
+    await delay(2000);
+    await TrackPlayer.pause();
   };
 
   private onSnapToItem = (index: number) => {
