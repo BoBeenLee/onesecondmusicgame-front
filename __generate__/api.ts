@@ -358,6 +358,12 @@ export interface LikeRequest {
      * @type {string}
      * @memberof LikeRequest
      */
+    singerName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LikeRequest
+     */
     songUrl?: string;
     /**
      * 
