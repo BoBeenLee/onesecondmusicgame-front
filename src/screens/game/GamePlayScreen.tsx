@@ -47,6 +47,7 @@ import ConfirmPopup from "src/components/popup/ConfirmPopup";
 import { makePlayStreamUriByTrackId } from "src/configs/soundCloudAPI";
 import { delay } from "src/utils/common";
 import MainScreen from "src/screens/MainScreen";
+import { InteractionManager } from "react-native";
 
 interface IInject {
   authStore: IAuthStore;
@@ -553,10 +554,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
         songAnswerInput: "",
         songAnswerSeconds: DEFAULT_LIMIT_TIME
       },
-      async () => {
+      () => {
         this.gamePlayersRef.current?.snapToNext();
         this.gamePlayHighlights.nextStep();
-        await this.readyForPlay();
+        InteractionManager.runAfterInteractions(async () => {
+          await this.readyForPlay();
+        });
       }
     );
   };
