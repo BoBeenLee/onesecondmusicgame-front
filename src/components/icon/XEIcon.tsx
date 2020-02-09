@@ -66,7 +66,9 @@ export type XEIconType =
   | "plus"
   | "cog"
   | "play"
-  | "pause";
+  | "pause"
+  | "caret-up-min"
+  | "caret-down-min";
 
 const Icon = (props: IProps) => <XEIcon {...props} />;
 

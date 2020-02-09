@@ -2,8 +2,15 @@ import React from "react";
 import styled from "styled-components/native";
 import { ViewProps } from "react-native";
 
-import { Bold12, Bold24 } from "src/components/text/Typographies";
+import {
+  Bold12,
+  Bold14,
+  Bold16,
+  Bold24
+} from "src/components/text/Typographies";
 import ProfileImage from "src/components/image/ProfileImage";
+import colors from "src/styles/colors";
+import XEIcon from "src/components/icon/XEIcon";
 
 interface IProps {
   style?: ViewProps["style"];
@@ -14,10 +21,14 @@ interface IProps {
 }
 
 const Container = styled.View`
+  width: 100%;
+  height: 82px;
   flex-direction: row;
   align-items: center;
-  background-color: #eaeaea;
-  padding: 18px;
+  border-radius: 8px;
+  background-color: ${colors.blueberry};
+  padding-left: 19px;
+  padding-right: 36px;
 `;
 
 const Content = styled.View`
@@ -26,12 +37,17 @@ const Content = styled.View`
   align-items: center;
 `;
 
-const Rank = styled(Bold24)`
-  margin-right: 18px;
+const RankIcon = styled(XEIcon)`
+  margin-right: 2px;
+`;
+
+const Rank = styled(Bold14)`
+  color: ${colors.lightGrey};
+  margin-right: 10px;
 `;
 
 const Profile = styled(ProfileImage)`
-  margin-right: 15px;
+  margin-right: 18px;
 `;
 
 const RightSide = styled.View`
@@ -39,23 +55,32 @@ const RightSide = styled.View`
   align-items: center;
 `;
 
-const Name = styled(Bold12)`
-  margin-right: 4px;
+const Name = styled(Bold16)`
+  color: ${colors.lightGrey};
 `;
 
-const Score = styled(Bold12)``;
+const ScoreTitle = styled(Bold16)`
+  color: ${colors.paleCyan};
+  margin-right: 8px;
+`;
+
+const Score = styled(Bold12)`
+  color: ${colors.lightGrey};
+`;
 
 function GameRankCard(props: IProps) {
   const { style, rank, profileImage, name, score } = props;
   return (
     <Container style={style}>
       <Content>
+        <RankIcon name="caret-up-min" size={25} color={colors.coolGreen} />
         <Rank>{rank}</Rank>
-        <Profile size={24} source={{ uri: profileImage }} />
+        <Profile size={59} source={{ uri: profileImage }} />
+        <Name>{name}</Name>
       </Content>
       <RightSide>
-        <Name>{name}</Name>
-        <Score>{score}점</Score>
+        <ScoreTitle>P</ScoreTitle>
+        <Score>{score}</Score>
       </RightSide>
     </Container>
   );
