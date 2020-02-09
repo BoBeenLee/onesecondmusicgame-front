@@ -267,7 +267,7 @@ const SkipBadgeText = styled(Bold18)`
   color: ${colors.paleLavender};
 `;
 
-const DEFAULT_LIMIT_TIME = 60;
+const DEFAULT_LIMIT_TIME = 40;
 const NEXT_STEP_SECONDS = 5000;
 
 @inject(
