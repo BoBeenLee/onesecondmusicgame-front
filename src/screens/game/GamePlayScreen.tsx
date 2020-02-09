@@ -267,7 +267,7 @@ const SkipBadgeText = styled(Bold18)`
   color: ${colors.paleLavender};
 `;
 
-const DEFAULT_LIMIT_TIME = 5;
+const DEFAULT_LIMIT_TIME = 60;
 const NEXT_STEP_SECONDS = 5000;
 
 @inject(
@@ -446,7 +446,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
           <NextEmptyView />
           <NextStepGroup>
             <NextStepCaption>5초 뒤 다음 문제</NextStepCaption>
-            <NextStepButton onPress={this.nextStep}>
+            <NextStepButton onPress={_.partial(this.nextStep, false)}>
               <NextStepButtonText>다음 문제</NextStepButtonText>
               <NextStepArrowIcon
                 name="angle-right"

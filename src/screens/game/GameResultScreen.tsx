@@ -337,8 +337,10 @@ class GameResultScreen extends Component<IProps, IStates> {
           <Footer>
             <ResultSection onPress={this.navigateToRanking}>
               <ResultSectionHeaderRow>
-                <RankingIcon source={images.btnRankIcon} />
-                <ResultSectionHeaderTitle>개인랭킹</ResultSectionHeaderTitle>
+                <ResultSectionGroup>
+                  <RankingIcon source={images.btnRankIcon} />
+                  <ResultSectionHeaderTitle>개인랭킹</ResultSectionHeaderTitle>
+                </ResultSectionGroup>
                 <ArrowRightIcon
                   name="angle-right"
                   size={15}

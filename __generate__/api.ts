@@ -286,6 +286,110 @@ export namespace Item {
 /**
  * 
  * @export
+ * @interface Like
+ */
+export interface Like {
+    /**
+     * 
+     * @type {number}
+     * @memberof Like
+     */
+    count?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof Like
+     */
+    id?: number;
+    /**
+     * 
+     * @type {Song}
+     * @memberof Like
+     */
+    song?: Song;
+}
+
+/**
+ * 
+ * @export
+ * @interface LikeHistoryResponse
+ */
+export interface LikeHistoryResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof LikeHistoryResponse
+     */
+    artworkUrl?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LikeHistoryResponse
+     */
+    createdAt?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LikeHistoryResponse
+     */
+    singer?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LikeHistoryResponse
+     */
+    title?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof LikeHistoryResponse
+     */
+    trackId?: number;
+}
+
+/**
+ * 
+ * @export
+ * @interface LikeRequest
+ */
+export interface LikeRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof LikeRequest
+     */
+    songUrl?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof LikeRequest
+     */
+    trackId?: number;
+}
+
+/**
+ * 
+ * @export
+ * @interface LikeResponse
+ */
+export interface LikeResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof LikeResponse
+     */
+    count?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof LikeResponse
+     */
+    trackId?: number;
+}
+
+/**
+ * 
+ * @export
  * @interface LoggedInMusicUser
  */
 export interface LoggedInMusicUser {
@@ -609,6 +713,26 @@ export interface ResponseDTOHeartResponse {
 /**
  * 
  * @export
+ * @interface ResponseDTOLikeResponse
+ */
+export interface ResponseDTOLikeResponse {
+    /**
+     * 
+     * @type {LikeResponse}
+     * @memberof ResponseDTOLikeResponse
+     */
+    body?: LikeResponse;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResponseDTOLikeResponse
+     */
+    status?: number;
+}
+
+/**
+ * 
+ * @export
  * @interface ResponseDTOListItem
  */
 export interface ResponseDTOListItem {
@@ -622,6 +746,46 @@ export interface ResponseDTOListItem {
      * 
      * @type {number}
      * @memberof ResponseDTOListItem
+     */
+    status?: number;
+}
+
+/**
+ * 
+ * @export
+ * @interface ResponseDTOListLikeHistoryResponse
+ */
+export interface ResponseDTOListLikeHistoryResponse {
+    /**
+     * 
+     * @type {Array<LikeHistoryResponse>}
+     * @memberof ResponseDTOListLikeHistoryResponse
+     */
+    body?: Array<LikeHistoryResponse>;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResponseDTOListLikeHistoryResponse
+     */
+    status?: number;
+}
+
+/**
+ * 
+ * @export
+ * @interface ResponseDTOListUserLikeHistoryResponse
+ */
+export interface ResponseDTOListUserLikeHistoryResponse {
+    /**
+     * 
+     * @type {Array<UserLikeHistoryResponse>}
+     * @memberof ResponseDTOListUserLikeHistoryResponse
+     */
+    body?: Array<UserLikeHistoryResponse>;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResponseDTOListUserLikeHistoryResponse
      */
     status?: number;
 }
@@ -832,6 +996,12 @@ export interface Song {
     id?: number;
     /**
      * 
+     * @type {Like}
+     * @memberof Song
+     */
+    like?: Like;
+    /**
+     * 
      * @type {MusicUser}
      * @memberof Song
      */
@@ -952,6 +1122,32 @@ export interface SongRegisterRequest {
  * @interface UserContextHolder
  */
 export interface UserContextHolder {
+}
+
+/**
+ * 
+ * @export
+ * @interface UserLikeHistoryResponse
+ */
+export interface UserLikeHistoryResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof UserLikeHistoryResponse
+     */
+    accessId?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserLikeHistoryResponse
+     */
+    createdAt?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof UserLikeHistoryResponse
+     */
+    nickname?: string;
 }
 
 /**
@@ -2157,6 +2353,355 @@ export class ItemControllerApi extends BaseAPI {
      */
     public useItemUsingPUT(type: string, options?: any) {
         return ItemControllerApiFp(this.configuration).useItemUsingPUT(type, options)(this.fetch, this.basePath);
+    }
+
+}
+
+/**
+ * LikeControllerApi - fetch parameter creator
+ * @export
+ */
+export const LikeControllerApiFetchParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary dislike
+         * @param {LikeRequest} likeRequest likeRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dislikeUsingPOST(likeRequest: LikeRequest, options: any = {}): FetchArgs {
+            // verify required parameter 'likeRequest' is not null or undefined
+            if (likeRequest === null || likeRequest === undefined) {
+                throw new RequiredError('likeRequest','Required parameter likeRequest was null or undefined when calling dislikeUsingPOST.');
+            }
+            const localVarPath = `/dislike`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            const needsSerialization = (<any>"LikeRequest" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(likeRequest || {}) : (likeRequest || "");
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary like
+         * @param {LikeRequest} likeRequest likeRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        likeUsingPOST(likeRequest: LikeRequest, options: any = {}): FetchArgs {
+            // verify required parameter 'likeRequest' is not null or undefined
+            if (likeRequest === null || likeRequest === undefined) {
+                throw new RequiredError('likeRequest','Required parameter likeRequest was null or undefined when calling likeUsingPOST.');
+            }
+            const localVarPath = `/like`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            const needsSerialization = (<any>"LikeRequest" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(likeRequest || {}) : (likeRequest || "");
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * LikeControllerApi - functional programming interface
+ * @export
+ */
+export const LikeControllerApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary dislike
+         * @param {LikeRequest} likeRequest likeRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dislikeUsingPOST(likeRequest: LikeRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOLikeResponse> {
+            const localVarFetchArgs = LikeControllerApiFetchParamCreator(configuration).dislikeUsingPOST(likeRequest, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary like
+         * @param {LikeRequest} likeRequest likeRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        likeUsingPOST(likeRequest: LikeRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOLikeResponse> {
+            const localVarFetchArgs = LikeControllerApiFetchParamCreator(configuration).likeUsingPOST(likeRequest, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+    }
+};
+
+/**
+ * LikeControllerApi - factory interface
+ * @export
+ */
+export const LikeControllerApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
+    return {
+        /**
+         * 
+         * @summary dislike
+         * @param {LikeRequest} likeRequest likeRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        dislikeUsingPOST(likeRequest: LikeRequest, options?: any) {
+            return LikeControllerApiFp(configuration).dislikeUsingPOST(likeRequest, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary like
+         * @param {LikeRequest} likeRequest likeRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        likeUsingPOST(likeRequest: LikeRequest, options?: any) {
+            return LikeControllerApiFp(configuration).likeUsingPOST(likeRequest, options)(fetch, basePath);
+        },
+    };
+};
+
+/**
+ * LikeControllerApi - object-oriented interface
+ * @export
+ * @class LikeControllerApi
+ * @extends {BaseAPI}
+ */
+export class LikeControllerApi extends BaseAPI {
+    /**
+     * 
+     * @summary dislike
+     * @param {LikeRequest} likeRequest likeRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LikeControllerApi
+     */
+    public dislikeUsingPOST(likeRequest: LikeRequest, options?: any) {
+        return LikeControllerApiFp(this.configuration).dislikeUsingPOST(likeRequest, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary like
+     * @param {LikeRequest} likeRequest likeRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LikeControllerApi
+     */
+    public likeUsingPOST(likeRequest: LikeRequest, options?: any) {
+        return LikeControllerApiFp(this.configuration).likeUsingPOST(likeRequest, options)(this.fetch, this.basePath);
+    }
+
+}
+
+/**
+ * LikeHistoryControllerApi - fetch parameter creator
+ * @export
+ */
+export const LikeHistoryControllerApiFetchParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary getLikeHistory
+         * @param {number} trackId trackId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getLikeHistoryUsingGET(trackId: number, options: any = {}): FetchArgs {
+            // verify required parameter 'trackId' is not null or undefined
+            if (trackId === null || trackId === undefined) {
+                throw new RequiredError('trackId','Required parameter trackId was null or undefined when calling getLikeHistoryUsingGET.');
+            }
+            const localVarPath = `/history/like/song/{trackId}`
+                .replace(`{${"trackId"}}`, encodeURIComponent(String(trackId)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary getUserHistory
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserHistoryUsingGET(options: any = {}): FetchArgs {
+            const localVarPath = `/history/like/user`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * LikeHistoryControllerApi - functional programming interface
+ * @export
+ */
+export const LikeHistoryControllerApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary getLikeHistory
+         * @param {number} trackId trackId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getLikeHistoryUsingGET(trackId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOListUserLikeHistoryResponse> {
+            const localVarFetchArgs = LikeHistoryControllerApiFetchParamCreator(configuration).getLikeHistoryUsingGET(trackId, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary getUserHistory
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserHistoryUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOListLikeHistoryResponse> {
+            const localVarFetchArgs = LikeHistoryControllerApiFetchParamCreator(configuration).getUserHistoryUsingGET(options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+    }
+};
+
+/**
+ * LikeHistoryControllerApi - factory interface
+ * @export
+ */
+export const LikeHistoryControllerApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
+    return {
+        /**
+         * 
+         * @summary getLikeHistory
+         * @param {number} trackId trackId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getLikeHistoryUsingGET(trackId: number, options?: any) {
+            return LikeHistoryControllerApiFp(configuration).getLikeHistoryUsingGET(trackId, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary getUserHistory
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserHistoryUsingGET(options?: any) {
+            return LikeHistoryControllerApiFp(configuration).getUserHistoryUsingGET(options)(fetch, basePath);
+        },
+    };
+};
+
+/**
+ * LikeHistoryControllerApi - object-oriented interface
+ * @export
+ * @class LikeHistoryControllerApi
+ * @extends {BaseAPI}
+ */
+export class LikeHistoryControllerApi extends BaseAPI {
+    /**
+     * 
+     * @summary getLikeHistory
+     * @param {number} trackId trackId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LikeHistoryControllerApi
+     */
+    public getLikeHistoryUsingGET(trackId: number, options?: any) {
+        return LikeHistoryControllerApiFp(this.configuration).getLikeHistoryUsingGET(trackId, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary getUserHistory
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof LikeHistoryControllerApi
+     */
+    public getUserHistoryUsingGET(options?: any) {
+        return LikeHistoryControllerApiFp(this.configuration).getUserHistoryUsingGET(options)(this.fetch, this.basePath);
     }
 
 }
