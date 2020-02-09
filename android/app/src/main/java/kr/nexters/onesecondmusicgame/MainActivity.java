@@ -17,7 +17,7 @@ import org.devio.rn.splashscreen.SplashScreen;
 
 public class MainActivity extends NavigationActivity implements OnImagePickerPermissionsCallback {
     private PermissionListener listener;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.show(this);
