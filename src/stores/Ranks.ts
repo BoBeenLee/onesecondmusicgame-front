@@ -1,5 +1,7 @@
 import _ from "lodash";
 import { flow, types } from "mobx-state-tree";
+import { getRankingInfoUsingGET } from "src/apis/rank";
+import { RankView } from "__generate__/api";
 
 export interface IRankItem {
   rank: number;
@@ -38,7 +40,8 @@ const mocks: IRankItem[] = [
 const Ranks = types
   .model("Ranks", {
     isRefresh: types.optional(types.boolean, false),
-    ranks: types.optional(types.array(types.frozen<IRankItem>()), mocks)
+    ranks: types.optional(types.array(types.frozen<RankView>()), []),
+    time: types.optional(types.number, 0)
   })
   .views(self => {
     return {
@@ -54,8 +57,9 @@ const Ranks = types
     };
 
     const fetch = flow(function*() {
-      // const response: RetrieveAsyncFunc<typeof singers> = yield singers();
-      self.ranks.replace(mocks);
+      const response: RetrieveAsyncFunc<typeof getRankingInfoUsingGET> = yield getRankingInfoUsingGET();
+      self.time = response?.time ?? 0;
+      self.ranks.replace(response?.rankViewList ?? []);
     });
 
     const initialize = flow(function*() {
@@ -80,6 +84,6 @@ const Ranks = types
     };
   });
 
-export type ISingers = typeof Ranks.Type;
+export type IRanks = typeof Ranks.Type;
 
 export default Ranks;

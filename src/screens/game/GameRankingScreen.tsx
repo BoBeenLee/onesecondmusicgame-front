@@ -11,6 +11,7 @@ import GameTopRankCard from "src/components/card/GameTopRankCard";
 import GameRankCard from "src/components/card/GameRankCard";
 import colors from "src/styles/colors";
 import Ranks, { IRankItem } from "src/stores/Ranks";
+import { RankView } from "__generate__/api";
 
 interface IParams {
   componentId: string;
@@ -44,7 +45,7 @@ const GameTopRankCardView = styled(GameTopRankCard)`
   padding-horizontal: 10px;
 `;
 
-const Result = styled<ComponentClass<FlatListProps<IRankItem>>>(FlatList)`
+const Result = styled<ComponentClass<FlatListProps<RankView>>>(FlatList)`
   flex: 1;
   width: 100%;
   margin-top: 9px;
@@ -67,11 +68,16 @@ class GameRankingScreen extends Component<IProps> {
 
   public ranks = Ranks.create();
 
+  constructor(props: IProps) {
+    super(props);
+    this.ranks.initialize();
+  }
+
   public render() {
     const { isRefresh, refresh, rankViews } = this.ranks;
     return (
       <Container>
-        <BackTopBar title="개인 랭킹" onBackPress={this.back} />
+        <BackTopBar title="랭킹" onBackPress={this.back} />
         <Content>
           <RankCaption>*NN시 NN분 기준의 랭킹입니다. </RankCaption>
           <TopRankView>
@@ -107,12 +113,19 @@ class GameRankingScreen extends Component<IProps> {
     );
   }
 
-  private rankKeyExtreactor = (item: IRankItem, index: number) => {
+  private rankKeyExtreactor = (item: RankView, index: number) => {
     return `${index}`;
   };
 
-  private renderRankItem: ListRenderItem<IRankItem> = ({ item }) => {
-    return <GameRankCardView {...item} />;
+  private renderRankItem: ListRenderItem<RankView> = ({ item }) => {
+    return (
+      <GameRankCardView
+        rank={item?.rankDiff ?? 0}
+        profileImage="https://via.placeholder.com/350x350"
+        name={item?.nickname ?? ""}
+        score={item?.point ?? 0}
+      />
+    );
   };
 
   private back = () => {
