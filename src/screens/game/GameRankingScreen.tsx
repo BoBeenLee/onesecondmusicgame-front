@@ -25,7 +25,10 @@ const Container = styled(ContainerWithStatusBar)`
   flex-direction: column;
 `;
 
-const RankCaption = styled(Bold12)``;
+const RankCaption = styled(Bold14)`
+  color: #fff;
+  align-self: flex-end;
+`;
 
 const Content = styled.View`
   flex: 1;
