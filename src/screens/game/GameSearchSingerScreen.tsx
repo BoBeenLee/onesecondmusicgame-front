@@ -123,7 +123,6 @@ const HeartIcon = styled(XEIcon)``;
 
 const ResultEmptyDescription = styled(Regular12)`
   color: ${colors.lightGreyTwo};
-  margin-bottom: 31px;
 `;
 
 const RegisterSongButton = styled.TouchableOpacity`
@@ -134,6 +133,7 @@ const RegisterSongButton = styled.TouchableOpacity`
   border-radius: 8px;
   border: solid 3px ${colors.lightMagenta};
   background-color: ${colors.pinkyPurple};
+  margin-top: 31px;
 `;
 
 const RegisterSongButtonText = styled(Bold14)`
