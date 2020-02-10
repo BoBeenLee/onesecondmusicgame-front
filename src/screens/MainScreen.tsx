@@ -44,6 +44,7 @@ import { IForm } from "src/components/form/UserProfileForm";
 import UnderlineText from "src/components/text/UnderlineText";
 import UserItemPopup from "src/components/popup/UserItemPopup";
 import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
+import DeveloperScreen from "src/screens/DeveloperScreen";
 
 interface IInject {
   store: IStore;
@@ -210,6 +211,16 @@ const FooterButtonText = styled(Bold12)`
   color: ${colors.white};
 `;
 
+const DevelopButton = styled.TouchableWithoutFeedback``;
+
+const DeveloperButtonView = styled.View`
+  position: absolute;
+  top: 100px;
+  right: 0px;
+  width: 20px;
+  height: 20px;
+`;
+
 // https://app.zeplin.io/project/5e1988a010ae36bcd391ba27/screen/5e335b9266ed997dfeb5627a
 @inject(
   ({ store }: { store: IStore }): IInject => ({
@@ -331,6 +342,9 @@ class MainScreen extends Component<IProps> {
         <GameItemButton onPress={this.onUserItemPopup}>
           <GameItemButtonText>하트 충전</GameItemButtonText>
         </GameItemButton>
+        <DevelopButton onPress={DeveloperScreen.open}>
+          <DeveloperButtonView />
+        </DevelopButton>
       </Container>
     );
   }
