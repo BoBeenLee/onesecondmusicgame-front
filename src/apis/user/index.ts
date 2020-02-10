@@ -2,7 +2,7 @@ import {
   MusicUserControllerApiFactory,
   UserLoginRequest,
   UserSignUpRequest,
-  MyInfoChangeRequest
+  NicknameChangeRequest
 } from "__generate__/api";
 import { requestAPI } from "src/configs/requestAPI";
 
@@ -22,7 +22,7 @@ export const signUpUsingPOST = async (request: UserSignUpRequest) => {
   return response.body!;
 };
 
-export const myInfoChangeUsingPUT = async (request: MyInfoChangeRequest) => {
+export const myInfoChangeUsingPUT = async (request: NicknameChangeRequest) => {
   const response = await userControllerApi.myInfoChangeUsingPUT(request);
   return response.body!;
 };
