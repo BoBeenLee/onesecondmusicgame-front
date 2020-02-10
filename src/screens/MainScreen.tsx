@@ -109,7 +109,7 @@ const HeartRemainTime = styled(TimerText)`
 const GameItemButton = styled.TouchableOpacity`
   position: absolute;
   top: 14px;
-  right: 31px;
+  right: 17px;
   width: 93px;
   height: 32px;
   border-radius: 17px;
