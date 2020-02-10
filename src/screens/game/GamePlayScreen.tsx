@@ -328,9 +328,32 @@ class GamePlayScreen extends Component<IProps, IStates> {
     props.authStore.user?.heart?.useHeart?.();
     GamePlayTutorialOverlay.open({
       onAfterClose: () => {
-        this.setState({ currentStepStatus: "play" }, () => {
-          this.readyForPlay();
-        });
+        this.setState(
+          {
+            currentStepStatus: "play",
+            songAnswerInput: "",
+            songAnswerSeconds: DEFAULT_LIMIT_TIME
+          },
+          async () => {
+            await this.readyForPlay();
+            this.intervalId = setInterval(async () => {
+              const { songAnswerSeconds, currentStepStatus } = this.state;
+              if (currentStepStatus !== "play") {
+                return;
+              }
+              if (songAnswerSeconds === 0) {
+                const { answer } = this.gamePlayHighlights;
+                const { songAnswerInput } = this.state;
+                answer(songAnswerInput, songAnswerSeconds);
+                await this.beforeNextStep();
+                return;
+              }
+              this.setState({
+                songAnswerSeconds: songAnswerSeconds - 1
+              });
+            }, 1000);
+          }
+        );
       }
     });
   }
@@ -338,6 +361,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
   public async componentDidMount() {
     const { selectedSingers } = this.props;
     await this.gamePlayHighlights.initialize(selectedSingers);
+  }
+
+  public componentWillUnmount() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
   }
 
   public render() {
@@ -502,7 +531,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
       Item.ItemTypeEnum.SKIP
     );
     userItem?.useItemType?.();
-    clearInterval(this.intervalId);
     if (isFinish) {
       this.onFinishPopup();
       return;
@@ -533,7 +561,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
 
   private beforeNextStep = async () => {
     const { isFinish } = this.gamePlayHighlights;
-    clearInterval(this.intervalId);
     this.setState({
       currentStepStatus: "answer"
     });
@@ -579,19 +606,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
       artist: singer ?? "none",
       artwork: artworkUrl
     });
-    this.intervalId = setInterval(async () => {
-      const { songAnswerSeconds } = this.state;
-      if (songAnswerSeconds === 0) {
-        const { answer } = this.gamePlayHighlights;
-        const { songAnswerInput } = this.state;
-        answer(songAnswerInput, songAnswerSeconds);
-        await this.beforeNextStep();
-        return;
-      }
-      this.setState({
-        songAnswerSeconds: songAnswerSeconds - 1
-      });
-    }, 1000);
   };
 
   private onFinishPopup = () => {
