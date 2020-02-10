@@ -44,7 +44,7 @@ import UnderlineText from "src/components/text/UnderlineText";
 import UserItemPopup from "src/components/popup/UserItemPopup";
 import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import DeveloperScreen from "src/screens/DeveloperScreen";
-import RegisterSongTooltip from "src/components/tooltip/Tooltip";
+import Tooltip from "src/components/tooltip/Tooltip";
 import { FIELD, setItem, defaultItemToBoolean } from "src/utils/storage";
 
 interface IInject {
@@ -222,12 +222,12 @@ const DeveloperButtonView = styled.View`
   height: 20px;
 `;
 
-const RegisterSongTooltipView = styled.View`
+const RegisterSongTooltipButton = styled.TouchableWithoutFeedback``;
+
+const RegisterSongTooltipView = styled(Tooltip)`
   position: absolute;
   bottom: 93px;
   left: 17px;
-  width: 291px;
-  height: 51px;
 `;
 
 // https://app.zeplin.io/project/5e1988a010ae36bcd391ba27/screen/5e335b9266ed997dfeb5627a
@@ -368,12 +368,9 @@ class MainScreen extends Component<IProps> {
       return null;
     }
     return (
-      <RegisterSongTooltipView>
-        <RegisterSongTooltip
-          message="좋아하는 가수의 노래가 등록되어 있는지 확인할 수 있어요!"
-          onPress={this.hideRegisterSongTooltip}
-        />
-      </RegisterSongTooltipView>
+      <RegisterSongTooltipButton onPress={this.hideRegisterSongTooltip}>
+        <RegisterSongTooltipView message="좋아하는 가수의 노래가 등록되어 있는지 확인할 수 있어요!" />
+      </RegisterSongTooltipButton>
     );
   }
 
