@@ -76,7 +76,6 @@ const GameTopRankCardView = styled(GameTopRankCard)`
 const Result = styled<ComponentClass<FlatListProps<RankView>>>(FlatList)`
   flex: 1;
   width: 100%;
-  margin-top: 9px;
 `;
 
 const GameRankCardView = styled(GameRankCard)``;
