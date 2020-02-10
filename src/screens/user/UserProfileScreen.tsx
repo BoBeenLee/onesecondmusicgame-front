@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
@@ -15,6 +16,8 @@ import colors from "src/styles/colors";
 import UserProfileForm, { IForm } from "src/components/form/UserProfileForm";
 import BackTopBar from "src/components/topbar/BackTopBar";
 import MockButton from "src/components/button/MockButton";
+import { resizeImageByURI } from "src/configs/image";
+import upload from "src/configs/upload";
 
 interface IInject {
   authStore: IAuthStore;
@@ -117,7 +120,7 @@ class UserProfileScreen extends Component<IProps, IStates> {
         path: "images"
       }
     };
-    ImagePicker.showImagePicker(options, response => {
+    ImagePicker.showImagePicker(options, async response => {
       if (response.didCancel) {
         showToast("User cancelled image picker");
       } else if (response.error) {
@@ -125,9 +128,21 @@ class UserProfileScreen extends Component<IProps, IStates> {
       } else if (response.customButton) {
         showToast("User tapped custom button: " + response.customButton);
       } else {
-        this.setState({
-          profileImage: response.uri
-        });
+        // console.tron.log(_.omit(response, "data"));
+        try {
+          const resizeResponse = await resizeImageByURI(response.uri);
+          // console.tron.log(resizeResponse.uri);
+          await upload({
+            filePath: resizeResponse.uri,
+            fileExtension: "PNG"
+          });
+          // console.tron.log("SUCCESS");
+          this.setState({
+            profileImage: response.uri
+          });
+        } catch (error) {
+          showToast(error.message);
+        }
       }
     });
   };

@@ -26,7 +26,7 @@ interface IFetchInfoResponse {
   timeout: boolean;
 }
 
-const NO_CONTENT = 204;
+const SUCCESS = 200;
 const PROGRESS_INTERVAL = 250;
 
 const METHOD_TYPE = "POST";
@@ -47,7 +47,7 @@ const readyForUpload = (params: IUploadInput) => {
     [
       {
         name: "profileImage",
-        filename: "avatar.jpg",
+        filename: "profile.png",
         data: RNFetchBlob.wrap(cleanFilePath)
       }
     ]
@@ -81,7 +81,7 @@ const upload = async (
   try {
     const response = await uploadProgress(params, setUploadProgress);
     const responseInfo: IFetchInfoResponse = response.info();
-    if (responseInfo.status === NO_CONTENT) {
+    if (responseInfo.status === SUCCESS) {
       successCallback?.(true);
       return true;
     }
