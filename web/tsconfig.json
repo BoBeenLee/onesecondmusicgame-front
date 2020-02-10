@@ -8,14 +8,28 @@
     "lib": ["es2017", "dom"],
     "module": "esnext",
     "moduleResolution": "node",
+    "noEmit": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
     "target": "esnext",
-    "typeRoots": ["typings", "node_modules/@types"],
+    "typeRoots": [
+      "./typings",
+      "./node_modules/@types",
+      "./web/typings",
+      "./web/node_modules/@types"
+    ],
     "paths": {
       "@web/*": ["./web/src/*"]
     }
   },
-  "include": ["."]
+  "include": ["./**/*.*"],
+  "exclude": [
+    "__generate__",
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js",
+    "web/node_modules"
+  ]
 }

@@ -107,7 +107,11 @@ storiesOf("Text", module)
       Regular20,
       Regular24
     };
-    return _.map(Typo, (TypoText: any, key: string) => {
-      return <TypoText style={{ color: "#fff" }}>{key}</TypoText>;
-    });
+    return (
+      <>
+        {_.map(Typo, (TypoText: any, key: string) => {
+          return <TypoText style={{ color: "#fff" }}>{key}</TypoText>;
+        })}
+      </>
+    );
   });
