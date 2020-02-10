@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import colors from "@webview/styles/colors";
-import { media } from "@webview/utils/media";
+import colors from "web/src/styles/colors";
+import { media } from "web/src/utils/media";
 import styled from "styled-components";
 
 const Container = styled.header`

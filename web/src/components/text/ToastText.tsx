@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 
-import colors from "@webview/styles/colors";
-import { media } from "@webview/utils/media";
+import colors from "web/src/styles/colors";
+import { media } from "web/src/utils/media";
 
 interface IProps {
   className?: string;

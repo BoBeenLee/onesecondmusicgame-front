@@ -35,7 +35,7 @@ module.exports = ({ config }) => {
     ...(config.resolve.alias || {}),
     "react-native": path.resolve(__dirname, "../__mocks__/react-native"),
     "@app": path.resolve(__dirname, "../../src"),
-    "@webview": path.resolve(__dirname, "../src")
+    "@web": path.resolve(__dirname, "../src")
   };
   config.resolve.extensions.push(".ts", ".tsx");
   return config;

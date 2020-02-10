@@ -81,7 +81,7 @@ module.exports = {
       resolve: "gatsby-plugin-root-import",
       options: {
         root: path.join(__dirname, "../"),
-        "@webview": path.join(__dirname, "src")
+        "@web": path.join(__dirname, "src")
       }
     }
   ]

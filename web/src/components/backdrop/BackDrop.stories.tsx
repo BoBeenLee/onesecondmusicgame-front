@@ -10,7 +10,7 @@ import SingersSubmitBackDrop from "src/components/backdrop/SingersSubmitBackDrop
 import RegisterTrackBackDrop from "src/components/backdrop/RegisterTrackBackDrop";
 import { Bold12 } from "src/components/text/Typographies";
 import MockButton from "src/components/button/MockButton";
-import { mockTracks } from "@webview/components/backdrop/__mocks__/tracks";
+import { mockTracks } from "web/src/components/backdrop/__mocks__/tracks";
 import SearchTrackCard from "src/components/card/SearchTrackCard";
 import { ITrackItem } from "src/apis/soundcloud/interface";
 

@@ -1,8 +1,8 @@
-import { firebaseLogEvent, IEventResult } from "@webview/configs/analytics";
+import { firebaseLogEvent, IEventResult } from "web/src/configs/analytics";
 import {
   createInjectDecorator,
   MakeData
-} from "@webview/decorators/createInjectDecorator";
+} from "web/src/decorators/createInjectDecorator";
 
 export function firebaseTracking<IProps, IStates>(
   getData: MakeData<IProps, IStates, IEventResult>

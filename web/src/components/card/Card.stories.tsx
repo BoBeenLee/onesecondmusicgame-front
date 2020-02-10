@@ -28,14 +28,20 @@ storiesOf("Card", module)
           thumnail="https://via.placeholder.com/150"
           title="Hello World"
           author="Hello"
-          uri="https://api.soundcloud.com/tracks/736765723/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
+          isLike={true}
+          onLikePress={action("onLikePress")}
+          audioType={"play"}
+          onPlayToggle={action("onPlayToggle")}
           isRegistered={false}
         />
         <SearchTrackCard
           thumnail="https://via.placeholder.com/150"
           title="Hello World"
           author="Hello"
-          uri="https://api.soundcloud.com/tracks/736765723/stream?client_id=a281614d7f34dc30b665dfcaa3ed7505"
+          isLike={false}
+          onLikePress={action("onLikePress")}
+          audioType={"play"}
+          onPlayToggle={action("onPlayToggle")}
           isRegistered={true}
         />
       </Container>

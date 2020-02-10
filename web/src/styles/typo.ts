@@ -1,6 +1,6 @@
 import { css } from "styled-components";
 
-import colors from "@webview/styles/colors";
+import colors from "web/src/styles/colors";
 import { fontEnHeebo, fontEnRoboto } from "./theme";
 
 export default {

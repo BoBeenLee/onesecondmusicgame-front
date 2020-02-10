@@ -4,7 +4,7 @@ import _ from "lodash";
 import {
   traverseObjectKeys,
   traverseObjectSliceStr
-} from "@webview/utils/string";
+} from "web/src/utils/string";
 
 export type EventType = "test";
 
