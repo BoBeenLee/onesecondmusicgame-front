@@ -4,7 +4,7 @@ import ImageResizer from "react-native-image-resizer";
 import { getSize, getResizeDimension } from "src/utils/image";
 
 const IMAGE_RESIZING_OPTIONS = {
-  format: "JPEG" as "JPEG",
+  format: "PNG" as "PNG",
   quality: 80
 };
 

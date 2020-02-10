@@ -1,5 +1,6 @@
 import _ from "lodash";
 import RNFetchBlob from "rn-fetch-blob";
+import env from "src/configs/env";
 
 type ImageExtensionType = "JPG" | "JPEG" | "PNG";
 type VideoExtensionType = "MP4" | "M4V" | "MKV" | "AVI" | "MOV";
@@ -8,7 +9,6 @@ export type FileExtensionType = ImageExtensionType | VideoExtensionType;
 export interface IUploadInput {
   fileExtension: FileExtensionType;
   filePath: string;
-  uploadUrl: string;
 }
 
 interface IFetchBlobResponse {
@@ -32,27 +32,32 @@ const PROGRESS_INTERVAL = 250;
 const METHOD_TYPE = "POST";
 
 const getParams = () => ({
-  "Content-Type": "application/octet-stream",
+  "Content-Type": "multipart/form-data",
   method: METHOD_TYPE
 });
 
 const readyForUpload = (params: IUploadInput) => {
-  const { filePath, uploadUrl } = params;
+  const { filePath } = params;
   const cleanFilePath = filePath.replace("file://", "");
 
   const responsePromise: Promise<IFetchBlobResponse> = RNFetchBlob.fetch(
-    "PUT",
-    uploadUrl,
+    "POST",
+    `${env.API_URL}/user/profile/dp`,
     getParams(),
-    RNFetchBlob.wrap(cleanFilePath)
+    [
+      {
+        name: "profileImage",
+        filename: "avatar.jpg",
+        data: RNFetchBlob.wrap(cleanFilePath)
+      }
+    ]
   );
-
   return responsePromise;
 };
 
 const uploadProgress = (
   params: IUploadInput,
-  setUploadProgress: (currentProgress: number, totalProgress: number) => void
+  setUploadProgress?: (currentProgress: number, totalProgress: number) => void
 ) => {
   const responsePromise = readyForUpload(params);
   setTimeout(() => {
@@ -60,7 +65,7 @@ const uploadProgress = (
       (responsePromise as any).uploadProgress(
         { interval: PROGRESS_INTERVAL },
         (written: string, total: string) => {
-          setUploadProgress(Number(written), Number(total));
+          setUploadProgress?.(Number(written), Number(total));
         }
       );
     }
@@ -70,17 +75,17 @@ const uploadProgress = (
 
 const upload = async (
   params: IUploadInput,
-  setUploadProgress: (currentProgress: number, totalProgress: number) => void,
-  successCallback: (isSuccess: boolean) => void
+  setUploadProgress?: (currentProgress: number, totalProgress: number) => void,
+  successCallback?: (isSuccess: boolean) => void
 ) => {
   try {
     const response = await uploadProgress(params, setUploadProgress);
     const responseInfo: IFetchInfoResponse = response.info();
     if (responseInfo.status === NO_CONTENT) {
-      successCallback(true);
+      successCallback?.(true);
       return true;
     }
-    successCallback(false);
+    successCallback?.(false);
     return false;
   } catch (error) {
     throw error;
