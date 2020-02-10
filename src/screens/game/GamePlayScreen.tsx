@@ -194,7 +194,6 @@ const AnswerContent = styled.View`
   flex-direction: column;
   align-items: center;
   padding-top: 38px;
-  padding-horizontal: 70px;
 `;
 
 const AnswerButton = styled.TouchableOpacity`
@@ -210,6 +209,14 @@ const AnswerButton = styled.TouchableOpacity`
 
 const AnswerButtonText = styled(Bold20)`
   color: ${colors.white};
+`;
+
+const CorrectBackground = styled.Image`
+  position: absolute;
+  top: 55px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
 `;
 
 const NextEmptyView = styled.View``;
@@ -454,6 +461,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const isAnswer = checkAnswer(songAnswerInput);
     return (
       <AnswerContainer>
+        <CorrectBackground source={images.bgCorrectMirrorballLight} />
         <Header>
           <GamePlayStep circles={gamePlayStepStatuses} />
           <LimitTimeProgress
