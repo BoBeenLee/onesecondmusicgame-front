@@ -319,7 +319,6 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
 
   private submit = () => {
     const { onResult } = this.props;
-    const { selectedSingers } = this.state;
     onResult(this.selectedSingers);
   };
 
