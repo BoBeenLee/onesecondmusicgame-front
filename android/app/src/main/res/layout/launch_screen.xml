@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center" 
-    android:background="#FFFFFF" >
+    android:background="#0b112f" >
     <ImageView 
-        android:layout_width="104dp"
-        android:layout_height="104dp"
-        android:src="@mipmap/ic_launcher"
+        android:layout_width="177dp"
+        android:layout_height="64dp"
+        android:src="@mipmap/splash"
     />
 </RelativeLayout>

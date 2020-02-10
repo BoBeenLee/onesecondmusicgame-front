@@ -1,4 +1,3 @@
-import LottieView from "lottie-react-native";
 import { inject, observer } from "mobx-react";
 import React from "react";
 import styled from "styled-components/native";
@@ -30,6 +29,13 @@ const Container = styled.View`
   flex: 1;
   align-items: center;
   justify-content: center;
+  background-color: ${colors.darkIndigo};
+`;
+
+const Logo = styled.Image`
+  width: 177px;
+  height: 64px;
+  resize-mode: contain;
 `;
 
 const Title = styled(Bold20)`
@@ -46,9 +52,6 @@ const Title = styled(Bold20)`
 )
 @observer
 class SplashScreen extends React.Component<IProps> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public animation: any = null;
-
   public async componentDidMount() {
     const { store } = this.props;
     await store.initializeApp();
@@ -58,18 +61,7 @@ class SplashScreen extends React.Component<IProps> {
   public render() {
     return (
       <Container>
-        <Title>123</Title>
-        <LottieView
-          style={{
-            backgroundColor: "#eee",
-            opacity: 0.5
-          }}
-          ref={animation => {
-            this.animation = animation;
-          }}
-          source={images.animation}
-        />
-        <XEIcon name="close" color="#800" size={50} />
+        <Logo source={images.splash} />
       </Container>
     );
   }

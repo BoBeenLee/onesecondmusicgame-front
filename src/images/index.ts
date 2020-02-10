@@ -22,6 +22,7 @@ const images = {
   mainMirrorBall: require("./group12.png"),
   btnRankIcon: require("./group14.png"),
   btnCDIcon: require("./btn_cd.png"),
-  combinedShape: require("./combinedShape.png")
+  combinedShape: require("./combinedShape.png"),
+  splash: require("./splash.png")
 };
 export default images;
