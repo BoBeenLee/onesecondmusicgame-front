@@ -1,3 +1,4 @@
+import { InteractionManager } from "react-native";
 import { Item } from "__generate__/api";
 import _ from "lodash";
 import React, { Component } from "react";
@@ -26,6 +27,7 @@ import OSMGCarousel, { ICarousel } from "src/components/carousel/OSMGCarousel";
 import GameAudioPlayer from "src/components/player/GameAudioPlayer";
 import OSMGTextInput from "src/components/input/OSMGTextInput";
 import { IPopupProps } from "src/hocs/withPopup";
+import withDisabled, { IDisabledProps } from "src/hocs/withDisabled";
 import ChargeFullHeartPopup from "src/components/popup/ChargeFullHeartPopup";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
@@ -47,7 +49,7 @@ import ConfirmPopup from "src/components/popup/ConfirmPopup";
 import { makePlayStreamUriByTrackId } from "src/configs/soundCloudAPI";
 import { delay } from "src/utils/common";
 import MainScreen from "src/screens/MainScreen";
-import { InteractionManager } from "react-native";
+import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 
 interface IInject {
   authStore: IAuthStore;
@@ -59,7 +61,7 @@ interface IParams {
   heartCount: number;
 }
 
-interface IProps extends IInject, IPopupProps {
+interface IProps extends IInject, IPopupProps, IDisabledProps {
   componentId: string;
   selectedSingers: ISinger[];
 }
@@ -321,15 +323,44 @@ class GamePlayScreen extends Component<IProps, IStates> {
       songAnswerInput: "",
       songAnswerSeconds: DEFAULT_LIMIT_TIME
     };
+    this.nextStep = props.wrapperDisabled(this.nextStep, "nextStep");
+    this.useSkipItem = props.wrapperDisabled(this.useSkipItem, "useSkipItem");
+    this.submitAnswer = props.wrapperDisabled(
+      this.submitAnswer,
+      "submitAnswer"
+    );
     loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
       onRewarded: this.onRewarded
     });
     props.authStore.user?.heart?.useHeart?.();
     GamePlayTutorialOverlay.open({
       onAfterClose: () => {
-        this.setState({ currentStepStatus: "play" }, () => {
-          this.readyForPlay();
-        });
+        this.setState(
+          {
+            currentStepStatus: "play",
+            songAnswerInput: "",
+            songAnswerSeconds: DEFAULT_LIMIT_TIME
+          },
+          async () => {
+            await this.readyForPlay();
+            this.intervalId = setInterval(async () => {
+              const { songAnswerSeconds, currentStepStatus } = this.state;
+              if (currentStepStatus !== "play") {
+                return;
+              }
+              if (songAnswerSeconds === 0) {
+                const { answer } = this.gamePlayHighlights;
+                const { songAnswerInput } = this.state;
+                answer(songAnswerInput, songAnswerSeconds);
+                await this.beforeNextStep();
+                return;
+              }
+              this.setState({
+                songAnswerSeconds: songAnswerSeconds - 1
+              });
+            }, 1000);
+          }
+        );
       }
     });
   }
@@ -337,6 +368,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
   public async componentDidMount() {
     const { selectedSingers } = this.props;
     await this.gamePlayHighlights.initialize(selectedSingers);
+  }
+
+  public componentWillUnmount() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
   }
 
   public render() {
@@ -501,8 +538,8 @@ class GamePlayScreen extends Component<IProps, IStates> {
       Item.ItemTypeEnum.SKIP
     );
     userItem?.useItemType?.();
-    clearInterval(this.intervalId);
     if (isFinish) {
+      this.setState({ currentStepStatus: "stop" });
       this.onFinishPopup();
       return;
     }
@@ -532,7 +569,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
 
   private beforeNextStep = async () => {
     const { isFinish } = this.gamePlayHighlights;
-    clearInterval(this.intervalId);
     this.setState({
       currentStepStatus: "answer"
     });
@@ -578,19 +614,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
       artist: singer ?? "none",
       artwork: artworkUrl
     });
-    this.intervalId = setInterval(async () => {
-      const { songAnswerSeconds } = this.state;
-      if (songAnswerSeconds === 0) {
-        const { answer } = this.gamePlayHighlights;
-        const { songAnswerInput } = this.state;
-        answer(songAnswerInput, songAnswerSeconds);
-        await this.beforeNextStep();
-        return;
-      }
-      this.setState({
-        songAnswerSeconds: songAnswerSeconds - 1
-      });
-    }, 1000);
   };
 
   private onFinishPopup = () => {
@@ -614,15 +637,26 @@ class GamePlayScreen extends Component<IProps, IStates> {
   private onRewarded = async () => {
     const { updateUserReward } = this.props.authStore;
     const { showToast } = this.props.toastStore;
+    const { closePopup } = this.props.popupProps;
     try {
       await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
       updateUserReward();
-      showToast("보상 완료!");
+      closePopup();
+      this.onGainFullHeartPopup();
     } catch (error) {
       showToast(error.message);
-    } finally {
-      this.finish();
     }
+  };
+
+  private onGainFullHeartPopup = () => {
+    const { showPopup } = this.props.popupProps;
+    const fullHeartCount =
+      this.props.authStore.user?.userItemsByItemType(
+        Item.ItemTypeEnum.CHARGEALLHEART
+      )?.count ?? 0;
+    showPopup(
+      <GainFullHeartPopup heartCount={fullHeartCount} onConfirm={this.finish} />
+    );
   };
 
   private finish = async () => {
@@ -654,4 +688,4 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 }
 
-export default GamePlayScreen;
+export default withDisabled(GamePlayScreen);

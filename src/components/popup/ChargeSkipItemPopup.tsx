@@ -60,7 +60,6 @@ const InviteButton = styled.TouchableOpacity`
   border: solid 2px ${colors.lightBlueGrey};
   background-color: ${colors.paleLavender};
   padding-horizontal: 13px;
-  margin-bottom: 49px;
 `;
 
 const InviteButtonText = styled(Bold17)`

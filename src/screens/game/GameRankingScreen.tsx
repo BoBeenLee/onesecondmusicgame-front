@@ -1,9 +1,11 @@
 import React, { Component, ComponentClass } from "react";
+import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
 import { FlatListProps, FlatList, ListRenderItem } from "react-native";
+import LinearGradient from "react-native-linear-gradient";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
-import { Bold12, Bold14 } from "src/components/text/Typographies";
+import { Bold12, Bold14, Regular14 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
 import BackTopBar from "src/components/topbar/BackTopBar";
@@ -11,6 +13,14 @@ import GameTopRankCard from "src/components/card/GameTopRankCard";
 import GameRankCard from "src/components/card/GameRankCard";
 import colors from "src/styles/colors";
 import Ranks, { IRankItem } from "src/stores/Ranks";
+import { RankView } from "__generate__/api";
+import { IToastStore } from "src/stores/ToastStore";
+import { IStore } from "src/stores/Store";
+import { transformTimeToString } from "src/utils/date";
+
+interface IInject {
+  toastStore: IToastStore;
+}
 
 interface IParams {
   componentId: string;
@@ -25,9 +35,25 @@ const Container = styled(ContainerWithStatusBar)`
   flex-direction: column;
 `;
 
-const RankCaption = styled(Bold14)`
-  color: #fff;
-  align-self: flex-end;
+const Light = styled.View`
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background-color: ${colors.paleCyan};
+  border-radius: 3px;
+  shadow-color: ${colors.paleCyan};
+  shadow-offset: 0px 0px;
+  shadow-opacity: 1;
+  shadow-radius: 9px;
+`;
+
+const Header = styled.View``;
+
+const RankCaption = styled(Regular14)`
+  text-align: center;
+  color: ${colors.lightGrey};
+  margin-top: 14px;
+  margin-bottom: 19px;
 `;
 
 const Content = styled.View`
@@ -47,10 +73,9 @@ const GameTopRankCardView = styled(GameTopRankCard)`
   padding-horizontal: 10px;
 `;
 
-const Result = styled<ComponentClass<FlatListProps<IRankItem>>>(FlatList)`
+const Result = styled<ComponentClass<FlatListProps<RankView>>>(FlatList)`
   flex: 1;
   width: 100%;
-  margin-top: 9px;
 `;
 
 const GameRankCardView = styled(GameRankCard)``;
@@ -60,6 +85,12 @@ const GameRankSeperator = styled.View`
   height: 13px;
 `;
 
+@inject(
+  ({ store }: { store: IStore }): IInject => ({
+    toastStore: store.toastStore
+  })
+)
+@observer
 class GameRankingScreen extends Component<IProps> {
   public static open(params: IParams) {
     return push({
@@ -70,33 +101,44 @@ class GameRankingScreen extends Component<IProps> {
 
   public ranks = Ranks.create();
 
+  constructor(props: IProps) {
+    super(props);
+    this.ranks.initialize();
+  }
+
   public render() {
-    const { isRefresh, refresh, rankViews } = this.ranks;
+    const { isRefresh, refresh, rankViews, time } = this.ranks;
     return (
       <Container>
         <BackTopBar title="랭킹" onBackPress={this.back} />
         <Content>
-          <RankCaption>*NN시 NN분 기준의 랭킹입니다. </RankCaption>
-          <TopRankView>
-            <GameTopRankCardView
-              rank={1}
-              profileImage="https://via.placeholder.com/350x350"
-              name="jasmin"
-              score={83}
-            />
-            <GameTopRankCardView
-              rank={2}
-              profileImage="https://via.placeholder.com/350x350"
-              name="jasmin"
-              score={83}
-            />
-            <GameTopRankCardView
-              rank={3}
-              profileImage="https://via.placeholder.com/350x350"
-              name="jasmin"
-              score={83}
-            />
-          </TopRankView>
+          <Header>
+            <Light />
+            <TopRankView>
+              <GameTopRankCardView
+                rank={1}
+                profileImage="https://via.placeholder.com/350x350"
+                name="jasmin"
+                score={83}
+              />
+              <GameTopRankCardView
+                rank={2}
+                profileImage="https://via.placeholder.com/350x350"
+                name="jasmin"
+                score={83}
+              />
+              <GameTopRankCardView
+                rank={3}
+                profileImage="https://via.placeholder.com/350x350"
+                name="jasmin"
+                score={83}
+              />
+            </TopRankView>
+            <RankCaption>
+              *{transformTimeToString(time, "YYYY-MM-DD HH시 mm분 ")}
+              기준의 랭킹입니다.{" "}
+            </RankCaption>
+          </Header>
           <Result
             data={rankViews}
             renderItem={this.renderRankItem}
@@ -110,12 +152,19 @@ class GameRankingScreen extends Component<IProps> {
     );
   }
 
-  private rankKeyExtreactor = (item: IRankItem, index: number) => {
+  private rankKeyExtreactor = (item: RankView, index: number) => {
     return `${index}`;
   };
 
-  private renderRankItem: ListRenderItem<IRankItem> = ({ item }) => {
-    return <GameRankCardView {...item} />;
+  private renderRankItem: ListRenderItem<RankView> = ({ item }) => {
+    return (
+      <GameRankCardView
+        rank={item?.rankDiff ?? 0}
+        profileImage="https://via.placeholder.com/350x350"
+        name={item?.nickname ?? ""}
+        score={item?.point ?? 0}
+      />
+    );
   };
 
   private back = () => {

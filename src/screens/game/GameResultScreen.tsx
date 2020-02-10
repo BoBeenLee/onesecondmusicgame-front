@@ -22,14 +22,12 @@ import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
 import { TOP_BAR_HEIGHT } from "src/components/topbar/OSMGTopBar";
 import colors from "src/styles/colors";
-import MockButton from "src/components/button/MockButton";
 import HeartGroup from "src/components/icon/HeartGroup";
 import MainScreen from "src/screens/MainScreen";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
 import GameRankingScreen from "src/screens/game/GameRankingScreen";
-import ChargeFullHeartPopup from "src/components/popup/ChargeFullHeartPopup";
 import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
 import { IPopupProps } from "src/hocs/withPopup";
 import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
@@ -45,7 +43,7 @@ import XEIcon from "src/components/icon/XEIcon";
 import TimerText from "src/components/text/TimerText";
 import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
 import { Item } from "__generate__/api";
-import IconButton from "src/components/button/IconButton";
+import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import images from "src/images";
 
 interface IInject {
@@ -83,8 +81,8 @@ const Title = styled(Bold27)`
 `;
 
 const GamePlayStep = styled(CircleCheckGroup)`
-  margin-top: 19px;
-  margin-bottom: 32px;
+  margin-top: 27px;
+  margin-bottom: 0px;
 `;
 
 const Content = styled.View`
@@ -456,12 +454,22 @@ class GameResultScreen extends Component<IProps, IStates> {
     try {
       await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
       updateUserReward();
-      showToast("보상 완료!");
+      closePopup();
+      this.onGainFullHeartPopup();
     } catch (error) {
       showToast(error.message);
-    } finally {
-      closePopup();
     }
+  };
+
+  private onGainFullHeartPopup = () => {
+    const { showPopup, closePopup } = this.props.popupProps;
+    const fullHeartCount =
+      this.props.authStore.user?.userItemsByItemType(
+        Item.ItemTypeEnum.CHARGEALLHEART
+      )?.count ?? 0;
+    showPopup(
+      <GainFullHeartPopup heartCount={fullHeartCount} onConfirm={closePopup} />
+    );
   };
 
   private onInvitePopup = () => {

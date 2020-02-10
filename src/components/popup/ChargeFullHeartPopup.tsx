@@ -46,7 +46,6 @@ const PopupDescriptionRow = styled.View`
   align-items: center;
 `;
 
-
 const PopupDescription = styled(Bold15)`
   text-align: center;
   color: ${colors.slateGrey};
@@ -71,7 +70,6 @@ const ChargeFullHeartButton = styled.TouchableOpacity`
   background-color: ${colors.pinkyPurple};
   padding-horizontal: 13px;
   margin-top: 29px;
-  margin-bottom: 20px;
 `;
 
 const ChargeFullHeartButtonText = styled(Bold20)`

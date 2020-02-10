@@ -16,8 +16,6 @@ interface IProps {
 const Container = styled.TouchableWithoutFeedback``;
 
 const Inner = styled.View`
-  width: 291px;
-  height: 51px;
   align-items: center;
   padding-top: 10px;
 `;
@@ -26,8 +24,8 @@ const TooltipBackground = styled.Image`
   position: absolute;
   top: 0px;
   left: 0px;
-  width: 100%;
-  height: 100%;
+  width: 291px;
+  height: 51px;
 `;
 
 const Message = styled(Bold12)`

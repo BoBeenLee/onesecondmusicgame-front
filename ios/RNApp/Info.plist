@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>onesecondmusicgame</string>
+	<string>$(PRODUCT_NAME)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIconName</key>
@@ -19,7 +19,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.9</string>
+	<string>1.0.10</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -64,14 +64,16 @@
 		j8zkJ5x6RdlMmXXylcQ1fg5W6p7LpMEoSEZb+nMlGgnjd1UhJXJI6+7nSiXz+YyT
 		zQIDAQAB
 		-----END PUBLIC KEY-----</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false />
-	<key>KAKAO_APP_KEY</key>
-	<string>f89aad4462e12d4b828bf312ee7ef895</string>
 	<key>FacebookAppID</key>
 	<string>758933814518094</string>
 	<key>FacebookDisplayName</key>
 	<string>OneSecondMusicGame</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-7927704382463131~8110014374</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>KAKAO_APP_KEY</key>
+	<string>f89aad4462e12d4b828bf312ee7ef895</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>kakaof89aad4462e12d4b828bf312ee7ef895</string>
@@ -86,37 +88,37 @@
 		<string>fbshareextension</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
-	<true />
+	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
-		<true />
+		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>codepush.azurewebsites.net</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true />
+				<true/>
 			</dict>
 			<key>localhost</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true />
+				<true/>
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to use your camera</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>광고 경험 향상을 위해서 위치 정보에 접근할 수 있습니다.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>광고 경험 향상을 위해서 위치 정보에 접근할 수 있습니다.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to use your microphone (for videos)</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>라이브러리의 사진을 공유하고 카메라 롤에 사진을 저장할 수 있게 됩니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>라이브러리의 사진을 공유하고 카메라 롤에 사진을 저장할 수 있게 됩니다.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to use your camera</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>$(PRODUCT_NAME) would like to use your microphone (for videos)</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>xeicon.ttf</string>
@@ -140,8 +142,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false />
-	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-7927704382463131~8110014374</string>
+	<false/>
 </dict>
 </plist>

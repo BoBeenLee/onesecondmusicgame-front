@@ -23,7 +23,6 @@ import { setRoot } from "src/utils/navigator";
 import colors from "src/styles/colors";
 import { ICodePushStore } from "src/stores/CodePushStore";
 import { IPopupProps } from "src/hocs/withPopup";
-import MockButton from "src/components/button/MockButton";
 import HeartGroup from "src/components/icon/HeartGroup";
 import TimerText from "src/components/text/TimerText";
 import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
@@ -35,7 +34,6 @@ import GameModeScreen from "src/screens/game/GameModeScreen";
 import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
-import FloatingButton from "src/components/button/FloatingButton";
 import LevelBadge from "src/components/badge/LevelBadge";
 import XEIconButton from "src/components/button/XEIconButton";
 import GamePlayScreen from "src/screens/game/GamePlayScreen";
@@ -44,6 +42,10 @@ import images from "src/images";
 import { IForm } from "src/components/form/UserProfileForm";
 import UnderlineText from "src/components/text/UnderlineText";
 import UserItemPopup from "src/components/popup/UserItemPopup";
+import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
+import DeveloperScreen from "src/screens/DeveloperScreen";
+import RegisterSongTooltip from "src/components/tooltip/Tooltip";
+import { FIELD, setItem, defaultItemToBoolean } from "src/utils/storage";
 
 interface IInject {
   store: IStore;
@@ -109,7 +111,7 @@ const HeartRemainTime = styled(TimerText)`
 const GameItemButton = styled.TouchableOpacity`
   position: absolute;
   top: 14px;
-  right: 31px;
+  right: 17px;
   width: 93px;
   height: 32px;
   border-radius: 17px;
@@ -208,6 +210,24 @@ const RankingIcon = styled.Image`
 
 const FooterButtonText = styled(Bold12)`
   color: ${colors.white};
+`;
+
+const DevelopButton = styled.TouchableWithoutFeedback``;
+
+const DeveloperButtonView = styled.View`
+  position: absolute;
+  top: 100px;
+  right: 0px;
+  width: 20px;
+  height: 20px;
+`;
+
+const RegisterSongTooltipView = styled.View`
+  position: absolute;
+  bottom: 93px;
+  left: 17px;
+  width: 291px;
+  height: 51px;
 `;
 
 // https://app.zeplin.io/project/5e1988a010ae36bcd391ba27/screen/5e335b9266ed997dfeb5627a
@@ -331,15 +351,34 @@ class MainScreen extends Component<IProps> {
         <GameItemButton onPress={this.onUserItemPopup}>
           <GameItemButtonText>하트 충전</GameItemButtonText>
         </GameItemButton>
+        <DevelopButton onPress={DeveloperScreen.open}>
+          <DeveloperButtonView />
+        </DevelopButton>
+        {this.renderRegisterSongTooltip}
       </Container>
     );
   }
 
-  private chargeTime = () => {
-    const heart = this.props.authStore.user?.heart;
-    if (_.isEmpty(heart?.leftTime)) {
-      heart?.fetchHeart?.();
+  private get renderRegisterSongTooltip() {
+    const isShow = defaultItemToBoolean(
+      FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP,
+      false
+    );
+    if (isShow) {
+      return null;
     }
+    return (
+      <RegisterSongTooltipView>
+        <RegisterSongTooltip
+          message="좋아하는 가수의 노래가 등록되어 있는지 확인할 수 있어요!"
+          onPress={this.hideRegisterSongTooltip}
+        />
+      </RegisterSongTooltipView>
+    );
+  }
+
+  private hideRegisterSongTooltip = async () => {
+    await setItem(FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP, "true");
   };
 
   private onSetting = () => {
@@ -403,12 +442,22 @@ class MainScreen extends Component<IProps> {
     try {
       await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
       updateUserReward();
-      showToast("보상 완료!");
+      closePopup();
+      this.onGainFullHeartPopup();
     } catch (error) {
       showToast(error.message);
-    } finally {
-      closePopup();
     }
+  };
+
+  private onGainFullHeartPopup = () => {
+    const { showPopup, closePopup } = this.props.popupProps;
+    const fullHeartCount =
+      this.props.authStore.user?.userItemsByItemType(
+        Item.ItemTypeEnum.CHARGEALLHEART
+      )?.count ?? 0;
+    showPopup(
+      <GainFullHeartPopup heartCount={fullHeartCount} onConfirm={closePopup} />
+    );
   };
 
   private onUserItemPopup = () => {
@@ -479,11 +528,6 @@ class MainScreen extends Component<IProps> {
   private navigateToRanking = () => {
     const { componentId } = this.props;
     GameRankingScreen.open({ componentId });
-  };
-
-  private navigateToGameMode = () => {
-    const { componentId } = this.props;
-    GameModeScreen.open({ componentId });
   };
 }
 

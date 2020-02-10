@@ -11,6 +11,7 @@ import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
 import ChargeFullHeartPopup from "src/components/popup/ChargeFullHeartPopup";
 import ExhaustFullHeartPopup from "src/components/popup/ExhaustFullHeartPopup";
 import UserItemPopup from "src/components/popup/UserItemPopup";
+import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 
 const CenterView = styled.View`
   flex: 1;
@@ -83,5 +84,10 @@ storiesOf("Popup", module)
         onAD={action("onAD")}
         onCancel={action("onCancel")}
       />
+    );
+  })
+  .add("GainFullHeartPopup", () => {
+    return (
+      <GainFullHeartPopup heartCount={10} onConfirm={action("onConfirm")} />
     );
   });

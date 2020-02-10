@@ -14,7 +14,7 @@ let currentComponentName: string | null = null;
 const start = () => {
   Navigation.setDefaultOptions({
     layout: {
-      backgroundColor: "#fff",
+      backgroundColor: colors.darkIndigo,
       orientation: ["portrait"]
     },
     statusBar: {

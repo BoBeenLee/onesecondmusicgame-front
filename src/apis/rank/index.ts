@@ -1,13 +1,13 @@
-import { RankingControllerApiFetchParamCreator } from "__generate__/api";
+import { RankingControllerApiFactory } from "__generate__/api";
 import { requestAPI } from "src/configs/requestAPI";
 
-const rankingControllerApi = RankingControllerApiFetchParamCreator(
+const rankingControllerApi = RankingControllerApiFactory(
   undefined,
   requestAPI,
   ""
 );
 
-export const getRankingInfo = async () => {
+export const getRankingInfoUsingGET = async () => {
   const response = await rankingControllerApi.getRankingInfoUsingGET();
-  return response.body ?? [];
+  return response.body;
 };
