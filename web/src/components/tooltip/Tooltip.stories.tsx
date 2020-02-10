@@ -18,7 +18,6 @@ storiesOf("Tooltip", module)
     return (
       <Tooltip
         message="좋아하는 가수의 노래가 등록되어 있는지 확인할 수 있어요!"
-        onPress={action("onPress")}
       />
     );
   });

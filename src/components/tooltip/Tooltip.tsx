@@ -33,7 +33,7 @@ const Message = styled(Bold12)`
 `;
 
 const Tooltip = (props: IProps) => {
-  const { style, message, onPress } = props;
+  const { style, message } = props;
   return (
     <Container style={style}>
       <Message>{message}</Message>
