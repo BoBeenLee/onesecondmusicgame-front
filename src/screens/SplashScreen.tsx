@@ -38,11 +38,6 @@ const Logo = styled.Image`
   resize-mode: contain;
 `;
 
-const Title = styled(Bold20)`
-  color: ${colors.black};
-  margin-top: 35px;
-`;
-
 @inject(
   ({ store }: { store: IStore }): IInject => ({
     store,
