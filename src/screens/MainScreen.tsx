@@ -23,7 +23,6 @@ import { setRoot } from "src/utils/navigator";
 import colors from "src/styles/colors";
 import { ICodePushStore } from "src/stores/CodePushStore";
 import { IPopupProps } from "src/hocs/withPopup";
-import MockButton from "src/components/button/MockButton";
 import HeartGroup from "src/components/icon/HeartGroup";
 import TimerText from "src/components/text/TimerText";
 import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
@@ -45,6 +44,8 @@ import UnderlineText from "src/components/text/UnderlineText";
 import UserItemPopup from "src/components/popup/UserItemPopup";
 import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import DeveloperScreen from "src/screens/DeveloperScreen";
+import RegisterSongTooltip from "src/components/tooltip/Tooltip";
+import { FIELD, setItem, defaultItemToBoolean } from "src/utils/storage";
 
 interface IInject {
   store: IStore;
@@ -221,6 +222,14 @@ const DeveloperButtonView = styled.View`
   height: 20px;
 `;
 
+const RegisterSongTooltipView = styled.View`
+  position: absolute;
+  bottom: 93px;
+  left: 17px;
+  width: 291px;
+  height: 51px;
+`;
+
 // https://app.zeplin.io/project/5e1988a010ae36bcd391ba27/screen/5e335b9266ed997dfeb5627a
 @inject(
   ({ store }: { store: IStore }): IInject => ({
@@ -345,15 +354,31 @@ class MainScreen extends Component<IProps> {
         <DevelopButton onPress={DeveloperScreen.open}>
           <DeveloperButtonView />
         </DevelopButton>
+        {this.renderRegisterSongTooltip}
       </Container>
     );
   }
 
-  private chargeTime = () => {
-    const heart = this.props.authStore.user?.heart;
-    if (_.isEmpty(heart?.leftTime)) {
-      heart?.fetchHeart?.();
+  private get renderRegisterSongTooltip() {
+    const isShow = defaultItemToBoolean(
+      FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP,
+      false
+    );
+    if (isShow) {
+      return null;
     }
+    return (
+      <RegisterSongTooltipView>
+        <RegisterSongTooltip
+          message="좋아하는 가수의 노래가 등록되어 있는지 확인할 수 있어요!"
+          onPress={this.hideRegisterSongTooltip}
+        />
+      </RegisterSongTooltipView>
+    );
+  }
+
+  private hideRegisterSongTooltip = async () => {
+    await setItem(FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP, "true");
   };
 
   private onSetting = () => {
@@ -503,11 +528,6 @@ class MainScreen extends Component<IProps> {
   private navigateToRanking = () => {
     const { componentId } = this.props;
     GameRankingScreen.open({ componentId });
-  };
-
-  private navigateToGameMode = () => {
-    const { componentId } = this.props;
-    GameModeScreen.open({ componentId });
   };
 }
 
