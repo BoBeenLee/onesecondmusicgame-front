@@ -416,6 +416,12 @@ export interface LoggedInMusicUser {
      * @type {string}
      * @memberof LoggedInMusicUser
      */
+    profileDp?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LoggedInMusicUser
+     */
     token?: string;
 }
 
@@ -573,19 +579,25 @@ export interface MusicUser {
      * @type {string}
      * @memberof MusicUser
      */
+    profileDisplayPhotoFileName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MusicUser
+     */
     socialType?: string;
 }
 
 /**
  * 
  * @export
- * @interface MyInfoChangeRequest
+ * @interface NicknameChangeRequest
  */
-export interface MyInfoChangeRequest {
+export interface NicknameChangeRequest {
     /**
      * 
      * @type {string}
-     * @memberof MyInfoChangeRequest
+     * @memberof NicknameChangeRequest
      */
     newNickname?: string;
 }
@@ -899,26 +911,6 @@ export interface ResponseDTOSong {
 /**
  * 
  * @export
- * @interface ResponseDTOUserContextHolder
- */
-export interface ResponseDTOUserContextHolder {
-    /**
-     * 
-     * @type {UserContextHolder}
-     * @memberof ResponseDTOUserContextHolder
-     */
-    body?: UserContextHolder;
-    /**
-     * 
-     * @type {number}
-     * @memberof ResponseDTOUserContextHolder
-     */
-    status?: number;
-}
-
-/**
- * 
- * @export
  * @interface ResponseDTOboolean
  */
 export interface ResponseDTOboolean {
@@ -1125,14 +1117,6 @@ export interface SongRegisterRequest {
 /**
  * 
  * @export
- * @interface UserContextHolder
- */
-export interface UserContextHolder {
-}
-
-/**
- * 
- * @export
  * @interface UserLikeHistoryResponse
  */
 export interface UserLikeHistoryResponse {
@@ -1243,11 +1227,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
     return {
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingDELETE(options: any = {}): FetchArgs {
+        errorHtmlUsingDELETE(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
@@ -1266,11 +1250,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingGET(options: any = {}): FetchArgs {
+        errorHtmlUsingGET(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
@@ -1289,11 +1273,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingHEAD(options: any = {}): FetchArgs {
+        errorHtmlUsingHEAD(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'HEAD' }, options);
@@ -1312,11 +1296,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingOPTIONS(options: any = {}): FetchArgs {
+        errorHtmlUsingOPTIONS(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'OPTIONS' }, options);
@@ -1335,11 +1319,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPATCH(options: any = {}): FetchArgs {
+        errorHtmlUsingPATCH(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'PATCH' }, options);
@@ -1358,11 +1342,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPOST(options: any = {}): FetchArgs {
+        errorHtmlUsingPOST(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
@@ -1381,11 +1365,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPUT(options: any = {}): FetchArgs {
+        errorHtmlUsingPUT(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
@@ -1413,12 +1397,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
     return {
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingDELETE(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingDELETE(options);
+        errorHtmlUsingDELETE(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingDELETE(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1431,12 +1415,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingGET(options);
+        errorHtmlUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingGET(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1449,12 +1433,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingHEAD(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingHEAD(options);
+        errorHtmlUsingHEAD(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingHEAD(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1467,12 +1451,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingOPTIONS(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingOPTIONS(options);
+        errorHtmlUsingOPTIONS(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingOPTIONS(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1485,12 +1469,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPATCH(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingPATCH(options);
+        errorHtmlUsingPATCH(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingPATCH(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1503,12 +1487,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPOST(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingPOST(options);
+        errorHtmlUsingPOST(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingPOST(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1521,12 +1505,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPUT(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingPUT(options);
+        errorHtmlUsingPUT(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingPUT(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1548,66 +1532,66 @@ export const BasicErrorControllerApiFactory = function (configuration?: Configur
     return {
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingDELETE(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingDELETE(options)(fetch, basePath);
+        errorHtmlUsingDELETE(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingDELETE(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingGET(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingGET(options)(fetch, basePath);
+        errorHtmlUsingGET(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingGET(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingHEAD(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingHEAD(options)(fetch, basePath);
+        errorHtmlUsingHEAD(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingHEAD(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingOPTIONS(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingOPTIONS(options)(fetch, basePath);
+        errorHtmlUsingOPTIONS(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingOPTIONS(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPATCH(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingPATCH(options)(fetch, basePath);
+        errorHtmlUsingPATCH(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingPATCH(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPOST(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingPOST(options)(fetch, basePath);
+        errorHtmlUsingPOST(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingPOST(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPUT(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingPUT(options)(fetch, basePath);
+        errorHtmlUsingPUT(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingPUT(options)(fetch, basePath);
         },
     };
 };
@@ -1621,79 +1605,79 @@ export const BasicErrorControllerApiFactory = function (configuration?: Configur
 export class BasicErrorControllerApi extends BaseAPI {
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingDELETE(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingDELETE(options)(this.fetch, this.basePath);
+    public errorHtmlUsingDELETE(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingDELETE(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingGET(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingGET(options)(this.fetch, this.basePath);
+    public errorHtmlUsingGET(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingGET(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingHEAD(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingHEAD(options)(this.fetch, this.basePath);
+    public errorHtmlUsingHEAD(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingHEAD(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingOPTIONS(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingOPTIONS(options)(this.fetch, this.basePath);
+    public errorHtmlUsingOPTIONS(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingOPTIONS(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingPATCH(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingPATCH(options)(this.fetch, this.basePath);
+    public errorHtmlUsingPATCH(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingPATCH(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingPOST(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingPOST(options)(this.fetch, this.basePath);
+    public errorHtmlUsingPOST(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingPOST(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingPUT(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingPUT(options)(this.fetch, this.basePath);
+    public errorHtmlUsingPUT(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingPUT(options)(this.fetch, this.basePath);
     }
 
 }
@@ -2720,21 +2704,34 @@ export const MusicUserControllerApiFetchParamCreator = function (configuration?:
     return {
         /**
          * 
-         * @summary getUserInfo
+         * @summary myInfoChange
+         * @param {any} profileImage profileImage
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserInfoUsingGET(options: any = {}): FetchArgs {
-            const localVarPath = `/user/myinfo`;
+        myInfoChangeUsingPOST(profileImage: any, options: any = {}): FetchArgs {
+            // verify required parameter 'profileImage' is not null or undefined
+            if (profileImage === null || profileImage === undefined) {
+                throw new RequiredError('profileImage','Required parameter profileImage was null or undefined when calling myInfoChangeUsingPOST.');
+            }
+            const localVarPath = `/user/profile/dp`;
             const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            const localVarFormParams = new url.URLSearchParams();
+
+            if (profileImage !== undefined) {
+                localVarFormParams.set('profileImage', profileImage as any);
+            }
+
+            localVarHeaderParameter['Content-Type'] = 'application/x-www-form-urlencoded';
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
             delete localVarUrlObj.search;
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            localVarRequestOptions.body = localVarFormParams.toString();
 
             return {
                 url: url.format(localVarUrlObj),
@@ -2744,16 +2741,16 @@ export const MusicUserControllerApiFetchParamCreator = function (configuration?:
         /**
          * 
          * @summary myInfoChange
-         * @param {MyInfoChangeRequest} myInfoChangeRequest myInfoChangeRequest
+         * @param {NicknameChangeRequest} nicknameChangeRequest nicknameChangeRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        myInfoChangeUsingPUT(myInfoChangeRequest: MyInfoChangeRequest, options: any = {}): FetchArgs {
-            // verify required parameter 'myInfoChangeRequest' is not null or undefined
-            if (myInfoChangeRequest === null || myInfoChangeRequest === undefined) {
-                throw new RequiredError('myInfoChangeRequest','Required parameter myInfoChangeRequest was null or undefined when calling myInfoChangeUsingPUT.');
+        myInfoChangeUsingPUT(nicknameChangeRequest: NicknameChangeRequest, options: any = {}): FetchArgs {
+            // verify required parameter 'nicknameChangeRequest' is not null or undefined
+            if (nicknameChangeRequest === null || nicknameChangeRequest === undefined) {
+                throw new RequiredError('nicknameChangeRequest','Required parameter nicknameChangeRequest was null or undefined when calling myInfoChangeUsingPUT.');
             }
-            const localVarPath = `/user/myinfo`;
+            const localVarPath = `/user/profile/nickname`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
             const localVarHeaderParameter = {} as any;
@@ -2765,8 +2762,8 @@ export const MusicUserControllerApiFetchParamCreator = function (configuration?:
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
             delete localVarUrlObj.search;
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"MyInfoChangeRequest" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(myInfoChangeRequest || {}) : (myInfoChangeRequest || "");
+            const needsSerialization = (<any>"NicknameChangeRequest" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(nicknameChangeRequest || {}) : (nicknameChangeRequest || "");
 
             return {
                 url: url.format(localVarUrlObj),
@@ -2903,12 +2900,13 @@ export const MusicUserControllerApiFp = function(configuration?: Configuration) 
     return {
         /**
          * 
-         * @summary getUserInfo
+         * @summary myInfoChange
+         * @param {any} profileImage profileImage
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserInfoUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOUserContextHolder> {
-            const localVarFetchArgs = MusicUserControllerApiFetchParamCreator(configuration).getUserInfoUsingGET(options);
+        myInfoChangeUsingPOST(profileImage: any, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOstring> {
+            const localVarFetchArgs = MusicUserControllerApiFetchParamCreator(configuration).myInfoChangeUsingPOST(profileImage, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -2922,12 +2920,12 @@ export const MusicUserControllerApiFp = function(configuration?: Configuration) 
         /**
          * 
          * @summary myInfoChange
-         * @param {MyInfoChangeRequest} myInfoChangeRequest myInfoChangeRequest
+         * @param {NicknameChangeRequest} nicknameChangeRequest nicknameChangeRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        myInfoChangeUsingPUT(myInfoChangeRequest: MyInfoChangeRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOboolean> {
-            const localVarFetchArgs = MusicUserControllerApiFetchParamCreator(configuration).myInfoChangeUsingPUT(myInfoChangeRequest, options);
+        myInfoChangeUsingPUT(nicknameChangeRequest: NicknameChangeRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOboolean> {
+            const localVarFetchArgs = MusicUserControllerApiFetchParamCreator(configuration).myInfoChangeUsingPUT(nicknameChangeRequest, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -3024,22 +3022,23 @@ export const MusicUserControllerApiFactory = function (configuration?: Configura
     return {
         /**
          * 
-         * @summary getUserInfo
+         * @summary myInfoChange
+         * @param {any} profileImage profileImage
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserInfoUsingGET(options?: any) {
-            return MusicUserControllerApiFp(configuration).getUserInfoUsingGET(options)(fetch, basePath);
+        myInfoChangeUsingPOST(profileImage: any, options?: any) {
+            return MusicUserControllerApiFp(configuration).myInfoChangeUsingPOST(profileImage, options)(fetch, basePath);
         },
         /**
          * 
          * @summary myInfoChange
-         * @param {MyInfoChangeRequest} myInfoChangeRequest myInfoChangeRequest
+         * @param {NicknameChangeRequest} nicknameChangeRequest nicknameChangeRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        myInfoChangeUsingPUT(myInfoChangeRequest: MyInfoChangeRequest, options?: any) {
-            return MusicUserControllerApiFp(configuration).myInfoChangeUsingPUT(myInfoChangeRequest, options)(fetch, basePath);
+        myInfoChangeUsingPUT(nicknameChangeRequest: NicknameChangeRequest, options?: any) {
+            return MusicUserControllerApiFp(configuration).myInfoChangeUsingPUT(nicknameChangeRequest, options)(fetch, basePath);
         },
         /**
          * 
@@ -3092,25 +3091,26 @@ export const MusicUserControllerApiFactory = function (configuration?: Configura
 export class MusicUserControllerApi extends BaseAPI {
     /**
      * 
-     * @summary getUserInfo
+     * @summary myInfoChange
+     * @param {any} profileImage profileImage
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MusicUserControllerApi
      */
-    public getUserInfoUsingGET(options?: any) {
-        return MusicUserControllerApiFp(this.configuration).getUserInfoUsingGET(options)(this.fetch, this.basePath);
+    public myInfoChangeUsingPOST(profileImage: any, options?: any) {
+        return MusicUserControllerApiFp(this.configuration).myInfoChangeUsingPOST(profileImage, options)(this.fetch, this.basePath);
     }
 
     /**
      * 
      * @summary myInfoChange
-     * @param {MyInfoChangeRequest} myInfoChangeRequest myInfoChangeRequest
+     * @param {NicknameChangeRequest} nicknameChangeRequest nicknameChangeRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MusicUserControllerApi
      */
-    public myInfoChangeUsingPUT(myInfoChangeRequest: MyInfoChangeRequest, options?: any) {
-        return MusicUserControllerApiFp(this.configuration).myInfoChangeUsingPUT(myInfoChangeRequest, options)(this.fetch, this.basePath);
+    public myInfoChangeUsingPUT(nicknameChangeRequest: NicknameChangeRequest, options?: any) {
+        return MusicUserControllerApiFp(this.configuration).myInfoChangeUsingPUT(nicknameChangeRequest, options)(this.fetch, this.basePath);
     }
 
     /**
