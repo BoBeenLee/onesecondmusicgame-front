@@ -539,6 +539,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     );
     userItem?.useItemType?.();
     if (isFinish) {
+      this.setState({ currentStepStatus: "stop" });
       this.onFinishPopup();
       return;
     }

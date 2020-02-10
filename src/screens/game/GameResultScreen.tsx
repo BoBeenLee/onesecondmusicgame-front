@@ -22,14 +22,12 @@ import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
 import { TOP_BAR_HEIGHT } from "src/components/topbar/OSMGTopBar";
 import colors from "src/styles/colors";
-import MockButton from "src/components/button/MockButton";
 import HeartGroup from "src/components/icon/HeartGroup";
 import MainScreen from "src/screens/MainScreen";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
 import GameRankingScreen from "src/screens/game/GameRankingScreen";
-import ChargeFullHeartPopup from "src/components/popup/ChargeFullHeartPopup";
 import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
 import { IPopupProps } from "src/hocs/withPopup";
 import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
@@ -83,8 +81,8 @@ const Title = styled(Bold27)`
 `;
 
 const GamePlayStep = styled(CircleCheckGroup)`
-  margin-top: 19px;
-  margin-bottom: 32px;
+  margin-top: 27px;
+  margin-bottom: 0px;
 `;
 
 const Content = styled.View`
