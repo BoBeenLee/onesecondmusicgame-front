@@ -123,6 +123,12 @@ const GamePlayHighlights = types
     return { initialize, setStep, nextStep, answer };
   });
 
+export const makeGamePlayHighlights = async (selectedSingers: ISinger[]) => {
+  const gamePlayHighlights = GamePlayHighlights.create({});
+  await gamePlayHighlights.initialize(selectedSingers);
+  return gamePlayHighlights;
+};
+
 export type IGamePlayHighlights = typeof GamePlayHighlights.Type;
 
 export default GamePlayHighlights;

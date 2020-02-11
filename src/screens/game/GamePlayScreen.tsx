@@ -38,7 +38,9 @@ import { ISinger } from "src/apis/singer";
 import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import GamePlayHighlights, {
-  IGamePlayHighlightItem
+  IGamePlayHighlightItem,
+  IGamePlayHighlights,
+  makeGamePlayHighlights
 } from "src/stores/GamePlayHighlights";
 import GamePlayTutorialOverlay from "src/screens/tutorial/GamePlayTutorialOverlay";
 import XEIcon from "src/components/icon/XEIcon";
@@ -64,6 +66,7 @@ interface IParams {
 interface IProps extends IInject, IPopupProps, IDisabledProps {
   componentId: string;
   selectedSingers: ISinger[];
+  gamePlayHighlights: () => IGamePlayHighlights;
 }
 
 interface IStates {
@@ -297,39 +300,45 @@ const NEXT_STEP_SECONDS = 5000;
 )
 @observer
 class GamePlayScreen extends Component<IProps, IStates> {
-  public static open(params: IParams) {
+  public static async open(params: IParams) {
     if (params.heartCount === 0) {
       throw new Error("하트가 부족합니다.");
     }
+    const gamePlayHighlights = await makeGamePlayHighlights([]);
     return push({
       componentId: params.componentId,
       nextComponentId: SCREEN_IDS.GamePlayScreen,
       params: {
-        selectedSingers: []
+        selectedSingers: [],
+        gamePlayHighlights: () => gamePlayHighlights
       }
     });
   }
 
-  public static openSelectedSingers(params: IParams) {
+  public static async openSelectedSingers(params: IParams) {
     if (params.heartCount === 0) {
       throw new Error("하트가 부족합니다.");
     }
     GameSearchSingerScreen.open({
       componentId: params.componentId,
-      onResult: (selectedSingers: ISinger[]) => {
+      onResult: async (selectedSingers: ISinger[]) => {
+        const gamePlayHighlights = await makeGamePlayHighlights(
+          selectedSingers
+        );
         push({
           componentId: getCurrentComponentId(),
           nextComponentId: SCREEN_IDS.GamePlayScreen,
           params: {
-            selectedSingers
+            selectedSingers,
+            gamePlayHighlights: () => gamePlayHighlights
           }
         });
       }
     });
   }
 
-  public gamePlayersRef = React.createRef<OSMGCarousel<any>>();
   public gamePlayHighlights = GamePlayHighlights.create({});
+  public gamePlayersRef = React.createRef<OSMGCarousel<any>>();
   public intervalId: any;
 
   constructor(props: IProps) {
@@ -345,6 +354,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
       this.submitAnswer,
       "submitAnswer"
     );
+    if (props.gamePlayHighlights) {
+      this.gamePlayHighlights = props.gamePlayHighlights();
+    }
     loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
       onRewarded: this.onRewarded
     });
@@ -379,11 +391,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
         );
       }
     });
-  }
-
-  public async componentDidMount() {
-    const { selectedSingers } = this.props;
-    await this.gamePlayHighlights.initialize(selectedSingers);
   }
 
   public componentWillUnmount() {
