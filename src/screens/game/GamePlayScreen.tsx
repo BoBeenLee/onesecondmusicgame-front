@@ -373,13 +373,20 @@ class GamePlayScreen extends Component<IProps, IStates> {
             await this.readyForPlay();
             this.intervalId = setInterval(async () => {
               const { songAnswerSeconds, currentStepStatus } = this.state;
+              const { showToast } = this.props.toastStore;
               if (currentStepStatus !== "play") {
                 return;
               }
               if (songAnswerSeconds === 0) {
-                const { answer } = this.gamePlayHighlights;
+                const { answer, isAnswer } = this.gamePlayHighlights;
                 const { songAnswerInput } = this.state;
-                answer(songAnswerInput, songAnswerSeconds);
+                let isUserAnswer = false;
+                try {
+                  isUserAnswer = await isAnswer(songAnswerInput);
+                } catch (error) {
+                  showToast(error.message);
+                }
+                answer(isUserAnswer, songAnswerInput, songAnswerSeconds);
                 await this.beforeNextStep();
                 return;
               }
@@ -577,11 +584,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private submitAnswer = async () => {
-    const {
-      answer,
-      checkAnswer,
-      currentGameHighlight
-    } = this.gamePlayHighlights;
+    const { answer, currentGameHighlight, isAnswer } = this.gamePlayHighlights;
     const { songAnswerInput, songAnswerSeconds } = this.state;
     const { showToast } = this.props.toastStore;
 
@@ -589,12 +592,17 @@ class GamePlayScreen extends Component<IProps, IStates> {
       showToast("게임 플레이곡이 없습니다");
       return;
     }
-    if (!checkAnswer(songAnswerInput)) {
-      showToast("오답입니다ㅠㅜ");
-      return;
+    try {
+      const isUserAnswer = await isAnswer(songAnswerInput);
+      if (!isUserAnswer) {
+        showToast("오답입니다ㅠㅜ");
+        return;
+      }
+      answer(isUserAnswer, songAnswerInput, songAnswerSeconds);
+      await this.beforeNextStep();
+    } catch (error) {
+      showToast(error.message);
     }
-    answer(songAnswerInput, songAnswerSeconds);
-    await this.beforeNextStep();
   };
 
   private beforeNextStep = async () => {
@@ -610,7 +618,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     if (this.state.currentStepStatus === "play") {
       return;
     }
-    await this.nextStep();
+    this.nextStep();
   };
 
   private nextStep = () => {

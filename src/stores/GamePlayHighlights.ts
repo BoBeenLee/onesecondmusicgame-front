@@ -1,12 +1,13 @@
 import { GamePlayHighlightDTO } from "__generate__/api";
 import _ from "lodash";
 import { types, flow } from "mobx-state-tree";
-import { getHighlightListUsingPOST } from "src/apis/game";
+import { getHighlightListUsingPOST, isAnswerUsingPOST } from "src/apis/game";
 import { ISinger } from "src/apis/singer";
 import { ICircleCheckItem } from "src/components/icon/CircleCheckGroup";
 
 export interface IGamePlayHighlightItem extends GamePlayHighlightDTO {
   gameStep: number;
+  isUserAnswer?: boolean;
   userAnswer?: string;
   userAnswerSeconds?: number;
 }
@@ -33,12 +34,7 @@ const GamePlayHighlights = types
             };
           }
           return {
-            check:
-              item.title?.toLowerCase?.() ===
-                item?.userAnswer?.toLowerCase?.() ||
-              item?.userAnswer?.toLowerCase?.() === undefined
-                ? "o"
-                : "x",
+            check: Boolean(item.isUserAnswer) ? "o" : "x",
             active: self.currentStep === index
           };
         });
@@ -50,9 +46,8 @@ const GamePlayHighlights = types
         return Array.from(self.gameHighlights);
       },
       get oGameHightlightViews() {
-        return this.gameHighlightViews.filter(
-          item =>
-            item.title?.toLowerCase?.() === item?.userAnswer?.toLowerCase?.()
+        return this.gameHighlightViews.filter(item =>
+          Boolean(item.isUserAnswer)
         );
       },
       get currentGameHighlight() {
@@ -95,12 +90,28 @@ const GamePlayHighlights = types
       self.playToken = response.playToken ?? "";
     });
 
-    const answer = (userAnswer: string, userAnswerSeconds: number) => {
+    const isAnswer = flow(function*(userAnswer: string) {
+      const response: RetrieveAsyncFunc<typeof isAnswerUsingPOST> = yield isAnswerUsingPOST(
+        {
+          answer: userAnswer,
+          playToken: self.playToken,
+          trackId: self.currentGameHighlight?.id ?? 0
+        }
+      );
+      return response;
+    });
+
+    const answer = (
+      isUserAnswer: boolean,
+      userAnswer: string,
+      userAnswerSeconds: number
+    ) => {
       self.gameHighlights.replace(
         _.map(self.gameHighlightViews, (item, index) => {
           if (self.currentStep === index) {
             return {
               ...item,
+              isUserAnswer,
               userAnswer
             };
           }
@@ -120,7 +131,7 @@ const GamePlayHighlights = types
       self.currentStep += 1;
     };
 
-    return { initialize, setStep, nextStep, answer };
+    return { initialize, setStep, nextStep, answer, isAnswer };
   });
 
 export const makeGamePlayHighlights = async (selectedSingers: ISinger[]) => {
