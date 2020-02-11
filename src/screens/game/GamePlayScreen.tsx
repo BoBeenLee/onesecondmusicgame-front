@@ -727,7 +727,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
     if (currentGameHighlight === null) {
       return;
     }
-    Clipboard.setString(currentGameHighlight.title ?? "");
+    const filterTitle = (currentGameHighlight.title ?? "")
+      .replace(currentGameHighlight.singer ?? "", "")
+      .replace("feat", "")
+      .toLowerCase()
+      .trim();
+    Clipboard.setString(filterTitle);
     showToast("클립보드 복사 완료");
   };
 

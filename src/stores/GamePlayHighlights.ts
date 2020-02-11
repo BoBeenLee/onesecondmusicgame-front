@@ -34,7 +34,10 @@ const GamePlayHighlights = types
             };
           }
           return {
-            check: Boolean(item.isUserAnswer) ? "o" : "x",
+            check:
+              Boolean(item.isUserAnswer) || item?.isUserAnswer === undefined
+                ? "o"
+                : "x",
             active: self.currentStep === index
           };
         });
@@ -70,7 +73,13 @@ const GamePlayHighlights = types
           return false;
         }
         const item = self.gameHighlights[self.currentStep];
-        return item.title?.toLowerCase?.() === userAnswer.toLowerCase();
+        const filterTitle = (item?.title ?? "")
+          .replace(item?.singer ?? "", "")
+          .replace("feat", "")
+          .toLowerCase()
+          .trim();
+        // /[^(가-힣ㄱ-ㅎㅏ-ㅣa-z0-9_\-)]{3,19}/gi.test(filterTitle);
+        return filterTitle === userAnswer.toLowerCase();
       }
     };
   })
@@ -91,14 +100,15 @@ const GamePlayHighlights = types
     });
 
     const isAnswer = flow(function*(userAnswer: string) {
-      const response: RetrieveAsyncFunc<typeof isAnswerUsingPOST> = yield isAnswerUsingPOST(
-        {
-          answer: userAnswer,
-          playToken: self.playToken,
-          trackId: self.currentGameHighlight?.id ?? 0
-        }
-      );
-      return response;
+      // const response: RetrieveAsyncFunc<typeof isAnswerUsingPOST> = yield isAnswerUsingPOST(
+      //   {
+      //     answer: userAnswer,
+      //     playToken: self.playToken,
+      //     trackId: self.currentGameHighlight?.id ?? 0
+      //   }
+      // );
+      // return response;
+      return self.checkAnswer(userAnswer);
     });
 
     const answer = (
