@@ -130,7 +130,7 @@ class UserProfileScreen extends Component<IProps, IStates> {
         showToast("User tapped custom button: " + response.customButton);
       } else {
         try {
-          await myInfoChangeUsingPOST(response.uri);
+          await this.props.authStore?.user?.changeProfileImage(response.uri);
           this.setState({
             profileImage: response.uri
           });
