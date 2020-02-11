@@ -16,6 +16,7 @@ import colors from "src/styles/colors";
 import UserProfileForm, { IForm } from "src/components/form/UserProfileForm";
 import BackTopBar from "src/components/topbar/BackTopBar";
 import MockButton from "src/components/button/MockButton";
+import ProfileImage from "src/components/image/ProfileImage";
 import { myInfoChangeUsingPOST } from "src/apis/user";
 
 interface IInject {
@@ -59,10 +60,7 @@ const Content = styled.View`
   padding-horizontal: 41px;
 `;
 
-const ProfileImage = styled.Image`
-  width: 50px;
-  height: 50px;
-`;
+const ProfileImageButton = styled.TouchableOpacity``;
 
 @inject(
   ({ store }: { store: IStore }): IInject => ({
@@ -84,9 +82,12 @@ class UserProfileScreen extends Component<IProps, IStates> {
   constructor(props: IProps) {
     super(props);
 
+    const profileDp = props.authStore.user?.profileDp ?? "";
     this.state = {
       nicknameInput: "",
-      profileImage: ""
+      profileImage: !_.isEmpty(profileDp)
+        ? profileDp
+        : "https://via.placeholder.com/350x350"
     };
   }
 
@@ -101,8 +102,9 @@ class UserProfileScreen extends Component<IProps, IStates> {
           enableAutomaticScroll={false}
         >
           <Content>
-            <ProfileImage source={{ uri: profileImage }} />
-            <MockButton name="이미지 불러오기" onPress={this.imagePicker} />
+            <ProfileImageButton onPress={this.imagePicker}>
+              <ProfileImage size={81} uri={profileImage} editable={true} />
+            </ProfileImageButton>
             <UserProfileForm onConfirm={this.onConfirm} />
           </Content>
         </InnerContainer>

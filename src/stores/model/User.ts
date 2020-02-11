@@ -8,6 +8,7 @@ const User = types
   .model("User", {
     accessId: types.identifier,
     nickname: types.optional(types.string, ""),
+    profileDp: types.optional(types.string, ""),
     userAccessToken: types.optional(types.string, ""),
     userItems: types.optional(types.map(UserItem), {}),
     heart: types.optional(Heart, {})
@@ -26,6 +27,9 @@ const User = types
     return {
       setNickname: (nickname: string) => {
         self.nickname = nickname;
+      },
+      setProfileDp: (profileDp: string) => {
+        self.profileDp = profileDp;
       },
       setUserAccessToken: (userAccessToken: string) => {
         self.userAccessToken = userAccessToken;

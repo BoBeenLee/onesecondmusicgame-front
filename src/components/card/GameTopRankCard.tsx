@@ -41,7 +41,7 @@ function GameTopRankCard(props: IProps) {
     <Container style={style}>
       <Rank>{rank}</Rank>
       <Content>
-        <Profile size={24} source={{ uri: profileImage }} />
+        <Profile size={24} uri={profileImage} editable={false} />
         <Name>{name}</Name>
         <Score>{score}점</Score>
       </Content>

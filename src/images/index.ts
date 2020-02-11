@@ -24,6 +24,7 @@ const images = {
   btnCDIcon: require("./btn_cd.png"),
   combinedShape: require("./combinedShape.png"),
   splash: require("./splash.png"),
-  bgCorrectMirrorballLight: require("./bg_correct_mirrorballLight.png")
+  bgCorrectMirrorballLight: require("./bg_correct_mirrorballLight.png"),
+  pencil: require("./pencil.png")
 };
 export default images;

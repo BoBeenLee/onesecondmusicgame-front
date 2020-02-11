@@ -29,8 +29,8 @@ const Container = styled.View`
 
 const Content = styled.View`
   flex: 1;
-  justify-content: center;
   align-items: center;
+  padding-top: 76px;
 `;
 
 const Title = styled(Bold18)`

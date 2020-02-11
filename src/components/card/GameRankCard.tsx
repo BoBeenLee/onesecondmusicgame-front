@@ -75,7 +75,7 @@ function GameRankCard(props: IProps) {
       <Content>
         <RankIcon name="caret-up-min" size={25} color={colors.coolGreen} />
         <Rank>{rank}</Rank>
-        <Profile size={59} source={{ uri: profileImage }} />
+        <Profile size={59} uri={profileImage} editable={false} />
         <Name>{name}</Name>
       </Content>
       <RightSide>

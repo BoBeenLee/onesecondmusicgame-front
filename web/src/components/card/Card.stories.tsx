@@ -40,6 +40,16 @@ storiesOf("Card", module)
           author="Hello"
           isLike={false}
           onLikePress={action("onLikePress")}
+          audioType={"stop"}
+          onPlayToggle={action("onPlayToggle")}
+          isRegistered={false}
+        />
+        <SearchTrackCard
+          thumnail="https://via.placeholder.com/150"
+          title="Hello World"
+          author="Hello"
+          isLike={false}
+          onLikePress={action("onLikePress")}
           audioType={"play"}
           onPlayToggle={action("onPlayToggle")}
           isRegistered={true}

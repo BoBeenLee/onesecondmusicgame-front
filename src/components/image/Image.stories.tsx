@@ -26,7 +26,8 @@ storiesOf("Image", module)
     return (
       <ProfileImage
         size={24}
-        source={{ uri: "https://via.placeholder.com/350x350" }}
+        uri="https://via.placeholder.com/350x350"
+        editable={true}
       />
     );
   })
