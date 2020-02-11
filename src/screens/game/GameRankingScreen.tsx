@@ -1,18 +1,17 @@
 import React, { Component, ComponentClass } from "react";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
-import { FlatListProps, FlatList, ListRenderItem, Image } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
+import { FlatListProps, FlatList, ListRenderItem } from "react-native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
-import { Bold12, Bold14, Regular14 } from "src/components/text/Typographies";
+import { Regular14 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
 import BackTopBar from "src/components/topbar/BackTopBar";
 import GameTopRankCard from "src/components/card/GameTopRankCard";
 import GameRankCard from "src/components/card/GameRankCard";
 import colors from "src/styles/colors";
-import Ranks, { IRankItem } from "src/stores/Ranks";
+import Ranks from "src/stores/Ranks";
 import { RankView } from "__generate__/api";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
@@ -34,18 +33,6 @@ interface IProps {
 const Container = styled(ContainerWithStatusBar)`
   flex: 1;
   flex-direction: column;
-`;
-
-const Light = styled.View`
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  background-color: ${colors.paleCyan};
-  border-radius: 3px;
-  shadow-color: ${colors.paleCyan};
-  shadow-offset: 0px 0px;
-  shadow-opacity: 1;
-  shadow-radius: 9px;
 `;
 
 const Header = styled.View`
@@ -74,7 +61,6 @@ const TopRankView = styled.View`
 
 const GameTopRankCardView = styled(GameTopRankCard)`
   flex: 1;
-  /* padding-horizontal: 10px; */
 `;
 
 const Result = styled<ComponentClass<FlatListProps<RankView>>>(FlatList)`

@@ -1,8 +1,8 @@
 import React from "react";
 import styled, { css } from "styled-components/native";
-import { ViewProps, View, Text } from "react-native";
+import { ViewProps, View } from "react-native";
 
-import { Bold12, Bold16, Bold24 } from "src/components/text/Typographies";
+import { Bold12, Bold16 } from "src/components/text/Typographies";
 import colors from "src/styles/colors";
 import ProfileImage from "src/components/image/ProfileImage";
 
