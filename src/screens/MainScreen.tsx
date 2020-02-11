@@ -391,7 +391,7 @@ class MainScreen extends Component<IProps, IStates> {
           </FooterButtonGroup>
         </Footer>
         <GameItemButton onPress={this.onUserItemPopup}>
-          <GameItemButtonText>하트 충전</GameItemButtonText>
+          <GameItemButtonText>보유 아이템</GameItemButtonText>
         </GameItemButton>
         <DevelopButton onPress={DeveloperScreen.open}>
           <DeveloperButtonView />
