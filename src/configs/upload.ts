@@ -84,19 +84,16 @@ const upload = async (
   setUploadProgress?: (currentProgress: number, totalProgress: number) => void
 ) => {
   const uploadResponse = await uploadProgress(params, setUploadProgress);
-  // const response = await uploadResponse.json();
-  // console.tron.log(response);
-  // if (
-  //   ![NORMAL_STATUS_, NORMAL_STATUS].some(
-  //     status => status === response?.data?.status
-  //   )
-  // ) {
-  //   throw new OSMGError({
-  //     status: response?.data?.status ?? 0,
-  //     body: response?.data?.body ?? `${response?.data?.status ?? ""}`
-  //   });
-  // }
-  // return response?.data as ResponseDTO;
+  const response: ResponseDTO = await uploadResponse.json();
+  if (
+    ![NORMAL_STATUS_, NORMAL_STATUS].some(status => status === response?.status)
+  ) {
+    throw new OSMGError({
+      status: response?.status ?? 0,
+      body: response?.body ?? `${response?.status ?? ""}`
+    });
+  }
+  return response;
 };
 
 const getFileSize = async (uri: string) => {
