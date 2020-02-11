@@ -61,7 +61,7 @@ interface IProps extends IInject, IPopupProps {
 }
 
 interface IStates {
-  isTooltipShow: boolean;
+  isNotTooltipShow: boolean;
 }
 
 const Container = styled(ContainerWithStatusBar)``;
@@ -246,7 +246,7 @@ const DeveloperButtonView = styled.View`
   height: 20px;
 `;
 
-const RegisterSongTooltipButton = styled.TouchableWithoutFeedback``;
+const RegisterSongTooltipButton = styled.TouchableOpacity``;
 
 const RegisterSongTooltipView = styled(Tooltip)`
   position: absolute;
@@ -277,7 +277,7 @@ class MainScreen extends Component<IProps, IStates> {
     super(props);
 
     this.state = {
-      isTooltipShow: false
+      isNotTooltipShow: true
     };
 
     this.itemToOnPress = {
@@ -291,11 +291,11 @@ class MainScreen extends Component<IProps, IStates> {
   }
 
   public async componentDidMount() {
-    const isTooltipShow = await defaultItemToBoolean(
+    const isNotTooltipShow = await defaultItemToBoolean(
       FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP,
       false
     );
-    this.setState({ isTooltipShow });
+    this.setState({ isNotTooltipShow });
     this.updateCodePushIfAvailable();
   }
 
@@ -402,8 +402,8 @@ class MainScreen extends Component<IProps, IStates> {
   }
 
   private get renderRegisterSongTooltip() {
-    const { isTooltipShow } = this.state;
-    if (isTooltipShow) {
+    const { isNotTooltipShow } = this.state;
+    if (isNotTooltipShow) {
       return null;
     }
     return (
@@ -415,6 +415,7 @@ class MainScreen extends Component<IProps, IStates> {
 
   private hideRegisterSongTooltip = async () => {
     await setItem(FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP, "true");
+    this.setState({ isNotTooltipShow: true });
   };
 
   private onSetting = () => {
