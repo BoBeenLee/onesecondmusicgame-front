@@ -216,8 +216,8 @@ const DevelopButton = styled.TouchableWithoutFeedback``;
 
 const DeveloperButtonView = styled.View`
   position: absolute;
-  top: 100px;
-  right: 0px;
+  top: 0px;
+  left: 0px;
   width: 20px;
   height: 20px;
 `;
