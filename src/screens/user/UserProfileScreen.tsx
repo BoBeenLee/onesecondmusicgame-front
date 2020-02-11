@@ -6,7 +6,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import ImagePicker from "react-native-image-picker";
 
 import { SCREEN_IDS } from "src/screens/constant";
-import { push, pop, getCurrentComponentId } from "src/utils/navigator";
+import { push, pop } from "src/utils/navigator";
 import { IPopupProps } from "src/hocs/withPopup";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
@@ -16,8 +16,7 @@ import colors from "src/styles/colors";
 import UserProfileForm, { IForm } from "src/components/form/UserProfileForm";
 import BackTopBar from "src/components/topbar/BackTopBar";
 import MockButton from "src/components/button/MockButton";
-import { resizeImageByURI } from "src/configs/image";
-import upload from "src/configs/upload";
+import { myInfoChangeUsingPOST } from "src/apis/user";
 
 interface IInject {
   authStore: IAuthStore;
@@ -128,18 +127,12 @@ class UserProfileScreen extends Component<IProps, IStates> {
       } else if (response.customButton) {
         showToast("User tapped custom button: " + response.customButton);
       } else {
-        // console.tron.log(_.omit(response, "data"));
         try {
-          const resizeResponse = await resizeImageByURI(response.uri);
-          // console.tron.log(resizeResponse.uri);
-          await upload({
-            filePath: resizeResponse.uri,
-            fileExtension: "PNG"
-          });
-          // console.tron.log("SUCCESS");
+          await myInfoChangeUsingPOST(response.uri);
           this.setState({
             profileImage: response.uri
           });
+          showToast("이미지 변경 완료");
         } catch (error) {
           showToast(error.message);
         }

@@ -63,7 +63,7 @@ const env: IEnvironment = {
   development: {
     ...STAGING_ENV_ENTRY,
     REACT_ENV,
-    API_URL: "http://localhost:8888",
+    API_URL: "http://localhost:8080",
     WEBVIEW_URL: "http://localhost:8000"
   },
   production: {

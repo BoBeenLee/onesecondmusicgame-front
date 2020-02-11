@@ -1,6 +1,9 @@
 import _ from "lodash";
 import RNFetchBlob from "rn-fetch-blob";
 import env from "src/configs/env";
+import { getRootStore } from "src/stores/Store";
+import { OSMGError } from "src/configs/error";
+import { ResponseDTO } from "__generate__/api";
 
 type ImageExtensionType = "JPG" | "JPEG" | "PNG";
 type VideoExtensionType = "MP4" | "M4V" | "MKV" | "AVI" | "MOV";
@@ -9,6 +12,8 @@ export type FileExtensionType = ImageExtensionType | VideoExtensionType;
 export interface IUploadInput {
   fileExtension: FileExtensionType;
   filePath: string;
+  fileName: string;
+  uri: string;
 }
 
 interface IFetchBlobResponse {
@@ -26,28 +31,29 @@ interface IFetchInfoResponse {
   timeout: boolean;
 }
 
-const SUCCESS = 200;
+const NORMAL_STATUS = 200;
+const NORMAL_STATUS_ = 2000;
 const PROGRESS_INTERVAL = 250;
 
 const METHOD_TYPE = "POST";
 
-const getParams = () => ({
-  "Content-Type": "multipart/form-data",
-  method: METHOD_TYPE
-});
-
 const readyForUpload = (params: IUploadInput) => {
-  const { filePath } = params;
+  const { filePath, fileName, uri } = params;
   const cleanFilePath = filePath.replace("file://", "");
 
+  const userAccessToken = getRootStore().authStore.user?.userAccessToken;
   const responsePromise: Promise<IFetchBlobResponse> = RNFetchBlob.fetch(
-    "POST",
-    `${env.API_URL}/user/profile/dp`,
-    getParams(),
+    METHOD_TYPE,
+    uri,
+    {
+      ...(userAccessToken ? { token: userAccessToken } : {}),
+      "Content-Type": "multipart/form-data",
+      method: METHOD_TYPE
+    },
     [
       {
-        name: "profileImage",
-        filename: "profile.png",
+        name: fileName,
+        filename: `${fileName}.png`,
         data: RNFetchBlob.wrap(cleanFilePath)
       }
     ]
@@ -75,21 +81,21 @@ const uploadProgress = (
 
 const upload = async (
   params: IUploadInput,
-  setUploadProgress?: (currentProgress: number, totalProgress: number) => void,
-  successCallback?: (isSuccess: boolean) => void
+  setUploadProgress?: (currentProgress: number, totalProgress: number) => void
 ) => {
-  try {
-    const response = await uploadProgress(params, setUploadProgress);
-    const responseInfo: IFetchInfoResponse = response.info();
-    if (responseInfo.status === SUCCESS) {
-      successCallback?.(true);
-      return true;
-    }
-    successCallback?.(false);
-    return false;
-  } catch (error) {
-    throw error;
+  const uploadResponse = await uploadProgress(params, setUploadProgress);
+  const response = uploadResponse.json();
+  if (
+    ![NORMAL_STATUS_, NORMAL_STATUS].some(
+      status => status === response?.data?.status
+    )
+  ) {
+    throw new OSMGError({
+      status: response?.data?.status ?? 0,
+      body: response?.data?.body ?? `${response?.data?.status ?? ""}`
+    });
   }
+  return response?.data as ResponseDTO;
 };
 
 const getFileSize = async (uri: string) => {
