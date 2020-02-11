@@ -131,16 +131,16 @@ function SearchTrackCard(props: IProps) {
             <GroupButton onPress={onPlayToggle}>
               <PlayIcon
                 name={audioType === "play" ? "pause" : "play"}
-                size={30}
-                color={colors.brightMagenta}
+                size={36}
+                color={colors.lightGrey}
               />
               <ButtonText>미리듣기</ButtonText>
             </GroupButton>
             <GroupButton onPress={onLikePress}>
               <HeartIcon
                 name={isLike ? "heart" : "heart-o"}
-                size={30}
-                color={colors.brightMagenta}
+                size={33}
+                color={isLike ? colors.brightMagenta : colors.lightGrey}
               />
               <ButtonText>좋아요</ButtonText>
             </GroupButton>

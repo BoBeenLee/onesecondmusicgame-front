@@ -10,12 +10,11 @@ import zIndex from "src/styles/zIndex";
 interface IProps {
   style?: ViewProps["style"];
   message: string;
-  onPress: () => void;
 }
 
-const Container = styled.TouchableWithoutFeedback``;
-
-const Inner = styled.View`
+const Container = styled.View`
+  width: 291px;
+  height: 51px;
   align-items: center;
   padding-top: 10px;
 `;
@@ -34,13 +33,11 @@ const Message = styled(Bold12)`
 `;
 
 const Tooltip = (props: IProps) => {
-  const { style, message, onPress } = props;
+  const { style, message } = props;
   return (
-    <Container style={style} onPress={onPress}>
-      <Inner>
-        <Message>{message}</Message>
-        <TooltipBackground source={images.tooltip} />
-      </Inner>
+    <Container style={style}>
+      <Message>{message}</Message>
+      <TooltipBackground source={images.tooltip} />
     </Container>
   );
 };

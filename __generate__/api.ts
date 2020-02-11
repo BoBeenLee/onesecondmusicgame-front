@@ -462,6 +462,12 @@ export interface LoggedInMusicUser {
      * @type {string}
      * @memberof LoggedInMusicUser
      */
+    profileDp?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LoggedInMusicUser
+     */
     token?: string;
 }
 
@@ -619,19 +625,25 @@ export interface MusicUser {
      * @type {string}
      * @memberof MusicUser
      */
+    profileDisplayPhotoFileName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MusicUser
+     */
     socialType?: string;
 }
 
 /**
  * 
  * @export
- * @interface MyInfoChangeRequest
+ * @interface NicknameChangeRequest
  */
-export interface MyInfoChangeRequest {
+export interface NicknameChangeRequest {
     /**
      * 
      * @type {string}
-     * @memberof MyInfoChangeRequest
+     * @memberof NicknameChangeRequest
      */
     newNickname?: string;
 }
@@ -965,26 +977,6 @@ export interface ResponseDTOSong {
 /**
  * 
  * @export
- * @interface ResponseDTOUserContextHolder
- */
-export interface ResponseDTOUserContextHolder {
-    /**
-     * 
-     * @type {UserContextHolder}
-     * @memberof ResponseDTOUserContextHolder
-     */
-    body?: UserContextHolder;
-    /**
-     * 
-     * @type {number}
-     * @memberof ResponseDTOUserContextHolder
-     */
-    status?: number;
-}
-
-/**
- * 
- * @export
  * @interface ResponseDTOboolean
  */
 export interface ResponseDTOboolean {
@@ -1186,14 +1178,6 @@ export interface SongRegisterRequest {
      * @memberof SongRegisterRequest
      */
     url?: string;
-}
-
-/**
- * 
- * @export
- * @interface UserContextHolder
- */
-export interface UserContextHolder {
 }
 
 /**
@@ -2786,21 +2770,34 @@ export const MusicUserControllerApiFetchParamCreator = function (configuration?:
     return {
         /**
          * 
-         * @summary getUserInfo
+         * @summary myInfoChange
+         * @param {any} profileImage profileImage
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserInfoUsingGET(options: any = {}): FetchArgs {
-            const localVarPath = `/user/myinfo`;
+        myInfoChangeUsingPOST(profileImage: any, options: any = {}): FetchArgs {
+            // verify required parameter 'profileImage' is not null or undefined
+            if (profileImage === null || profileImage === undefined) {
+                throw new RequiredError('profileImage','Required parameter profileImage was null or undefined when calling myInfoChangeUsingPOST.');
+            }
+            const localVarPath = `/user/profile/dp`;
             const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+            const localVarFormParams = new url.URLSearchParams();
+
+            if (profileImage !== undefined) {
+                localVarFormParams.set('profileImage', profileImage as any);
+            }
+
+            localVarHeaderParameter['Content-Type'] = 'application/x-www-form-urlencoded';
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
             delete localVarUrlObj.search;
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            localVarRequestOptions.body = localVarFormParams.toString();
 
             return {
                 url: url.format(localVarUrlObj),
@@ -2810,16 +2807,16 @@ export const MusicUserControllerApiFetchParamCreator = function (configuration?:
         /**
          * 
          * @summary myInfoChange
-         * @param {MyInfoChangeRequest} myInfoChangeRequest myInfoChangeRequest
+         * @param {NicknameChangeRequest} nicknameChangeRequest nicknameChangeRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        myInfoChangeUsingPUT(myInfoChangeRequest: MyInfoChangeRequest, options: any = {}): FetchArgs {
-            // verify required parameter 'myInfoChangeRequest' is not null or undefined
-            if (myInfoChangeRequest === null || myInfoChangeRequest === undefined) {
-                throw new RequiredError('myInfoChangeRequest','Required parameter myInfoChangeRequest was null or undefined when calling myInfoChangeUsingPUT.');
+        myInfoChangeUsingPUT(nicknameChangeRequest: NicknameChangeRequest, options: any = {}): FetchArgs {
+            // verify required parameter 'nicknameChangeRequest' is not null or undefined
+            if (nicknameChangeRequest === null || nicknameChangeRequest === undefined) {
+                throw new RequiredError('nicknameChangeRequest','Required parameter nicknameChangeRequest was null or undefined when calling myInfoChangeUsingPUT.');
             }
-            const localVarPath = `/user/myinfo`;
+            const localVarPath = `/user/profile/nickname`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
             const localVarHeaderParameter = {} as any;
@@ -2831,8 +2828,8 @@ export const MusicUserControllerApiFetchParamCreator = function (configuration?:
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
             delete localVarUrlObj.search;
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-            const needsSerialization = (<any>"MyInfoChangeRequest" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(myInfoChangeRequest || {}) : (myInfoChangeRequest || "");
+            const needsSerialization = (<any>"NicknameChangeRequest" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(nicknameChangeRequest || {}) : (nicknameChangeRequest || "");
 
             return {
                 url: url.format(localVarUrlObj),
@@ -2969,12 +2966,13 @@ export const MusicUserControllerApiFp = function(configuration?: Configuration) 
     return {
         /**
          * 
-         * @summary getUserInfo
+         * @summary myInfoChange
+         * @param {any} profileImage profileImage
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserInfoUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOUserContextHolder> {
-            const localVarFetchArgs = MusicUserControllerApiFetchParamCreator(configuration).getUserInfoUsingGET(options);
+        myInfoChangeUsingPOST(profileImage: any, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOstring> {
+            const localVarFetchArgs = MusicUserControllerApiFetchParamCreator(configuration).myInfoChangeUsingPOST(profileImage, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -2988,12 +2986,12 @@ export const MusicUserControllerApiFp = function(configuration?: Configuration) 
         /**
          * 
          * @summary myInfoChange
-         * @param {MyInfoChangeRequest} myInfoChangeRequest myInfoChangeRequest
+         * @param {NicknameChangeRequest} nicknameChangeRequest nicknameChangeRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        myInfoChangeUsingPUT(myInfoChangeRequest: MyInfoChangeRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOboolean> {
-            const localVarFetchArgs = MusicUserControllerApiFetchParamCreator(configuration).myInfoChangeUsingPUT(myInfoChangeRequest, options);
+        myInfoChangeUsingPUT(nicknameChangeRequest: NicknameChangeRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOboolean> {
+            const localVarFetchArgs = MusicUserControllerApiFetchParamCreator(configuration).myInfoChangeUsingPUT(nicknameChangeRequest, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -3090,22 +3088,23 @@ export const MusicUserControllerApiFactory = function (configuration?: Configura
     return {
         /**
          * 
-         * @summary getUserInfo
+         * @summary myInfoChange
+         * @param {any} profileImage profileImage
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserInfoUsingGET(options?: any) {
-            return MusicUserControllerApiFp(configuration).getUserInfoUsingGET(options)(fetch, basePath);
+        myInfoChangeUsingPOST(profileImage: any, options?: any) {
+            return MusicUserControllerApiFp(configuration).myInfoChangeUsingPOST(profileImage, options)(fetch, basePath);
         },
         /**
          * 
          * @summary myInfoChange
-         * @param {MyInfoChangeRequest} myInfoChangeRequest myInfoChangeRequest
+         * @param {NicknameChangeRequest} nicknameChangeRequest nicknameChangeRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        myInfoChangeUsingPUT(myInfoChangeRequest: MyInfoChangeRequest, options?: any) {
-            return MusicUserControllerApiFp(configuration).myInfoChangeUsingPUT(myInfoChangeRequest, options)(fetch, basePath);
+        myInfoChangeUsingPUT(nicknameChangeRequest: NicknameChangeRequest, options?: any) {
+            return MusicUserControllerApiFp(configuration).myInfoChangeUsingPUT(nicknameChangeRequest, options)(fetch, basePath);
         },
         /**
          * 
@@ -3158,25 +3157,26 @@ export const MusicUserControllerApiFactory = function (configuration?: Configura
 export class MusicUserControllerApi extends BaseAPI {
     /**
      * 
-     * @summary getUserInfo
+     * @summary myInfoChange
+     * @param {any} profileImage profileImage
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MusicUserControllerApi
      */
-    public getUserInfoUsingGET(options?: any) {
-        return MusicUserControllerApiFp(this.configuration).getUserInfoUsingGET(options)(this.fetch, this.basePath);
+    public myInfoChangeUsingPOST(profileImage: any, options?: any) {
+        return MusicUserControllerApiFp(this.configuration).myInfoChangeUsingPOST(profileImage, options)(this.fetch, this.basePath);
     }
 
     /**
      * 
      * @summary myInfoChange
-     * @param {MyInfoChangeRequest} myInfoChangeRequest myInfoChangeRequest
+     * @param {NicknameChangeRequest} nicknameChangeRequest nicknameChangeRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MusicUserControllerApi
      */
-    public myInfoChangeUsingPUT(myInfoChangeRequest: MyInfoChangeRequest, options?: any) {
-        return MusicUserControllerApiFp(this.configuration).myInfoChangeUsingPUT(myInfoChangeRequest, options)(this.fetch, this.basePath);
+    public myInfoChangeUsingPUT(nicknameChangeRequest: NicknameChangeRequest, options?: any) {
+        return MusicUserControllerApiFp(this.configuration).myInfoChangeUsingPUT(nicknameChangeRequest, options)(this.fetch, this.basePath);
     }
 
     /**

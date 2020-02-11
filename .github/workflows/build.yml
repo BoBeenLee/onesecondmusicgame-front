@@ -14,6 +14,6 @@ jobs:
       - run: |
           npm install
           npm run test && npm run type-check
-          cd webview
+          cd web
           npm install
           npm run test && npm run type-check

@@ -6,12 +6,16 @@ import { pushTransition } from "src/screens/styles/animations";
 import topbars from "src/screens/styles/topbars";
 import colors from "src/styles/colors";
 import { delay } from "src/utils/common";
+import { getRootStore } from "src/stores/Store";
+import SignInScreen from "src/screens/SignInScreen";
+import MainScreen from "src/screens/MainScreen";
 
 const isLoadingByComponentId: { [key in string]: boolean } = {};
 let currentComponentId: string | null = null;
 let currentComponentName: string | null = null;
 
-const start = () => {
+const start = async () => {
+  const store = getRootStore();
   Navigation.setDefaultOptions({
     layout: {
       backgroundColor: colors.darkIndigo,
@@ -23,8 +27,13 @@ const start = () => {
     },
     topBar: topbars.emptyTopBar()
   });
-
-  setRoot({ nextComponentId: SCREEN_IDS.SplashScreen });
+  await store.initializeApp();
+  const { isGuest } = store.authStore;
+  if (isGuest) {
+    SignInScreen.open();
+    return;
+  }
+  MainScreen.open();
 };
 
 const setRoot = async ({ nextComponentId }: { nextComponentId: string }) => {

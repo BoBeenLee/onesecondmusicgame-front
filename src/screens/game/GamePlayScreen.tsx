@@ -1,4 +1,4 @@
-import { InteractionManager } from "react-native";
+import { InteractionManager, Clipboard } from "react-native";
 import { Item } from "__generate__/api";
 import _ from "lodash";
 import React, { Component } from "react";
@@ -194,7 +194,6 @@ const AnswerContent = styled.View`
   flex-direction: column;
   align-items: center;
   padding-top: 38px;
-  padding-horizontal: 70px;
 `;
 
 const AnswerButton = styled.TouchableOpacity`
@@ -210,6 +209,14 @@ const AnswerButton = styled.TouchableOpacity`
 
 const AnswerButtonText = styled(Bold20)`
   color: ${colors.white};
+`;
+
+const CorrectBackground = styled.Image`
+  position: absolute;
+  top: 55px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
 `;
 
 const NextEmptyView = styled.View``;
@@ -268,6 +275,15 @@ const SkipBadge = styled.View`
 
 const SkipBadgeText = styled(Bold18)`
   color: ${colors.paleLavender};
+`;
+
+const HiddenAnswerCopyButton = styled.TouchableWithoutFeedback``;
+const HiddenAnswerCopyButtonView = styled.View`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 20px;
+  height: 20px;
 `;
 
 const DEFAULT_LIMIT_TIME = 40;
@@ -386,6 +402,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
             ? null
             : this.renderAnswer}
         </InnerContainer>
+        <HiddenAnswerCopyButton onPress={this.copyAnswer}>
+          <HiddenAnswerCopyButtonView />
+        </HiddenAnswerCopyButton>
       </Container>
     );
   }
@@ -448,12 +467,14 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const {
       checkAnswer,
       currentGameHighlight,
-      gamePlayStepStatuses
+      gamePlayStepStatuses,
+      isFinish
     } = this.gamePlayHighlights;
     const { songAnswerInput, songAnswerSeconds } = this.state;
     const isAnswer = checkAnswer(songAnswerInput);
     return (
       <AnswerContainer>
+        <CorrectBackground source={images.bgCorrectMirrorballLight} />
         <Header>
           <GamePlayStep circles={gamePlayStepStatuses} />
           <LimitTimeProgress
@@ -483,17 +504,19 @@ class GamePlayScreen extends Component<IProps, IStates> {
         </AnswerContent>
         <Footer>
           <NextEmptyView />
-          <NextStepGroup>
-            <NextStepCaption>5초 뒤 다음 문제</NextStepCaption>
-            <NextStepButton onPress={_.partial(this.nextStep, false)}>
-              <NextStepButtonText>다음 문제</NextStepButtonText>
-              <NextStepArrowIcon
-                name="angle-right"
-                size={16}
-                color={colors.pinkyPurpleThree}
-              />
-            </NextStepButton>
-          </NextStepGroup>
+          {!isFinish ? (
+            <NextStepGroup>
+              <NextStepCaption>5초 뒤 다음 문제</NextStepCaption>
+              <NextStepButton onPress={_.partial(this.nextStep, false)}>
+                <NextStepButtonText>다음 문제</NextStepButtonText>
+                <NextStepArrowIcon
+                  name="angle-right"
+                  size={16}
+                  color={colors.pinkyPurpleThree}
+                />
+              </NextStepButton>
+            </NextStepGroup>
+          ) : null}
         </Footer>
       </AnswerContainer>
     );
@@ -591,9 +614,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
         songAnswerSeconds: DEFAULT_LIMIT_TIME
       },
       () => {
-        this.gamePlayersRef.current?.snapToNext();
-        this.gamePlayHighlights.nextStep();
         InteractionManager.runAfterInteractions(async () => {
+          this.gamePlayersRef.current?.snapToNext();
+          this.gamePlayHighlights.nextStep();
           await this.readyForPlay();
         });
       }
@@ -605,13 +628,13 @@ class GamePlayScreen extends Component<IProps, IStates> {
     if (currentGameHighlight === null) {
       return;
     }
-    const { id, title, trackId, singer, artworkUrl } = currentGameHighlight;
+    const { id, trackId, artworkUrl } = currentGameHighlight;
     await TrackPlayer.reset();
     await TrackPlayer.add({
       id: String(id ?? "none"),
       url: makePlayStreamUriByTrackId(String(trackId)),
-      title: title ?? "title",
-      artist: singer ?? "none",
+      title: "?????",
+      artist: "???",
       artwork: artworkUrl
     });
   };
@@ -681,6 +704,16 @@ class GamePlayScreen extends Component<IProps, IStates> {
         onConfirm={this.home}
       />
     );
+  };
+
+  private copyAnswer = () => {
+    const { currentGameHighlight } = this.gamePlayHighlights;
+    const { showToast } = this.props.toastStore;
+    if (currentGameHighlight === null) {
+      return;
+    }
+    Clipboard.setString(currentGameHighlight.title ?? "");
+    showToast("클립보드 복사 완료");
   };
 
   private home = () => {

@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
@@ -5,7 +6,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import ImagePicker from "react-native-image-picker";
 
 import { SCREEN_IDS } from "src/screens/constant";
-import { push, pop, getCurrentComponentId } from "src/utils/navigator";
+import { push, pop } from "src/utils/navigator";
 import { IPopupProps } from "src/hocs/withPopup";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
@@ -15,6 +16,8 @@ import colors from "src/styles/colors";
 import UserProfileForm, { IForm } from "src/components/form/UserProfileForm";
 import BackTopBar from "src/components/topbar/BackTopBar";
 import MockButton from "src/components/button/MockButton";
+import ProfileImage from "src/components/image/ProfileImage";
+import { myInfoChangeUsingPOST } from "src/apis/user";
 
 interface IInject {
   authStore: IAuthStore;
@@ -57,10 +60,7 @@ const Content = styled.View`
   padding-horizontal: 41px;
 `;
 
-const ProfileImage = styled.Image`
-  width: 50px;
-  height: 50px;
-`;
+const ProfileImageButton = styled.TouchableOpacity``;
 
 @inject(
   ({ store }: { store: IStore }): IInject => ({
@@ -82,9 +82,12 @@ class UserProfileScreen extends Component<IProps, IStates> {
   constructor(props: IProps) {
     super(props);
 
+    const profileDp = props.authStore.user?.profileDp ?? "";
     this.state = {
       nicknameInput: "",
-      profileImage: ""
+      profileImage: !_.isEmpty(profileDp)
+        ? profileDp
+        : "https://via.placeholder.com/350x350"
     };
   }
 
@@ -99,8 +102,9 @@ class UserProfileScreen extends Component<IProps, IStates> {
           enableAutomaticScroll={false}
         >
           <Content>
-            <ProfileImage source={{ uri: profileImage }} />
-            <MockButton name="이미지 불러오기" onPress={this.imagePicker} />
+            <ProfileImageButton onPress={this.imagePicker}>
+              <ProfileImage size={81} uri={profileImage} editable={true} />
+            </ProfileImageButton>
             <UserProfileForm onConfirm={this.onConfirm} />
           </Content>
         </InnerContainer>
@@ -117,7 +121,7 @@ class UserProfileScreen extends Component<IProps, IStates> {
         path: "images"
       }
     };
-    ImagePicker.showImagePicker(options, response => {
+    ImagePicker.showImagePicker(options, async response => {
       if (response.didCancel) {
         showToast("User cancelled image picker");
       } else if (response.error) {
@@ -125,9 +129,15 @@ class UserProfileScreen extends Component<IProps, IStates> {
       } else if (response.customButton) {
         showToast("User tapped custom button: " + response.customButton);
       } else {
-        this.setState({
-          profileImage: response.uri
-        });
+        try {
+          await myInfoChangeUsingPOST(response.uri);
+          this.setState({
+            profileImage: response.uri
+          });
+          showToast("이미지 변경 완료");
+        } catch (error) {
+          showToast(error.message);
+        }
       }
     });
   };
