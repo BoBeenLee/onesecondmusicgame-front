@@ -1,14 +1,12 @@
-import _ from "lodash";
 import { flow, types } from "mobx-state-tree";
 import { getRankingInfoUsingGET } from "src/apis/rank";
 import { RankView } from "__generate__/api";
-
-import { getRankingInfo } from "src/apis/rank";
 
 export interface IRankItem {
   nickname: string;
   point: number;
   rankDiff: number;
+  profileImageUrl: string;
 }
 
 const Ranks = types

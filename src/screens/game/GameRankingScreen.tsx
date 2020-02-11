@@ -112,21 +112,21 @@ class GameRankingScreen extends Component<IProps> {
             <TopRankView>
               <GameTopRankCardView
                 rank={2}
-                profileImage="https://via.placeholder.com/350x350"
-                name={secondRank?.nickname}
-                score={secondRank?.point}
+                profileImage={secondRank?.profileImageUrl ?? ""}
+                name={secondRank?.nickname ?? ""}
+                score={secondRank?.point ?? 0}
               />
               <GameTopRankCardView
                 rank={1}
-                profileImage="https://via.placeholder.com/350x350"
-                name={firstRank?.nickname}
-                score={firstRank?.point}
+                profileImage={firstRank?.profileImageUrl ?? ""}
+                name={firstRank?.nickname ?? ""}
+                score={firstRank?.point ?? 0}
               />
               <GameTopRankCardView
                 rank={3}
-                profileImage="https://via.placeholder.com/350x350"
-                name={thirdRank?.nickname}
-                score={thirdRank?.point}
+                profileImage={thirdRank?.profileImageUrl ?? ""}
+                name={thirdRank?.nickname ?? ""}
+                score={thirdRank?.point ?? 0}
               />
             </TopRankView>
             <Podium resizeMode="contain" source={images.podium} />
@@ -156,7 +156,7 @@ class GameRankingScreen extends Component<IProps> {
     return (
       <GameRankCardView
         rank={item?.rankDiff ?? 0}
-        profileImage="https://via.placeholder.com/350x350"
+        profileImage={item?.profileImageUrl ?? ""}
         name={item?.nickname ?? ""}
         score={item?.point ?? 0}
       />

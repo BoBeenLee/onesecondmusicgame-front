@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components/native";
-import { ViewProps, View } from "react-native";
+import { ViewProps } from "react-native";
 
 import { Bold12, Bold16 } from "src/components/text/Typographies";
 import colors from "src/styles/colors";
@@ -14,13 +14,17 @@ interface IProps {
   score: number;
 }
 
-const Container = styled(View, { rank: Number })`
+interface IContainerProps {
+  rank: number;
+}
+
+const Container = styled.View`
   flex: 1;
   flex-direction: column;
   align-items: center;
   position: relative;
-  ${({ rank }) => {
-    switch (rank) {
+  ${(props: IContainerProps) => {
+    switch (props.rank) {
       case 2:
         return css`
           top: 30px;
