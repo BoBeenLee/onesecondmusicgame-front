@@ -33,11 +33,10 @@ export const myInfoChangeUsingPUT = async (request: NicknameChangeRequest) => {
 
 export const myInfoChangeUsingPOST = async (filePath: string) => {
   const resizeResponse = await resizeImageByURI(filePath, 100);
-  const response = await upload({
+  await upload({
     fileExtension: "PNG",
     filePath: resizeResponse.uri,
     fileName: "profileImage",
     uri: `${env.API_URL}/user/profile/dp`
   });
-  return response.body! as ResponseDTOstring;
 };
