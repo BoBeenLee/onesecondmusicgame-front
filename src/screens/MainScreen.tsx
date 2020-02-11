@@ -46,6 +46,8 @@ import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import DeveloperScreen from "src/screens/DeveloperScreen";
 import Tooltip from "src/components/tooltip/Tooltip";
 import { FIELD, setItem, defaultItemToBoolean } from "src/utils/storage";
+import AutoHeightImage from "src/components/image/AutoHeightImage";
+import { getDeviceWidth } from "src/utils/device";
 
 interface IInject {
   store: IStore;
@@ -56,6 +58,10 @@ interface IInject {
 
 interface IProps extends IInject, IPopupProps {
   componentId: string;
+}
+
+interface IStates {
+  isNotTooltipShow: boolean;
 }
 
 const Container = styled(ContainerWithStatusBar)``;
@@ -86,8 +92,18 @@ const Nickname = styled(Bold28)`
 
 const SettingButton = styled(XEIconButton)``;
 
+const DescriptionRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
 const Description = styled(Bold20)`
   color: ${colors.lightGrey};
+`;
+
+const NoteIcon = styled.Image`
+  width: 17px;
+  height: 19px;
 `;
 
 const HeartStatus = styled.View`
@@ -132,7 +148,7 @@ const Content = styled.View`
 
 const MainMirrorBallView = styled.View`
   position: absolute;
-  top: 5px;
+  top: 50px;
   left: 0px;
   width: 100%;
   justify-content: center;
@@ -142,6 +158,7 @@ const MainMirrorBallView = styled.View`
 const MainMirrorBallBackground = styled.Image`
   width: 244px;
   height: 310px;
+  resize-mode: contain;
 `;
 
 const GameModeView = styled.View`
@@ -157,7 +174,7 @@ const GameModeSection = styled.TouchableOpacity`
   align-items: center;
   border-radius: 18px;
   background-color: ${colors.dark};
-  margin-top: 35px;
+  margin-top: 8px;
   padding-top: 15px;
   padding-bottom: 21px;
 `;
@@ -212,6 +229,13 @@ const FooterButtonText = styled(Bold12)`
   color: ${colors.white};
 `;
 
+const MainBackground = styled(AutoHeightImage)`
+  position: absolute;
+  top: 345px;
+  left: 0px;
+  resize-mode: contain;
+`;
+
 const DevelopButton = styled.TouchableWithoutFeedback``;
 
 const DeveloperButtonView = styled.View`
@@ -222,7 +246,7 @@ const DeveloperButtonView = styled.View`
   height: 20px;
 `;
 
-const RegisterSongTooltipButton = styled.TouchableWithoutFeedback``;
+const RegisterSongTooltipButton = styled.TouchableOpacity``;
 
 const RegisterSongTooltipView = styled(Tooltip)`
   position: absolute;
@@ -240,7 +264,7 @@ const RegisterSongTooltipView = styled(Tooltip)`
   })
 )
 @observer
-class MainScreen extends Component<IProps> {
+class MainScreen extends Component<IProps, IStates> {
   public static open() {
     setRoot({
       nextComponentId: SCREEN_IDS.MainScreen
@@ -251,6 +275,10 @@ class MainScreen extends Component<IProps> {
 
   constructor(props: IProps) {
     super(props);
+
+    this.state = {
+      isNotTooltipShow: true
+    };
 
     this.itemToOnPress = {
       [Item.ItemTypeEnum.SKIP]: this.onSkipItemPopup,
@@ -263,6 +291,11 @@ class MainScreen extends Component<IProps> {
   }
 
   public async componentDidMount() {
+    const isNotTooltipShow = await defaultItemToBoolean(
+      FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP,
+      false
+    );
+    this.setState({ isNotTooltipShow });
     this.updateCodePushIfAvailable();
   }
 
@@ -284,6 +317,15 @@ class MainScreen extends Component<IProps> {
     const user = this.props.authStore.user;
     return (
       <Container>
+        <MainBackground
+          width={getDeviceWidth()}
+          widthRatio={375}
+          heightRatio={228}
+          source={images.bgMain}
+        />
+        <MainMirrorBallView>
+          <MainMirrorBallBackground source={images.mainMirrorBall} />
+        </MainMirrorBallView>
         <Header>
           <HeartStatus>
             <HeartGroup
@@ -298,9 +340,6 @@ class MainScreen extends Component<IProps> {
           </HeartStatus>
         </Header>
         <Content>
-          <MainMirrorBallView>
-            <MainMirrorBallBackground source={images.mainMirrorBall} />
-          </MainMirrorBallView>
           <Profile>
             <NicknameView>
               <UnderlineText
@@ -313,7 +352,10 @@ class MainScreen extends Component<IProps> {
                 onPress={this.onSetting}
               />
             </NicknameView>
-            <Description>오늘도 같이 음악 맞춰요 </Description>
+            <DescriptionRow>
+              <Description>오늘도 같이 음악 맞춰요 </Description>
+              <NoteIcon source={images.note} />
+            </DescriptionRow>
           </Profile>
         </Content>
         <GameModeView>
@@ -349,7 +391,7 @@ class MainScreen extends Component<IProps> {
           </FooterButtonGroup>
         </Footer>
         <GameItemButton onPress={this.onUserItemPopup}>
-          <GameItemButtonText>하트 충전</GameItemButtonText>
+          <GameItemButtonText>보유 아이템</GameItemButtonText>
         </GameItemButton>
         <DevelopButton onPress={DeveloperScreen.open}>
           <DeveloperButtonView />
@@ -360,11 +402,8 @@ class MainScreen extends Component<IProps> {
   }
 
   private get renderRegisterSongTooltip() {
-    const isShow = defaultItemToBoolean(
-      FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP,
-      false
-    );
-    if (isShow) {
+    const { isNotTooltipShow } = this.state;
+    if (isNotTooltipShow) {
       return null;
     }
     return (
@@ -376,6 +415,7 @@ class MainScreen extends Component<IProps> {
 
   private hideRegisterSongTooltip = async () => {
     await setItem(FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP, "true");
+    this.setState({ isNotTooltipShow: true });
   };
 
   private onSetting = () => {

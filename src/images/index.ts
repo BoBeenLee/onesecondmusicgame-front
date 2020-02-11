@@ -26,6 +26,8 @@ const images = {
   splash: require("./splash.png"),
   podium: require("./podium.png"),
   bgCorrectMirrorballLight: require("./bg_correct_mirrorballLight.png"),
-  pencil: require("./pencil.png")
+  pencil: require("./pencil.png"),
+  bgMain: require("./bg_main.png"),
+  note: require("./note.png")
 };
 export default images;

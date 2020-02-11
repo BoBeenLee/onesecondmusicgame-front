@@ -3,6 +3,7 @@ import { flow, types } from "mobx-state-tree";
 
 import UserItem from "src/stores/model/UserItem";
 import Heart from "src/stores/model/Heart";
+import { myInfoChangeUsingPOST } from "src/apis/user";
 
 const User = types
   .model("User", {
@@ -24,13 +25,21 @@ const User = types
     };
   })
   .actions(self => {
+    const setProfileDp = (profileDp: string) => {
+      self.profileDp = profileDp;
+    };
+    const changeProfileImage = flow(function*(filePath: string) {
+      const uri: RetrieveAsyncFunc<typeof myInfoChangeUsingPOST> = yield myInfoChangeUsingPOST(
+        filePath
+      );
+      setProfileDp(uri);
+    });
     return {
+      changeProfileImage,
       setNickname: (nickname: string) => {
         self.nickname = nickname;
       },
-      setProfileDp: (profileDp: string) => {
-        self.profileDp = profileDp;
-      },
+      setProfileDp,
       setUserAccessToken: (userAccessToken: string) => {
         self.userAccessToken = userAccessToken;
       },
