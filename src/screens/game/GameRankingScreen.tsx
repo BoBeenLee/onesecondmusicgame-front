@@ -1,7 +1,7 @@
 import React, { Component, ComponentClass } from "react";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
-import { FlatListProps, FlatList, ListRenderItem } from "react-native";
+import { FlatListProps, FlatList, ListRenderItem, Image } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
@@ -17,6 +17,7 @@ import { RankView } from "__generate__/api";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
 import { transformTimeToString } from "src/utils/date";
+import images from "src/images";
 
 interface IInject {
   toastStore: IToastStore;
@@ -47,7 +48,10 @@ const Light = styled.View`
   shadow-radius: 9px;
 `;
 
-const Header = styled.View``;
+const Header = styled.View`
+  display: flex;
+  justify-content: center;
+`;
 
 const RankCaption = styled(Regular14)`
   text-align: center;
@@ -64,13 +68,13 @@ const Content = styled.View`
 const TopRankView = styled.View`
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
   padding-top: 13px;
 `;
 
 const GameTopRankCardView = styled(GameTopRankCard)`
   flex: 1;
-  padding-horizontal: 10px;
+  /* padding-horizontal: 10px; */
 `;
 
 const Result = styled<ComponentClass<FlatListProps<RankView>>>(FlatList)`
@@ -83,6 +87,11 @@ const GameRankCardView = styled(GameRankCard)``;
 const GameRankSeperator = styled.View`
   width: 100%;
   height: 13px;
+`;
+
+const Podium = styled.Image`
+  width: 100%;
+  height: 140px;
 `;
 
 @inject(
@@ -134,6 +143,7 @@ class GameRankingScreen extends Component<IProps> {
                 score={thirdRank?.point}
               />
             </TopRankView>
+            <Podium resizeMode="contain" source={images.podium} />
             <RankCaption>
               *{transformTimeToString(time, "YYYY-MM-DD HH시 mm분 ")}
               기준의 랭킹입니다.{" "}

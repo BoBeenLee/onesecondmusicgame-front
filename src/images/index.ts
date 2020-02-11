@@ -24,9 +24,7 @@ const images = {
   btnCDIcon: require("./btn_cd.png"),
   combinedShape: require("./combinedShape.png"),
   splash: require("./splash.png"),
-  winnerFirst: require("./winner_1.png"),
-  winnerSecond: require("./winner_2.png"),
-  winnerThird: require("./winner_3.png"),
+  podium: require("./podium.png"),
   bgCorrectMirrorballLight: require("./bg_correct_mirrorballLight.png"),
   pencil: require("./pencil.png")
 };
