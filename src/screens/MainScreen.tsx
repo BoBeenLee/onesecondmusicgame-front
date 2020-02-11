@@ -60,6 +60,10 @@ interface IProps extends IInject, IPopupProps {
   componentId: string;
 }
 
+interface IStates {
+  isTooltipShow: boolean;
+}
+
 const Container = styled(ContainerWithStatusBar)``;
 
 const Header = styled.View`
@@ -260,7 +264,7 @@ const RegisterSongTooltipView = styled(Tooltip)`
   })
 )
 @observer
-class MainScreen extends Component<IProps> {
+class MainScreen extends Component<IProps, IStates> {
   public static open() {
     setRoot({
       nextComponentId: SCREEN_IDS.MainScreen
@@ -271,6 +275,10 @@ class MainScreen extends Component<IProps> {
 
   constructor(props: IProps) {
     super(props);
+
+    this.state = {
+      isTooltipShow: false
+    };
 
     this.itemToOnPress = {
       [Item.ItemTypeEnum.SKIP]: this.onSkipItemPopup,
@@ -283,6 +291,11 @@ class MainScreen extends Component<IProps> {
   }
 
   public async componentDidMount() {
+    const isTooltipShow = await defaultItemToBoolean(
+      FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP,
+      false
+    );
+    this.setState({ isTooltipShow });
     this.updateCodePushIfAvailable();
   }
 
@@ -389,11 +402,8 @@ class MainScreen extends Component<IProps> {
   }
 
   private get renderRegisterSongTooltip() {
-    const isShow = defaultItemToBoolean(
-      FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP,
-      false
-    );
-    if (isShow) {
+    const { isTooltipShow } = this.state;
+    if (isTooltipShow) {
       return null;
     }
     return (

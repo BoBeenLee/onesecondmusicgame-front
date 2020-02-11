@@ -82,6 +82,7 @@ function SingersSubmitBackDrop(props: IProps) {
     onSubmit,
     onSelectedItem
   } = props;
+  console.tron.log(showMinimumSubmit);
   const backdropRef = useRef<IBackDropMethod>();
   const singerOpacityRef = useRef<Animated.Value>(
     new Animated.Value(showMinimumSubmit ? 0 : 1)
