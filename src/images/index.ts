@@ -23,6 +23,9 @@ const images = {
   btnRankIcon: require("./group14.png"),
   btnCDIcon: require("./btn_cd.png"),
   combinedShape: require("./combinedShape.png"),
-  splash: require("./splash.png")
+  splash: require("./splash.png"),
+  winnerFirst: require("./winner_1.png"),
+  winnerSecond: require("./winner_2.png"),
+  winnerThird: require("./winner_3.png")
 };
 export default images;

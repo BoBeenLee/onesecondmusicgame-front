@@ -3232,83 +3232,6 @@ export class MusicUserControllerApi extends BaseAPI {
  * RankingControllerApi - fetch parameter creator
  * @export
  */
-export const RankingControllerApiFetchParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary getRankingInfo
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getRankingInfoUsingGET(options: any = {}): FetchArgs {
-            const localVarPath = `/rank/list`;
-            const localVarUrlObj = url.parse(localVarPath, true);
-            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
-
-            return {
-                url: url.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * RankingControllerApi - functional programming interface
- * @export
- */
-export const RankingControllerApiFp = function(configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @summary getRankingInfo
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getRankingInfoUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTORankViewModel> {
-            const localVarFetchArgs = RankingControllerApiFetchParamCreator(configuration).getRankingInfoUsingGET(options);
-            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
-                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
-                    if (response.status >= 200 && response.status < 300) {
-                        return response.json();
-                    } else {
-                        throw response;
-                    }
-                });
-            };
-        },
-    }
-};
-
-/**
- * RankingControllerApi - factory interface
- * @export
- */
-export const RankingControllerApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
-    return {
-        /**
-         * 
-         * @summary getRankingInfo
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getRankingInfoUsingGET(options?: any) {
-            return RankingControllerApiFp(configuration).getRankingInfoUsingGET(options)(fetch, basePath);
-        },
-    };
-};
-
-/**
- * RankingControllerApi - fetch parameter creator
- * @export
- */
 export const RankingControllerApiFetchParamCreator = function(
   configuration?: Configuration
 ) {
@@ -3431,26 +3354,6 @@ export class RankingControllerApi extends BaseAPI {
       options
     )(this.fetch, this.basePath);
   }
-}
-
-/**
- * RewardControllerApi - fetch parameter creator
- * @export
- * @class RankingControllerApi
- * @extends {BaseAPI}
- */
-export class RankingControllerApi extends BaseAPI {
-    /**
-     * 
-     * @summary getRankingInfo
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof RankingControllerApi
-     */
-    public getRankingInfoUsingGET(options?: any) {
-        return RankingControllerApiFp(this.configuration).getRankingInfoUsingGET(options)(this.fetch, this.basePath);
-    }
-
 }
 
 /**

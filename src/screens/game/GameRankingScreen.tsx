@@ -108,30 +108,30 @@ class GameRankingScreen extends Component<IProps> {
 
   public render() {
     const { isRefresh, refresh, rankViews, time } = this.ranks;
+    const [firstRank, secondRank, thirdRank, ...restRank] = rankViews;
     return (
       <Container>
         <BackTopBar title="랭킹" onBackPress={this.back} />
         <Content>
           <Header>
-            <Light />
             <TopRankView>
-              <GameTopRankCardView
-                rank={1}
-                profileImage="https://via.placeholder.com/350x350"
-                name="jasmin"
-                score={83}
-              />
               <GameTopRankCardView
                 rank={2}
                 profileImage="https://via.placeholder.com/350x350"
-                name="jasmin"
-                score={83}
+                name={secondRank?.nickname}
+                score={secondRank?.point}
+              />
+              <GameTopRankCardView
+                rank={1}
+                profileImage="https://via.placeholder.com/350x350"
+                name={firstRank?.nickname}
+                score={firstRank?.point}
               />
               <GameTopRankCardView
                 rank={3}
                 profileImage="https://via.placeholder.com/350x350"
-                name="jasmin"
-                score={83}
+                name={thirdRank?.nickname}
+                score={thirdRank?.point}
               />
             </TopRankView>
             <RankCaption>
@@ -140,7 +140,7 @@ class GameRankingScreen extends Component<IProps> {
             </RankCaption>
           </Header>
           <Result
-            data={rankViews}
+            data={restRank}
             renderItem={this.renderRankItem}
             keyExtractor={this.rankKeyExtreactor}
             refreshing={isRefresh}
