@@ -25,6 +25,8 @@ const images = {
   combinedShape: require("./combinedShape.png"),
   splash: require("./splash.png"),
   bgCorrectMirrorballLight: require("./bg_correct_mirrorballLight.png"),
-  pencil: require("./pencil.png")
+  pencil: require("./pencil.png"),
+  bgMain: require("./bg_main.png"),
+  note: require("./note.png")
 };
 export default images;

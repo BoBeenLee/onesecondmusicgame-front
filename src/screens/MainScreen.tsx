@@ -46,6 +46,8 @@ import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import DeveloperScreen from "src/screens/DeveloperScreen";
 import Tooltip from "src/components/tooltip/Tooltip";
 import { FIELD, setItem, defaultItemToBoolean } from "src/utils/storage";
+import AutoHeightImage from "src/components/image/AutoHeightImage";
+import { getDeviceWidth } from "src/utils/device";
 
 interface IInject {
   store: IStore;
@@ -86,8 +88,18 @@ const Nickname = styled(Bold28)`
 
 const SettingButton = styled(XEIconButton)``;
 
+const DescriptionRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
 const Description = styled(Bold20)`
   color: ${colors.lightGrey};
+`;
+
+const NoteIcon = styled.Image`
+  width: 17px;
+  height: 19px;
 `;
 
 const HeartStatus = styled.View`
@@ -132,7 +144,7 @@ const Content = styled.View`
 
 const MainMirrorBallView = styled.View`
   position: absolute;
-  top: 5px;
+  top: 50px;
   left: 0px;
   width: 100%;
   justify-content: center;
@@ -142,6 +154,7 @@ const MainMirrorBallView = styled.View`
 const MainMirrorBallBackground = styled.Image`
   width: 244px;
   height: 310px;
+  resize-mode: contain;
 `;
 
 const GameModeView = styled.View`
@@ -157,7 +170,7 @@ const GameModeSection = styled.TouchableOpacity`
   align-items: center;
   border-radius: 18px;
   background-color: ${colors.dark};
-  margin-top: 35px;
+  margin-top: 8px;
   padding-top: 15px;
   padding-bottom: 21px;
 `;
@@ -210,6 +223,13 @@ const RankingIcon = styled.Image`
 
 const FooterButtonText = styled(Bold12)`
   color: ${colors.white};
+`;
+
+const MainBackground = styled(AutoHeightImage)`
+  position: absolute;
+  top: 345px;
+  left: 0px;
+  resize-mode: contain;
 `;
 
 const DevelopButton = styled.TouchableWithoutFeedback``;
@@ -284,6 +304,15 @@ class MainScreen extends Component<IProps> {
     const user = this.props.authStore.user;
     return (
       <Container>
+        <MainBackground
+          width={getDeviceWidth()}
+          widthRatio={375}
+          heightRatio={228}
+          source={images.bgMain}
+        />
+        <MainMirrorBallView>
+          <MainMirrorBallBackground source={images.mainMirrorBall} />
+        </MainMirrorBallView>
         <Header>
           <HeartStatus>
             <HeartGroup
@@ -298,9 +327,6 @@ class MainScreen extends Component<IProps> {
           </HeartStatus>
         </Header>
         <Content>
-          <MainMirrorBallView>
-            <MainMirrorBallBackground source={images.mainMirrorBall} />
-          </MainMirrorBallView>
           <Profile>
             <NicknameView>
               <UnderlineText
@@ -313,7 +339,10 @@ class MainScreen extends Component<IProps> {
                 onPress={this.onSetting}
               />
             </NicknameView>
-            <Description>오늘도 같이 음악 맞춰요 </Description>
+            <DescriptionRow>
+              <Description>오늘도 같이 음악 맞춰요 </Description>
+              <NoteIcon source={images.note} />
+            </DescriptionRow>
           </Profile>
         </Content>
         <GameModeView>

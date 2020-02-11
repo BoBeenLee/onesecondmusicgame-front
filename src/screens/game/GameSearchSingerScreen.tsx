@@ -165,7 +165,7 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
 
     this.state = { selectedSingers: {}, showMinimumSubmit: false };
     this.singers.initialize({ q: "" });
-    this.onResultScroll = _.debounce(this.onResultScroll, 210);
+    this.onResultScroll = _.throttle(this.onResultScroll, 210);
   }
 
   public render() {
