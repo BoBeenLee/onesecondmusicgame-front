@@ -307,6 +307,7 @@ class GameResultScreen extends Component<IProps, IStates> {
 
   public render() {
     const heart = this.props.authStore.user?.heart;
+    const nickname = this.props.authStore.user?.nickname ?? "";
     const { gainPointOfThisGame, totalPoint } = this.state;
     const { gamePlayStepStatuses } = this.gamePlayHighlights;
 
@@ -348,9 +349,9 @@ class GameResultScreen extends Component<IProps, IStates> {
               <ResultSectionMyRankRow>
                 <ResultSectionGroup>
                   <Rank>1위</Rank>
-                  <Name>이보빈</Name>
+                  <Name>{nickname}</Name>
                 </ResultSectionGroup>
-                <Score>4355점</Score>
+                <Score>{totalPoint}점</Score>
               </ResultSectionMyRankRow>
             </ResultSection>
             <ResultSection onPress={this.onUseFullHeartPopup}>

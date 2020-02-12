@@ -246,13 +246,15 @@ const DeveloperButtonView = styled.View`
   height: 20px;
 `;
 
-const RegisterSongTooltipButton = styled.TouchableOpacity``;
-
-const RegisterSongTooltipView = styled(Tooltip)`
+const RegisterSongTooltipButtonView = styled.View`
   position: absolute;
   bottom: 93px;
   left: 17px;
 `;
+
+const RegisterSongTooltipButton = styled.TouchableWithoutFeedback``;
+
+const RegisterSongTooltipView = styled(Tooltip)``;
 
 // https://app.zeplin.io/project/5e1988a010ae36bcd391ba27/screen/5e335b9266ed997dfeb5627a
 @inject(
@@ -291,12 +293,12 @@ class MainScreen extends Component<IProps, IStates> {
   }
 
   public async componentDidMount() {
+    this.updateCodePushIfAvailable();
     const isNotTooltipShow = await defaultItemToBoolean(
       FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP,
       false
     );
     this.setState({ isNotTooltipShow });
-    this.updateCodePushIfAvailable();
   }
 
   public updateCodePushIfAvailable = async () => {
@@ -407,15 +409,18 @@ class MainScreen extends Component<IProps, IStates> {
       return null;
     }
     return (
-      <RegisterSongTooltipButton onPress={this.hideRegisterSongTooltip}>
-        <RegisterSongTooltipView message="좋아하는 가수의 노래가 등록되어 있는지 확인할 수 있어요!" />
-      </RegisterSongTooltipButton>
+      <RegisterSongTooltipButtonView>
+        <RegisterSongTooltipButton onPress={this.hideRegisterSongTooltip}>
+          <RegisterSongTooltipView message="좋아하는 가수의 노래가 등록되어 있는지 확인할 수 있어요!" />
+        </RegisterSongTooltipButton>
+      </RegisterSongTooltipButtonView>
     );
   }
 
-  private hideRegisterSongTooltip = async () => {
-    await setItem(FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP, "true");
-    this.setState({ isNotTooltipShow: true });
+  private hideRegisterSongTooltip = () => {
+    this.setState({ isNotTooltipShow: true }, async () => {
+      await setItem(FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP, "true");
+    });
   };
 
   private onSetting = () => {

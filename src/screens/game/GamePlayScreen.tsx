@@ -38,7 +38,9 @@ import { ISinger } from "src/apis/singer";
 import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import GamePlayHighlights, {
-  IGamePlayHighlightItem
+  IGamePlayHighlightItem,
+  IGamePlayHighlights,
+  makeGamePlayHighlights
 } from "src/stores/GamePlayHighlights";
 import GamePlayTutorialOverlay from "src/screens/tutorial/GamePlayTutorialOverlay";
 import XEIcon from "src/components/icon/XEIcon";
@@ -64,6 +66,7 @@ interface IParams {
 interface IProps extends IInject, IPopupProps, IDisabledProps {
   componentId: string;
   selectedSingers: ISinger[];
+  gamePlayHighlights: () => IGamePlayHighlights;
 }
 
 interface IStates {
@@ -297,39 +300,45 @@ const NEXT_STEP_SECONDS = 5000;
 )
 @observer
 class GamePlayScreen extends Component<IProps, IStates> {
-  public static open(params: IParams) {
+  public static async open(params: IParams) {
     if (params.heartCount === 0) {
       throw new Error("하트가 부족합니다.");
     }
+    const gamePlayHighlights = await makeGamePlayHighlights([]);
     return push({
       componentId: params.componentId,
       nextComponentId: SCREEN_IDS.GamePlayScreen,
       params: {
-        selectedSingers: []
+        selectedSingers: [],
+        gamePlayHighlights: () => gamePlayHighlights
       }
     });
   }
 
-  public static openSelectedSingers(params: IParams) {
+  public static async openSelectedSingers(params: IParams) {
     if (params.heartCount === 0) {
       throw new Error("하트가 부족합니다.");
     }
     GameSearchSingerScreen.open({
       componentId: params.componentId,
-      onResult: (selectedSingers: ISinger[]) => {
+      onResult: async (selectedSingers: ISinger[]) => {
+        const gamePlayHighlights = await makeGamePlayHighlights(
+          selectedSingers
+        );
         push({
           componentId: getCurrentComponentId(),
           nextComponentId: SCREEN_IDS.GamePlayScreen,
           params: {
-            selectedSingers
+            selectedSingers,
+            gamePlayHighlights: () => gamePlayHighlights
           }
         });
       }
     });
   }
 
-  public gamePlayersRef = React.createRef<OSMGCarousel<any>>();
   public gamePlayHighlights = GamePlayHighlights.create({});
+  public gamePlayersRef = React.createRef<OSMGCarousel<any>>();
   public intervalId: any;
 
   constructor(props: IProps) {
@@ -345,6 +354,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
       this.submitAnswer,
       "submitAnswer"
     );
+    if (props.gamePlayHighlights) {
+      this.gamePlayHighlights = props.gamePlayHighlights();
+    }
     loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
       onRewarded: this.onRewarded
     });
@@ -361,13 +373,20 @@ class GamePlayScreen extends Component<IProps, IStates> {
             await this.readyForPlay();
             this.intervalId = setInterval(async () => {
               const { songAnswerSeconds, currentStepStatus } = this.state;
+              const { showToast } = this.props.toastStore;
               if (currentStepStatus !== "play") {
                 return;
               }
               if (songAnswerSeconds === 0) {
-                const { answer } = this.gamePlayHighlights;
+                const { answer, isAnswer } = this.gamePlayHighlights;
                 const { songAnswerInput } = this.state;
-                answer(songAnswerInput, songAnswerSeconds);
+                let isUserAnswer = false;
+                try {
+                  isUserAnswer = await isAnswer(songAnswerInput);
+                } catch (error) {
+                  showToast(error.message);
+                }
+                answer(isUserAnswer, songAnswerInput, songAnswerSeconds);
                 await this.beforeNextStep();
                 return;
               }
@@ -379,11 +398,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
         );
       }
     });
-  }
-
-  public async componentDidMount() {
-    const { selectedSingers } = this.props;
-    await this.gamePlayHighlights.initialize(selectedSingers);
   }
 
   public componentWillUnmount() {
@@ -570,11 +584,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private submitAnswer = async () => {
-    const {
-      answer,
-      checkAnswer,
-      currentGameHighlight
-    } = this.gamePlayHighlights;
+    const { answer, currentGameHighlight, isAnswer } = this.gamePlayHighlights;
     const { songAnswerInput, songAnswerSeconds } = this.state;
     const { showToast } = this.props.toastStore;
 
@@ -582,12 +592,17 @@ class GamePlayScreen extends Component<IProps, IStates> {
       showToast("게임 플레이곡이 없습니다");
       return;
     }
-    if (!checkAnswer(songAnswerInput)) {
-      showToast("오답입니다ㅠㅜ");
-      return;
+    try {
+      const isUserAnswer = await isAnswer(songAnswerInput);
+      if (!isUserAnswer) {
+        showToast("오답입니다ㅠㅜ");
+        return;
+      }
+      answer(isUserAnswer, songAnswerInput, songAnswerSeconds);
+      await this.beforeNextStep();
+    } catch (error) {
+      showToast(error.message);
     }
-    answer(songAnswerInput, songAnswerSeconds);
-    await this.beforeNextStep();
   };
 
   private beforeNextStep = async () => {
@@ -603,7 +618,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     if (this.state.currentStepStatus === "play") {
       return;
     }
-    await this.nextStep();
+    this.nextStep();
   };
 
   private nextStep = () => {
@@ -712,7 +727,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
     if (currentGameHighlight === null) {
       return;
     }
-    Clipboard.setString(currentGameHighlight.title ?? "");
+    const filterTitle = (currentGameHighlight.title ?? "")
+      .replace(currentGameHighlight.singer ?? "", "")
+      .replace("feat", "")
+      .toLowerCase()
+      .trim();
+    Clipboard.setString(filterTitle);
     showToast("클립보드 복사 완료");
   };
 
