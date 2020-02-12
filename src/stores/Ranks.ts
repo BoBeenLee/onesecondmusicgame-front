@@ -1,41 +1,13 @@
-import _ from "lodash";
 import { flow, types } from "mobx-state-tree";
 import { getRankingInfoUsingGET } from "src/apis/rank";
 import { RankView } from "__generate__/api";
 
 export interface IRankItem {
-  rank: number;
-  name: string;
-  profileImage: string;
-  score: number;
+  nickname: string;
+  point: number;
+  rankDiff: number;
+  profileImageUrl: string;
 }
-
-const mocks: IRankItem[] = [
-  {
-    rank: 1,
-    profileImage: "https://via.placeholder.com/350x350",
-    name: "jasmin",
-    score: 83
-  },
-  {
-    rank: 2,
-    profileImage: "https://via.placeholder.com/350x350",
-    name: "jasmin",
-    score: 83
-  },
-  {
-    rank: 3,
-    profileImage: "https://via.placeholder.com/350x350",
-    name: "jasmin",
-    score: 83
-  },
-  {
-    rank: 4,
-    profileImage: "https://via.placeholder.com/350x350",
-    name: "jasmin",
-    score: 83
-  }
-];
 
 const Ranks = types
   .model("Ranks", {
