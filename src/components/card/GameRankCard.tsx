@@ -2,12 +2,7 @@ import React from "react";
 import styled from "styled-components/native";
 import { ViewProps } from "react-native";
 
-import {
-  Bold12,
-  Bold14,
-  Bold16,
-  Bold24
-} from "src/components/text/Typographies";
+import { Bold12, Bold14, Bold16 } from "src/components/text/Typographies";
 import ProfileImage from "src/components/image/ProfileImage";
 import colors from "src/styles/colors";
 import XEIcon from "src/components/icon/XEIcon";

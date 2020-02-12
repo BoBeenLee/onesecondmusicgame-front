@@ -18,6 +18,8 @@ import { IStore } from "src/stores/Store";
 import { transformTimeToString } from "src/utils/date";
 import images from "src/images";
 
+const DEFAULT_PROFILE = "https://via.placeholder.com/350x350";
+
 interface IInject {
   toastStore: IToastStore;
 }
@@ -112,19 +114,19 @@ class GameRankingScreen extends Component<IProps> {
             <TopRankView>
               <GameTopRankCardView
                 rank={2}
-                profileImage={secondRank?.profileImageUrl ?? ""}
+                profileImage={secondRank?.profileImageUrl ?? DEFAULT_PROFILE}
                 name={secondRank?.nickname ?? ""}
                 score={secondRank?.point ?? 0}
               />
               <GameTopRankCardView
                 rank={1}
-                profileImage={firstRank?.profileImageUrl ?? ""}
+                profileImage={firstRank?.profileImageUrl ?? DEFAULT_PROFILE}
                 name={firstRank?.nickname ?? ""}
                 score={firstRank?.point ?? 0}
               />
               <GameTopRankCardView
                 rank={3}
-                profileImage={thirdRank?.profileImageUrl ?? ""}
+                profileImage={thirdRank?.profileImageUrl ?? DEFAULT_PROFILE}
                 name={thirdRank?.nickname ?? ""}
                 score={thirdRank?.point ?? 0}
               />
@@ -156,7 +158,7 @@ class GameRankingScreen extends Component<IProps> {
     return (
       <GameRankCardView
         rank={item?.rankDiff ?? 0}
-        profileImage={item?.profileImageUrl ?? ""}
+        profileImage={item?.profileImageUrl ?? DEFAULT_PROFILE}
         name={item?.nickname ?? ""}
         score={item?.point ?? 0}
       />
