@@ -360,7 +360,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
     loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
       onRewarded: this.onRewarded
     });
-    props.authStore.user?.heart?.useHeart?.();
     GamePlayTutorialOverlay.open({
       onAfterClose: () => {
         this.setState(
