@@ -252,7 +252,7 @@ const RegisterSongTooltipButtonView = styled.View`
   left: 17px;
 `;
 
-const RegisterSongTooltipButton = styled.TouchableWithoutFeedback``;
+const RegisterSongTooltipButton = styled.TouchableOpacity``;
 
 const RegisterSongTooltipView = styled(Tooltip)``;
 
