@@ -49,6 +49,7 @@ const Store = types
 
     const initializeMainApp = () => {
       self.singerStore.initialize();
+      self.authStore.user?.heart?.fetchHeart();
     };
 
     return {

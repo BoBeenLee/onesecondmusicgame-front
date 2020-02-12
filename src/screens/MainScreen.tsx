@@ -434,14 +434,13 @@ class MainScreen extends Component<IProps, IStates> {
     showToast("닉네임 변경완료");
   };
 
-  private useFullHeart = () => {
+  private useFullHeart = async () => {
     const { showToast } = this.props.toastStore;
     const userItem = this.props.authStore.user?.userItemsByItemType?.(
       Item.ItemTypeEnum.CHARGEALLHEART
     );
-
-    userItem?.useItemType?.();
-    this.props.authStore.user?.heart?.fetchHeart();
+    await userItem?.useItemType?.();
+    await this.props.authStore.user?.heart?.fetchHeart();
     showToast("하트 풀충전 완료!");
   };
 
