@@ -53,7 +53,6 @@ const EditableIcon = styled.Image`
 
 function ProfileImage({ style, size, uri, editable }: IProps) {
   const borderRadius: number = size / 2;
-  console.log(uri, "in profileImage");
   return (
     <Container style={style} size={size}>
       <ProfileView size={size} borderRadius={borderRadius}>
