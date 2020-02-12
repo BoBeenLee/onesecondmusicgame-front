@@ -20,6 +20,7 @@ interface IProps {
   fullHeartCount: number;
   onInvite: () => void;
   onAD: () => void;
+  onUseFullHeart: () => void;
   onCancel: () => void;
 }
 
@@ -72,6 +73,12 @@ const BadgeText = styled(Bold15)`
   color: ${colors.white};
 `;
 
+const FullHeartButton = styled.TouchableOpacity`
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
 const HeartIconView = styled.View`
   width: 52px;
   height: 48px;
@@ -119,6 +126,7 @@ function UserItemPopup(props: IProps) {
     fullHeartCount,
     onCancel,
     onInvite,
+    onUseFullHeart,
     onAD: onRewarded
   } = props;
   return (
@@ -151,13 +159,15 @@ function UserItemPopup(props: IProps) {
               </ItemButton>
             </ItemView>
             <ItemView>
-              <HeartIconView>
-                <HeartImage source={images.inviteHeart} />
-                <BadgeView>
-                  <BadgeText>{fullHeartCount}</BadgeText>
-                </BadgeView>
-              </HeartIconView>
-              <ItemTitle>FULL</ItemTitle>
+              <FullHeartButton onPress={onUseFullHeart}>
+                <HeartIconView>
+                  <HeartImage source={images.inviteHeart} />
+                  <BadgeView>
+                    <BadgeText>{fullHeartCount}</BadgeText>
+                  </BadgeView>
+                </HeartIconView>
+                <ItemTitle>FULL</ItemTitle>
+              </FullHeartButton>
               <ItemButton onPress={onInvite}>
                 <ItemButtonRow>
                   <ItemButtonText>친구 초대하고</ItemButtonText>

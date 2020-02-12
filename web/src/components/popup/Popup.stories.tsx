@@ -82,6 +82,7 @@ storiesOf("Popup", module)
         fullHeartCount={11}
         onInvite={action("onInvite")}
         onAD={action("onAD")}
+        onUseFullHeart={action("onUseFullHeart")}
         onCancel={action("onCancel")}
       />
     );
