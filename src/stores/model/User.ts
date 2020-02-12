@@ -9,7 +9,7 @@ const User = types
   .model("User", {
     accessId: types.identifier,
     nickname: types.optional(types.string, ""),
-    profileDp: types.optional(types.string, ""),
+    profileImageUrl: types.optional(types.string, ""),
     userAccessToken: types.optional(types.string, ""),
     userItems: types.optional(types.map(UserItem), {}),
     heart: types.optional(Heart, {})
@@ -25,21 +25,21 @@ const User = types
     };
   })
   .actions(self => {
-    const setProfileDp = (profileDp: string) => {
-      self.profileDp = profileDp;
+    const setProfileImageUrl = (profileImageUrl: string) => {
+      self.profileImageUrl = profileImageUrl;
     };
     const changeProfileImage = flow(function*(filePath: string) {
       const uri: RetrieveAsyncFunc<typeof myInfoChangeUsingPOST> = yield myInfoChangeUsingPOST(
         filePath
       );
-      setProfileDp(uri);
+      setProfileImageUrl(uri);
     });
     return {
       changeProfileImage,
       setNickname: (nickname: string) => {
         self.nickname = nickname;
       },
-      setProfileDp,
+      setProfileImageUrl,
       setUserAccessToken: (userAccessToken: string) => {
         self.userAccessToken = userAccessToken;
       },

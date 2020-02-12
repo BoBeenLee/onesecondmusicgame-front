@@ -82,11 +82,11 @@ class UserProfileScreen extends Component<IProps, IStates> {
   constructor(props: IProps) {
     super(props);
 
-    const profileDp = props.authStore.user?.profileDp ?? "";
+    const profileImageUrl = props.authStore.user?.profileImageUrl ?? "";
     this.state = {
       nicknameInput: "",
-      profileImage: !_.isEmpty(profileDp)
-        ? profileDp
+      profileImage: !_.isEmpty(profileImageUrl)
+        ? profileImageUrl
         : "https://via.placeholder.com/350x350"
     };
   }

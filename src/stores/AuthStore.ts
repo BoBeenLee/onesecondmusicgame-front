@@ -261,7 +261,7 @@ const AuthStore = types
     const updateUserInfo = flow(function*(signInResponse: LoggedInMusicUser) {
       const response: RetrieveAsyncFunc<typeof findItemAllUsingGET> = yield findItemAllUsingGET();
       self.user?.setNickname(signInResponse?.nickname ?? "");
-      self.user?.setProfileDp((signInResponse as any)?.profile_dp ?? "");
+      self.user?.setProfileImageUrl(signInResponse?.profileImageUrl ?? "");
       self.user?.setUserItems(response);
       self.user?.heart.fetchHeart();
       setUserID(self.accessId);
