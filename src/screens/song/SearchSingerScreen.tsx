@@ -29,10 +29,6 @@ import { IToastStore } from "src/stores/ToastStore";
 import BackTopBar from "src/components/topbar/BackTopBar";
 import RegisterTrackBackDrop from "src/components/backdrop/RegisterTrackBackDrop";
 import Tracks, { ITracks } from "src/stores/Tracks";
-import withScrollDirection, {
-  IScrollDirectionProps
-} from "src/hocs/withScrollDirection";
-import { ScrollDirection } from "src/utils/scrollView";
 import SearchTrackCard from "src/components/card/SearchTrackCard";
 import { ITrackItem } from "src/apis/soundcloud/interface";
 import { makePlayStreamUri } from "src/configs/soundCloudAPI";
@@ -43,6 +39,7 @@ import {
 } from "src/apis/like";
 import { LikeHistoryResponse } from "__generate__/api";
 import images from "src/images";
+import withDisabled, { IDisabledProps } from "src/hocs/withDisabled";
 
 interface IInject {
   singerStore: ISingerStore;
@@ -53,7 +50,7 @@ interface IParams {
   componentId: string;
 }
 
-interface IProps extends IParams, IInject, IScrollDirectionProps {}
+interface IProps extends IParams, IInject, IDisabledProps {}
 
 interface IStates {
   showTrackBackdrop: boolean;
@@ -180,6 +177,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     };
     this.singers.initialize({ q: "" });
     this.tracks = Tracks.create();
+    this.appendTrack = props.wrapperDisabled(this.appendTrack);
   }
 
   public async componentDidMount() {
@@ -191,7 +189,6 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     const { showTrackBackdrop, selectedSinger } = this.state;
     const {
       trackViews,
-      append: appendTrack,
       refresh: trackRefresh,
       isRefresh: isTrackRefresh
     } = this.tracks;
@@ -254,7 +251,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
               keyExtractor={this.trackKeyExtractor}
               refreshing={isTrackRefresh}
               onRefresh={trackRefresh}
-              onEndReached={appendTrack}
+              onEndReached={this.appendTrack}
             />
           }
           onBackgroundPress={this.onUnSelectedItem}
@@ -262,6 +259,10 @@ class SearchSingerScreen extends Component<IProps, IStates> {
       </>
     );
   }
+
+  private appendTrack = async () => {
+    await this.tracks.append();
+  };
 
   private renderSearchTrackItem: ListRenderItem<ITrackItem> = ({ item }) => {
     const { playingTrackItem } = this.state;
@@ -421,4 +422,4 @@ class SearchSingerScreen extends Component<IProps, IStates> {
   };
 }
 
-export default withScrollDirection({ sensitivity: 10 })(SearchSingerScreen);
+export default withDisabled(SearchSingerScreen);

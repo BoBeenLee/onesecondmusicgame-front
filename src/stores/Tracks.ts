@@ -8,6 +8,8 @@ interface IVariables {
   q: string;
 }
 
+const TRACKS_LIMIT = 20;
+
 const Tracks = types
   .model("Tracks", {
     from: types.optional(types.number, 0),
@@ -34,9 +36,10 @@ const Tracks = types
     const fetch = flow(function*() {
       const response: RetrieveAsyncFunc<typeof tracks> = yield tracks({
         ...self.variables,
-        offset: self.from
+        offset: self.from,
+        limit: TRACKS_LIMIT
       });
-      self.from += response.length;
+      self.from = response.length !== 0 ? self.from + response.length : 0;
       for (const track of response) {
         self.tracks.set(String(track.id), track);
       }
@@ -61,7 +64,7 @@ const Tracks = types
     });
 
     const append = flow(function*() {
-      if (_.isEmpty(self.from)) {
+      if (self.from === 0) {
         return;
       }
       yield fetch();
