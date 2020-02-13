@@ -75,11 +75,12 @@ const Tracks = types
     };
   })
   .actions(self => {
-    const search = (variables: IVariables) => {
-      self.initialize(variables);
-    };
+    const debounceInitialize = _.debounce(self.initialize, 500);
+    const search = flow(function*(variables: IVariables) {
+      yield debounceInitialize(variables);
+    });
     return {
-      search: _.debounce(search, 500)
+      search
     };
   });
 
