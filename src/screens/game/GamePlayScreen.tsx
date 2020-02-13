@@ -445,7 +445,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
           data={this.gameHighlightViews}
           itemWidth={240}
           renderItem={this.renderItem}
-          onSnapToItem={this.onSnapToItem}
         />
         <GameContent>
           <SongInput>
@@ -564,10 +563,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
     await TrackPlayer.pause();
   };
 
-  private onSnapToItem = (index: number) => {
-    this.gamePlayHighlights.setStep(index);
-  };
-
   private useSkipItem = async () => {
     const { isFinish } = this.gamePlayHighlights;
     const userItem = this.props.authStore.user?.userItemsByItemType(
@@ -629,9 +624,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
       },
       () => {
         InteractionManager.runAfterInteractions(async () => {
-          this.gamePlayersRef.current?.snapToNext();
           this.gamePlayHighlights.nextStep();
           await this.readyForPlay();
+          this.gamePlayersRef.current?.snapToNext();
         });
       }
     );

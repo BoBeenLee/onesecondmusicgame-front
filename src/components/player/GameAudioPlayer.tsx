@@ -7,6 +7,7 @@ import styled, { css } from "styled-components/native";
 import XEIcon, { XEIconType } from "src/components/icon/XEIcon";
 import PlayButton from "src/components/button/PlayButton";
 import { AudioType } from "src/components/player/interface";
+import { onlyUpdateForKeys } from "recompose";
 
 interface IProps {
   style?: ViewProps["style"];
@@ -47,4 +48,5 @@ function GameAudioPlayer(props: IProps) {
   );
 }
 
-export default GameAudioPlayer;
+const updateKeys: Array<keyof IProps> = ["style", "size"];
+export default onlyUpdateForKeys(updateKeys)(GameAudioPlayer);
