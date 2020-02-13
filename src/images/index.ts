@@ -28,6 +28,7 @@ const images = {
   bgCorrectMirrorballLight: require("./bg_correct_mirrorballLight.png"),
   pencil: require("./pencil.png"),
   bgMain: require("./bg_main.png"),
-  note: require("./note.png")
+  note: require("./note.png"),
+  miniHeart: require("./group3Copy2.png")
 };
 export default images;

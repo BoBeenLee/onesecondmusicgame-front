@@ -42,6 +42,7 @@ import {
   likeUsingPOST
 } from "src/apis/like";
 import { LikeHistoryResponse } from "__generate__/api";
+import images from "src/images";
 
 interface IInject {
   singerStore: ISingerStore;
@@ -124,6 +125,16 @@ const ResultEmpty = styled.View`
 const ResultEmptyTitle = styled(Bold12)`
   color: ${colors.lightGreyTwo};
   margin-bottom: 21px;
+`;
+
+const ResultEmptyDescriptionRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+const ResultEmptyDescriptionHeart = styled.Image`
+  width: 11px;
+  height: 10px;
 `;
 
 const ResultEmptyDescription = styled(Regular12)`
@@ -212,9 +223,14 @@ class SearchSingerScreen extends Component<IProps, IStates> {
                   <ResultEmpty>
                     <ResultEmptyTitle>검색결과가 없습니다.</ResultEmptyTitle>
                     <ResultEmptyDescription>
-                      {`음원 등록에서 찾으시는 곡을 검색해
-  를 눌러주시면 곡을 등록하실 수 있습니다.`}
+                      음원 등록에서 찾으시는 곡을 검색해
                     </ResultEmptyDescription>
+                    <ResultEmptyDescriptionRow>
+                      <ResultEmptyDescriptionHeart source={images.miniHeart} />
+                      <ResultEmptyDescription>
+                        를 눌러주시면 곡을 등록하실 수 있습니다.
+                      </ResultEmptyDescription>
+                    </ResultEmptyDescriptionRow>
                   </ResultEmpty>
                 }
               />
@@ -261,6 +277,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
   };
 
   private initialize = async () => {
+    await TrackPlayer.reset();
     const userHistories = await getUserHistoryUsingGET();
     this.setState({
       userLikeHistories: _.reduce(
