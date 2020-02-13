@@ -141,9 +141,15 @@ const ResultEmptyDescription = styled(Regular12)`
   color: ${colors.lightGreyTwo};
 `;
 
-const TracksView = styled<ComponentClass<FlatListProps<ITrackItem>>>(FlatList)`
-  padding-top: 11px;
-`;
+const TracksView = styled<ComponentClass<FlatListProps<ITrackItem>>>(
+  FlatList
+).attrs({
+  contentContainerStyle: {
+    flexDirection: "column",
+    paddingTop: 11,
+    paddingBottom: 20
+  }
+})``;
 
 @inject(
   ({ store }: { store: IStore }): IInject => ({
