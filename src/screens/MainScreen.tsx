@@ -508,25 +508,28 @@ class MainScreen extends Component<IProps, IStates> {
     showToast("공유 링크 복사 완료");
   };
 
-  private navigateToGamePlay = () => {
+  private navigateToGamePlay = async () => {
     const { componentId } = this.props;
     const { showToast } = this.props.toastStore;
     const heart = this.props.authStore.user?.heart!;
 
     try {
-      GamePlayScreen.open({ componentId, heartCount: heart?.heartCount ?? 0 });
+      await GamePlayScreen.open({
+        componentId,
+        heartCount: heart?.heartCount ?? 0
+      });
     } catch (error) {
       showToast(error.message);
     }
   };
 
-  private navigateToSelectedSingersGamePlay = () => {
+  private navigateToSelectedSingersGamePlay = async () => {
     const { componentId } = this.props;
     const { showToast } = this.props.toastStore;
     const heart = this.props.authStore.user?.heart!;
 
     try {
-      GamePlayScreen.openSelectedSingers({
+      await GamePlayScreen.openSelectedSingers({
         componentId,
         heartCount: heart?.heartCount ?? 0
       });
