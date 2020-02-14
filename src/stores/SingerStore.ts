@@ -10,23 +10,25 @@ const SingerStore = types
     allSingers: types.optional(Singers, {})
   })
   .actions(self => {
-    const initialize = flow(function*() {
-      const [responseRegisteredSingers, responseSingers]: [
-        RetrieveAsyncFunc<typeof registeredSingers>,
-        RetrieveAsyncFunc<typeof singers>
-      ] = yield Promise.all([registeredSingers(), singers()]);
-      self.registeredSingers = Singers.create({
-        singers: responseRegisteredSingers
-      });
+    const initializeSingers = flow(function*() {
+      const responseSingers: RetrieveAsyncFunc<typeof singers> = yield singers();
       self.allSingers = Singers.create({
         singers: responseSingers
       });
-      self.registeredSingers.initialize({ q: "" });
       self.allSingers.initialize({ q: "" });
     });
 
+    const initializeRegisteredSingers = flow(function*() {
+      const responseRegisteredSingers: RetrieveAsyncFunc<typeof registeredSingers> = yield registeredSingers();
+      self.registeredSingers = Singers.create({
+        singers: responseRegisteredSingers
+      });
+      self.registeredSingers.initialize({ q: "" });
+    });
+
     return {
-      initialize
+      initializeSingers,
+      initializeRegisteredSingers
     };
   });
 

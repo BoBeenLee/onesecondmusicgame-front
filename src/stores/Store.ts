@@ -48,7 +48,7 @@ const Store = types
     });
 
     const initializeMainApp = () => {
-      self.singerStore.initialize();
+      self.singerStore.initializeSingers();
       self.authStore.user?.heart?.fetchHeart();
     };
 
