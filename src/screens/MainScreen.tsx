@@ -528,10 +528,14 @@ class MainScreen extends Component<IProps, IStates> {
     const { showToast } = this.props.toastStore;
     const heart = this.props.authStore.user?.heart!;
 
-    GamePlayScreen.openSelectedSingers({
-      componentId,
-      heartCount: heart?.heartCount ?? 0
-    });
+    try {
+      GamePlayScreen.openSelectedSingers({
+        componentId,
+        heartCount: heart?.heartCount ?? 0
+      });
+    } catch (error) {
+      showToast(error.message);
+    }
   };
 
   private navigateToRegisterSong = () => {
