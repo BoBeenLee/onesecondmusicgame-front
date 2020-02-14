@@ -6,31 +6,31 @@
 
 ## 폴더 구조
 
-- src
-  - apis : rest api 요청들
-  - components : 컴포넌트 단위 분리
-  - configs : firebase, 내부환경..etc 설정 관련 파일들
-  - decorators : 추상화된 데코레이터
-  - hocs : higher order component
-  - hooks : react hooks 함수들
-  - images : 이미지 저장소
-  - interfaces : ts 공통인터페이스
-  - screens : 앱내 화면들
-  - stores : 도메인 기반 stores
-  - styles : 컬러 테마, zIndex
-  - utils : 유틸리티 함수들
-- storybook 스토리북
-  - stories 각 컴포넌트별 스토리북 화면
-- typings d.ts 타입 정의
+
+    onesecondmusicgame-front
+    ├── src
+    ├──── apis           # rest api 요청들
+    ├──── components     # 컴포넌트 단위 분리
+    ├──── configs        # firebase, 내부환경..etc 설정 관련 파일들
+    ├──── decorators     # 추상화된 데코레이터
+    ├──── hocs           # higher order component   
+    ├──── hooks          # react hooks 함수들
+    ├──── images         # 이미지 저장소
+    ├──── interfaces     # ts 공통인터페이스
+    ├──── screens        # 앱내 화면들
+    ├──── stores         # 도메인 기반 stores
+    ├──── styles         # 컬러셋, 테마, zIndex
+    ├──── utils          # 유틸리티 함수들
+    ├── web              # 웹뷰용 gatsby프로젝트
+    ├── storybook        # 스토리북 환경설정
+    ├── typings          # global 타입 정의
+    └── README.md
 
 ## Storybook
 
 - http://onesecondmusicgame.surge.sh/
 
 ## Installing / Getting started
-
-A quick introduction of the minimal setup you need to get a OneSecondMusicGame up &
-running.
 
 ```shell
 npm install
@@ -62,33 +62,6 @@ React, React Native ...
 
 Xcode 최신버젼, node 10이상
 
-### Setting up Dev
-
-Here's a brief intro about what a developer must do in order to start developing
-the project further:
-
-```shell
-git clone https://github.com/your/your-project.git
-cd your-project/
-packagemanager install
-```
-
-And state what happens step-by-step. If there is any virtual environment, local server or database feeder needed, explain here.
-
-### Building
-
-If your project needs some additional steps for the developer to build the
-project after some code changes, state them here. for example:
-
-```shell
-./configure
-make
-make install
-```
-
-Here again you should state what actually happens when the code above gets
-executed.
-
 ### Deploying / Publishing
 
 - 코드푸쉬 apply 예시
@@ -113,22 +86,20 @@ And again you'd need to tell what the previous code actually does.
 
 We can maybe use [SemVer](http://semver.org/) for versioning. For the versions available, see the [link to tags on this repository](/tags).
 
-## Commit
-
-- https://gist.github.com/stephenparish/9941e89d80e2bc58a153
+## [Commit Convention](https://gist.github.com/stephenparish/9941e89d80e2bc58a153)
 
 ## Configuration
 
-Here you should write what are all of the configurations a user can enter when
-using the project.
+config.json 파일 환경 설정
+- development
+- staging
+- production
+- storybook
 
 ## Tests
 
-Describe and show how to run the tests with code examples.
-Explain what these tests test and why.
-
 ```shell
-Give an example
+npm test
 ```
 
 ## Style guide
