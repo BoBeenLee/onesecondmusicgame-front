@@ -53,7 +53,7 @@ const buildProdAdEnv = () => ({
 
 const STAGING_ENV_ENTRY: IEnvironmentEntry = {
   REACT_ENV,
-  API_URL: "http://api.alsongdalsong.com:8888",
+  API_URL: "http://api.alsongdalsong.com",
   WEBVIEW_URL: "http://onesecondmusicgame.surge.sh",
   SOUNDCLOUD_API_URL,
   buildAdEnv: buildTestAdEnv
