@@ -123,11 +123,12 @@ class DeveloperScreen extends Component<IProps, IStates> {
     const { provider } = this.props.authStore;
     const { fcmToken } = this.props.pushNotificationStore;
     const { linkingURL } = this.props.linkingStore;
+    const { codePushKey, currentCodePushData } = this.props.codePushStore;
     const deviceId = getUniqueID();
     const { storages, iid, storeSnapshot } = this.state;
     const versionAndBuildNumber = `${getVersion()} / ${getBuildNumber()}`;
     const accessIdAndProvier = `${accessId} / ${provider}`;
-
+    const codePushAndBuildNumber = `${codePushKey} / ${currentCodePushData.codePushBuild}`;
     return (
       <Container>
         <ModalTopBar
@@ -142,11 +143,11 @@ class DeveloperScreen extends Component<IProps, IStates> {
           >
             {versionAndBuildNumber}
           </DevelopInfoText>
-          <Title>codepush</Title>
+          <Title>codepush / codepushBuildNumber</Title>
           <DevelopInfoText
-            onPress={_.partial(this.setContent, FIELD.CODE_PUSH)}
+            onPress={_.partial(this.setContent, codePushAndBuildNumber)}
           >
-            {FIELD.CODE_PUSH}
+            {codePushAndBuildNumber}
           </DevelopInfoText>
           <Title>firebase Instance ID</Title>
           <DevelopInfoText onPress={_.partial(this.setContent, iid)}>
