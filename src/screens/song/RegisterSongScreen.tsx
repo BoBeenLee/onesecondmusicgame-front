@@ -126,8 +126,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
       });
     };
     SearchSingerScreen.open({
-      componentId: params.componentId,
-      onResult: navigateToSearchTrack
+      componentId: params.componentId
     });
   }
 
