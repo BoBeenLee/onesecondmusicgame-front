@@ -315,7 +315,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     });
   }
 
-  public static async openSelectedSingers(params: IParams) {
+  public static openSelectedSingers(params: IParams) {
     if (params.heartCount === 0) {
       throw new Error("하트가 부족합니다.");
     }
