@@ -168,6 +168,10 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
     this.onResultScroll = _.throttle(this.onResultScroll, 210);
   }
 
+  public async componentDidMount() {
+    await this.props.singerStore.initializeRegisteredSingers();
+  }
+
   public render() {
     const { singerViews, refresh, isRefresh } = this.singers;
     const { onScroll } = this.props.scrollDirectionProps;
