@@ -40,6 +40,7 @@ import {
 import { LikeHistoryResponse } from "__generate__/api";
 import images from "src/images";
 import withDisabled, { IDisabledProps } from "src/hocs/withDisabled";
+import { addNewSongUsingPOST } from "src/apis/song";
 
 interface IInject {
   singerStore: ISingerStore;
@@ -410,7 +411,16 @@ class SearchSingerScreen extends Component<IProps, IStates> {
           }
         }
       }));
-      showToast("노래 등록 완료되었습니다!");
+      showToast("하트가 반영되었습니다");
+      try {
+        await addNewSongUsingPOST({
+          highlightSeconds: [],
+          singerName,
+          url
+        });
+      } catch (error) {
+        // NOTHING
+      }
     } catch (error) {
       showToast(error.message);
     }
