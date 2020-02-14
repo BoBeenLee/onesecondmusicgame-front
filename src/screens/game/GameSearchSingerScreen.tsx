@@ -39,7 +39,7 @@ interface IInject {
 
 interface IParams {
   componentId: string;
-  onResult: (selectedSingers: ISinger[]) => void;
+  onResult: (selectedSingers: ISinger[]) => Promise<void>;
 }
 
 interface IProps extends IParams, IInject, IScrollDirectionProps {}
@@ -317,9 +317,14 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
     });
   };
 
-  private submit = () => {
+  private submit = async () => {
+    const { showToast } = this.props.toastStore;
     const { onResult } = this.props;
-    onResult(this.selectedSingers);
+    try {
+      await onResult(this.selectedSingers);
+    } catch (error) {
+      showToast(error.message);
+    }
   };
 
   private navigateToRegisterSong = () => {

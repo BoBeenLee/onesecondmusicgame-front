@@ -523,19 +523,15 @@ class MainScreen extends Component<IProps, IStates> {
     }
   };
 
-  private navigateToSelectedSingersGamePlay = async () => {
+  private navigateToSelectedSingersGamePlay = () => {
     const { componentId } = this.props;
     const { showToast } = this.props.toastStore;
     const heart = this.props.authStore.user?.heart!;
 
-    try {
-      await GamePlayScreen.openSelectedSingers({
-        componentId,
-        heartCount: heart?.heartCount ?? 0
-      });
-    } catch (error) {
-      showToast(error.message);
-    }
+    GamePlayScreen.openSelectedSingers({
+      componentId,
+      heartCount: heart?.heartCount ?? 0
+    });
   };
 
   private navigateToRegisterSong = () => {
