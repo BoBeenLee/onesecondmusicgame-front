@@ -3801,13 +3801,23 @@ export const SingerControllerApiFetchParamCreator = function (configuration?: Co
          * 
          * @summary getAllSongsBySingerName
          * @param {string} singerName singerName
+         * @param {number} page page
+         * @param {number} size size
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllSongsBySingerNameUsingGET(singerName: string, options: any = {}): FetchArgs {
+        getAllSongsBySingerNameUsingGET(singerName: string, page: number, size: number, options: any = {}): FetchArgs {
             // verify required parameter 'singerName' is not null or undefined
             if (singerName === null || singerName === undefined) {
                 throw new RequiredError('singerName','Required parameter singerName was null or undefined when calling getAllSongsBySingerNameUsingGET.');
+            }
+            // verify required parameter 'page' is not null or undefined
+            if (page === null || page === undefined) {
+                throw new RequiredError('page','Required parameter page was null or undefined when calling getAllSongsBySingerNameUsingGET.');
+            }
+            // verify required parameter 'size' is not null or undefined
+            if (size === null || size === undefined) {
+                throw new RequiredError('size','Required parameter size was null or undefined when calling getAllSongsBySingerNameUsingGET.');
             }
             const localVarPath = `/singer/songs`;
             const localVarUrlObj = url.parse(localVarPath, true);
@@ -3817,6 +3827,14 @@ export const SingerControllerApiFetchParamCreator = function (configuration?: Co
 
             if (singerName !== undefined) {
                 localVarQueryParameter['singerName'] = singerName;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
             }
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
@@ -3878,11 +3896,13 @@ export const SingerControllerApiFp = function(configuration?: Configuration) {
          * 
          * @summary getAllSongsBySingerName
          * @param {string} singerName singerName
+         * @param {number} page page
+         * @param {number} size size
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllSongsBySingerNameUsingGET(singerName: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOPageSongResponse> {
-            const localVarFetchArgs = SingerControllerApiFetchParamCreator(configuration).getAllSongsBySingerNameUsingGET(singerName, options);
+        getAllSongsBySingerNameUsingGET(singerName: string, page: number, size: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOPageSongResponse> {
+            const localVarFetchArgs = SingerControllerApiFetchParamCreator(configuration).getAllSongsBySingerNameUsingGET(singerName, page, size, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -3924,11 +3944,13 @@ export const SingerControllerApiFactory = function (configuration?: Configuratio
          * 
          * @summary getAllSongsBySingerName
          * @param {string} singerName singerName
+         * @param {number} page page
+         * @param {number} size size
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllSongsBySingerNameUsingGET(singerName: string, options?: any) {
-            return SingerControllerApiFp(configuration).getAllSongsBySingerNameUsingGET(singerName, options)(fetch, basePath);
+        getAllSongsBySingerNameUsingGET(singerName: string, page: number, size: number, options?: any) {
+            return SingerControllerApiFp(configuration).getAllSongsBySingerNameUsingGET(singerName, page, size, options)(fetch, basePath);
         },
     };
 };
@@ -3966,12 +3988,14 @@ export class SingerControllerApi extends BaseAPI {
      * 
      * @summary getAllSongsBySingerName
      * @param {string} singerName singerName
+     * @param {number} page page
+     * @param {number} size size
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SingerControllerApi
      */
-    public getAllSongsBySingerNameUsingGET(singerName: string, options?: any) {
-        return SingerControllerApiFp(this.configuration).getAllSongsBySingerNameUsingGET(singerName, options)(this.fetch, this.basePath);
+    public getAllSongsBySingerNameUsingGET(singerName: string, page: number, size: number, options?: any) {
+        return SingerControllerApiFp(this.configuration).getAllSongsBySingerNameUsingGET(singerName, page, size, options)(this.fetch, this.basePath);
     }
 
 }
