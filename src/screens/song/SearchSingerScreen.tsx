@@ -110,6 +110,12 @@ const Result = styled<ComponentClass<FlatListProps<ISinger>>>(FlatList)`
 `;
 
 const SearchSingerCardView = styled(SearchSingerCard)`
+  flex: 1;
+  margin: 8px;
+`;
+
+const SearchSingerEmptyCard = styled.View`
+  flex: 1;
   margin: 8px;
 `;
 
@@ -148,6 +154,11 @@ const TracksView = styled<ComponentClass<FlatListProps<ITrackItem>>>(
     paddingBottom: 20
   }
 })``;
+
+const SINGER_COUMNS_LENGTH = 4;
+const MOCK_ISINGER: ISinger = {
+  name: "MOCK"
+};
 
 @inject(
   ({ store }: { store: IStore }): IInject => ({
@@ -193,6 +204,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
       refresh: trackRefresh,
       isRefresh: isTrackRefresh
     } = this.tracks;
+    const singerViewRows = _.ceil(singerViews.length / SINGER_COUMNS_LENGTH);
 
     return (
       <>
@@ -217,8 +229,13 @@ class SearchSingerScreen extends Component<IProps, IStates> {
             <Content>
               <ResultText>전체 {singerViews.length}</ResultText>
               <Result
-                data={singerViews}
-                numColumns={4}
+                data={_.times(singerViewRows * SINGER_COUMNS_LENGTH, index => {
+                  if (index < singerViews.length) {
+                    return singerViews[index];
+                  }
+                  return MOCK_ISINGER;
+                })}
+                numColumns={SINGER_COUMNS_LENGTH}
                 renderItem={this.renderSingerItem}
                 keyExtractor={this.singerKeyExtreactor}
                 refreshing={isRefresh}
@@ -329,7 +346,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
   }
 
   private singerKeyExtreactor = (item: ISinger, index: number) => {
-    return String(item.name) + index;
+    return `singer${item.name}${index}`;
   };
 
   private trackKeyExtractor = (item: ITrackItem, index: number) => {
@@ -337,6 +354,9 @@ class SearchSingerScreen extends Component<IProps, IStates> {
   };
 
   private renderSingerItem: ListRenderItem<ISinger> = ({ item }) => {
+    if (item === MOCK_ISINGER) {
+      return <SearchSingerEmptyCard />;
+    }
     const { name } = item;
     return (
       <SearchSingerCardView

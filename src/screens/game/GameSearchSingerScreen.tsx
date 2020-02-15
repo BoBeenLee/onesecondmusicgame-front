@@ -99,6 +99,12 @@ const Result = styled<ComponentClass<FlatListProps<ISinger>>>(FlatList)`
 `;
 
 const SearchSingerCardView = styled(SearchSingerCard)`
+  flex: 1;
+  margin: 8px;
+`;
+
+const SearchSingerEmptyCard = styled.View`
+  flex: 1;
   margin: 8px;
 `;
 
@@ -141,6 +147,10 @@ const RegisterSongButtonText = styled(Bold14)`
 `;
 
 const SELECTED_SINGERS_MAX_LENGTH = 3;
+const SINGER_COUMNS_LENGTH = 4;
+const MOCK_ISINGER: ISinger = {
+  name: "MOCK"
+};
 
 @inject(
   ({ store }: { store: IStore }): IInject => ({
@@ -163,7 +173,7 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
   constructor(props: IProps) {
     super(props);
 
-    this.state = { selectedSingers: {}, showMinimumSubmit: false };
+    this.state = { selectedSingers: {}, showMinimumSubmit: true };
     this.singers.initialize({ q: "" });
     this.onResultScroll = _.throttle(this.onResultScroll, 210);
   }
@@ -176,6 +186,7 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
     const { singerViews, refresh, isRefresh } = this.singers;
     const { onScroll } = this.props.scrollDirectionProps;
     const { showMinimumSubmit } = this.state;
+    const singerViewRows = _.ceil(singerViews.length / SINGER_COUMNS_LENGTH);
 
     return (
       <Container>
@@ -199,8 +210,13 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
           <Content>
             <ResultText>전체 {singerViews.length}</ResultText>
             <Result
-              data={singerViews}
-              numColumns={4}
+              data={_.times(singerViewRows * SINGER_COUMNS_LENGTH, index => {
+                if (index < singerViews.length) {
+                  return singerViews[index];
+                }
+                return MOCK_ISINGER;
+              })}
+              numColumns={SINGER_COUMNS_LENGTH}
               renderItem={this.renderSingerItem}
               keyExtractor={this.singerKeyExtreactor}
               refreshing={isRefresh}
@@ -281,10 +297,13 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
   };
 
   private singerKeyExtreactor = (item: ISinger, index: number) => {
-    return String(item.name) + index;
+    return `singer${item.name}${index}`;
   };
 
   private renderSingerItem: ListRenderItem<ISinger> = ({ item }) => {
+    if (item === MOCK_ISINGER) {
+      return <SearchSingerEmptyCard />;
+    }
     const { name } = item;
     const { selectedSingers } = this.state;
     return (
