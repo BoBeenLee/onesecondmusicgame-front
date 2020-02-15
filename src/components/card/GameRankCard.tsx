@@ -13,7 +13,7 @@ interface IProps {
   name: string;
   profileImage: string;
   score: number;
-  rankDiff?: number;
+  rankDiff: number;
 }
 
 const Container = styled.View`
@@ -68,6 +68,7 @@ function GameRankCard(props: IProps) {
   const { style, rank, profileImage, name, score, rankDiff } = props;
 
   const makeIconName = (rankDiff: number) => {
+    console.log(rankDiff);
     if (rankDiff < 0) {
       return "caret-down-min";
     } else if (rankDiff === 0) {
