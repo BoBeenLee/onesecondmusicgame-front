@@ -23,8 +23,6 @@ import { IStore } from "src/stores/Store";
 import { transformTimeToString } from "src/utils/date";
 import images from "src/images";
 
-const DEFAULT_PROFILE = "https://via.placeholder.com/350x350";
-
 interface IInject {
   toastStore: IToastStore;
 }
@@ -91,28 +89,58 @@ const mockData = [
   {
     nickname: "a",
     point: 2000,
-    profileImageUrl: DEFAULT_PROFILE,
+    profileImageUrl: "",
     rankDiff: 3
   },
   {
-    nickname: "b",
+    nickname: "basdfasdfadfadf",
     point: 1000,
-    profileImageUrl: DEFAULT_PROFILE,
+    profileImageUrl: "",
     rankDiff: -1
   },
-  { nickname: "c", point: 900, profileImageUrl: DEFAULT_PROFILE, rankDiff: 2 },
-  { nickname: "d", point: 800, profileImageUrl: DEFAULT_PROFILE, rankDiff: 4 },
-  { nickname: "e", point: 700, profileImageUrl: DEFAULT_PROFILE, rankDiff: -2 },
+  {
+    nickname: "c",
+    point: 900,
+    profileImageUrl: "",
+    rankDiff: 2
+  },
+  {
+    nickname: "d",
+    point: 800,
+    profileImageUrl: "",
+    rankDiff: 4
+  },
+  {
+    nickname: "e",
+    point: 700,
+    profileImageUrl: "",
+    rankDiff: -2
+  },
   {
     nickname: "f",
     point: 0,
-    profileImageUrl: DEFAULT_PROFILE,
+    profileImageUrl: "",
     rankDiff: 2
   },
-  { nickname: "g", point: 600, profileImageUrl: DEFAULT_PROFILE, rankDiff: 0 },
-  { nickname: "h", point: 500, profileImageUrl: DEFAULT_PROFILE, rankDiff: 0 },
-  { nickname: "i", point: 400, profileImageUrl: DEFAULT_PROFILE, rankDiff: 0 },
-  { nickname: "j", point: 300, profileImageUrl: DEFAULT_PROFILE, rankDiff: 0 }
+  {
+    nickname: "gasdjkfhalsdfjadsfasdfad",
+    point: 600,
+    profileImageUrl: "",
+    rankDiff: 0
+  },
+  {
+    nickname: "h",
+    point: 500,
+    profileImageUrl: "",
+    rankDiff: 0
+  },
+  {
+    nickname: "i",
+    point: 400,
+    profileImageUrl: "",
+    rankDiff: 0
+  },
+  { nickname: "j", point: 300, profileImageUrl: "", rankDiff: 0 }
 ];
 
 @inject(
@@ -148,19 +176,19 @@ class GameRankingScreen extends Component<IProps> {
               <TopRankView>
                 <GameTopRankCardView
                   rank={2}
-                  profileImage={secondRank?.profileImageUrl ?? DEFAULT_PROFILE}
+                  profileImage={secondRank?.profileImageUrl ?? ""}
                   name={secondRank?.nickname ?? ""}
                   score={secondRank?.point ?? 0}
                 />
                 <GameTopRankCardView
                   rank={1}
-                  profileImage={firstRank?.profileImageUrl ?? DEFAULT_PROFILE}
+                  profileImage={firstRank?.profileImageUrl ?? ""}
                   name={firstRank?.nickname ?? ""}
                   score={firstRank?.point ?? 0}
                 />
                 <GameTopRankCardView
                   rank={3}
-                  profileImage={thirdRank?.profileImageUrl ?? DEFAULT_PROFILE}
+                  profileImage={thirdRank?.profileImageUrl ?? ""}
                   name={thirdRank?.nickname ?? ""}
                   score={thirdRank?.point ?? 0}
                 />
@@ -193,7 +221,7 @@ class GameRankingScreen extends Component<IProps> {
     return (
       <GameRankCardView
         rank={index + 4}
-        profileImage={item?.profileImageUrl ?? DEFAULT_PROFILE}
+        profileImage={item?.profileImageUrl ?? ""}
         name={item?.nickname ?? ""}
         score={item?.point ?? 0}
         rankDiff={item?.rankDiff ?? 0}
