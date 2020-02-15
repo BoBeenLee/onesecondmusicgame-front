@@ -579,11 +579,18 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private useSkipItem = async () => {
-    const { isFinish } = this.gamePlayHighlights;
+    const {
+      isFinish,
+      playToken,
+      currentGameHighlight
+    } = this.gamePlayHighlights;
     const userItem = this.props.authStore.user?.userItemsByItemType(
       Item.ItemTypeEnum.SKIP
     );
-    userItem?.useItemType?.();
+    userItem?.useItemType?.({
+      playToken,
+      highlightId: currentGameHighlight?.id ?? 0
+    });
     if (isFinish) {
       this.setState({ currentStepStatus: "stop" });
       this.onFinishPopup();

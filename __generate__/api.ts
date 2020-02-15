@@ -312,6 +312,32 @@ export namespace Item {
 /**
  * 
  * @export
+ * @interface ItemUseRequest
+ */
+export interface ItemUseRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof ItemUseRequest
+     */
+    highlightId?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemUseRequest
+     */
+    playToken?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemUseRequest
+     */
+    type?: string;
+}
+
+/**
+ * 
+ * @export
  * @interface Like
  */
 export interface Like {
@@ -2592,26 +2618,29 @@ export const ItemControllerApiFetchParamCreator = function (configuration?: Conf
         /**
          * 아이템 종류는 SKIP, CHARGE_ALL_HEART 있음. 
          * @summary 아이템 사용하는 컨트롤러
-         * @param {string} type type
+         * @param {ItemUseRequest} itemUseRequest itemUseRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        useItemUsingPUT(type: string, options: any = {}): FetchArgs {
-            // verify required parameter 'type' is not null or undefined
-            if (type === null || type === undefined) {
-                throw new RequiredError('type','Required parameter type was null or undefined when calling useItemUsingPUT.');
+        useItemUsingPUT(itemUseRequest: ItemUseRequest, options: any = {}): FetchArgs {
+            // verify required parameter 'itemUseRequest' is not null or undefined
+            if (itemUseRequest === null || itemUseRequest === undefined) {
+                throw new RequiredError('itemUseRequest','Required parameter itemUseRequest was null or undefined when calling useItemUsingPUT.');
             }
-            const localVarPath = `/item/use/types/{type}`
-                .replace(`{${"type"}}`, encodeURIComponent(String(type)));
+            const localVarPath = `/item/use`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
             delete localVarUrlObj.search;
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            const needsSerialization = (<any>"ItemUseRequest" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(itemUseRequest || {}) : (itemUseRequest || "");
 
             return {
                 url: url.format(localVarUrlObj),
@@ -2648,12 +2677,12 @@ export const ItemControllerApiFp = function(configuration?: Configuration) {
         /**
          * 아이템 종류는 SKIP, CHARGE_ALL_HEART 있음. 
          * @summary 아이템 사용하는 컨트롤러
-         * @param {string} type type
+         * @param {ItemUseRequest} itemUseRequest itemUseRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        useItemUsingPUT(type: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTO> {
-            const localVarFetchArgs = ItemControllerApiFetchParamCreator(configuration).useItemUsingPUT(type, options);
+        useItemUsingPUT(itemUseRequest: ItemUseRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTO> {
+            const localVarFetchArgs = ItemControllerApiFetchParamCreator(configuration).useItemUsingPUT(itemUseRequest, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -2685,12 +2714,12 @@ export const ItemControllerApiFactory = function (configuration?: Configuration,
         /**
          * 아이템 종류는 SKIP, CHARGE_ALL_HEART 있음. 
          * @summary 아이템 사용하는 컨트롤러
-         * @param {string} type type
+         * @param {ItemUseRequest} itemUseRequest itemUseRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        useItemUsingPUT(type: string, options?: any) {
-            return ItemControllerApiFp(configuration).useItemUsingPUT(type, options)(fetch, basePath);
+        useItemUsingPUT(itemUseRequest: ItemUseRequest, options?: any) {
+            return ItemControllerApiFp(configuration).useItemUsingPUT(itemUseRequest, options)(fetch, basePath);
         },
     };
 };
@@ -2716,13 +2745,13 @@ export class ItemControllerApi extends BaseAPI {
     /**
      * 아이템 종류는 SKIP, CHARGE_ALL_HEART 있음. 
      * @summary 아이템 사용하는 컨트롤러
-     * @param {string} type type
+     * @param {ItemUseRequest} itemUseRequest itemUseRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ItemControllerApi
      */
-    public useItemUsingPUT(type: string, options?: any) {
-        return ItemControllerApiFp(this.configuration).useItemUsingPUT(type, options)(this.fetch, this.basePath);
+    public useItemUsingPUT(itemUseRequest: ItemUseRequest, options?: any) {
+        return ItemControllerApiFp(this.configuration).useItemUsingPUT(itemUseRequest, options)(this.fetch, this.basePath);
     }
 
 }
