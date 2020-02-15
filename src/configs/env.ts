@@ -71,7 +71,7 @@ const env: IEnvironment = {
     API_URL: "http://api.alsongdalsong.com",
     WEBVIEW_URL: "http://onesecondmusicgame.surge.sh",
     SOUNDCLOUD_API_URL,
-    buildAdEnv: buildTestAdEnv
+    buildAdEnv: buildProdAdEnv
   },
   staging: STAGING_ENV_ENTRY,
   storybook: STAGING_ENV_ENTRY

@@ -16,7 +16,7 @@ function TimerText(props: IProps) {
   const { style, timeLeft } = props;
   const minutes = _.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
-  return <Container style={style}>{`${minutes}:${seconds}`}</Container>;
+  return <Container style={style}>{`${minutes}분 ${seconds}초`}</Container>;
 }
 
 export default TimerText;
