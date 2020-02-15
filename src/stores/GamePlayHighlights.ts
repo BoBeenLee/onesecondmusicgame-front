@@ -100,15 +100,14 @@ const GamePlayHighlights = types
     });
 
     const isAnswer = flow(function*(userAnswer: string) {
-      // const response: RetrieveAsyncFunc<typeof isAnswerUsingPOST> = yield isAnswerUsingPOST(
-      //   {
-      //     answer: userAnswer,
-      //     playToken: self.playToken,
-      //     trackId: self.currentGameHighlight?.id ?? 0
-      //   }
-      // );
-      // return response;
-      return self.checkAnswer(userAnswer);
+      const response: RetrieveAsyncFunc<typeof isAnswerUsingPOST> = yield isAnswerUsingPOST(
+        {
+          answer: userAnswer,
+          playToken: self.playToken,
+          trackId: self.currentGameHighlight?.id ?? 0
+        }
+      );
+      return response;
     });
 
     const answer = (

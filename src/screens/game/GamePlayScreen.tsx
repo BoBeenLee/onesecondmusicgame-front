@@ -477,13 +477,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
 
   private get renderAnswer() {
     const {
-      checkAnswer,
       currentGameHighlight,
       gamePlayStepStatuses,
       isFinish
     } = this.gamePlayHighlights;
-    const { songAnswerInput, songAnswerSeconds } = this.state;
-    const isAnswer = checkAnswer(songAnswerInput);
+    const { songAnswerSeconds } = this.state;
+    const isAnswer = Boolean(currentGameHighlight?.isUserAnswer);
     return (
       <AnswerContainer>
         <CorrectBackground source={images.bgCorrectMirrorballLight} />

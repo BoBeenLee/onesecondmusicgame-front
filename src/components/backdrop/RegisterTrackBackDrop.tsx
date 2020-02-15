@@ -12,6 +12,7 @@ interface IProps {
   singerName: string;
   totalCount: number;
   ContentComponent: React.ReactNode;
+  onClose: () => void;
   onBackgroundPress: () => void;
 }
 
@@ -43,6 +44,7 @@ function RegisterTrackBackDrop(props: IProps) {
     singerName,
     totalCount,
     ContentComponent,
+    onClose,
     onBackgroundPress
   } = props;
   const backdropRef = useRef<IBackDropMethod>();
@@ -62,6 +64,7 @@ function RegisterTrackBackDrop(props: IProps) {
       isFirstShow={false}
       overlayOpacity={0.8}
       backdropHeight={550}
+      onClose={onClose}
       onBackgroundPress={onBackgroundPress}
     >
       <Header>
