@@ -412,6 +412,7 @@ class GameResultScreen extends Component<IProps, IStates> {
       gameAnswerList: toGameAnswers,
       playToken
     });
+    await this.props.authStore.user?.heart?.fetchHeart();
     this.setState({
       gainPointOfThisGame: response.gainPointOfThisGame ?? 0,
       totalPoint: response.totalPoint ?? 0
