@@ -421,12 +421,14 @@ class GameResultScreen extends Component<IProps, IStates> {
 
   private onUseFullHeartPopup = () => {
     const { showPopup, closePopup } = this.props.popupProps;
-    const heart = this.props.authStore.user?.heart!;
+    const userItem = this.props.authStore.user?.userItemsByItemType?.(
+      Item.ItemTypeEnum.CHARGEALLHEART
+    );
     showPopup(
       <UseFullHeartPopup
-        heart={heart}
+        count={userItem?.count ?? 0}
         onConfirm={this.useFullHeart}
-        onChargeFullHeart={this.requestHeartRewardAD}
+        onAD={this.requestHeartRewardAD}
         onCancel={closePopup}
       />
     );

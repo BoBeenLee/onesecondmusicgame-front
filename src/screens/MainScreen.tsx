@@ -25,15 +25,8 @@ import { ICodePushStore } from "src/stores/CodePushStore";
 import { IPopupProps } from "src/hocs/withPopup";
 import HeartGroup from "src/components/icon/HeartGroup";
 import TimerText from "src/components/text/TimerText";
-import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
-import ChargeSkipItemPopup from "src/components/popup/ChargeSkipItemPopup";
-import { makeAppShareLink } from "src/utils/dynamicLink";
 import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
 import GameRankingScreen from "src/screens/game/GameRankingScreen";
-import GameModeScreen from "src/screens/game/GameModeScreen";
-import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
-import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
-import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
 import LevelBadge from "src/components/badge/LevelBadge";
 import XEIconButton from "src/components/button/XEIconButton";
 import GamePlayScreen from "src/screens/game/GamePlayScreen";
@@ -48,6 +41,7 @@ import Tooltip from "src/components/tooltip/Tooltip";
 import { FIELD, setItem, defaultItemToBoolean } from "src/utils/storage";
 import AutoHeightImage from "src/components/image/AutoHeightImage";
 import { getDeviceWidth } from "src/utils/device";
+import UserGameItemScreen from "src/screens/user/UserGameItemScreen";
 
 interface IInject {
   store: IStore;
@@ -279,10 +273,6 @@ class MainScreen extends Component<IProps, IStates> {
     this.state = {
       isNotTooltipShow: true
     };
-
-    loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
-      onRewarded: this.onRewarded
-    });
     props.store.initializeMainApp();
   }
 
@@ -386,7 +376,7 @@ class MainScreen extends Component<IProps, IStates> {
             <FooterButtonText>개인 랭킹</FooterButtonText>
           </FooterButtonGroup>
         </Footer>
-        <GameItemButton onPress={this.onUserItemPopup}>
+        <GameItemButton onPress={this.navigateToUserItem}>
           <GameItemButtonText>보유 아이템</GameItemButtonText>
         </GameItemButton>
         <DevelopButton onPress={DeveloperScreen.open}>
@@ -434,80 +424,6 @@ class MainScreen extends Component<IProps, IStates> {
     showToast("닉네임 변경완료");
   };
 
-  private useFullHeart = async () => {
-    const { showToast } = this.props.toastStore;
-    const userItem = this.props.authStore.user?.userItemsByItemType?.(
-      Item.ItemTypeEnum.CHARGEALLHEART
-    );
-    await userItem?.useItemType?.();
-    await this.props.authStore.user?.heart?.fetchHeart();
-    showToast("하트 풀충전 완료!");
-  };
-
-  private requestHeartRewardAD = () => {
-    showAD(AdmobUnitID.HeartReward);
-  };
-
-  private onRewarded = async () => {
-    const { updateUserReward } = this.props.authStore;
-    const { showToast } = this.props.toastStore;
-    try {
-      await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
-      updateUserReward();
-      this.onGainFullHeartPopup();
-    } catch (error) {
-      showToast(error.message);
-    }
-  };
-
-  private onGainFullHeartPopup = () => {
-    const { showPopup, closePopup } = this.props.popupProps;
-    const fullHeartCount =
-      this.props.authStore.user?.userItemsByItemType(
-        Item.ItemTypeEnum.CHARGEALLHEART
-      )?.count ?? 0;
-    showPopup(
-      <GainFullHeartPopup heartCount={fullHeartCount} onConfirm={closePopup} />
-    );
-  };
-
-  private onUserItemPopup = () => {
-    const { showPopup, closePopup } = this.props.popupProps;
-    showPopup(
-      <Observer>
-        {() => {
-          const skipCount =
-            this.props.authStore.user?.userItemsByItemType(
-              Item.ItemTypeEnum.SKIP
-            )?.count ?? 0;
-          const fullHeartCount =
-            this.props.authStore.user?.userItemsByItemType(
-              Item.ItemTypeEnum.CHARGEALLHEART
-            )?.count ?? 0;
-
-          return (
-            <UserItemPopup
-              skipCount={skipCount}
-              fullHeartCount={fullHeartCount}
-              onInvite={this.invite}
-              onAD={this.requestHeartRewardAD}
-              onUseFullHeart={this.useFullHeart}
-              onCancel={closePopup}
-            />
-          );
-        }}
-      </Observer>
-    );
-  };
-
-  private invite = async () => {
-    const { showToast } = this.props.toastStore;
-    const { accessId } = this.props.authStore;
-    const shortLink = await makeAppShareLink(accessId);
-    Clipboard.setString(shortLink);
-    showToast("공유 링크 복사 완료");
-  };
-
   private navigateToGamePlay = async () => {
     const { componentId } = this.props;
     const { showToast } = this.props.toastStore;
@@ -521,6 +437,11 @@ class MainScreen extends Component<IProps, IStates> {
     } catch (error) {
       showToast(error.message);
     }
+  };
+
+  private navigateToUserItem = () => {
+    const { componentId } = this.props;
+    UserGameItemScreen.open({ componentId });
   };
 
   private navigateToSelectedSingersGamePlay = () => {
@@ -548,26 +469,6 @@ class MainScreen extends Component<IProps, IStates> {
   private navigateToRanking = () => {
     const { componentId } = this.props;
     GameRankingScreen.open({ componentId });
-  };
-
-  private onSkipItemPopup = () => {
-    const { showPopup, closePopup } = this.props.popupProps;
-    showPopup(
-      <ChargeSkipItemPopup onInvite={this.invite} onCancel={closePopup} />
-    );
-  };
-
-  private onUseFullHeartPopup = () => {
-    const { showPopup, closePopup } = this.props.popupProps;
-    const heart = this.props.authStore.user?.heart!;
-    showPopup(
-      <UseFullHeartPopup
-        heart={heart}
-        onConfirm={this.useFullHeart}
-        onChargeFullHeart={this.requestHeartRewardAD}
-        onCancel={closePopup}
-      />
-    );
   };
 }
 

@@ -34,6 +34,7 @@ storiesOf("Popup", module)
   .add("SkipItemPopup", () => {
     return (
       <ChargeSkipItemPopup
+        count={3}
         onCancel={action("onCancel")}
         onInvite={action("onConfirm")}
       />
@@ -59,10 +60,10 @@ storiesOf("Popup", module)
   .add("UseFullHeartPopup", () => {
     return (
       <UseFullHeartPopup
-        heart={Heart.create({ heartCount: 3 })}
+        count={3}
         onCancel={action("onCancel")}
         onConfirm={action("onConfirm")}
-        onChargeFullHeart={action("onChargeFullHeart")}
+        onAD={action("onChargeFullHeart")}
       />
     );
   })

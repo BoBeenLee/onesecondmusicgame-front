@@ -8,6 +8,10 @@ import GameRankCard from "src/components/card/GameRankCard";
 import GameTopRankCard from "src/components/card/GameTopRankCard";
 import SearchSingerCard from "src/components/card/SearchSingerCard";
 import GameItemEmptyCard from "src/components/card/GameItemEmptyCard";
+import GameItemCard from "src/components/card/GameItemCard";
+import { Bold18, Bold15 } from "src/components/text/Typographies";
+import colors from "src/styles/colors";
+import images from "src/images";
 
 const CenterView = styled.View`
   flex: 1;
@@ -18,6 +22,18 @@ const CenterView = styled.View`
 const Container = styled.View`
   width: 100%;
   flex-direction: column;
+`;
+
+const HeartView = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-top: 24px;
+`;
+
+const HeartImage = styled.Image`
+  width: 52px;
+  height: 48px;
+  resize-mode: contain;
 `;
 
 storiesOf("Card", module)
@@ -91,4 +107,14 @@ storiesOf("Card", module)
   })
   .add("GameItemEmptyCard", () => {
     return <GameItemEmptyCard style={{ width: 145, height: 148 }} />;
+  })
+  .add("GameItemCard", () => {
+    return (
+      <GameItemCard
+        style={{ width: 145, height: 148 }}
+        name="풀하트"
+        count={5}
+        ContentComponent={<HeartImage source={images.inviteHeart} />}
+      />
+    );
   });
