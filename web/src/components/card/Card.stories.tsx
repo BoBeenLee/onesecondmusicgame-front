@@ -7,6 +7,7 @@ import SearchTrackCard from "src/components/card/SearchTrackCard";
 import GameRankCard from "src/components/card/GameRankCard";
 import GameTopRankCard from "src/components/card/GameTopRankCard";
 import SearchSingerCard from "src/components/card/SearchSingerCard";
+import GameItemEmptyCard from "src/components/card/GameItemEmptyCard";
 
 const CenterView = styled.View`
   flex: 1;
@@ -64,6 +65,7 @@ storiesOf("Card", module)
         profileImage="https://via.placeholder.com/350x350"
         name="jasmin"
         score={83}
+        rankDiff={1}
       />
     );
   })
@@ -86,4 +88,7 @@ storiesOf("Card", module)
         onPress={action("onPress")}
       />
     );
+  })
+  .add("GameItemEmptyCard", () => {
+    return <GameItemEmptyCard style={{ width: 145, height: 148 }} />;
   });
