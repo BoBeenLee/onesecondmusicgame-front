@@ -663,7 +663,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RNApp.app/RNApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/알쏭달쏭.app/알쏭달쏭";
 			};
 			name = Debug;
 		};
@@ -689,7 +689,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RNApp.app/RNApp";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/알쏭달쏭.app/알쏭달쏭";
 			};
 			name = Release;
 		};
