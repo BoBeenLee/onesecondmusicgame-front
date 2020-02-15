@@ -30,6 +30,7 @@ storiesOf("Card", module)
           author="Hello"
           isRegistered={false}
           isLike={true}
+          likeCount={10}
           onLikePress={action("onLikePress")}
           audioType="play"
           onPlayToggle={action("onPlayToggle")}
@@ -40,6 +41,7 @@ storiesOf("Card", module)
           author="Hello"
           isRegistered={true}
           isLike={true}
+          likeCount={1}
           onLikePress={action("onLikePress")}
           audioType="play"
           onPlayToggle={action("onPlayToggle")}

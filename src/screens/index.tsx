@@ -18,7 +18,6 @@ import SignInScreen from "src/screens/SignInScreen";
 import SignUpScreen from "src/screens/SignUpScreen";
 import MainScreen from "src/screens/MainScreen";
 import withToast from "src/hocs/withToast";
-import SearchTrackScreen from "src/screens/song/SearchTrackScreen";
 import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
 import GamePlayScreen from "src/screens/game/GamePlayScreen";
 import GameModeScreen from "src/screens/game/GameModeScreen";
@@ -89,10 +88,6 @@ const screens: IScreenProps[] = [
   {
     Component: MainScreen,
     id: SCREEN_IDS.MainScreen
-  },
-  {
-    Component: SearchTrackScreen,
-    id: SCREEN_IDS.SearchTrackScreen
   },
   {
     Component: RegisterSongScreen,

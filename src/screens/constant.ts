@@ -4,7 +4,6 @@ const SCREEN_IDS = {
   SignUpScreen: "app.SignUpScreen",
   SignInScreen: "app.SignInScreen",
   MainScreen: "app.MainScreen",
-  SearchTrackScreen: "app.SearchTrackScreen",
   RegisterSongScreen: "app.RegisterSongScreen",
   GamePlayScreen: "app.GamePlayScreen",
   GameModeScreen: "app.GameModeScreen",

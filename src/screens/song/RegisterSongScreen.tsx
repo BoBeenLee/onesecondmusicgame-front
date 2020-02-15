@@ -13,7 +13,6 @@ import { push, popTo, pop, getCurrentComponentId } from "src/utils/navigator";
 import BackTopBar from "src/components/topbar/BackTopBar";
 import colors from "src/styles/colors";
 import { ITrackItem } from "src/apis/soundcloud/interface";
-import SearchTrackScreen from "src/screens/song/SearchTrackScreen";
 import SearchSingerScreen from "src/screens/song/SearchSingerScreen";
 import { IToastStore } from "src/stores/ToastStore";
 import { addNewSongUsingPOST } from "src/apis/song";
@@ -116,13 +115,6 @@ class RegisterSongScreen extends Component<IProps, IStates> {
           selectedTrackItem,
           singerName
         }
-      });
-    };
-    const navigateToSearchTrack = (selectedSinger: ISinger) => {
-      SearchTrackScreen.open({
-        componentId: getCurrentComponentId(),
-        prefixSearchText: selectedSinger.name,
-        onResult: _.partial(navigateToRegisterSong, _, selectedSinger.name)
       });
     };
     SearchSingerScreen.open({
