@@ -54,6 +54,7 @@ storiesOf("Card", module)
         profileImage="https://via.placeholder.com/350x350"
         name="jasmin"
         score={83}
+        rankDiff={2}
       />
     );
   })
