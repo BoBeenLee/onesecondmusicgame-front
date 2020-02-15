@@ -42,6 +42,11 @@ const Rank = styled(Bold14)`
   margin-right: 10px;
 `;
 
+const RankDiff = styled(Bold12)`
+  color: ${colors.lightGrey};
+  margin-right: 10px;
+`;
+
 const Profile = styled(ProfileImage)`
   margin-right: 18px;
 `;
@@ -81,12 +86,13 @@ function GameRankCard(props: IProps) {
   return (
     <Container style={style}>
       <Content>
+        <Rank>{rank}</Rank>
         <RankIcon
           name={makeIconName(rankDiff)}
           size={25}
           color={colors.coolGreen}
         />
-        <Rank>{rank}</Rank>
+        <RankDiff>{rankDiff}</RankDiff>
         <Profile size={59} uri={profileImage} editable={false} />
         <Name>{name}</Name>
       </Content>
