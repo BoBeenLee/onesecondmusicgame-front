@@ -13,7 +13,7 @@ interface IProps {
   name: string;
   profileImage: string;
   score: number;
-  rankDiff: number;
+  rankDiff?: number;
 }
 
 const Container = styled.View`
