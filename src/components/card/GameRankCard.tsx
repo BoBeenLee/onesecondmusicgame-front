@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components/native";
-import { ViewProps } from "react-native";
+import { ViewProps, View } from "react-native";
 
 import { Bold12, Bold14, Bold16 } from "src/components/text/Typographies";
 import ProfileImage from "src/components/image/ProfileImage";
@@ -33,18 +33,33 @@ const Content = styled.View`
   align-items: center;
 `;
 
-const RankIcon = styled(XEIcon)`
-  margin-right: 2px;
+const LeftWrapper = styled(View)`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
-const Rank = styled(Bold14)`
+const Rank = styled(Bold12)`
   color: ${colors.lightGrey};
   margin-right: 10px;
 `;
 
-const RankDiff = styled(Bold12)`
+const RankNumber = styled(Bold16)`
   color: ${colors.lightGrey};
+`;
+
+const RankIcon = styled(XEIcon)``;
+
+const RankDiff = styled(View)`
   margin-right: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const RankDiffText = styled(Bold12)`
+  color: ${colors.lightGrey};
 `;
 
 const Profile = styled(ProfileImage)`
@@ -58,7 +73,7 @@ const RightSide = styled.View`
 
 const Name = styled(Bold16)`
   color: ${colors.lightGrey};
-  width: 35%;
+  width: 45%;
 `;
 
 const ScoreTitle = styled(Bold16)`
@@ -74,7 +89,6 @@ function GameRankCard(props: IProps) {
   const { style, rank, profileImage, name, score, rankDiff } = props;
 
   const makeIconName = (rankDiff: number) => {
-    console.log(rankDiff);
     if (rankDiff < 0) {
       return "caret-down-min";
     } else if (rankDiff === 0) {
@@ -87,13 +101,19 @@ function GameRankCard(props: IProps) {
   return (
     <Container style={style}>
       <Content>
-        <Rank>{rank}</Rank>
-        <RankIcon
-          name={makeIconName(rankDiff)}
-          size={25}
-          color={colors.coolGreen}
-        />
-        <RankDiff>{rankDiff}</RankDiff>
+        <LeftWrapper>
+          <Rank>
+            <RankNumber>{rank}</RankNumber>위
+          </Rank>
+          <RankDiff>
+            <RankIcon
+              name={makeIconName(rankDiff)}
+              size={15}
+              color={colors.coolGreen}
+            />
+            <RankDiffText>{rankDiff}</RankDiffText>
+          </RankDiff>
+        </LeftWrapper>
         <Profile size={59} uri={profileImage} editable={false} />
         <Name numberOfLines={1}>{name}</Name>
       </Content>
