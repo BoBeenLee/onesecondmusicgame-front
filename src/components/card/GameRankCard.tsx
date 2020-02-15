@@ -13,6 +13,7 @@ interface IProps {
   name: string;
   profileImage: string;
   score: number;
+  rankDiff: number;
 }
 
 const Container = styled.View`
@@ -64,11 +65,26 @@ const Score = styled(Bold12)`
 `;
 
 function GameRankCard(props: IProps) {
-  const { style, rank, profileImage, name, score } = props;
+  const { style, rank, profileImage, name, score, rankDiff } = props;
+
+  const makeIconName = (rankDiff: number) => {
+    if (rankDiff < 0) {
+      return "caret-down-min";
+    } else if (rankDiff === 0) {
+      return "minus-min";
+    } else {
+      return "caret-up-min";
+    }
+  };
+
   return (
     <Container style={style}>
       <Content>
-        <RankIcon name="caret-up-min" size={25} color={colors.coolGreen} />
+        <RankIcon
+          name={makeIconName(rankDiff)}
+          size={25}
+          color={colors.coolGreen}
+        />
         <Rank>{rank}</Rank>
         <Profile size={59} uri={profileImage} editable={false} />
         <Name>{name}</Name>

@@ -1,7 +1,12 @@
 import React, { Component, ComponentClass } from "react";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
-import { FlatListProps, FlatList, ListRenderItem } from "react-native";
+import {
+  FlatListProps,
+  FlatList,
+  ListRenderItem,
+  ScrollView
+} from "react-native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import { Regular14 } from "src/components/text/Typographies";
@@ -82,6 +87,34 @@ const Podium = styled.Image`
   height: 140px;
 `;
 
+const mockData = [
+  {
+    nickname: "a",
+    point: 2000,
+    profileImageUrl: DEFAULT_PROFILE,
+    rankDiff: 3
+  },
+  {
+    nickname: "b",
+    point: 1000,
+    profileImageUrl: DEFAULT_PROFILE,
+    rankDiff: -1
+  },
+  { nickname: "c", point: 900, profileImageUrl: DEFAULT_PROFILE, rankDiff: 2 },
+  { nickname: "d", point: 800, profileImageUrl: DEFAULT_PROFILE, rankDiff: 4 },
+  { nickname: "e", point: 700, profileImageUrl: DEFAULT_PROFILE, rankDiff: -2 },
+  {
+    nickname: "f",
+    point: 0,
+    profileImageUrl: DEFAULT_PROFILE,
+    rankDiff: 2
+  },
+  { nickname: "g", point: 600, profileImageUrl: DEFAULT_PROFILE, rankDiff: 0 },
+  { nickname: "h", point: 500, profileImageUrl: DEFAULT_PROFILE, rankDiff: 0 },
+  { nickname: "i", point: 400, profileImageUrl: DEFAULT_PROFILE, rankDiff: 0 },
+  { nickname: "j", point: 300, profileImageUrl: DEFAULT_PROFILE, rankDiff: 0 }
+];
+
 @inject(
   ({ store }: { store: IStore }): IInject => ({
     toastStore: store.toastStore
@@ -104,48 +137,50 @@ class GameRankingScreen extends Component<IProps> {
   }
 
   public render() {
-    const { isRefresh, refresh, rankViews, time } = this.ranks;
+    const { isRefresh, refresh, time } = this.ranks;
     const [firstRank, secondRank, thirdRank, ...restRank] = rankViews;
     return (
       <Container>
         <BackTopBar title="랭킹" onBackPress={this.back} />
-        <Content>
-          <Header>
-            <TopRankView>
-              <GameTopRankCardView
-                rank={2}
-                profileImage={secondRank?.profileImageUrl ?? DEFAULT_PROFILE}
-                name={secondRank?.nickname ?? ""}
-                score={secondRank?.point ?? 0}
-              />
-              <GameTopRankCardView
-                rank={1}
-                profileImage={firstRank?.profileImageUrl ?? DEFAULT_PROFILE}
-                name={firstRank?.nickname ?? ""}
-                score={firstRank?.point ?? 0}
-              />
-              <GameTopRankCardView
-                rank={3}
-                profileImage={thirdRank?.profileImageUrl ?? DEFAULT_PROFILE}
-                name={thirdRank?.nickname ?? ""}
-                score={thirdRank?.point ?? 0}
-              />
-            </TopRankView>
-            <Podium resizeMode="contain" source={images.podium} />
-            <RankCaption>
-              *{transformTimeToString(time, "YYYY-MM-DD HH시 mm분 ")}
-              기준의 랭킹입니다.{" "}
-            </RankCaption>
-          </Header>
-          <Result
-            data={restRank}
-            renderItem={this.renderRankItem}
-            keyExtractor={this.rankKeyExtreactor}
-            refreshing={isRefresh}
-            onRefresh={refresh}
-            ItemSeparatorComponent={GameRankSeperator}
-          />
-        </Content>
+        <ScrollView>
+          <Content>
+            <Header>
+              <TopRankView>
+                <GameTopRankCardView
+                  rank={2}
+                  profileImage={secondRank?.profileImageUrl ?? DEFAULT_PROFILE}
+                  name={secondRank?.nickname ?? ""}
+                  score={secondRank?.point ?? 0}
+                />
+                <GameTopRankCardView
+                  rank={1}
+                  profileImage={firstRank?.profileImageUrl ?? DEFAULT_PROFILE}
+                  name={firstRank?.nickname ?? ""}
+                  score={firstRank?.point ?? 0}
+                />
+                <GameTopRankCardView
+                  rank={3}
+                  profileImage={thirdRank?.profileImageUrl ?? DEFAULT_PROFILE}
+                  name={thirdRank?.nickname ?? ""}
+                  score={thirdRank?.point ?? 0}
+                />
+              </TopRankView>
+              <Podium resizeMode="contain" source={images.podium} />
+              <RankCaption>
+                *{transformTimeToString(time, "YYYY-MM-DD HH시 mm분 ")}
+                기준의 랭킹입니다.{" "}
+              </RankCaption>
+            </Header>
+            <Result
+              data={restRank}
+              renderItem={this.renderRankItem}
+              keyExtractor={this.rankKeyExtreactor}
+              refreshing={isRefresh}
+              onRefresh={refresh}
+              ItemSeparatorComponent={GameRankSeperator}
+            />
+          </Content>
+        </ScrollView>
       </Container>
     );
   }
@@ -154,13 +189,14 @@ class GameRankingScreen extends Component<IProps> {
     return `${index}`;
   };
 
-  private renderRankItem: ListRenderItem<RankView> = ({ item }) => {
+  private renderRankItem: ListRenderItem<RankView> = ({ item, index }) => {
     return (
       <GameRankCardView
-        rank={item?.rankDiff ?? 0}
+        rank={index + 4}
         profileImage={item?.profileImageUrl ?? DEFAULT_PROFILE}
         name={item?.nickname ?? ""}
         score={item?.point ?? 0}
+        rankDiff={item?.rankDiff ?? 0}
       />
     );
   };
