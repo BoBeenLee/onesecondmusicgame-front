@@ -237,7 +237,7 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
                   </ResultEmptyRow>
                   <RegisterSongButton onPress={this.navigateToRegisterSong}>
                     <RegisterSongButtonText>
-                      노래제한 하러가기
+                      노래제안 하러가기
                     </RegisterSongButtonText>
                   </RegisterSongButton>
                 </ResultEmpty>
