@@ -137,7 +137,7 @@ class GameRankingScreen extends Component<IProps> {
   }
 
   public render() {
-    const { isRefresh, refresh, time } = this.ranks;
+    const { isRefresh, refresh, time, rankViews } = this.ranks;
     const [firstRank, secondRank, thirdRank, ...restRank] = rankViews;
     return (
       <Container>
