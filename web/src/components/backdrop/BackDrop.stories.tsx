@@ -82,6 +82,7 @@ storiesOf("BackDrop", module)
               keyExtractor={(__: any, index: number) => `${index}`}
             />
           }
+          onClose={action("onClose")}
           onBackgroundPress={action("onBackgroundPress")}
         />
       </Container>

@@ -255,6 +255,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
               onEndReached={this.appendTrack}
             />
           }
+          onClose={this.onUnSelectedItem}
           onBackgroundPress={this.onUnSelectedItem}
         />
       </>
