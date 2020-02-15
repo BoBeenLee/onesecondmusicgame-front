@@ -69,7 +69,7 @@ function ProfileImage({ style, size, uri, editable }: IProps) {
 }
 
 ProfileImage.defaultProps = {
-  source: { uri: "https://via.placeholder.com/350x350" }
+  source: images.profileDefault
 };
 
 export default ProfileImage;
