@@ -311,6 +311,14 @@ class GamePlayScreen extends Component<IProps, IStates> {
       params: {
         selectedSingers: [],
         gamePlayHighlights: () => gamePlayHighlights
+      },
+      options: {
+        sideMenu: {
+          left: {
+            enabled: false,
+            visible: false
+          }
+        }
       }
     });
   }
@@ -331,6 +339,14 @@ class GamePlayScreen extends Component<IProps, IStates> {
           params: {
             selectedSingers,
             gamePlayHighlights: () => gamePlayHighlights
+          },
+          options: {
+            sideMenu: {
+              left: {
+                enabled: false,
+                visible: false
+              }
+            }
           }
         });
       }

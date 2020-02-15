@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Layout, Navigation } from "react-native-navigation";
+import { Layout, Navigation, Options } from "react-native-navigation";
 
 import { SCREEN_IDS } from "src/screens/constant";
 import { pushTransition } from "src/screens/styles/animations";
@@ -137,18 +137,21 @@ const push = async ({
   componentId,
   nextComponentId,
   params,
-  animtaions = pushTransition
+  animtaions = pushTransition,
+  options
 }: {
   componentId: string;
   nextComponentId: string;
   params?: object;
   animtaions?: any;
+  options?: Options;
 }) =>
   await protectedMultiClick(async () => {
     await Navigation.push(componentId, {
       component: {
         name: nextComponentId,
         options: {
+          ...options,
           animations: animtaions as any
         },
         passProps: params
