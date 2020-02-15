@@ -29,6 +29,7 @@ const images = {
   pencil: require("./pencil.png"),
   bgMain: require("./bg_main.png"),
   note: require("./note.png"),
-  miniHeart: require("./group3Copy2.png")
+  miniHeart: require("./group3Copy2.png"),
+  profileDefault: require("./profileDefault.png")
 };
 export default images;

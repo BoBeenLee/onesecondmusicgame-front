@@ -58,6 +58,7 @@ const RightSide = styled.View`
 
 const Name = styled(Bold16)`
   color: ${colors.lightGrey};
+  width: 35%;
 `;
 
 const ScoreTitle = styled(Bold16)`
@@ -94,7 +95,7 @@ function GameRankCard(props: IProps) {
         />
         <RankDiff>{rankDiff}</RankDiff>
         <Profile size={59} uri={profileImage} editable={false} />
-        <Name>{name}</Name>
+        <Name numberOfLines={1}>{name}</Name>
       </Content>
       <RightSide>
         <ScoreTitle>P</ScoreTitle>
