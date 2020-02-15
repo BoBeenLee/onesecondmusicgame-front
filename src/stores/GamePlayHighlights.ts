@@ -104,7 +104,7 @@ const GamePlayHighlights = types
         {
           answer: userAnswer,
           playToken: self.playToken,
-          trackId: self.currentGameHighlight?.id ?? 0
+          trackId: self.currentGameHighlight?.trackId ?? 0
         }
       );
       return response;
