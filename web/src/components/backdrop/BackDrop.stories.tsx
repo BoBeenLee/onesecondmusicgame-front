@@ -73,6 +73,7 @@ storiesOf("BackDrop", module)
                     author={item.user.username}
                     isRegistered={true}
                     isLike={true}
+                    likeCount={5}
                     onLikePress={action("onLikePress")}
                     audioType={"play"}
                     onPlayToggle={action("onPlayToggle")}
