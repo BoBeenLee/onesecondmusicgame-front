@@ -145,6 +145,7 @@ const SongTextInput = styled(OSMGTextInput).attrs({
   fontType: "BOLD",
   focusStyle: { color: colors.paleGrey }
 })`
+  width: 100%;
   color: ${colors.paleGrey};
   font-size: 22px;
   text-align: center;
