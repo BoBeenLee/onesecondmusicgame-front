@@ -433,14 +433,27 @@ class GamePlayScreen extends Component<IProps, IStates> {
     }
   }
 
-  public nextStepIfBackgroundTimeout = () => {
-    const { currentStepDateTime } = this.state;
+  public nextStepIfBackgroundTimeout = async () => {
+    const { currentStepDateTime, songAnswerSeconds } = this.state;
+    const { showToast } = this.props.toastStore;
     if (currentStepDateTime === null) {
       return;
     }
     const diffSeconds = _.floor(secondsDuration(currentStepDateTime, moment()));
     if (diffSeconds > DEFAULT_LIMIT_TIME) {
-      this.beforeNextStep();
+      const { answer, isAnswer } = this.gamePlayHighlights;
+      const { songAnswerInput } = this.state;
+      let isUserAnswer = false;
+      try {
+        isUserAnswer = await isAnswer(songAnswerInput);
+      } catch (error) {
+        showToast(error.message);
+      }
+      answer(isUserAnswer, songAnswerInput, songAnswerSeconds);
+      this.setState({
+        songAnswerSeconds: 0
+      });
+      await this.beforeNextStep();
       return;
     }
     this.setState({
