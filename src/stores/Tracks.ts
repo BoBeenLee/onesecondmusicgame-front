@@ -48,7 +48,7 @@ const Tracks = types
         self.tracks.set(
           String(track.id),
           Song.create({
-            artworkUrl: track.artwork_url ?? "",
+            artworkUrl: track.artwork_url ?? "https://via.placeholder.com/150",
             like: 0,
             singer: track.user?.username ?? "",
             title: track.title,
