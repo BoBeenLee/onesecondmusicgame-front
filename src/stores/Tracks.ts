@@ -2,7 +2,8 @@ import _ from "lodash";
 import { flow, types } from "mobx-state-tree";
 
 import { tracks } from "src/apis/soundcloud/tracks";
-import { ITrackItem } from "src/apis/soundcloud/interface";
+import { getAllSongsBySingerNameUsingGET } from "src/apis/singer";
+import Song from "src/stores/model/Song";
 
 interface IVariables {
   q: string;
@@ -14,7 +15,7 @@ const Tracks = types
   .model("Tracks", {
     from: types.optional(types.number, 0),
     isRefresh: types.optional(types.boolean, false),
-    tracks: types.optional(types.map(types.frozen<ITrackItem>()), {}),
+    tracks: types.optional(types.map(Song), {}),
     variables: types.optional(types.frozen<IVariables>(), {
       q: ""
     })
@@ -41,7 +42,20 @@ const Tracks = types
       });
       self.from = response.length !== 0 ? self.from + response.length : 0;
       for (const track of response) {
-        self.tracks.set(String(track.id), track);
+        if (self.tracks.has(String(track.id))) {
+          continue;
+        }
+        self.tracks.set(
+          String(track.id),
+          Song.create({
+            artworkUrl: track.artwork_url ?? "",
+            like: 0,
+            singer: track.user?.username ?? "",
+            title: track.title,
+            trackId: String(track.id),
+            url: track.stream_url
+          })
+        );
       }
     });
 
@@ -49,7 +63,24 @@ const Tracks = types
       self.variables = variables;
       self.from = 0;
       clear();
-
+      const response: RetrieveAsyncFunc<typeof getAllSongsBySingerNameUsingGET> = yield getAllSongsBySingerNameUsingGET(
+        self.variables.q,
+        self.from,
+        30
+      );
+      for (const track of response?.content ?? []) {
+        self.tracks.set(
+          String(track.trackId),
+          Song.create({
+            artworkUrl: track.artworkUrl ?? "",
+            like: 0,
+            singer: track.singer ?? "",
+            title: track.title ?? "",
+            trackId: String(track.trackId),
+            url: track.url ?? ""
+          })
+        );
+      }
       yield fetch();
     });
 

@@ -3,6 +3,11 @@ import { flow, types } from "mobx-state-tree";
 
 import { useItemUsingPUT } from "src/apis/item";
 
+interface IUseItemParams {
+  highlightId: number;
+  playToken: string;
+}
+
 const userItemToName = new Map<Item.ItemTypeEnum, string>()
   .set(Item.ItemTypeEnum.SKIP, "스킵")
   .set(Item.ItemTypeEnum.CHARGEALLHEART, "하트 풀 충전");
@@ -17,11 +22,14 @@ const UserItem = types
     const afterCreate = () => {
       self.name = userItemToName.get(self.itemType) ?? "";
     };
-    const useItemType = flow(function*() {
+    const useItemType = flow(function*(params?: IUseItemParams) {
       if (self.count === 0) {
         return;
       }
-      yield useItemUsingPUT(String(self.itemType));
+      yield useItemUsingPUT({
+        ...params,
+        type: self.itemType as any
+      });
       self.count -= 1;
     });
     return {

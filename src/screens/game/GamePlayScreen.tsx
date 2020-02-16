@@ -313,12 +313,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
         gamePlayHighlights: () => gamePlayHighlights
       },
       options: {
-        sideMenu: {
-          left: {
-            enabled: false,
-            visible: false
-          }
-        }
+        popGesture: false
       }
     });
   }
@@ -341,12 +336,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
             gamePlayHighlights: () => gamePlayHighlights
           },
           options: {
-            sideMenu: {
-              left: {
-                enabled: false,
-                visible: false
-              }
-            }
+            popGesture: false
           }
         });
       }
@@ -469,6 +459,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
               placeholderTextColor={colors.blueyGrey}
               value={songAnswerInput}
               onChangeText={this.onSongAnswerChangeText}
+              onSubmitEditing={this.submitAnswer}
             />
           </SongInput>
         </GameContent>
@@ -579,11 +570,18 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private useSkipItem = async () => {
-    const { isFinish } = this.gamePlayHighlights;
+    const {
+      isFinish,
+      playToken,
+      currentGameHighlight
+    } = this.gamePlayHighlights;
     const userItem = this.props.authStore.user?.userItemsByItemType(
       Item.ItemTypeEnum.SKIP
     );
-    userItem?.useItemType?.();
+    userItem?.useItemType?.({
+      playToken,
+      highlightId: currentGameHighlight?.id ?? 0
+    });
     if (isFinish) {
       this.setState({ currentStepStatus: "stop" });
       this.onFinishPopup();

@@ -18,7 +18,6 @@ import SignInScreen from "src/screens/SignInScreen";
 import SignUpScreen from "src/screens/SignUpScreen";
 import MainScreen from "src/screens/MainScreen";
 import withToast from "src/hocs/withToast";
-import SearchTrackScreen from "src/screens/song/SearchTrackScreen";
 import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
 import GamePlayScreen from "src/screens/game/GamePlayScreen";
 import GameModeScreen from "src/screens/game/GameModeScreen";
@@ -29,6 +28,7 @@ import GamePlayTutorialOverlay from "src/screens/tutorial/GamePlayTutorialOverla
 import SearchSingerScreen from "src/screens/song/SearchSingerScreen";
 import UserProfileScreen from "src/screens/user/UserProfileScreen";
 import DeveloperScreen from "src/screens/DeveloperScreen";
+import UserGameItemScreen from "src/screens/user/UserGameItemScreen";
 
 interface IScreenProps {
   id: string;
@@ -90,10 +90,6 @@ const screens: IScreenProps[] = [
     id: SCREEN_IDS.MainScreen
   },
   {
-    Component: SearchTrackScreen,
-    id: SCREEN_IDS.SearchTrackScreen
-  },
-  {
     Component: RegisterSongScreen,
     id: SCREEN_IDS.RegisterSongScreen
   },
@@ -128,6 +124,10 @@ const screens: IScreenProps[] = [
   {
     Component: DeveloperScreen,
     id: SCREEN_IDS.DeveloperScreen
+  },
+  {
+    Component: UserGameItemScreen,
+    id: SCREEN_IDS.UserGameItemScreen
   }
 ];
 

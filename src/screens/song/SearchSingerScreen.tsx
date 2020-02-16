@@ -21,6 +21,7 @@ import { push, pop } from "src/utils/navigator";
 import colors from "src/styles/colors";
 import SearchTextInput from "src/components/input/SearchTextInput";
 import { ISinger } from "src/apis/singer";
+import { ISong } from "src/stores/model/Song";
 import SearchSingerCard from "src/components/card/SearchSingerCard";
 import { filterNull } from "src/utils/common";
 import { IStore } from "src/stores/Store";
@@ -30,7 +31,6 @@ import BackTopBar from "src/components/topbar/BackTopBar";
 import RegisterTrackBackDrop from "src/components/backdrop/RegisterTrackBackDrop";
 import Tracks, { ITracks } from "src/stores/Tracks";
 import SearchTrackCard from "src/components/card/SearchTrackCard";
-import { ITrackItem } from "src/apis/soundcloud/interface";
 import { makePlayStreamUri } from "src/configs/soundCloudAPI";
 import {
   getUserHistoryUsingGET,
@@ -55,7 +55,7 @@ interface IProps extends IParams, IInject, IDisabledProps {}
 
 interface IStates {
   showTrackBackdrop: boolean;
-  playingTrackItem: ITrackItem | null;
+  playingTrackItem: ISong | null;
   selectedSinger: ISinger | null;
   userLikeHistories: { [key in string]: LikeHistoryResponse | null };
 }
@@ -145,15 +145,15 @@ const ResultEmptyDescription = styled(Regular12)`
   color: ${colors.lightGreyTwo};
 `;
 
-const TracksView = styled<ComponentClass<FlatListProps<ITrackItem>>>(
-  FlatList
-).attrs({
-  contentContainerStyle: {
-    flexDirection: "column",
-    paddingTop: 11,
-    paddingBottom: 20
+const TracksView = styled<ComponentClass<FlatListProps<ISong>>>(FlatList).attrs(
+  {
+    contentContainerStyle: {
+      flexDirection: "column",
+      paddingTop: 11,
+      paddingBottom: 20
+    }
   }
-})``;
+)``;
 
 const SINGER_COUMNS_LENGTH = 4;
 const MOCK_ISINGER: ISinger = {
@@ -283,19 +283,23 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     await this.tracks.append();
   };
 
-  private renderSearchTrackItem: ListRenderItem<ITrackItem> = ({ item }) => {
+  private renderSearchTrackItem: ListRenderItem<ISong> = ({ item }) => {
     const { playingTrackItem } = this.state;
-    const isLike = Boolean(this.state.userLikeHistories[String(item?.id)]);
+    const isLike = Boolean(this.state.userLikeHistories[String(item?.trackId)]);
+    const likeCount = item.like ?? 0;
     return (
       <SearchTrackCard
-        thumnail={item.artwork_url ?? "https://via.placeholder.com/150"}
-        title={item.title}
-        author={item.user.username}
+        thumnail={item.artworkUrl ?? "https://via.placeholder.com/150"}
+        title={item.title ?? ""}
+        author={item.singer ?? ""}
         isRegistered={false}
         isLike={isLike}
+        likeCount={likeCount}
         onLikePress={_.partial(this.toggleLike, item)}
         audioType={
-          `${playingTrackItem?.id}` === String(item.id) ? "play" : "stop"
+          `${playingTrackItem?.trackId}` === String(item.trackId)
+            ? "play"
+            : "stop"
         }
         onPlayToggle={_.partial(this.onPlayToggle, item)}
       />
@@ -319,9 +323,9 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     });
   };
 
-  private onPlayToggle = async (item: ITrackItem) => {
+  private onPlayToggle = async (item: ISong) => {
     const { playingTrackItem } = this.state;
-    if (playingTrackItem?.id === item.id) {
+    if (playingTrackItem?.trackId === item.trackId) {
       await TrackPlayer.reset();
       this.setState({ playingTrackItem: null });
       return;
@@ -330,13 +334,13 @@ class SearchSingerScreen extends Component<IProps, IStates> {
       await TrackPlayer.reset();
     }
     this.setState({ playingTrackItem: item });
-    const { id, stream_url, title, user, artwork_url } = item;
+    const { trackId, url, title, singer, artworkUrl } = item;
     await TrackPlayer.add({
-      id: String(id),
-      url: makePlayStreamUri(stream_url),
-      title: title,
-      artist: user?.username,
-      artwork: artwork_url
+      id: String(trackId),
+      url: makePlayStreamUri(url ?? ""),
+      title: title ?? "",
+      artist: singer ?? "",
+      artwork: artworkUrl
     });
     await TrackPlayer.play();
   };
@@ -349,8 +353,8 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     return `singer${item.name}${index}`;
   };
 
-  private trackKeyExtractor = (item: ITrackItem, index: number) => {
-    return `${item.id}${index}`;
+  private trackKeyExtractor = (item: ISong, index: number) => {
+    return `${item.trackId}${index}`;
   };
 
   private renderSingerItem: ListRenderItem<ISinger> = ({ item }) => {
@@ -388,14 +392,14 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     );
   };
 
-  private toggleLike = async (trackItem: ITrackItem) => {
+  private toggleLike = async (trackItem: ISong) => {
     const { showToast } = this.props.toastStore;
     const { selectedSinger } = this.state;
-    const artworkUrl = trackItem?.artwork_url;
+    const artworkUrl = trackItem?.artworkUrl;
     const singerName = selectedSinger?.name ?? "";
     const title = trackItem?.title;
-    const url = trackItem?.uri;
-    const trackId = trackItem?.id;
+    const url = trackItem?.url;
+    const trackId = trackItem?.trackId;
 
     if (![title, singerName, url].some(value => !!value)) {
       return;
@@ -406,8 +410,9 @@ class SearchSingerScreen extends Component<IProps, IStates> {
         dislikeUsingPOST({
           singerName,
           songUrl: url,
-          trackId
+          trackId: Number(trackId)
         });
+        trackItem.songDislike();
         this.setState(prevState => ({
           userLikeHistories: {
             ...prevState.userLikeHistories,
@@ -419,8 +424,9 @@ class SearchSingerScreen extends Component<IProps, IStates> {
       likeUsingPOST({
         singerName,
         songUrl: url,
-        trackId
+        trackId: Number(trackId)
       });
+      trackItem.songLike();
       this.setState(prevState => ({
         userLikeHistories: {
           ...prevState.userLikeHistories,
@@ -428,7 +434,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
             artworkUrl: artworkUrl,
             singer: singerName,
             title,
-            trackId
+            trackId: Number(trackId)
           }
         }
       }));

@@ -8,19 +8,20 @@ import {
   Bold15,
   Bold20,
   Bold24,
-  Regular17
+  Regular17,
+  Regular24
 } from "src/components/text/Typographies";
 import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
 import colors from "src/styles/colors";
-import HeartGroup from "src/components/icon/HeartGroup";
-import { IHeart } from "src/stores/model/Heart";
+import CountBadge from "src/components/badge/CountBadge";
 import XEIcon from "src/components/icon/XEIcon";
+import images from "src/images";
 
 interface IProps {
   style?: ViewProps["style"];
-  heart: IHeart;
+  count: number;
   onConfirm: () => void;
-  onChargeFullHeart: () => void;
+  onAD: () => void;
   onCancel: () => void;
 }
 
@@ -33,7 +34,14 @@ const PopupContainer = styled.View`
   align-items: center;
 `;
 
-const PopupTitle = styled(Bold24)`
+const PopupTitleHightlight = styled(Bold24)`
+  text-align: center;
+  color: ${colors.dark};
+  margin-top: 48px;
+  margin-bottom: 5px;
+`;
+
+const PopupTitle = styled(Regular24)`
   text-align: center;
   color: ${colors.dark};
   margin-top: 48px;
@@ -43,11 +51,20 @@ const PopupTitle = styled(Bold24)`
 const PopupDescription = styled(Bold15)`
   text-align: center;
   color: ${colors.slateGrey};
-  margin-bottom: 7px;
+  margin-top: 14px;
+  margin-bottom: 22px;
 `;
 
-const HeartGroupView = styled(HeartGroup)`
-  margin-top: 29px;
+const HeartIconView = styled.View`
+  width: 52px;
+  height: 48px;
+  margin-bottom: 6px;
+`;
+
+const HeartImage = styled.Image`
+  width: 100%;
+  height: 100%;
+  resize-mode: contain;
 `;
 
 const ChargeFullHeartButton = styled.TouchableOpacity`
@@ -71,20 +88,23 @@ const ArrowIcon = styled(XEIcon)`
 `;
 
 function UseFullHeartPopup(props: IProps) {
-  const { style, heart, onConfirm, onCancel, onChargeFullHeart } = props;
+  const { style, count, onConfirm, onCancel, onAD } = props;
   return (
     <OuterContainer
       style={style}
       ContentComponent={
         <PopupContainer>
-          <PopupTitle>하트 풀충전 아이템</PopupTitle>
-          <PopupDescription>{`하트 갯수 만큼 게임을 할 수 있어요!`}</PopupDescription>
-          <HeartGroupView
-            hearts={_.times(5, index =>
-              index + 1 <= (heart.heartCount ?? 0) ? "active" : "inactive"
-            )}
-          />
-          <ChargeFullHeartButton onPress={onChargeFullHeart}>
+          <PopupTitle>
+            <PopupTitleHightlight>하트 풀충전</PopupTitleHightlight>
+            {` 아이템`}
+          </PopupTitle>
+          <PopupDescription>{`5개의 하트 중 소진한 하트를
+모두 충전할 수 있어요!`}</PopupDescription>
+          <HeartIconView>
+            <HeartImage source={images.inviteHeart} />
+            {count ? <CountBadge count={count} /> : null}
+          </HeartIconView>
+          <ChargeFullHeartButton onPress={onAD}>
             <ChargeFullHeartButtonText>
               광고보고 아이템받기
             </ChargeFullHeartButtonText>

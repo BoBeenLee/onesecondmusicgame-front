@@ -63,7 +63,7 @@ storiesOf("Popup", module)
         heart={{ heartCount: 3 } as any}
         onCancel={action("onCancel")}
         onConfirm={action("onConfirm")}
-        onChargeFullHeart={action("onChargeFullHeart")}
+        onAD={action("onChargeFullHeart")}
       />
     );
   })

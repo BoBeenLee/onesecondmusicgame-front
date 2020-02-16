@@ -20,14 +20,12 @@ import SearchTextInput from "src/components/input/SearchTextInput";
 import { ISinger } from "src/apis/singer";
 import SearchSingerCard from "src/components/card/SearchSingerCard";
 import { filterNull } from "src/utils/common";
-import SingersSubmitBackDrop from "src/components/backdrop/SingersSubmitBackDrop";
 import { IStore } from "src/stores/Store";
 import { ISingerStore } from "src/stores/SingerStore";
 import { IToastStore } from "src/stores/ToastStore";
 import withScrollDirection, {
   IScrollDirectionProps
 } from "src/hocs/withScrollDirection";
-import { ScrollDirection } from "src/utils/scrollView";
 import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
 import BackTopBar from "src/components/topbar/BackTopBar";
 import XEIcon from "src/components/icon/XEIcon";
@@ -93,7 +91,11 @@ const ResultText = styled(Bold12)`
   margin-bottom: 20px;
 `;
 
-const Result = styled<ComponentClass<FlatListProps<ISinger>>>(FlatList)`
+const Result = styled<ComponentClass<FlatListProps<ISinger>>>(FlatList).attrs({
+  contentContainerStyle: {
+    paddingBottom: 95
+  }
+})`
   flex: 1;
   width: 100%;
 `;
@@ -146,6 +148,57 @@ const RegisterSongButtonText = styled(Bold14)`
   color: ${colors.lightGrey};
 `;
 
+const Bottom = styled.View`
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  border-radius: 24px;
+  background-color: ${colors.darkTwo};
+  padding-horizontal: 41px;
+  padding-bottom: 31px;
+  padding-top: 20px;
+`;
+
+const SubmitButton = styled.TouchableOpacity`
+  width: 100%;
+  height: 52px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: solid 3px ${colors.lightMagenta};
+  background-color: ${colors.pinkyPurple};
+`;
+
+const BadgeView = styled.View`
+  position: absolute;
+  top: -10px;
+  left: 0px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Badge = styled.View`
+  width: 82px;
+  height: 19px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 17px;
+  border: solid 2px #99329c;
+  background-color: #a83bab;
+`;
+
+const BadgeText = styled(Regular12)`
+  color: ${colors.white};
+`;
+
+const SubmitButtonText = styled(Bold18)`
+  color: ${colors.lightGrey};
+`;
+
 const SELECTED_SINGERS_MAX_LENGTH = 3;
 const SINGER_COUMNS_LENGTH = 4;
 const MOCK_ISINGER: ISinger = {
@@ -175,7 +228,6 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
 
     this.state = { selectedSingers: {}, showMinimumSubmit: true };
     this.singers.initialize({ q: "" });
-    this.onResultScroll = _.throttle(this.onResultScroll, 210);
   }
 
   public async componentDidMount() {
@@ -184,8 +236,6 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
 
   public render() {
     const { singerViews, refresh, isRefresh } = this.singers;
-    const { onScroll } = this.props.scrollDirectionProps;
-    const { showMinimumSubmit } = this.state;
     const singerViewRows = _.ceil(singerViews.length / SINGER_COUMNS_LENGTH);
 
     return (
@@ -237,55 +287,43 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
                   </ResultEmptyRow>
                   <RegisterSongButton onPress={this.navigateToRegisterSong}>
                     <RegisterSongButtonText>
-                      노래제한 하러가기
+                      노래제안 하러가기
                     </RegisterSongButtonText>
                   </RegisterSongButton>
                 </ResultEmpty>
               }
-              scrollEventThrottle={16}
-              onScroll={onScroll(this.onResultScroll)}
             />
           </Content>
-          <SingersSubmitBackDrop
-            showMinimumSubmit={showMinimumSubmit}
-            selectedSingers={this.selectedSingers}
-            onSubmit={this.submit}
-            onSelectedItem={this.onSelectedItem}
-          />
         </InnerContainer>
+        {this.renderSingerSubmit}
       </Container>
+    );
+  }
+
+  public get renderSingerSubmit() {
+    const level: { [key in number]: string } = {
+      0: "RANDOM",
+      1: "HARD",
+      2: "NORMAL",
+      3: "EASY"
+    };
+    return (
+      <Bottom>
+        <SubmitButton onPress={this.submit}>
+          <SubmitButtonText>시작하기</SubmitButtonText>
+          <BadgeView>
+            <Badge>
+              <BadgeText>{level[this.selectedSingers.length]}</BadgeText>
+            </Badge>
+          </BadgeView>
+        </SubmitButton>
+      </Bottom>
     );
   }
 
   private get singers() {
     return this.props.singerStore.registeredSingers;
   }
-
-  private onResultScroll = (scrollDirection: ScrollDirection) => {
-    const { showMinimumSubmit } = this.state;
-
-    if (scrollDirection === ScrollDirection.IDLE) {
-      return;
-    }
-    if (
-      showMinimumSubmit === false &&
-      scrollDirection === ScrollDirection.DOWNWARD
-    ) {
-      this.setState({
-        showMinimumSubmit: true
-      });
-      return;
-    }
-    if (
-      showMinimumSubmit === true &&
-      scrollDirection === ScrollDirection.UPWARD
-    ) {
-      this.setState({
-        showMinimumSubmit: false
-      });
-      return;
-    }
-  };
 
   private get selectedSingers() {
     const { selectedSingers } = this.state;

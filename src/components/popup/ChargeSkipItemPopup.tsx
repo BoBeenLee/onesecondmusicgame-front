@@ -12,9 +12,11 @@ import OSMGPopup from "src/components/popup/OSMGPopup";
 import colors from "src/styles/colors";
 import SkipIcon from "src/components/icon/SkipIcon";
 import XEIcon from "src/components/icon/XEIcon";
+import CountBadge from "src/components/badge/CountBadge";
 
 interface IProps {
   style?: ViewProps["style"];
+  count: number;
   onInvite: () => void;
   onCancel: () => void;
 }
@@ -46,11 +48,6 @@ const StatusView = styled.View`
   margin-bottom: 26px;
 `;
 
-const StatusText = styled(Bold15)`
-  margin-left: 16px;
-  color: ${colors.slateGrey};
-`;
-
 const InviteButton = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: center;
@@ -70,7 +67,7 @@ const InviteButtonText = styled(Bold17)`
 const ArrowIcon = styled(XEIcon)``;
 
 function ChargeSkipItemPopup(props: IProps) {
-  const { style, onCancel, onInvite } = props;
+  const { style, count, onCancel, onInvite } = props;
   return (
     <OuterContainer
       style={style}
@@ -83,10 +80,7 @@ function ChargeSkipItemPopup(props: IProps) {
           </PopupDescription>
           <StatusView>
             <SkipIcon />
-            <StatusText>
-              현재{"\n"}
-              5개 보유
-            </StatusText>
+            <CountBadge count={count} />
           </StatusView>
           <InviteButton onPress={onInvite}>
             <InviteButtonText>친구 초대하고 아이템 받기</InviteButtonText>

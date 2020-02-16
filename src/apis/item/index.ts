@@ -1,4 +1,4 @@
-import { ItemControllerApiFactory } from "__generate__/api";
+import { ItemControllerApiFactory, ItemUseRequest } from "__generate__/api";
 import { requestAPI } from "src/configs/requestAPI";
 
 const itemControllerApi = ItemControllerApiFactory(undefined, requestAPI, "");
@@ -8,7 +8,7 @@ export const findItemAllUsingGET = async () => {
   return response.body ?? [];
 };
 
-export const useItemUsingPUT = async (type: string) => {
-  const response = await itemControllerApi.useItemUsingPUT(type);
+export const useItemUsingPUT = async (params: ItemUseRequest) => {
+  const response = await itemControllerApi.useItemUsingPUT(params);
   return response.body;
 };

@@ -30,6 +30,7 @@ const images = {
   bgMain: require("./bg_main.png"),
   note: require("./note.png"),
   miniHeart: require("./group3Copy2.png"),
-  profileDefault: require("./profileDefault.png")
+  profileDefault: require("./profileDefault.png"),
+  icGameItemEmpty: require("./ic_game_item_empty.png")
 };
 export default images;

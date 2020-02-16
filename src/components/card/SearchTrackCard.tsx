@@ -19,6 +19,7 @@ interface IProps {
   author: string;
   isRegistered: boolean;
   isLike: boolean;
+  likeCount: number;
   onLikePress: () => void;
   audioType: AudioType;
   onPlayToggle: () => void;
@@ -102,6 +103,7 @@ function SearchTrackCard(props: IProps) {
     author,
     isRegistered,
     isLike,
+    likeCount,
     onLikePress,
     audioType,
     onPlayToggle
@@ -122,7 +124,7 @@ function SearchTrackCard(props: IProps) {
           ) : (
             <HeartView>
               <HeartIcon name="heart" size={10} color={colors.brightMagenta} />
-              <HeartCount>12</HeartCount>
+              <HeartCount>{likeCount}</HeartCount>
             </HeartView>
           )}
         </TrackView>
