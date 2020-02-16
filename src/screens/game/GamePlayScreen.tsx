@@ -1,4 +1,4 @@
-import { InteractionManager, Clipboard } from "react-native";
+import { AppStateStatus, InteractionManager, Clipboard } from "react-native";
 import { Item } from "__generate__/api";
 import _ from "lodash";
 import React, { Component } from "react";
@@ -7,6 +7,7 @@ import styled from "styled-components/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import TrackPlayer from "react-native-track-player";
 import LinearGradient from "react-native-linear-gradient";
+import moment, { Moment } from "moment";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import {
@@ -53,8 +54,10 @@ import { delay } from "src/utils/common";
 import MainScreen from "src/screens/MainScreen";
 import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import GameReadyPlayOverlay from "src/screens/game/GameReadyPlayOverlay";
+import { secondsDuration } from "src/utils/date";
 
 interface IInject {
+  appStateStatus: AppStateStatus;
   authStore: IAuthStore;
   toastStore: IToastStore;
 }
@@ -72,6 +75,7 @@ interface IProps extends IInject, IPopupProps, IDisabledProps {
 
 interface IStates {
   currentStepStatus: "play" | "stop" | "answer";
+  currentStepDateTime: Moment | null;
   songAnswerInput: string;
   songAnswerSeconds: number;
 }
@@ -295,6 +299,7 @@ const NEXT_STEP_SECONDS = 5000;
 
 @inject(
   ({ store }: { store: IStore }): IInject => ({
+    appStateStatus: store.appStateStatus,
     authStore: store.authStore,
     toastStore: store.toastStore
   })
@@ -352,6 +357,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     super(props);
     this.state = {
       currentStepStatus: "stop",
+      currentStepDateTime: null,
       songAnswerInput: "",
       songAnswerSeconds: DEFAULT_LIMIT_TIME
     };
@@ -374,6 +380,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
           this.setState(
             {
               currentStepStatus: "play",
+              currentStepDateTime: moment(),
               songAnswerInput: "",
               songAnswerSeconds: DEFAULT_LIMIT_TIME
             },
@@ -417,6 +424,29 @@ class GamePlayScreen extends Component<IProps, IStates> {
       clearInterval(this.intervalId);
     }
   }
+
+  public async componentDidUpdate(prevProps: IProps) {
+    const { appStateStatus } = this.props;
+    if (appStateStatus !== prevProps.appStateStatus) {
+      this.nextStepIfBackgroundTimeout();
+      return;
+    }
+  }
+
+  public nextStepIfBackgroundTimeout = () => {
+    const { currentStepDateTime } = this.state;
+    if (currentStepDateTime === null) {
+      return;
+    }
+    const diffSeconds = _.floor(secondsDuration(currentStepDateTime, moment()));
+    if (diffSeconds > DEFAULT_LIMIT_TIME) {
+      this.beforeNextStep();
+      return;
+    }
+    this.setState({
+      songAnswerSeconds: DEFAULT_LIMIT_TIME - diffSeconds
+    });
+  };
 
   public render() {
     const { currentStepStatus } = this.state;
@@ -590,7 +620,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
       highlightId: currentGameHighlight?.id ?? 0
     });
     if (isFinish) {
-      this.setState({ currentStepStatus: "stop" });
+      this.setState({ currentStepStatus: "stop", currentStepDateTime: null });
       this.onFinishPopup();
       return;
     }
@@ -625,7 +655,8 @@ class GamePlayScreen extends Component<IProps, IStates> {
   private beforeNextStep = async () => {
     const { isFinish } = this.gamePlayHighlights;
     this.setState({
-      currentStepStatus: "answer"
+      currentStepStatus: "answer",
+      currentStepDateTime: null
     });
     if (isFinish) {
       this.onFinishPopup();
@@ -642,6 +673,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     this.setState(
       {
         currentStepStatus: "play",
+        currentStepDateTime: moment(),
         songAnswerInput: "",
         songAnswerSeconds: DEFAULT_LIMIT_TIME
       },

@@ -54,6 +54,13 @@ export const dayDateDuration = (
   return dayDuration(moment(startDate), moment(endDate));
 };
 
+export const secondsDuration = (
+  startDate: Moment.Moment | Date | string | number,
+  endDate: Moment.Moment | Date | string | number
+) => {
+  return duration(moment(endDate).diff(moment(startDate))).asSeconds();
+};
+
 export const isBetween = (
   targetAt: Moment.Moment,
   startedAt: Moment.Moment,
