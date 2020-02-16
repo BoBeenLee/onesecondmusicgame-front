@@ -199,25 +199,37 @@ class SignInScreen extends Component<IProps> {
 
   private facebookSignIn = async () => {
     const { facebookSignIn } = this.props.authStore;
-    await facebookSignIn();
+    const isSignIn = await facebookSignIn();
+    if (!isSignIn) {
+      return;
+    }
     MainScreen.open();
   };
 
   private googleSignIn = async () => {
     const { googleSignIn } = this.props.authStore;
-    await googleSignIn();
+    const isSignIn = await googleSignIn();
+    if (!isSignIn) {
+      return;
+    }
     MainScreen.open();
   };
 
   private kakaoSignIn = async () => {
     const { kakaoSignIn } = this.props.authStore;
-    await kakaoSignIn();
+    const isSignIn = await kakaoSignIn();
+    if (!isSignIn) {
+      return;
+    }
     MainScreen.open();
   };
 
   private appleSignIn = async () => {
     const { appleSignIn } = this.props.authStore;
-    await appleSignIn();
+    const isSignIn = await appleSignIn();
+    if (!isSignIn) {
+      return;
+    }
     MainScreen.open();
   };
 }

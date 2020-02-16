@@ -439,15 +439,6 @@ class SearchSingerScreen extends Component<IProps, IStates> {
         }
       }));
       showToast("하트가 반영되었습니다");
-      try {
-        await addNewSongUsingPOST({
-          highlightSeconds: [],
-          singerName,
-          url
-        });
-      } catch (error) {
-        // NOTHING
-      }
     } catch (error) {
       showToast(error.message);
     }

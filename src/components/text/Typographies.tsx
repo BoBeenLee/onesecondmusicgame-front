@@ -78,8 +78,16 @@ export const Bold28 = styled(Bold)`
   letter-spacing: -0.7px;
 `;
 
+export const Bold30 = styled(Bold)`
+  font-size: 30px;
+`;
+
 export const Bold36 = styled(Bold)`
   font-size: 36px;
+`;
+
+export const Bold55 = styled(Bold)`
+  font-size: 55px;
 `;
 
 export const Medium7 = styled(Medium)`

@@ -19,8 +19,7 @@ import {
   Bold12
 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
-import { push, pop } from "src/utils/navigator";
-import { TOP_BAR_HEIGHT } from "src/components/topbar/OSMGTopBar";
+import { setStackRoot } from "src/utils/navigator";
 import colors from "src/styles/colors";
 import HeartGroup from "src/components/icon/HeartGroup";
 import MainScreen from "src/screens/MainScreen";
@@ -277,7 +276,7 @@ const RetryPlayButtonText = styled(Bold20)`
 class GameResultScreen extends Component<IProps, IStates> {
   public static open(params: IParams) {
     const { componentId, ...restParams } = params;
-    return push({
+    return setStackRoot({
       componentId,
       nextComponentId: SCREEN_IDS.GameResultScreen,
       params: restParams,

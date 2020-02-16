@@ -52,6 +52,7 @@ import { makePlayStreamUriByTrackId } from "src/configs/soundCloudAPI";
 import { delay } from "src/utils/common";
 import MainScreen from "src/screens/MainScreen";
 import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
+import GameReadyPlayOverlay from "src/screens/game/GameReadyPlayOverlay";
 
 interface IInject {
   authStore: IAuthStore;
@@ -366,42 +367,48 @@ class GamePlayScreen extends Component<IProps, IStates> {
     loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
       onRewarded: this.onRewarded
     });
-    GamePlayTutorialOverlay.open({
-      onAfterClose: () => {
-        this.setState(
-          {
-            currentStepStatus: "play",
-            songAnswerInput: "",
-            songAnswerSeconds: DEFAULT_LIMIT_TIME
-          },
-          async () => {
-            await this.readyForPlay();
-            this.intervalId = setInterval(async () => {
-              const { songAnswerSeconds, currentStepStatus } = this.state;
-              const { showToast } = this.props.toastStore;
-              if (currentStepStatus !== "play") {
-                return;
-              }
-              if (songAnswerSeconds === 0) {
-                const { answer, isAnswer } = this.gamePlayHighlights;
-                const { songAnswerInput } = this.state;
-                let isUserAnswer = false;
-                try {
-                  isUserAnswer = await isAnswer(songAnswerInput);
-                } catch (error) {
-                  showToast(error.message);
+
+    const navigateToReadyPlay = () => {
+      GameReadyPlayOverlay.open({
+        onAfterClose: () => {
+          this.setState(
+            {
+              currentStepStatus: "play",
+              songAnswerInput: "",
+              songAnswerSeconds: DEFAULT_LIMIT_TIME
+            },
+            async () => {
+              await this.readyForPlay();
+              this.intervalId = setInterval(async () => {
+                const { songAnswerSeconds, currentStepStatus } = this.state;
+                const { showToast } = this.props.toastStore;
+                if (currentStepStatus !== "play") {
+                  return;
                 }
-                answer(isUserAnswer, songAnswerInput, songAnswerSeconds);
-                await this.beforeNextStep();
-                return;
-              }
-              this.setState({
-                songAnswerSeconds: songAnswerSeconds - 1
-              });
-            }, 1000);
-          }
-        );
-      }
+                if (songAnswerSeconds === 0) {
+                  const { answer, isAnswer } = this.gamePlayHighlights;
+                  const { songAnswerInput } = this.state;
+                  let isUserAnswer = false;
+                  try {
+                    isUserAnswer = await isAnswer(songAnswerInput);
+                  } catch (error) {
+                    showToast(error.message);
+                  }
+                  answer(isUserAnswer, songAnswerInput, songAnswerSeconds);
+                  await this.beforeNextStep();
+                  return;
+                }
+                this.setState({
+                  songAnswerSeconds: songAnswerSeconds - 1
+                });
+              }, 1000);
+            }
+          );
+        }
+      });
+    };
+    GamePlayTutorialOverlay.open({
+      onAfterClose: navigateToReadyPlay
     });
   }
 
@@ -707,7 +714,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
   private finish = async () => {
     const { closePopup } = this.props.popupProps;
     const { componentId } = this.props;
-
     closePopup();
     GameResultScreen.open({
       componentId,
@@ -723,7 +729,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
         cancelText="취소"
         onCancel={closePopup}
         confirmText="확인"
-        onConfirm={this.home}
+        onConfirm={this.finish}
       />
     );
   };
