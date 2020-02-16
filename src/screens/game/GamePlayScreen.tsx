@@ -55,6 +55,7 @@ import MainScreen from "src/screens/MainScreen";
 import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import GameReadyPlayOverlay from "src/screens/game/GameReadyPlayOverlay";
 import { secondsDuration } from "src/utils/date";
+import { logEvent } from "src/configs/analytics";
 
 interface IInject {
   appStateStatus: AppStateStatus;
@@ -395,6 +396,8 @@ class GamePlayScreen extends Component<IProps, IStates> {
                 }
                 if (songAnswerSeconds === 0) {
                   const { answer, isAnswer } = this.gamePlayHighlights;
+                  const trackId =
+                    this.gamePlayHighlights.currentGameHighlight?.trackId ?? 0;
                   const { songAnswerInput } = this.state;
                   let isUserAnswer = false;
                   try {
@@ -404,6 +407,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
                   }
                   answer(isUserAnswer, songAnswerInput, songAnswerSeconds);
                   await this.beforeNextStep();
+                  isUserAnswer
+                    ? logEvent.correctAnswer(trackId)
+                    : logEvent.wrongAnswer(trackId);
                   return;
                 }
                 this.setState({
@@ -443,6 +449,8 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const diffSeconds = _.floor(secondsDuration(currentStepDateTime, moment()));
     if (diffSeconds > DEFAULT_LIMIT_TIME) {
       const { answer, isAnswer } = this.gamePlayHighlights;
+      const trackId =
+        this.gamePlayHighlights.currentGameHighlight?.trackId ?? 0;
       const { songAnswerInput } = this.state;
       let isUserAnswer = false;
       try {
@@ -455,6 +463,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
         songAnswerSeconds: 0
       });
       await this.beforeNextStep();
+      isUserAnswer
+        ? logEvent.correctAnswer(trackId)
+        : logEvent.wrongAnswer(trackId);
       return;
     }
     this.setState({
@@ -643,6 +654,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
 
   private submitAnswer = async () => {
     const { answer, currentGameHighlight, isAnswer } = this.gamePlayHighlights;
+    const trackId = this.gamePlayHighlights.currentGameHighlight?.trackId ?? 0;
     const { songAnswerInput, songAnswerSeconds } = this.state;
     const { showToast } = this.props.toastStore;
 
@@ -661,6 +673,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
       }
       answer(isUserAnswer, songAnswerInput, songAnswerSeconds);
       await this.beforeNextStep();
+      isUserAnswer
+        ? logEvent.correctAnswer(trackId)
+        : logEvent.wrongAnswer(trackId);
     } catch (error) {
       showToast(error.message);
     }

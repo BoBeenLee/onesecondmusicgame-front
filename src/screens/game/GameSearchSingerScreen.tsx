@@ -29,6 +29,7 @@ import withScrollDirection, {
 import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
 import BackTopBar from "src/components/topbar/BackTopBar";
 import XEIcon from "src/components/icon/XEIcon";
+import { logEvent } from "src/configs/analytics";
 
 interface IInject {
   singerStore: ISingerStore;
@@ -39,6 +40,8 @@ interface IParams {
   componentId: string;
   onResult: (selectedSingers: ISinger[]) => Promise<void>;
 }
+
+type GameMode = "RANDOM" | "HARD" | "NORMAL" | "EASY";
 
 interface IProps extends IParams, IInject, IScrollDirectionProps {}
 
@@ -301,7 +304,7 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
   }
 
   public get renderSingerSubmit() {
-    const level: { [key in number]: string } = {
+    const level: { [key in number]: GameMode } = {
       0: "RANDOM",
       1: "HARD",
       2: "NORMAL",
@@ -309,7 +312,9 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
     };
     return (
       <Bottom>
-        <SubmitButton onPress={this.submit}>
+        <SubmitButton
+          onPress={_.partial(this.submit, level[this.selectedSingers.length])}
+        >
           <SubmitButtonText>시작하기</SubmitButtonText>
           <BadgeView>
             <Badge>
@@ -365,24 +370,33 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
     ) {
       return;
     }
-    this.setState(prevState => {
-      return {
-        selectedSingers: {
-          ...prevState.selectedSingers,
-          [item.name]: !Boolean(prevState.selectedSingers[item.name])
-            ? item
-            : null
-        },
-        showMinimumSubmit: false
-      };
-    });
+    this.setState(
+      prevState => {
+        return {
+          selectedSingers: {
+            ...prevState.selectedSingers,
+            [item.name]: !Boolean(prevState.selectedSingers[item.name])
+              ? item
+              : null
+          },
+          showMinimumSubmit: false
+        };
+      },
+      () => {
+        const selected = Boolean(this.state.selectedSingers[item.name]);
+        if (selected) {
+          logEvent.selectedSinger(item.name);
+        }
+      }
+    );
   };
 
-  private submit = async () => {
+  private submit = async (level: GameMode) => {
     const { showToast } = this.props.toastStore;
     const { onResult } = this.props;
     try {
       await onResult(this.selectedSingers);
+      logEvent.gameStart(level);
     } catch (error) {
       showToast(error.message);
     }

@@ -25,6 +25,7 @@ import UserProfileScreen from "src/screens/user/UserProfileScreen";
 import { IForm } from "src/components/form/UserProfileForm";
 import images from "src/images";
 import IconButton from "src/components/button/IconButton";
+import { logEvent } from "src/configs/analytics";
 
 interface IInject {
   authStore: IAuthStore;
@@ -204,6 +205,7 @@ class SignInScreen extends Component<IProps> {
       return;
     }
     MainScreen.open();
+    logEvent.signIn("FACEBOOK");
   };
 
   private googleSignIn = async () => {
@@ -213,6 +215,7 @@ class SignInScreen extends Component<IProps> {
       return;
     }
     MainScreen.open();
+    logEvent.signIn("GOOGLE");
   };
 
   private kakaoSignIn = async () => {
@@ -222,6 +225,7 @@ class SignInScreen extends Component<IProps> {
       return;
     }
     MainScreen.open();
+    logEvent.signIn("KAKAO");
   };
 
   private appleSignIn = async () => {
@@ -231,6 +235,7 @@ class SignInScreen extends Component<IProps> {
       return;
     }
     MainScreen.open();
+    logEvent.signIn("APPLE");
   };
 }
 

@@ -42,6 +42,7 @@ import { FIELD, setItem, defaultItemToBoolean } from "src/utils/storage";
 import AutoHeightImage from "src/components/image/AutoHeightImage";
 import { getDeviceWidth } from "src/utils/device";
 import UserGameItemScreen from "src/screens/user/UserGameItemScreen";
+import { logEvent } from "src/configs/analytics";
 
 interface IInject {
   store: IStore;
@@ -434,6 +435,7 @@ class MainScreen extends Component<IProps, IStates> {
         componentId,
         heartCount: heart?.heartCount ?? 0
       });
+      logEvent.gameStart("RANDOM");
     } catch (error) {
       showToast(error.message);
     }
