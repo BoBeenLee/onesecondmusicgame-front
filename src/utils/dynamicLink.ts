@@ -32,7 +32,9 @@ export const makeAppShareLink = async (accessId: string) => {
     DOMAIN_URI_PREFIX
   ).android
     .setPackageName("kr.nexters.onesecondmusicgame")
+    .ios.setAppStoreId("1493107650")
     .ios.setBundleId("kr.nexters.onesecondmusicgame")
+    .ios.setIPadBundleId("kr.nexters.onesecondmusicgame")
     .ios.setCustomScheme(CUSTOM_PROTOCOL)
     .navigation.setForcedRedirectEnabled(true);
   return await firebase.links().createShortDynamicLink(link, "SHORT");
