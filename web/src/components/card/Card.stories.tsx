@@ -46,6 +46,7 @@ storiesOf("Card", module)
           title="Hello World"
           author="Hello"
           isLike={true}
+          likeCount={5}
           onLikePress={action("onLikePress")}
           audioType={"play"}
           onPlayToggle={action("onPlayToggle")}
@@ -56,6 +57,7 @@ storiesOf("Card", module)
           title="Hello World"
           author="Hello"
           isLike={false}
+          likeCount={5}
           onLikePress={action("onLikePress")}
           audioType={"stop"}
           onPlayToggle={action("onPlayToggle")}
@@ -66,6 +68,7 @@ storiesOf("Card", module)
           title="Hello World"
           author="Hello"
           isLike={false}
+          likeCount={5}
           onLikePress={action("onLikePress")}
           audioType={"play"}
           onPlayToggle={action("onPlayToggle")}

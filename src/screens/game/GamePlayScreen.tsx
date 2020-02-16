@@ -1,3 +1,4 @@
+import Reactotron from "reactotron-react-native";
 import { AppStateStatus, InteractionManager, Clipboard } from "react-native";
 import { Item } from "__generate__/api";
 import _ from "lodash";
@@ -695,10 +696,11 @@ class GamePlayScreen extends Component<IProps, IStates> {
     if (this.state.currentStepStatus === "play") {
       return;
     }
-    this.nextStep();
+    await this.nextStep();
   };
 
-  private nextStep = () => {
+  private nextStep = async () => {
+    await TrackPlayer.reset();
     this.setState(
       {
         currentStepStatus: "play",
@@ -722,7 +724,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
       return;
     }
     const { id, trackId, artworkUrl } = currentGameHighlight;
-    await TrackPlayer.reset();
     await TrackPlayer.add({
       id: String(id ?? "none"),
       url: makePlayStreamUriByTrackId(String(trackId)),
@@ -732,9 +733,11 @@ class GamePlayScreen extends Component<IProps, IStates> {
     });
   };
 
-  private onFinishPopup = () => {
+  private onFinishPopup = async () => {
     const { showPopup } = this.props.popupProps;
     const heart = this.props.authStore.user?.heart!;
+    await heart?.fetchHeart?.();
+
     showPopup(
       <ChargeFullHeartPopup
         heart={heart}

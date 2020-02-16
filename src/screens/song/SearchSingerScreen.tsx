@@ -5,7 +5,10 @@ import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
 import { FlatListProps, FlatList, ListRenderItem } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import TrackPlayer from "react-native-track-player";
+import TrackPlayer, {
+  addEventListener,
+  State
+} from "react-native-track-player";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import {
@@ -179,6 +182,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
   }
 
   public tracks: ITracks;
+  public playbackStateListener: any;
 
   constructor(props: IProps) {
     super(props);
@@ -191,10 +195,23 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     this.singers.initialize({ q: "" });
     this.tracks = Tracks.create();
     this.appendTrack = props.wrapperDisabled(this.appendTrack);
+
+    this.playbackStateListener = addEventListener(
+      "playback-state",
+      (state: State) => {
+        if (state === "paused") {
+          this.setState({ playingTrackItem: null });
+        }
+      }
+    );
   }
 
   public async componentDidMount() {
     await this.initialize();
+  }
+
+  public componentWillUnmount() {
+    this.playbackStateListener?.();
   }
 
   public render() {
