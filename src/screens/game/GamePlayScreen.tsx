@@ -313,12 +313,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
         gamePlayHighlights: () => gamePlayHighlights
       },
       options: {
-        sideMenu: {
-          left: {
-            enabled: false,
-            visible: false
-          }
-        }
+        popGesture: false
       }
     });
   }
@@ -341,12 +336,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
             gamePlayHighlights: () => gamePlayHighlights
           },
           options: {
-            sideMenu: {
-              left: {
-                enabled: false,
-                visible: false
-              }
-            }
+            popGesture: false
           }
         });
       }

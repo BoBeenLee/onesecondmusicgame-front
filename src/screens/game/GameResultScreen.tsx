@@ -280,7 +280,10 @@ class GameResultScreen extends Component<IProps, IStates> {
     return push({
       componentId,
       nextComponentId: SCREEN_IDS.GameResultScreen,
-      params: restParams
+      params: restParams,
+      options: {
+        popGesture: false
+      }
     });
   }
 
