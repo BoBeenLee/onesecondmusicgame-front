@@ -606,6 +606,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
       showToast("게임 플레이곡이 없습니다");
       return;
     }
+    if (_.isEmpty(songAnswerInput)) {
+      return;
+    }
     try {
       const isUserAnswer = await isAnswer(songAnswerInput);
       if (!isUserAnswer) {
