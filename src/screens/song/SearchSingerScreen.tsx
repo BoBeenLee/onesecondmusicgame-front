@@ -41,6 +41,7 @@ import { LikeHistoryResponse } from "__generate__/api";
 import images from "src/images";
 import withDisabled, { IDisabledProps } from "src/hocs/withDisabled";
 import { addNewSongUsingPOST } from "src/apis/song";
+import { logEvent } from "src/configs/analytics";
 
 interface IInject {
   singerStore: ISingerStore;
@@ -380,6 +381,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     this.setState({ showTrackBackdrop: true, selectedSinger: item }, () => {
       this.tracks.search({ q: item.name });
     });
+    logEvent.selectedSinger(item.name);
   };
 
   private onUnSelectedItem = () => {
