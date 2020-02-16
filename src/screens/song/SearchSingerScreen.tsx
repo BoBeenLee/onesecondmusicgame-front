@@ -286,12 +286,12 @@ class SearchSingerScreen extends Component<IProps, IStates> {
   private renderSearchTrackItem: ListRenderItem<ISong> = ({ item }) => {
     const { playingTrackItem } = this.state;
     const isLike = Boolean(this.state.userLikeHistories[String(item?.trackId)]);
-    const likeCount = item.like ?? 0;
+    const likeCount = item.like;
     return (
       <SearchTrackCard
-        thumnail={item.artworkUrl ?? "https://via.placeholder.com/150"}
-        title={item.title ?? ""}
-        author={item.singer ?? ""}
+        thumnail={item.artworkUrl}
+        title={item.title}
+        author={item.singer}
         isRegistered={false}
         isLike={isLike}
         likeCount={likeCount}
@@ -337,9 +337,9 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     const { trackId, url, title, singer, artworkUrl } = item;
     await TrackPlayer.add({
       id: String(trackId),
-      url: makePlayStreamUri(url ?? ""),
-      title: title ?? "",
-      artist: singer ?? "",
+      url: makePlayStreamUri(url),
+      title: title,
+      artist: singer,
       artwork: artworkUrl
     });
     await TrackPlayer.play();
