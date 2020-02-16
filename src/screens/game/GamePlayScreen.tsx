@@ -459,6 +459,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
               placeholderTextColor={colors.blueyGrey}
               value={songAnswerInput}
               onChangeText={this.onSongAnswerChangeText}
+              onSubmitEditing={this.submitAnswer}
             />
           </SongInput>
         </GameContent>
