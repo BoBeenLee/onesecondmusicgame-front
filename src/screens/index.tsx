@@ -20,7 +20,6 @@ import MainScreen from "src/screens/MainScreen";
 import withToast from "src/hocs/withToast";
 import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
 import GamePlayScreen from "src/screens/game/GamePlayScreen";
-import GameModeScreen from "src/screens/game/GameModeScreen";
 import GameRankingScreen from "src/screens/game/GameRankingScreen";
 import GameResultScreen from "src/screens/game/GameResultScreen";
 import GameSearchSingerScreen from "src/screens/game/GameSearchSingerScreen";
@@ -97,10 +96,6 @@ const screens: IScreenProps[] = [
   {
     Component: GamePlayScreen,
     id: SCREEN_IDS.GamePlayScreen
-  },
-  {
-    Component: GameModeScreen,
-    id: SCREEN_IDS.GameModeScreen
   },
   {
     Component: GameRankingScreen,
