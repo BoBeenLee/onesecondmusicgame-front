@@ -81,18 +81,21 @@ const setStackRoot = async ({
   componentId,
   nextComponentId,
   params,
-  animtaions = pushTransition
+  animtaions = pushTransition,
+  options
 }: {
   componentId: string;
   nextComponentId: string;
   params?: object;
   animtaions?: any;
+  options?: Options;
 }) =>
   await protectedMultiClick(() => {
     Navigation.setStackRoot(componentId, {
       component: {
         name: nextComponentId,
         options: {
+          ...options,
           animations: animtaions as any
         },
         passProps: params
@@ -153,32 +156,6 @@ const push = async ({
         options: {
           ...options,
           animations: animtaions as any
-        },
-        passProps: params
-      }
-    });
-  }, nextComponentId)(componentId, nextComponentId, params);
-
-const pushOptions = async ({
-  componentId,
-  nextComponentId,
-  params,
-  animtaions = pushTransition,
-  customTransition
-}: {
-  componentId: string;
-  customTransition?: any;
-  nextComponentId: string;
-  params?: object;
-  animtaions?: any;
-}) =>
-  await protectedMultiClick(async () => {
-    await Navigation.push(componentId, {
-      component: {
-        name: nextComponentId,
-        options: {
-          animations: animtaions as any,
-          customTransition
         },
         passProps: params
       }
@@ -267,7 +244,6 @@ export {
   showOverlayTransparent,
   getCurrentComponentId,
   push,
-  pushOptions,
   pop,
   popTo
 };
