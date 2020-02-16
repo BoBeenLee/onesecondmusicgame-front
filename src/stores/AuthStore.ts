@@ -106,16 +106,24 @@ const AuthStore = types
     });
 
     const kakaoSignIn = flow(function*() {
-      const tokenResponse: RetrieveAsyncFunc<typeof KakaoLogin.login> = yield KakaoLogin.login();
-      const profileResponse: RetrieveAsyncFunc<typeof KakaoLogin.getProfile> = yield KakaoLogin.getProfile();
+      try {
+        const tokenResponse: RetrieveAsyncFunc<typeof KakaoLogin.login> = yield KakaoLogin.login();
+        const profileResponse: RetrieveAsyncFunc<typeof KakaoLogin.getProfile> = yield KakaoLogin.getProfile();
 
-      self.accessId = profileResponse.id;
-      self.accessToken = tokenResponse.accessToken;
-      self.provider = "KAKAO";
-      self.user = User.create({
-        accessId: self.accessId
-      });
-      yield signIn();
+        self.accessId = profileResponse.id;
+        self.accessToken = tokenResponse.accessToken;
+        self.provider = "KAKAO";
+        self.user = User.create({
+          accessId: self.accessId
+        });
+        yield signIn();
+        return true;
+      } catch (error) {
+        if (error.code === "E_CANCELLED_OPERATION") {
+          return false;
+        }
+        throw error;
+      }
     });
 
     const googleSignIn = flow(function*() {
@@ -140,10 +148,12 @@ const AuthStore = types
           accessId: self.accessId
         });
         yield signIn();
+        return true;
       } catch (error) {
         if (error.code === statusCodes.SIGN_IN_CANCELLED) {
           // user cancelled the login flow
-          throw error;
+          // throw error;
+          return false;
         } else if (error.code === statusCodes.IN_PROGRESS) {
           // operation (e.g. sign in) is in progress already
           throw error;
@@ -161,7 +171,8 @@ const AuthStore = types
         ["public_profile"]
       );
       if (result.isCancelled) {
-        throw new Error("Login cancelled");
+        // throw new Error("Login cancelled");
+        return false;
       }
       const data: RetrieveAsyncFunc<typeof AccessToken.getCurrentAccessToken> = yield AccessToken.getCurrentAccessToken();
       if (!Boolean(data?.accessToken)) {
@@ -174,6 +185,7 @@ const AuthStore = types
         accessId: self.accessId
       });
       yield signIn();
+      return true;
     });
 
     const appleSignIn = flow(function*() {
@@ -211,6 +223,7 @@ const AuthStore = types
         accessId: self.accessId
       });
       yield signIn();
+      return true;
     });
 
     const signIn = flow(function*() {
