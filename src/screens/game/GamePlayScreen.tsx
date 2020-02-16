@@ -707,7 +707,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
   private finish = async () => {
     const { closePopup } = this.props.popupProps;
     const { componentId } = this.props;
-
     closePopup();
     GameResultScreen.open({
       componentId,
@@ -723,7 +722,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
         cancelText="취소"
         onCancel={closePopup}
         confirmText="확인"
-        onConfirm={this.home}
+        onConfirm={this.finish}
       />
     );
   };
