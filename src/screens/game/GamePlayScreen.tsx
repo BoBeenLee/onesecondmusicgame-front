@@ -732,9 +732,11 @@ class GamePlayScreen extends Component<IProps, IStates> {
     });
   };
 
-  private onFinishPopup = () => {
+  private onFinishPopup = async () => {
     const { showPopup } = this.props.popupProps;
     const heart = this.props.authStore.user?.heart!;
+    await heart?.fetchHeart?.();
+
     showPopup(
       <ChargeFullHeartPopup
         heart={heart}
