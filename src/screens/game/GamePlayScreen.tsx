@@ -494,7 +494,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const { currentStepStatus } = this.state;
     return (
       <Container>
-        <InnerContainer enableOnAndroid={true} enableAutomaticScroll={false}>
+        <InnerContainer enableOnAndroid={true} enableAutomaticScroll={true}>
           {this.renderGamePlay}
           {["play", "stop"].some(status => status === currentStepStatus)
             ? null
