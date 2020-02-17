@@ -375,7 +375,10 @@ class GameResultScreen extends Component<IProps, IStates> {
               <ResultSectionRemainHeartRow>
                 <HeartRemain>
                   <HeartRemainText>충전까지 남은 시간 : </HeartRemainText>
-                  <HeartRemainTime timeLeft={heart?.leftTime ?? 0} />
+                  <HeartRemainTime
+                    seconds={heart?.leftTimeSeconds ?? 0}
+                    onExpire={this.chargeTime}
+                  />
                 </HeartRemain>
                 <HeartGroup
                   hearts={_.times(5, index =>
@@ -403,9 +406,7 @@ class GameResultScreen extends Component<IProps, IStates> {
 
   private chargeTime = () => {
     const heart = this.props.authStore.user?.heart;
-    if (_.isEmpty(heart?.leftTime)) {
-      heart?.fetchHeart?.();
-    }
+    heart?.fetchHeart?.();
   };
 
   private initialize = async () => {

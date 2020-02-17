@@ -322,7 +322,10 @@ class MainScreen extends Component<IProps, IStates> {
             />
             <HeartRemain>
               <HeartRemainText>충전까지 남은 시간 : </HeartRemainText>
-              <HeartRemainTime timeLeft={heart?.leftTime ?? 0} />
+              <HeartRemainTime
+                seconds={heart?.leftTimeSeconds ?? 0}
+                onExpire={this.chargeTime}
+              />
             </HeartRemain>
           </HeartStatus>
         </Header>
@@ -401,6 +404,11 @@ class MainScreen extends Component<IProps, IStates> {
       </RegisterSongTooltipButtonView>
     );
   }
+
+  private chargeTime = () => {
+    const heart = this.props.authStore.user?.heart;
+    heart?.fetchHeart?.();
+  };
 
   private hideRegisterSongTooltip = () => {
     this.setState({ isNotTooltipShow: true }, async () => {
