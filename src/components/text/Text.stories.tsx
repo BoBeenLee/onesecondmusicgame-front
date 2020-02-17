@@ -23,5 +23,5 @@ storiesOf("Text", module)
     );
   })
   .add("TimerText", () => {
-    return <TimerText timeLeft={10} />;
+    return <TimerText seconds={10} onExpire={action("onExpire")} />;
   });
