@@ -111,7 +111,7 @@ function GameRankCard(props: IProps) {
               size={15}
               color={colors.coolGreen}
             />
-            <RankDiffText>{rankDiff}</RankDiffText>
+            <RankDiffText>{Math.abs(rankDiff)}</RankDiffText>
           </RankDiff>
         </LeftWrapper>
         <Profile size={59} uri={profileImage} editable={false} />
