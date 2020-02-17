@@ -391,7 +391,8 @@ class GamePlayScreen extends Component<IProps, IStates> {
 
     const navigateToReadyPlay = () => {
       GameReadyPlayOverlay.open({
-        onAfterClose: () => {
+        onAfterClose: async () => {
+          await TrackPlayer.reset();
           this.setState(
             {
               currentStepStatus: "play",
@@ -493,7 +494,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const { currentStepStatus } = this.state;
     return (
       <Container>
-        <InnerContainer enableOnAndroid={true} enableAutomaticScroll={false}>
+        <InnerContainer enableOnAndroid={true} enableAutomaticScroll={true}>
           {this.renderGamePlay}
           {["play", "stop"].some(status => status === currentStepStatus)
             ? null
@@ -713,7 +714,13 @@ class GamePlayScreen extends Component<IProps, IStates> {
       currentStepDateTime: null
     });
     if (isFinish) {
-      this.onFinishPopup();
+      const heart = this.props.authStore.user?.heart!;
+      await heart?.fetchHeart?.();
+      if (heart?.heartCount === 0) {
+        this.onFinishPopup();
+        return;
+      }
+      this.finish();
       return;
     }
     await delay(NEXT_STEP_SECONDS);
@@ -760,8 +767,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
   private onFinishPopup = async () => {
     const { showPopup } = this.props.popupProps;
     const heart = this.props.authStore.user?.heart!;
-    await heart?.fetchHeart?.();
-
     showPopup(
       <ChargeFullHeartPopup
         heart={heart}
