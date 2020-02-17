@@ -18,6 +18,7 @@ import {
   Bold18,
   Bold27,
   Bold36,
+  Regular16,
   Regular20
 } from "src/components/text/Typographies";
 import { SCREEN_IDS } from "src/screens/constant";
@@ -177,13 +178,19 @@ const AnswerStatus = styled.Image`
 const AnswerView = styled.View`
   flex: 1;
   align-items: center;
-  padding-top: 60px;
+  padding-top: 30px;
+`;
+
+const AnswerDescription = styled(Regular16)`
+  text-align: center;
+  color: ${colors.robinEggBlue};
+  margin-bottom: 5px;
 `;
 
 const AnswerText = styled(Bold36)`
   text-align: center;
   color: ${colors.robinEggBlue};
-  margin-bottom: 51px;
+  margin-bottom: 30px;
 `;
 
 const AnswerSingerText = styled(Regular20)`
@@ -407,7 +414,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
                   const { songAnswerInput } = this.state;
                   let isUserAnswer = false;
                   try {
-                    isUserAnswer = await isAnswer(songAnswerInput);
+                    isUserAnswer =
+                      !_.isEmpty(songAnswerInput) &&
+                      (await isAnswer(songAnswerInput));
                   } catch (error) {
                     showToast(error.message);
                   }
@@ -460,7 +469,8 @@ class GamePlayScreen extends Component<IProps, IStates> {
       const { songAnswerInput } = this.state;
       let isUserAnswer = false;
       try {
-        isUserAnswer = await isAnswer(songAnswerInput);
+        isUserAnswer =
+          !_.isEmpty(songAnswerInput) && (await isAnswer(songAnswerInput));
       } catch (error) {
         showToast(error.message);
       }
@@ -565,9 +575,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
     } = this.gamePlayHighlights;
     const { songAnswerSeconds } = this.state;
     const isAnswer = Boolean(currentGameHighlight?.isUserAnswer);
+    const userAnswer = currentGameHighlight?.userAnswer ?? "";
     return (
       <AnswerContainer>
-        <CorrectBackground source={images.bgCorrectMirrorballLight} />
+        {isAnswer && !_.isEmpty(userAnswer) ? (
+          <CorrectBackground source={images.bgCorrectMirrorballLight} />
+        ) : null}
         <Header>
           <GamePlayStep circles={gamePlayStepStatuses} />
           <LimitTimeProgress
@@ -585,7 +598,14 @@ class GamePlayScreen extends Component<IProps, IStates> {
           )}
           <AnswerView>
             {isAnswer ? (
-              <AnswerText>정답입니다~!!</AnswerText>
+              !_.isEmpty(userAnswer) ? (
+                <AnswerText>정답입니다~!!</AnswerText>
+              ) : (
+                <>
+                  <AnswerDescription>SKIP 아이템을 사용하여 </AnswerDescription>
+                  <AnswerText>정답 처리되었습니다~!!</AnswerText>
+                </>
+              )
             ) : (
               <AnswerText>오답입니다ㅠㅠ</AnswerText>
             )}
@@ -645,24 +665,16 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private useSkipItem = async () => {
-    const {
-      isFinish,
-      playToken,
-      currentGameHighlight
-    } = this.gamePlayHighlights;
+    const { playToken, currentGameHighlight, answer } = this.gamePlayHighlights;
     const userItem = this.props.authStore.user?.userItemsByItemType(
       Item.ItemTypeEnum.SKIP
     );
-    userItem?.useItemType?.({
+    await userItem?.useItemType?.({
       playToken,
       highlightId: currentGameHighlight?.id ?? 0
     });
-    if (isFinish) {
-      this.setState({ currentStepStatus: "stop", currentStepDateTime: null });
-      this.onFinishPopup();
-      return;
-    }
-    await this.nextStep();
+    answer(true, "", 0);
+    await this.beforeNextStep();
   };
 
   private submitAnswer = async () => {
