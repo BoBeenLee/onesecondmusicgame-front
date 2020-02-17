@@ -17,7 +17,7 @@ const Heart = types
           return 0;
         }
         const diffSeconds = secondsDuration(today(), self.leftTime);
-        return diffSeconds > 0 ? diffSeconds : 0;
+        return diffSeconds > 0 ? _.floor(diffSeconds) : 0;
       }
     };
   })
