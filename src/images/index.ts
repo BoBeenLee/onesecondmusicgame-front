@@ -6,6 +6,7 @@ const images = {
   baselineQueueMusicBlack18Dp: require("./baselineQueueMusicBlack18Dp.png"),
   baselineEmojiEventsBlack18Dp: require("./baselineEmojiEventsBlack18Dp.png"),
   correctCD: require("./imageCd.png"),
+  correctLight: require("./light_correct.json"),
   wrongCD: require("./imageCd2.png"),
   playCD: require("./imageDefault.png"),
   playButton: require("./button1.png"),

@@ -41,7 +41,7 @@ import CircleCheckGroup from "src/components/icon/CircleCheckGroup";
 import XEIcon from "src/components/icon/XEIcon";
 import TimerText from "src/components/text/TimerText";
 import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
-import { Item } from "__generate__/api";
+import { Item, GameResultResponse } from "__generate__/api";
 import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import images from "src/images";
 
@@ -58,8 +58,7 @@ interface IParams {
 interface IProps extends IInject, IParams, IPopupProps {}
 
 interface IStates {
-  gainPointOfThisGame: number;
-  totalPoint: number;
+  gameResult: NoUndefinedField<GameResultResponse>;
 }
 
 const Container = styled(ContainerWithStatusBar)`
@@ -292,8 +291,12 @@ class GameResultScreen extends Component<IProps, IStates> {
     super(props);
 
     this.state = {
-      gainPointOfThisGame: 0,
-      totalPoint: 0
+      gameResult: {
+        gainPointOfThisGame: 0,
+        totalPoint: 0,
+        myRanking: 0,
+        heartCount: 0
+      }
     };
 
     loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
@@ -310,7 +313,11 @@ class GameResultScreen extends Component<IProps, IStates> {
   public render() {
     const heart = this.props.authStore.user?.heart;
     const nickname = this.props.authStore.user?.nickname ?? "";
-    const { gainPointOfThisGame, totalPoint } = this.state;
+    const {
+      gainPointOfThisGame,
+      totalPoint,
+      myRanking
+    } = this.state.gameResult;
     const { gamePlayStepStatuses } = this.gamePlayHighlights;
 
     return (
@@ -350,7 +357,7 @@ class GameResultScreen extends Component<IProps, IStates> {
               </ResultSectionHeaderRow>
               <ResultSectionMyRankRow>
                 <ResultSectionGroup>
-                  <Rank>1위</Rank>
+                  <Rank>{myRanking}위</Rank>
                   <Name>{nickname}</Name>
                 </ResultSectionGroup>
                 <Score>{totalPoint}점</Score>
@@ -416,9 +423,14 @@ class GameResultScreen extends Component<IProps, IStates> {
       playToken
     });
     await this.props.authStore.user?.heart?.fetchHeart();
+    response.myRanking;
     this.setState({
-      gainPointOfThisGame: response.gainPointOfThisGame ?? 0,
-      totalPoint: response.totalPoint ?? 0
+      gameResult: {
+        gainPointOfThisGame: response.gainPointOfThisGame ?? 0,
+        totalPoint: response.totalPoint ?? 0,
+        myRanking: response.myRanking ?? 0,
+        heartCount: response.heartCount ?? 0
+      }
     });
   };
 
