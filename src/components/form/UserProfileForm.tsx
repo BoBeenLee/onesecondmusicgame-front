@@ -105,7 +105,8 @@ const UserProfileForm = (props: IProps) => {
               setValue("nickname", text, true);
               setForm({ ...form, nickname: text });
             }}
-            placeholder="닉네임 입력 (최소 3글자 이상)"
+            placeholder="닉네임 입력 (최소 3글자 이상, 최대 30자)"
+            maxLength={30}
             value={form.nickname}
           />
         </NicknameInput>

@@ -121,7 +121,8 @@ const GamePlayHighlights = types
             return {
               ...item,
               isUserAnswer,
-              userAnswer
+              userAnswer,
+              userAnswerSeconds
             };
           }
           return item;
