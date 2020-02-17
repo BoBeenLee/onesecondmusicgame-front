@@ -7,7 +7,8 @@ import { FlatListProps, FlatList, ListRenderItem } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import TrackPlayer, {
   addEventListener,
-  State
+  State,
+  EmitterSubscription
 } from "react-native-track-player";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
@@ -182,7 +183,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
   }
 
   public tracks: ITracks;
-  public playbackStateListener: any;
+  public playbackStateListener: EmitterSubscription;
 
   constructor(props: IProps) {
     super(props);
@@ -211,7 +212,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
   }
 
   public componentWillUnmount() {
-    this.playbackStateListener?.();
+    this.playbackStateListener?.remove();
   }
 
   public render() {

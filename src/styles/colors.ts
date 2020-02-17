@@ -39,6 +39,7 @@ const colors = {
   black70: "rgba(33,33,33,.7)",
   darkBlueGrey: "#0d1233",
   coolGreen: "#3bcb4e",
+  lavenderPink: "#e472e1",
   white: "#ffffff",
   gray20: "#fafafa",
   gray50: "#f5f5f5",
