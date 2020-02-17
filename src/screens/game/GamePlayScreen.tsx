@@ -391,7 +391,8 @@ class GamePlayScreen extends Component<IProps, IStates> {
 
     const navigateToReadyPlay = () => {
       GameReadyPlayOverlay.open({
-        onAfterClose: () => {
+        onAfterClose: async () => {
+          await TrackPlayer.reset();
           this.setState(
             {
               currentStepStatus: "play",
