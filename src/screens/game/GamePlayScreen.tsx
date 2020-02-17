@@ -713,7 +713,13 @@ class GamePlayScreen extends Component<IProps, IStates> {
       currentStepDateTime: null
     });
     if (isFinish) {
-      this.onFinishPopup();
+      const heart = this.props.authStore.user?.heart!;
+      await heart?.fetchHeart?.();
+      if (heart?.heartCount === 0) {
+        this.onFinishPopup();
+        return;
+      }
+      this.finish();
       return;
     }
     await delay(NEXT_STEP_SECONDS);
@@ -760,8 +766,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
   private onFinishPopup = async () => {
     const { showPopup } = this.props.popupProps;
     const heart = this.props.authStore.user?.heart!;
-    await heart?.fetchHeart?.();
-
     showPopup(
       <ChargeFullHeartPopup
         heart={heart}
