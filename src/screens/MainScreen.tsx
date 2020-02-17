@@ -405,9 +405,9 @@ class MainScreen extends Component<IProps, IStates> {
     );
   }
 
-  private chargeTime = () => {
+  private chargeTime = async () => {
     const heart = this.props.authStore.user?.heart;
-    heart?.fetchHeart?.();
+    await heart?.fetchHeart?.();
   };
 
   private hideRegisterSongTooltip = () => {
