@@ -31,6 +31,7 @@ const images = {
   note: require("./note.png"),
   miniHeart: require("./group3Copy2.png"),
   profileDefault: require("./profileDefault.png"),
-  icGameItemEmpty: require("./ic_game_item_empty.png")
+  icGameItemEmpty: require("./ic_game_item_empty.png"),
+  icSinger: require("./ic_singer.png")
 };
 export default images;

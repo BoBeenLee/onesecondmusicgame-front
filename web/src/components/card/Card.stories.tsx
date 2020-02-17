@@ -9,6 +9,7 @@ import GameTopRankCard from "src/components/card/GameTopRankCard";
 import SearchSingerCard from "src/components/card/SearchSingerCard";
 import GameItemEmptyCard from "src/components/card/GameItemEmptyCard";
 import GameItemCard from "src/components/card/GameItemCard";
+import SingerNameCard from "src/components/card/SingerNameCard";
 import { Bold18, Bold15 } from "src/components/text/Typographies";
 import colors from "src/styles/colors";
 import images from "src/images";
@@ -120,4 +121,7 @@ storiesOf("Card", module)
         ContentComponent={<HeartImage source={images.inviteHeart} />}
       />
     );
+  })
+  .add("SingerNameCard", () => {
+    return <SingerNameCard singerName="Hello World" />;
   });

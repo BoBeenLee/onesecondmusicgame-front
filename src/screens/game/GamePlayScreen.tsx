@@ -57,6 +57,7 @@ import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import GameReadyPlayOverlay from "src/screens/game/GameReadyPlayOverlay";
 import { secondsDuration } from "src/utils/date";
 import { logEvent } from "src/configs/analytics";
+import SingerNameCard from "src/components/card/SingerNameCard";
 
 interface IInject {
   appStateStatus: AppStateStatus;
@@ -119,7 +120,7 @@ const GamePlayStep = styled(CircleCheckGroup)`
 
 const GamePlayers = styled(OSMGCarousel)``;
 
-const GamePlayerView = styled.View`
+const GamePlayerItem = styled.View`
   width: 100%;
   justify-content: center;
   align-items: center;
@@ -129,8 +130,12 @@ const GameContent = styled.View`
   flex: 1;
   flex-direction: column;
   align-items: center;
-  padding-top: 70px;
   padding-horizontal: 70px;
+`;
+
+const SingerNameView = styled(SingerNameCard)`
+  margin-top: 19px;
+  margin-bottom: 70px;
 `;
 
 const SongInput = styled.View`
@@ -218,8 +223,8 @@ const AnswerButton = styled.TouchableOpacity`
   margin-right: 7px;
 `;
 
-const AnswerButtonText = styled(Bold20)`
-  color: ${colors.white};
+const AnswerButtonText = styled(Bold20)<{ disabled: boolean }>`
+  color: ${({ disabled }) => (disabled ? colors.lavenderPink : colors.white)};
 `;
 
 const CorrectBackground = styled.Image`
@@ -492,7 +497,11 @@ class GamePlayScreen extends Component<IProps, IStates> {
   }
 
   private get renderGamePlay() {
-    const { currentStep, gamePlayStepStatuses } = this.gamePlayHighlights;
+    const {
+      currentStep,
+      gamePlayStepStatuses,
+      currentGameHighlight
+    } = this.gamePlayHighlights;
     const { songAnswerInput, songAnswerSeconds } = this.state;
     const userItem = this.props.authStore.user?.userItemsByItemType(
       Item.ItemTypeEnum.SKIP
@@ -516,6 +525,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
           renderItem={this.renderItem}
         />
         <GameContent>
+          <SingerNameView singerName={currentGameHighlight?.singer ?? ""} />
           <SongInput>
             <SongTextInput
               placeholder="노래명을 맞춰주세요!"
@@ -528,7 +538,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
         </GameContent>
         <Footer>
           <AnswerButton onPress={this.submitAnswer}>
-            <AnswerButtonText>입력확인</AnswerButtonText>
+            <AnswerButtonText disabled={_.isEmpty(songAnswerInput)}>
+              입력확인
+            </AnswerButtonText>
           </AnswerButton>
           <SkipButton
             disabled={(userItem?.count ?? 0) === 0}
@@ -616,12 +628,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
 
   private renderItem = (props: { item: ICarouselItem; index: number }) => {
     return (
-      <GamePlayerView key={`gamePlayer${props.index}`}>
+      <GamePlayerItem key={`gamePlayer${props.index}`}>
         <GameAudioPlayer
           size={200}
           onPlay={_.partial(this.onPlayItem, props.item)}
         />
-      </GamePlayerView>
+      </GamePlayerItem>
     );
   };
 
