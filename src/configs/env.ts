@@ -33,22 +33,22 @@ const SOUNDCLOUD_API_URL = "https://api.soundcloud.com";
 
 const buildTestAdEnv = () => ({
   APP_ID: isIOS()
-    ? "ca-app-pub-7927704382463131~8110014374"
-    : "ca-app-pub-7927704382463131~1736177714",
+    ? "ca-app-pub-8725491575270284~8101981332"
+    : "ca-app-pub-8725491575270284~4676713978",
   HEART_REWARD: "ca-app-pub-3940256099942544/5224354917",
   HEART_SCREEN: "ca-app-pub-3940256099942544/8691691433"
 });
 
 const buildProdAdEnv = () => ({
   APP_ID: isIOS()
-    ? "ca-app-pub-7927704382463131~8110014374"
-    : "ca-app-pub-7927704382463131~1736177714",
+    ? "ca-app-pub-8725491575270284~8101981332"
+    : "ca-app-pub-8725491575270284~4676713978",
   HEART_REWARD: isIOS()
-    ? "ca-app-pub-7927704382463131/3882569726"
-    : "ca-app-pub-7927704382463131/2829891243",
+    ? "ca-app-pub-8725491575270284/9747424862"
+    : "ca-app-pub-8725491575270284/6929689833",
   HEART_SCREEN: isIOS()
-    ? "ca-app-pub-7927704382463131/4738703438"
-    : "ca-app-pub-7927704382463131/2662655698"
+    ? "ca-app-pub-8725491575270284/3439653928"
+    : "ca-app-pub-8725491575270284/8691980606"
 });
 
 const STAGING_ENV_ENTRY: IEnvironmentEntry = {

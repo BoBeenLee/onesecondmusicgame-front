@@ -90,11 +90,11 @@ function GameRankCard(props: IProps) {
 
   const makeIconName = (rankDiff: number) => {
     if (rankDiff < 0) {
-      return "caret-down-min";
+      return "caret-up-min";
     } else if (rankDiff === 0) {
       return "minus-min";
     } else {
-      return "caret-up-min";
+      return "caret-down-min";
     }
   };
 
