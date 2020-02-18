@@ -9,7 +9,7 @@ import {
 import { inject, observer, Observer } from "mobx-react";
 import styled from "styled-components/native";
 
-import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
+import { AdmobUnitID, loadAD, showAD, isLoadedAD } from "src/configs/admob";
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
 import { IPopupProps } from "src/hocs/withPopup";
@@ -30,7 +30,7 @@ import ChargeSkipItemPopup from "src/components/popup/ChargeSkipItemPopup";
 import { makeAppShareLink } from "src/utils/dynamicLink";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
-
+import { delay } from "src/utils/common";
 interface IInject {
   authStore: IAuthStore;
   toastStore: IToastStore;
@@ -138,7 +138,7 @@ class UserGameItemScreen extends Component<IProps, IStates> {
       }
     };
 
-    loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
+    loadAD(AdmobUnitID.HeartReward, ["game", "quiz", "music", "korea"], {
       onRewarded: this.onRewarded
     });
   }
@@ -222,7 +222,12 @@ class UserGameItemScreen extends Component<IProps, IStates> {
   };
 
   private requestHeartRewardAD = () => {
-    showAD(AdmobUnitID.HeartReward);
+    if (isLoadedAD(AdmobUnitID.HeartReward)) {
+      showAD(AdmobUnitID.HeartReward);
+      loadAD(AdmobUnitID.HeartReward, ["game", "quiz", "music", "korea"], {
+        onRewarded: this.onRewarded
+      });
+    }
   };
 
   private invite = async () => {

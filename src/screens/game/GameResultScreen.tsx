@@ -299,7 +299,7 @@ class GameResultScreen extends Component<IProps, IStates> {
       }
     };
 
-    loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
+    loadAD(AdmobUnitID.HeartReward, ["game", "quiz", "music", "korea"], {
       onRewarded: this.onRewarded
     });
     this.gamePlayHighlights =
