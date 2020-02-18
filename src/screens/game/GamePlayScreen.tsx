@@ -99,6 +99,8 @@ const InnerContainer = styled(KeyboardAwareScrollView).attrs({
   }
 })``;
 
+const InnerScollView = styled.ScrollView``;
+
 const Header = styled.View`
   justify-content: center;
   align-items: center;
@@ -128,7 +130,6 @@ const GamePlayerItem = styled.View`
 `;
 
 const GameContent = styled.View`
-  flex: 1;
   flex-direction: column;
   align-items: center;
   padding-horizontal: 70px;
@@ -211,6 +212,7 @@ const Footer = styled.View`
   justify-content: space-between;
   padding-horizontal: 14px;
   padding-bottom: 17px;
+  padding-top: 80px;
 `;
 
 const AnswerContent = styled.View`
@@ -513,10 +515,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
     return (
       <Container>
         <InnerContainer enableOnAndroid={true} enableAutomaticScroll={true}>
-          {this.renderGamePlay}
-          {["play", "stop"].some(status => status === currentStepStatus)
-            ? null
-            : this.renderAnswer}
+          <InnerScollView>
+            {this.renderGamePlay}
+            {["play", "stop"].some(status => status === currentStepStatus)
+              ? null
+              : this.renderAnswer}
+          </InnerScollView>
         </InnerContainer>
         <HiddenAnswerCopyButton onPress={this.copyAnswer}>
           <HiddenAnswerCopyButtonView />
