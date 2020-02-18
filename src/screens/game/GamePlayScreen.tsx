@@ -130,14 +130,19 @@ const GamePlayerItem = styled.View`
 `;
 
 const GameContent = styled.View`
+  flex: 1;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   padding-horizontal: 70px;
 `;
 
-const SingerNameView = styled(SingerNameCard)`
+const SingerNameView = styled.View`
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-horizontal: 70px;
   margin-top: 19px;
-  margin-bottom: 70px;
 `;
 
 const SongInput = styled.View`
@@ -212,7 +217,6 @@ const Footer = styled.View`
   justify-content: space-between;
   padding-horizontal: 14px;
   padding-bottom: 17px;
-  padding-top: 80px;
 `;
 
 const AnswerContent = styled.View`
@@ -515,12 +519,10 @@ class GamePlayScreen extends Component<IProps, IStates> {
     return (
       <Container>
         <InnerContainer enableOnAndroid={true} enableAutomaticScroll={true}>
-          <InnerScollView>
-            {this.renderGamePlay}
-            {["play", "stop"].some(status => status === currentStepStatus)
-              ? null
-              : this.renderAnswer}
-          </InnerScollView>
+          {this.renderGamePlay}
+          {["play", "stop"].some(status => status === currentStepStatus)
+            ? null
+            : this.renderAnswer}
         </InnerContainer>
         <HiddenAnswerCopyButton onPress={this.copyAnswer}>
           <HiddenAnswerCopyButtonView />
@@ -557,8 +559,10 @@ class GamePlayScreen extends Component<IProps, IStates> {
           itemWidth={240}
           renderItem={this.renderItem}
         />
+        <SingerNameView>
+          <SingerNameCard singerName={currentGameHighlight?.singer ?? ""} />
+        </SingerNameView>
         <GameContent>
-          <SingerNameView singerName={currentGameHighlight?.singer ?? ""} />
           <SongInput>
             <SongTextInput
               placeholder="노래명을 맞춰주세요!"
