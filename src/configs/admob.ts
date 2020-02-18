@@ -53,6 +53,9 @@ class AdmobUnit {
       this.advert.show();
     }
   };
+  public isLoaded = () => {
+    return this.advert.isLoaded();
+  };
 }
 
 export enum AdmobUnitID {
@@ -84,6 +87,10 @@ export const loadAD = (
 
 export const showAD = (admobUnitID: AdmobUnitID) => {
   admobs[admobUnitID].show();
+};
+
+export const isLoadedAD = (admobUnitID: AdmobUnitID) => {
+  return admobs[admobUnitID].isLoaded();
 };
 
 export const initialize = () => {

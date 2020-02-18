@@ -405,7 +405,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     if (props.gamePlayHighlights) {
       this.gamePlayHighlights = props.gamePlayHighlights();
     }
-    loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
+    loadAD(AdmobUnitID.HeartReward, ["game", "quiz", "music", "korea"], {
       onRewarded: this.onRewarded
     });
 

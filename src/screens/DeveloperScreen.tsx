@@ -112,7 +112,7 @@ class DeveloperScreen extends Component<IProps, IStates> {
     this.fetchAllStorage();
     this.fetchIID();
     await this.singers.initialize({ q: "" });
-    loadAD(AdmobUnitID.HeartReward, ["game", "quiz"], {
+    loadAD(AdmobUnitID.HeartReward, ["game", "quiz", "music", "korea"], {
       onRewarded: this.onRewarded
     });
     loadAD(AdmobUnitID.HeartScreen, ["game", "quiz"]);
