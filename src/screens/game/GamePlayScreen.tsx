@@ -147,6 +147,7 @@ const SongInput = styled.View`
   align-items: center;
   border-bottom-width: 4px;
   border-bottom-color: ${colors.blueberry};
+  margin-bottom: 19px;
 `;
 
 const SongTextInput = styled(OSMGTextInput).attrs({
@@ -209,7 +210,7 @@ const Footer = styled.View`
   align-items: flex-start;
   justify-content: space-between;
   padding-horizontal: 14px;
-  padding-bottom: 31px;
+  padding-bottom: 17px;
 `;
 
 const AnswerContent = styled.View`
@@ -220,7 +221,7 @@ const AnswerContent = styled.View`
 `;
 
 const AnswerButton = styled.TouchableOpacity`
-  flex: 1;
+  width: 221px;
   height: 56px;
   justify-content: center;
   align-items: center;
@@ -232,6 +233,21 @@ const AnswerButton = styled.TouchableOpacity`
 
 const AnswerButtonText = styled(Bold20)<{ disabled: boolean }>`
   color: ${({ disabled }) => (disabled ? colors.lavenderPink : colors.white)};
+`;
+
+const WrongPassButton = styled.TouchableOpacity`
+  width: 153px;
+  height: 56px;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 14px;
+  border: solid 3px ${colors.lightBlueGrey};
+  background-color: ${colors.paleLavender};
+`;
+
+const WrongPassButtonText = styled(Bold12)`
+  color: ${colors.pinkyPurple};
 `;
 
 const CorrectBackground = styled.Image`
@@ -247,6 +263,7 @@ const NextEmptyView = styled.View``;
 const NextStepGroup = styled.View`
   flex-direction: column;
   align-items: flex-end;
+  margin-bottom: 14px;
 `;
 
 const NextStepButton = styled.TouchableOpacity`
@@ -378,6 +395,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     };
     this.nextStep = props.wrapperDisabled(this.nextStep, "nextStep");
     this.useSkipItem = props.wrapperDisabled(this.useSkipItem, "useSkipItem");
+    this.wrongPass = props.wrapperDisabled(this.wrongPass, "wrongPass");
     this.submitAnswer = props.wrapperDisabled(
       this.submitAnswer,
       "submitAnswer"
@@ -546,13 +564,13 @@ class GamePlayScreen extends Component<IProps, IStates> {
               onSubmitEditing={this.submitAnswer}
             />
           </SongInput>
-        </GameContent>
-        <Footer>
           <AnswerButton onPress={this.submitAnswer}>
             <AnswerButtonText disabled={_.isEmpty(songAnswerInput)}>
               입력확인
             </AnswerButtonText>
           </AnswerButton>
+        </GameContent>
+        <Footer>
           <SkipButton
             disabled={(userItem?.count ?? 0) === 0}
             onPress={this.useSkipItem}
@@ -563,6 +581,9 @@ class GamePlayScreen extends Component<IProps, IStates> {
               <SkipBadgeText>{userItem?.count ?? 0}</SkipBadgeText>
             </SkipBadge>
           </SkipButton>
+          <WrongPassButton onPress={this.wrongPass}>
+            <WrongPassButtonText>오답으로 PASS</WrongPassButtonText>
+          </WrongPassButton>
         </Footer>
       </>
     );
@@ -675,6 +696,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
       highlightId: currentGameHighlight?.id ?? 0
     });
     answer(true, "", 0);
+    await this.beforeNextStep();
+  };
+
+  private wrongPass = async () => {
+    const { answer } = this.gamePlayHighlights;
+    answer(false, "", 0);
     await this.beforeNextStep();
   };
 
