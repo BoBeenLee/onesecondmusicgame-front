@@ -272,10 +272,9 @@ const AuthStore = types
     };
 
     const updateUserInfo = flow(function*(signInResponse: LoggedInMusicUser) {
-      const response: RetrieveAsyncFunc<typeof findItemAllUsingGET> = yield findItemAllUsingGET();
       self.user?.setNickname(signInResponse?.nickname ?? "");
       self.user?.setProfileImageUrl(signInResponse?.profileImageUrl ?? "");
-      self.user?.setUserItems(response);
+      yield updateUserReward();
       self.user?.heart.fetchHeart();
       setUserID(self.accessId);
     });
@@ -285,9 +284,10 @@ const AuthStore = types
       yield myInfoChangeUsingPUT({ newNickname: nickname });
     });
 
-    const updateUserReward = () => {
-      self.user?.heart.fetchHeart();
-    };
+    const updateUserReward = flow(function*() {
+      const response: RetrieveAsyncFunc<typeof findItemAllUsingGET> = yield findItemAllUsingGET();
+      self.user?.setUserItems(response);
+    });
 
     const updateAuthInfo = () => {
       setItem(FIELD.ACCESS_ID, self.accessId);

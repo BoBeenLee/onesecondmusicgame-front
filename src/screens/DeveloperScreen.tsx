@@ -233,7 +233,7 @@ class DeveloperScreen extends Component<IProps, IStates> {
     const { showToast } = this.props.toastStore;
     try {
       await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
-      updateUserReward();
+      await updateUserReward();
       showToast("보상 완료!");
     } catch (error) {
       showToast(error.message);

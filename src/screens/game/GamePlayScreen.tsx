@@ -819,7 +819,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const { closePopup } = this.props.popupProps;
     try {
       await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
-      updateUserReward();
+      await updateUserReward();
       closePopup();
       this.onGainFullHeartPopup();
     } catch (error) {

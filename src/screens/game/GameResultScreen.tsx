@@ -471,7 +471,7 @@ class GameResultScreen extends Component<IProps, IStates> {
     const { showToast } = this.props.toastStore;
     try {
       await rewardForWatchingAdUsingPOST(RewardType.AdMovie);
-      updateUserReward();
+      await updateUserReward();
       closePopup();
       this.onGainFullHeartPopup();
     } catch (error) {
