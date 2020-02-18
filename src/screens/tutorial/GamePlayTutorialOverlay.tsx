@@ -36,10 +36,10 @@ const ContainerTouchabledView = styled.TouchableWithoutFeedback`
 const PlayStep1 = styled.View`
   position: absolute;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: flex-end;
-  bottom: ${iosStatusBarHeight(true) + 20}px;
-  right: 15px;
+  bottom: 15px;
+  left: 15px;
 `;
 
 const SkipDescription = styled(Bold20)`

@@ -306,8 +306,8 @@ class GameResultScreen extends Component<IProps, IStates> {
       props?.gamePlayHighlights?.() ?? GamePlayHighlights.create({});
   }
 
-  public componentDidMount() {
-    this.initialize();
+  public async componentDidMount() {
+    await this.initialize();
   }
 
   public render() {
@@ -423,7 +423,6 @@ class GameResultScreen extends Component<IProps, IStates> {
       playToken
     });
     await this.props.authStore.user?.heart?.fetchHeart();
-    response.myRanking;
     this.setState({
       gameResult: {
         gainPointOfThisGame: response.gainPointOfThisGame ?? 0,
