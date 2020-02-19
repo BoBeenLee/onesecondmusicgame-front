@@ -830,7 +830,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
       artist: "???",
       artwork: artworkUrl
     });
-    await this.onPlayItem(currentGameHighlight);
+    // await this.onPlayItem(currentGameHighlight);
   };
 
   private onFinishPopup = async () => {
