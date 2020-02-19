@@ -925,10 +925,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     Clipboard.setString(filterTitle);
     showToast("클립보드 복사 완료");
   };
-
-  private home = () => {
-    MainScreen.open();
-  };
 }
 
+export { GamePlayScreenStatic };
 export default withBackHandler(withDisabled(GamePlayScreen));

@@ -29,7 +29,7 @@ import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
 import GameRankingScreen from "src/screens/game/GameRankingScreen";
 import LevelBadge from "src/components/badge/LevelBadge";
 import XEIconButton from "src/components/button/XEIconButton";
-import GamePlayScreen from "src/screens/game/GamePlayScreen";
+import { GamePlayScreenStatic } from "src/screens/game/GamePlayScreen";
 import UserProfileScreen from "src/screens/user/UserProfileScreen";
 import images from "src/images";
 import { IForm } from "src/components/form/UserProfileForm";
@@ -274,15 +274,14 @@ class MainScreen extends Component<IProps, IStates> {
     this.state = {
       isNotTooltipShow: true
     };
-    props.store.initializeMainApp();
   }
 
   public async componentDidMount() {
-    this.updateCodePushIfAvailable();
-    const isNotTooltipShow = await defaultItemToBoolean(
-      FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP,
-      false
-    );
+    const [, , isNotTooltipShow] = await Promise.all([
+      this.updateCodePushIfAvailable(),
+      this.props.store.initializeMainApp(),
+      defaultItemToBoolean(FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP, false)
+    ]);
     this.setState({ isNotTooltipShow });
   }
 
@@ -439,7 +438,7 @@ class MainScreen extends Component<IProps, IStates> {
     const heart = this.props.authStore.user?.heart!;
 
     try {
-      await GamePlayScreen.open({
+      await GamePlayScreenStatic.open({
         componentId,
         heartCount: heart?.heartCount ?? 0
       });
@@ -458,9 +457,8 @@ class MainScreen extends Component<IProps, IStates> {
     const { componentId } = this.props;
     const { showToast } = this.props.toastStore;
     const heart = this.props.authStore.user?.heart!;
-
     try {
-      GamePlayScreen.openSelectedSingers({
+      GamePlayScreenStatic.openSelectedSingers({
         componentId,
         heartCount: heart?.heartCount ?? 0
       });
