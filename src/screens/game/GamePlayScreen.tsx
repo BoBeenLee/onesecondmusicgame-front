@@ -59,6 +59,7 @@ import { secondsDuration } from "src/utils/date";
 import { logEvent } from "src/configs/analytics";
 import SingerNameCard from "src/components/card/SingerNameCard";
 import { getScreenHeight } from "src/utils/device";
+import withBackHandler, { IBackHandlerProps } from "src/hocs/withBackHandler";
 
 interface IInject {
   appStateStatus: AppStateStatus;
@@ -71,7 +72,11 @@ interface IParams {
   heartCount: number;
 }
 
-interface IProps extends IInject, IPopupProps, IDisabledProps {
+interface IProps
+  extends IInject,
+    IPopupProps,
+    IDisabledProps,
+    IBackHandlerProps {
   componentId: string;
   selectedSingers: ISinger[];
   gamePlayHighlights: () => IGamePlayHighlights;
@@ -80,6 +85,7 @@ interface IProps extends IInject, IPopupProps, IDisabledProps {
 interface IStates {
   currentStepStatus: "play" | "stop" | "answer";
   currentStepDateTime: Moment | null;
+  currentStepPlayCount: number;
   songAnswerInput: string;
   songAnswerSeconds: number;
 }
@@ -331,6 +337,8 @@ const HiddenAnswerCopyButtonView = styled.View`
 
 const DEFAULT_LIMIT_TIME = 40;
 const NEXT_STEP_SECONDS = 5000;
+const FISRT_PLAY_SECONDS = 2600;
+const PLAY_SECONDS = 2100;
 
 @inject(
   ({ store }: { store: IStore }): IInject => ({
@@ -394,6 +402,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     this.state = {
       currentStepStatus: "stop",
       currentStepDateTime: null,
+      currentStepPlayCount: 0,
       songAnswerInput: "",
       songAnswerSeconds: DEFAULT_LIMIT_TIME
     };
@@ -404,6 +413,8 @@ class GamePlayScreen extends Component<IProps, IStates> {
       this.submitAnswer,
       "submitAnswer"
     );
+    this.props.backHandlerProps.addBackButtonListener(this.exit);
+
     if (props.gamePlayHighlights) {
       this.gamePlayHighlights = props.gamePlayHighlights();
       this.gameHighlightViews = _.map(
@@ -426,6 +437,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
             {
               currentStepStatus: "play",
               currentStepDateTime: moment(),
+              currentStepPlayCount: 0,
               songAnswerInput: "",
               songAnswerSeconds: DEFAULT_LIMIT_TIME
             },
@@ -707,10 +719,18 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private onPlayItem = async (item: IGamePlayHighlightItem) => {
+    const { currentStepPlayCount } = this.state;
     await TrackPlayer.seekTo(_.round((item.millisecond ?? 0) / 1000));
     await TrackPlayer.play();
-    await delay(2000);
+    if (currentStepPlayCount === 0) {
+      await delay(FISRT_PLAY_SECONDS);
+      await TrackPlayer.pause();
+    }
+    await delay(PLAY_SECONDS);
     await TrackPlayer.pause();
+    this.setState({
+      currentStepPlayCount: currentStepPlayCount + 1
+    });
   };
 
   private useSkipItem = async () => {
@@ -783,6 +803,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
       {
         currentStepStatus: "play",
         currentStepDateTime: moment(),
+        currentStepPlayCount: 0,
         songAnswerInput: "",
         songAnswerSeconds: DEFAULT_LIMIT_TIME
       },
@@ -887,6 +908,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
         onConfirm={this.finish}
       />
     );
+    return false;
   };
 
   private copyAnswer = () => {
@@ -909,4 +931,4 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 }
 
-export default withDisabled(GamePlayScreen);
+export default withBackHandler(withDisabled(GamePlayScreen));
