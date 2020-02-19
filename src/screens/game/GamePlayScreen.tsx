@@ -59,6 +59,7 @@ import GameReadyPlayOverlay from "src/screens/game/GameReadyPlayOverlay";
 import { secondsDuration } from "src/utils/date";
 import { logEvent } from "src/configs/analytics";
 import SingerNameCard from "src/components/card/SingerNameCard";
+import { getDeviceHeight } from "src/utils/device";
 
 interface IInject {
   appStateStatus: AppStateStatus;
@@ -91,15 +92,7 @@ const Container = styled(ContainerWithStatusBar)`
   flex-direction: column;
 `;
 
-const InnerContainer = styled(KeyboardAwareScrollView).attrs({
-  contentContainerStyle: {
-    flex: 1,
-    flexDirection: "column",
-    height: "100%"
-  }
-})``;
-
-const InnerScollView = styled.ScrollView``;
+const InnerContainer = styled(KeyboardAwareScrollView).attrs({})``;
 
 const Header = styled.View`
   justify-content: center;
@@ -107,6 +100,11 @@ const Header = styled.View`
   padding-top: 20px;
   padding-bottom: 20px;
   padding-horizontal: 16px;
+`;
+
+const Content = styled.View`
+  width: 100%;
+  height: ${getDeviceHeight()}px;
 `;
 
 const GameStopButton = styled(IconButton)`
@@ -518,11 +516,17 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const { currentStepStatus } = this.state;
     return (
       <Container>
-        <InnerContainer enableOnAndroid={true} enableAutomaticScroll={true}>
-          {this.renderGamePlay}
-          {["play", "stop"].some(status => status === currentStepStatus)
-            ? null
-            : this.renderAnswer}
+        <InnerContainer
+          enableOnAndroid={true}
+          enableAutomaticScroll={true}
+          extraHeight={105}
+        >
+          <Content>
+            {this.renderGamePlay}
+            {["play", "stop"].some(status => status === currentStepStatus)
+              ? null
+              : this.renderAnswer}
+          </Content>
         </InnerContainer>
         <HiddenAnswerCopyButton onPress={this.copyAnswer}>
           <HiddenAnswerCopyButtonView />
