@@ -5,6 +5,7 @@ import SafeAreaView from "react-native-safe-area-view";
 import LinearGradient from "react-native-linear-gradient";
 
 import colors from "src/styles/colors";
+import { isAndroid } from "src/utils/device";
 
 interface IProps {
   children?: React.ReactNode;
@@ -13,6 +14,11 @@ interface IProps {
 }
 
 const SafeAreaContainer = styled(SafeAreaView)`
+  flex: 1;
+  background-color: ${colors.darkBlueGrey};
+`;
+
+const AndroidContainer = styled.View`
   flex: 1;
   background-color: ${colors.darkBlueGrey};
 `;
@@ -28,6 +34,13 @@ function ContainerWithStatusBar({
   statusBarColor = "white",
   style
 }: IProps) {
+  if (isAndroid()) {
+    return (
+      <AndroidContainer>
+        <Container style={style}>{children}</Container>
+      </AndroidContainer>
+    );
+  }
   return (
     <SafeAreaContainer>
       <Container style={style}>{children}</Container>

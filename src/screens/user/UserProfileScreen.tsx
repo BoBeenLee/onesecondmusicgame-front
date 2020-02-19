@@ -43,13 +43,7 @@ const Container = styled(ContainerWithStatusBar)`
   flex-direction: column;
 `;
 
-const InnerContainer = styled(KeyboardAwareScrollView).attrs({
-  contentContainerStyle: {
-    flex: 1,
-    flexDirection: "column",
-    height: "100%"
-  }
-})``;
+const InnerContainer = styled(KeyboardAwareScrollView).attrs({})``;
 
 const Content = styled.View`
   flex: 1;
@@ -95,9 +89,9 @@ class UserProfileScreen extends Component<IProps, IStates> {
       <Container>
         <BackTopBar title="닉네임 설정" onBackPress={this.back} />
         <InnerContainer
-          scrollEnabled={false}
+          scrollEnabled={true}
           enableOnAndroid={true}
-          enableAutomaticScroll={false}
+          enableAutomaticScroll={true}
         >
           <Content>
             <ProfileImageButton onPress={this.imagePicker}>
