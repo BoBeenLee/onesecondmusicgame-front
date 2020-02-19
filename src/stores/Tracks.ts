@@ -9,7 +9,8 @@ interface IVariables {
   q: string;
 }
 
-const TRACKS_LIMIT = 20;
+const TRACKS_LIMIT = 100;
+const COMMENT_COUNT_LIMIT = 10;
 
 const Tracks = types
   .model("Tracks", {
@@ -35,13 +36,20 @@ const Tracks = types
     };
 
     const fetch = flow(function*() {
-      const response: RetrieveAsyncFunc<typeof tracks> = yield tracks({
-        ...self.variables,
-        offset: self.from,
-        limit: TRACKS_LIMIT
-      });
-      self.from = response.length !== 0 ? self.from + response.length : 0;
-      for (const track of response) {
+      let filtered: RetrieveAsyncFunc<typeof tracks> = [];
+      let response: RetrieveAsyncFunc<typeof tracks> = [];
+      do {
+        response = yield tracks({
+          ...self.variables,
+          offset: self.from,
+          limit: TRACKS_LIMIT
+        });
+        filtered = _.filter(response, item => {
+          return item.comment_count >= COMMENT_COUNT_LIMIT;
+        });
+        self.from = response.length !== 0 ? self.from + response.length : 0;
+      } while (response.length !== 0 && filtered.length === 0);
+      for (const track of filtered) {
         if (self.tracks.has(String(track.id))) {
           continue;
         }

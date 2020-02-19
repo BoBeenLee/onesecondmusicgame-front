@@ -50,6 +50,10 @@ export function getBottomSpace() {
   return isIphoneX() ? 34 : 0;
 }
 
+const getScreenHeight = () => {
+  return getDeviceHeight() - (getStatusBarHeight(true) + getBottomSpace());
+};
+
 const getDeviceWidth = () => Dimensions.get("window").width;
 
 const getDeviceHeight = () => Dimensions.get("window").height;
@@ -74,5 +78,6 @@ export {
   isIOS,
   getOS,
   getDeviceWidth,
-  getDeviceHeight
+  getDeviceHeight,
+  getScreenHeight
 };
