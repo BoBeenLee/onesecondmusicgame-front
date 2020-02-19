@@ -47,10 +47,12 @@ const Store = types
       initializeRequestAPI();
     });
 
-    const initializeMainApp = () => {
-      self.singerStore.initializeSingers();
-      self.authStore.user?.heart?.fetchHeart();
-    };
+    const initializeMainApp = flow(function*() {
+      yield Promise.all([
+        self.singerStore.initializeSingers(),
+        self.authStore.user?.heart?.fetchHeart()
+      ]);
+    });
 
     return {
       setAppStateStatus,
