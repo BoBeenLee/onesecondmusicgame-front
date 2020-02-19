@@ -908,7 +908,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
         onConfirm={this.finish}
       />
     );
-    return false;
+    return true;
   };
 
   private copyAnswer = () => {
