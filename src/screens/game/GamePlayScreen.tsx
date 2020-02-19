@@ -927,5 +927,5 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 }
 
-export { GamePlayScreenStatic };
+export const GamePlayScreenStatic = GamePlayScreen;
 export default withBackHandler(withDisabled(GamePlayScreen));
