@@ -59,7 +59,7 @@ import GameReadyPlayOverlay from "src/screens/game/GameReadyPlayOverlay";
 import { secondsDuration } from "src/utils/date";
 import { logEvent } from "src/configs/analytics";
 import SingerNameCard from "src/components/card/SingerNameCard";
-import { getDeviceHeight } from "src/utils/device";
+import { getDeviceHeight, getStatusBarHeight } from "src/utils/device";
 
 interface IInject {
   appStateStatus: AppStateStatus;
@@ -104,7 +104,7 @@ const Header = styled.View`
 
 const Content = styled.View`
   width: 100%;
-  height: ${getDeviceHeight()}px;
+  height: ${getDeviceHeight() - getStatusBarHeight(true)}px;
 `;
 
 const GameStopButton = styled(IconButton)`
@@ -613,7 +613,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     return (
       <AnswerContainer>
         {isAnswer && !_.isEmpty(userAnswer) ? (
-          <CorrectBackground source={images.bgCorrectMirrorballLight} />
+          <CorrectBackground source={images.correctLight} />
         ) : null}
         <Header>
           <GamePlayStep circles={gamePlayStepStatuses} />
