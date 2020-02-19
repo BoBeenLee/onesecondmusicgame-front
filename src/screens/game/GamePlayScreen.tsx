@@ -59,7 +59,7 @@ import GameReadyPlayOverlay from "src/screens/game/GameReadyPlayOverlay";
 import { secondsDuration } from "src/utils/date";
 import { logEvent } from "src/configs/analytics";
 import SingerNameCard from "src/components/card/SingerNameCard";
-import { getDeviceHeight, getStatusBarHeight } from "src/utils/device";
+import { getScreenHeight } from "src/utils/device";
 
 interface IInject {
   appStateStatus: AppStateStatus;
@@ -104,7 +104,7 @@ const Header = styled.View`
 
 const Content = styled.View`
   width: 100%;
-  height: ${getDeviceHeight() - getStatusBarHeight(true)}px;
+  height: ${getScreenHeight()}px;
 `;
 
 const GameStopButton = styled(IconButton)`
