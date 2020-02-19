@@ -18,11 +18,11 @@ const start = async () => {
   const store = getRootStore();
   Navigation.setDefaultOptions({
     layout: {
-      backgroundColor: colors.darkIndigo,
+      backgroundColor: colors.darkBlueGrey,
       orientation: ["portrait"]
     },
     statusBar: {
-      backgroundColor: colors.darkIndigo,
+      backgroundColor: colors.darkBlueGrey,
       style: "light"
     },
     topBar: topbars.emptyTopBar()

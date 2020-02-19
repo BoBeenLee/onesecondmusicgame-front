@@ -830,7 +830,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
       artist: "???",
       artwork: artworkUrl
     });
-    await this.onPlayItem(currentGameHighlight);
+    // await this.onPlayItem(currentGameHighlight);
   };
 
   private onFinishPopup = async () => {
@@ -908,7 +908,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
         onConfirm={this.finish}
       />
     );
-    return false;
+    return true;
   };
 
   private copyAnswer = () => {
