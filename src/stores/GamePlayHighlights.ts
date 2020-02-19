@@ -60,7 +60,7 @@ const GamePlayHighlights = types
         return self.gameHighlights[self.currentStep];
       },
       get isFinish() {
-        return self.currentStep === this.gameTotalRoundNum - 1;
+        return self.currentStep >= this.gameTotalRoundNum - 1;
       },
       get toGameAnswers() {
         return this.gameHighlightViews.map(item => ({

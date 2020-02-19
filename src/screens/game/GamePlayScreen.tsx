@@ -1,4 +1,3 @@
-import Reactotron from "reactotron-react-native";
 import { AppStateStatus, InteractionManager, Clipboard } from "react-native";
 import { Item } from "__generate__/api";
 import _ from "lodash";
@@ -386,6 +385,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   }
 
   public gamePlayHighlights = GamePlayHighlights.create({});
+  public gameHighlightViews: ICarouselItem[] = [];
   public gamePlayersRef = React.createRef<OSMGCarousel<any>>();
   public intervalId: any;
 
@@ -406,6 +406,13 @@ class GamePlayScreen extends Component<IProps, IStates> {
     );
     if (props.gamePlayHighlights) {
       this.gamePlayHighlights = props.gamePlayHighlights();
+      this.gameHighlightViews = _.map(
+        this.gamePlayHighlights.gameHighlightViews,
+        item => ({
+          ...item,
+          key: String(item.id)
+        })
+      );
     }
     loadAD(AdmobUnitID.HeartReward, ["game", "quiz", "music", "korea"], {
       onRewarded: this.onRewarded
@@ -539,7 +546,8 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const {
       currentStep,
       gamePlayStepStatuses,
-      currentGameHighlight
+      currentGameHighlight,
+      isFinish
     } = this.gamePlayHighlights;
     const { songAnswerInput, songAnswerSeconds } = this.state;
     const userItem = this.props.authStore.user?.userItemsByItemType(
@@ -554,7 +562,10 @@ class GamePlayScreen extends Component<IProps, IStates> {
             seconds={songAnswerSeconds}
             totalSeconds={DEFAULT_LIMIT_TIME}
           />
-          <GameStopButton source={images.pauseButton} onPress={this.exit} />
+          <GameStopButton
+            source={images.pauseButton}
+            onPress={!isFinish ? this.exit : this.onFinish}
+          />
         </Header>
         <GamePlayers
           scrollEnabled={false}
@@ -663,17 +674,21 @@ class GamePlayScreen extends Component<IProps, IStates> {
                 />
               </NextStepButton>
             </NextStepGroup>
-          ) : null}
+          ) : (
+            <NextStepGroup>
+              <NextStepButton onPress={_.partial(this.onFinish, false)}>
+                <NextStepButtonText>결과보기</NextStepButtonText>
+                <NextStepArrowIcon
+                  name="angle-right"
+                  size={16}
+                  color={colors.pinkyPurpleThree}
+                />
+              </NextStepButton>
+            </NextStepGroup>
+          )}
         </Footer>
       </AnswerContainer>
     );
-  }
-
-  private get gameHighlightViews(): ICarouselItem[] {
-    return _.map(this.gamePlayHighlights.gameHighlightViews, item => ({
-      ...item,
-      key: String(item.id)
-    }));
   }
 
   private onSongAnswerChangeText = (text: string) => {
@@ -753,13 +768,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
       currentStepDateTime: null
     });
     if (isFinish) {
-      const heart = this.props.authStore.user?.heart!;
-      await heart?.fetchHeart?.();
-      if (heart?.heartCount === 0) {
-        this.onFinishPopup();
-        return;
-      }
-      this.finish();
       return;
     }
     await delay(NEXT_STEP_SECONDS);
@@ -801,6 +809,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
       artist: "???",
       artwork: artworkUrl
     });
+    await this.onPlayItem(currentGameHighlight);
   };
 
   private onFinishPopup = async () => {
@@ -846,9 +855,20 @@ class GamePlayScreen extends Component<IProps, IStates> {
     );
   };
 
+  private onFinish = async () => {
+    const heart = this.props.authStore.user?.heart!;
+    await heart?.fetchHeart?.();
+    if (heart?.heartCount === 0) {
+      this.onFinishPopup();
+      return;
+    }
+    this.finish();
+  };
+
   private finish = async () => {
     const { closePopup } = this.props.popupProps;
     const { componentId } = this.props;
+
     closePopup();
     GameResultScreen.open({
       componentId,

@@ -30,7 +30,10 @@ const CarouselView = styled.View``;
 
 const CarouselBox = styled(Carousel)``;
 
-class OSMGCarousel<T> extends Component<IProps<T & ICarousel>, IStates> {
+class OSMGCarousel<T> extends React.PureComponent<
+  IProps<T & ICarousel>,
+  IStates
+> {
   public carouselRef = React.createRef<CarouselStatic<T>>();
 
   constructor(props: IProps<T & ICarousel>) {
