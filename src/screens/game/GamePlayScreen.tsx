@@ -181,15 +181,17 @@ const AnswerContainer = styled(LinearGradient).attrs({
 `;
 
 const AnswerStatus = styled.Image`
-  width: 227px;
+  width: 225px;
   height: 225px;
 `;
 
 const AnswerStatusArtworkView = styled.View`
-  width: 227px;
+  width: 225px;
   height: 225px;
+  border-radius: 114px;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 `;
 
 const AnswerStatusArtworkBG = styled.Image`
@@ -281,10 +283,9 @@ const WrongPassButtonText = styled(Bold12)`
 
 const CorrectBackground = styled.Image`
   position: absolute;
-  top: 55px;
+  top: -10px;
   left: 0px;
   width: 100%;
-  height: 100%;
 `;
 
 const NextEmptyView = styled.View``;

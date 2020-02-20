@@ -7,7 +7,7 @@ const images = {
   baselineEmojiEventsBlack18Dp: require("./baselineEmojiEventsBlack18Dp.png"),
   correctCD: require("./imageCd.png"),
   correctArtworkCD: require("./cd_correct.png"),
-  correctLight: require("./light_correct.json"),
+  correctLight: require("./light_correct.gif"),
   wrongCD: require("./imageCd2.png"),
   wrongArtworkCD: require("./cd_wrong.png"),
   playCD: require("./imageDefault.png"),
