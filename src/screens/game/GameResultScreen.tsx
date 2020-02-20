@@ -32,7 +32,7 @@ import { IPopupProps } from "src/hocs/withPopup";
 import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import { makeAppShareLink } from "src/utils/dynamicLink";
-import GamePlayScreen from "src/screens/game/GamePlayScreen";
+import { GamePlayScreenStatic } from "src/screens/game/GamePlayScreen";
 import GamePlayHighlights, {
   IGamePlayHighlights
 } from "src/stores/GamePlayHighlights";
@@ -512,7 +512,10 @@ class GameResultScreen extends Component<IProps, IStates> {
     const { showToast } = this.props.toastStore;
     const heart = this.props.authStore.user?.heart!;
     try {
-      GamePlayScreen.open({ componentId, heartCount: heart?.heartCount ?? 0 });
+      GamePlayScreenStatic.open({
+        componentId,
+        heartCount: heart?.heartCount ?? 0
+      });
     } catch (error) {
       showToast(error.message);
     }

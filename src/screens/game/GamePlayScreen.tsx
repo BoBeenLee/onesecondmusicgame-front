@@ -181,7 +181,29 @@ const AnswerContainer = styled(LinearGradient).attrs({
 `;
 
 const AnswerStatus = styled.Image`
-  width: 227px;
+  width: 225px;
+  height: 225px;
+`;
+
+const AnswerStatusArtworkView = styled.View`
+  width: 225px;
+  height: 225px;
+  border-radius: 114px;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+`;
+
+const AnswerStatusArtworkBG = styled.Image`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+`;
+
+const AnswerStatusArtwork = styled.Image`
+  width: 225px;
   height: 225px;
 `;
 
@@ -261,10 +283,9 @@ const WrongPassButtonText = styled(Bold12)`
 
 const CorrectBackground = styled.Image`
   position: absolute;
-  top: 55px;
+  top: -10px;
   left: 0px;
   width: 100%;
-  height: 100%;
 `;
 
 const NextEmptyView = styled.View``;
@@ -633,6 +654,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const { songAnswerSeconds } = this.state;
     const isAnswer = Boolean(currentGameHighlight?.isUserAnswer);
     const userAnswer = currentGameHighlight?.userAnswer ?? "";
+
     return (
       <AnswerContainer>
         {isAnswer && !_.isEmpty(userAnswer) ? (
@@ -648,11 +670,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
           <GameStopButton source={images.pauseButton} onPress={this.exit} />
         </Header>
         <AnswerContent>
-          {isAnswer ? (
-            <AnswerStatus source={images.correctCD} />
-          ) : (
-            <AnswerStatus source={images.wrongCD} />
-          )}
+          {this.renderAnswerStatus}
           <AnswerView>
             {isAnswer ? (
               !_.isEmpty(userAnswer) ? (
@@ -701,6 +719,36 @@ class GamePlayScreen extends Component<IProps, IStates> {
         </Footer>
       </AnswerContainer>
     );
+  }
+
+  private get renderAnswerStatus() {
+    const { currentGameHighlight } = this.gamePlayHighlights;
+    const isAnswer = Boolean(currentGameHighlight?.isUserAnswer);
+
+    if (isAnswer) {
+      if (currentGameHighlight?.artworkUrl) {
+        return (
+          <AnswerStatusArtworkView>
+            <AnswerStatusArtwork
+              source={{ uri: currentGameHighlight?.artworkUrl }}
+            />
+            <AnswerStatusArtworkBG source={images.correctArtworkCD} />
+          </AnswerStatusArtworkView>
+        );
+      }
+      return <AnswerStatus source={images.correctCD} />;
+    }
+    if (currentGameHighlight?.artworkUrl) {
+      return (
+        <AnswerStatusArtworkView>
+          <AnswerStatusArtwork
+            source={{ uri: currentGameHighlight?.artworkUrl }}
+          />
+          <AnswerStatusArtworkBG source={images.wrongArtworkCD} />
+        </AnswerStatusArtworkView>
+      );
+    }
+    return <AnswerStatus source={images.wrongCD} />;
   }
 
   private onSongAnswerChangeText = (text: string) => {
@@ -830,7 +878,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
       artist: "???",
       artwork: artworkUrl
     });
-    // await this.onPlayItem(currentGameHighlight);
   };
 
   private onFinishPopup = async () => {
