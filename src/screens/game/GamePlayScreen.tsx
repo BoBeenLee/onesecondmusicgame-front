@@ -358,7 +358,7 @@ const HiddenAnswerCopyButtonView = styled.View`
 
 const DEFAULT_LIMIT_TIME = 40;
 const NEXT_STEP_SECONDS = 5000;
-const FISRT_PLAY_SECONDS = 2600;
+const FISRT_PLAY_SECONDS = 2300;
 const PLAY_SECONDS = 2100;
 
 @inject(
@@ -773,6 +773,10 @@ class GamePlayScreen extends Component<IProps, IStates> {
     if (currentStepPlayCount === 0) {
       await delay(FISRT_PLAY_SECONDS);
       await TrackPlayer.pause();
+      this.setState({
+        currentStepPlayCount: currentStepPlayCount + 1
+      });
+      return;
     }
     await delay(PLAY_SECONDS);
     await TrackPlayer.pause();
