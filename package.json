@@ -6,7 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "start:reset": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
     "test": "jest",
-    "codegen": "java -jar ./scripts/swagger-codegen-cli-2.4.10.jar generate -i http://api-dev.alsongdalsong.com/v2/api-docs -l typescript-fetch -o ./__generate__",
+    "codegen": "java -jar ./scripts/swagger-codegen-cli-2.4.10.jar generate -i http://api.alsongdalsong.com/v2/api-docs -l typescript-fetch -o ./__generate__",
     "android": "node node_modules/react-native/local-cli/cli.js run-android",
     "android:log": "adb logcat '*:S' ReactNative:V ReactNativeJS:V",
     "android:release": "node node_modules/react-native/local-cli/cli.js run-android --variant=release",
