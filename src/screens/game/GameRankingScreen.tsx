@@ -85,63 +85,11 @@ const Podium = styled.Image`
   height: 140px;
 `;
 
-const mockData = [
-  {
-    nickname: "a",
-    point: 2000,
-    profileImageUrl: "",
-    rankDiff: 3
-  },
-  {
-    nickname: "basdfasdfadfadf",
-    point: 1000,
-    profileImageUrl: "",
-    rankDiff: -1
-  },
-  {
-    nickname: "c",
-    point: 900,
-    profileImageUrl: "",
-    rankDiff: 2
-  },
-  {
-    nickname: "d",
-    point: 800,
-    profileImageUrl: "",
-    rankDiff: 4
-  },
-  {
-    nickname: "e",
-    point: 700,
-    profileImageUrl: "",
-    rankDiff: -2
-  },
-  {
-    nickname: "f",
-    point: 0,
-    profileImageUrl: "",
-    rankDiff: 2
-  },
-  {
-    nickname: "gasdjkfhalsdfjadsfasdfad",
-    point: 600,
-    profileImageUrl: "",
-    rankDiff: 0
-  },
-  {
-    nickname: "h",
-    point: 500,
-    profileImageUrl: "",
-    rankDiff: 0
-  },
-  {
-    nickname: "i",
-    point: 400,
-    profileImageUrl: "",
-    rankDiff: 0
-  },
-  { nickname: "j", point: 300, profileImageUrl: "", rankDiff: 0 }
-];
+const LightBackground = styled.Image`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+`;
 
 @inject(
   ({ store }: { store: IStore }): IInject => ({
@@ -169,7 +117,9 @@ class GameRankingScreen extends Component<IProps> {
     const [firstRank, secondRank, thirdRank, ...restRank] = rankViews;
     return (
       <Container>
+        <LightBackground source={images.lightRanking} />
         <BackTopBar title="랭킹" onBackPress={this.back} />
+
         <ScrollView>
           <Content>
             <Header>

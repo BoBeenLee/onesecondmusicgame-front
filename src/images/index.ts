@@ -35,6 +35,7 @@ const images = {
   miniHeart: require("./group3Copy2.png"),
   profileDefault: require("./profileDefault.png"),
   icGameItemEmpty: require("./ic_game_item_empty.png"),
-  icSinger: require("./ic_singer.png")
+  icSinger: require("./ic_singer.png"),
+  lightRanking: require("./light_ranking.gif")
 };
 export default images;
