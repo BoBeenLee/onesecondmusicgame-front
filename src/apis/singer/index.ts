@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import { SingerControllerApiFactory } from "__generate__/api";
+import { SingerControllerApiFactory, Singer, Track } from "__generate__/api";
 import { requestAPI } from "src/configs/requestAPI";
 
 const singerControllerApi = SingerControllerApiFactory(
@@ -9,14 +9,23 @@ const singerControllerApi = SingerControllerApiFactory(
   ""
 );
 
-export interface ISinger {
-  name: string;
+export interface ISinger extends Singer {
+  singerName: string;
 }
 
 export const singers = async (): Promise<ISinger[]> => {
-  const response = await singerControllerApi.getAllSingerNameUsingGET();
+  const response = await singerControllerApi.getAllStandardSingerListUsingGET();
+  return _.map(response.body!, item => ({
+    singerName: item.singerName!,
+    artworkUrl: item.artworkUrl
+  }));
+};
 
-  return _.map(response.body, name => ({ name }));
+export const getTrackListBySingerName = async (name: string) => {
+  const response = await singerControllerApi.getTrackListBySingerNameUsingGET(
+    name
+  );
+  return response;
 };
 
 export const getAllSongsBySingerNameUsingGET = async (
@@ -34,5 +43,5 @@ export const getAllSongsBySingerNameUsingGET = async (
 
 export const registeredSingers = async (): Promise<ISinger[]> => {
   const response = await singerControllerApi.getAllRegisteredSingerNameUsingGET();
-  return _.map(response.body, name => ({ name }));
+  return _.map(response.body, name => ({ singerName: name }));
 };

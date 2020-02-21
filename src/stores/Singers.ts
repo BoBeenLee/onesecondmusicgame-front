@@ -3,7 +3,7 @@ import { flow, types } from "mobx-state-tree";
 
 import { singers, ISinger } from "src/apis/singer";
 
-const mocks = [{ name: "a," }, { name: "b" }];
+const mocks = [{ singerName: "a," }, { singerName: "b" }];
 
 interface IVariables {
   q: string;
@@ -34,7 +34,7 @@ const Singers = types
     const fetch = flow(function*() {
       self.filterSingers.replace(
         self.singers.filter(item => {
-          return _.includes(item.name, self.variables.q);
+          return _.includes(item.singerName, self.variables.q);
         })
       );
     });

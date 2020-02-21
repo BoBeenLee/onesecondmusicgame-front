@@ -205,7 +205,7 @@ const SubmitButtonText = styled(Bold18)`
 const SELECTED_SINGERS_MAX_LENGTH = 3;
 const SINGER_COUMNS_LENGTH = 4;
 const MOCK_ISINGER: ISinger = {
-  name: "MOCK"
+  singerName: "MOCK"
 };
 
 @inject(
@@ -340,20 +340,20 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
   };
 
   private singerKeyExtreactor = (item: ISinger, index: number) => {
-    return `singer${item.name}${index}`;
+    return `singer${item.singerName}${index}`;
   };
 
   private renderSingerItem: ListRenderItem<ISinger> = ({ item }) => {
     if (item === MOCK_ISINGER) {
       return <SearchSingerEmptyCard />;
     }
-    const { name } = item;
+    const { singerName, artworkUrl } = item;
     const { selectedSingers } = this.state;
     return (
       <SearchSingerCardView
-        selected={Boolean(selectedSingers[item.name])}
-        image={"https://via.placeholder.com/150"}
-        name={name}
+        selected={Boolean(selectedSingers[item.singerName])}
+        image={artworkUrl ?? "https://via.placeholder.com/150"}
+        name={singerName}
         onPress={_.partial(this.onSelectedItem, item)}
       />
     );
@@ -365,7 +365,7 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
 
   private onSelectedItem = (item: ISinger) => {
     if (
-      !this.hasSelectedSingersByName(item.name) &&
+      !this.hasSelectedSingersByName(item.singerName) &&
       this.selectedSingers.length >= SELECTED_SINGERS_MAX_LENGTH
     ) {
       return;
@@ -375,7 +375,9 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
         return {
           selectedSingers: {
             ...prevState.selectedSingers,
-            [item.name]: !Boolean(prevState.selectedSingers[item.name])
+            [item.singerName]: !Boolean(
+              prevState.selectedSingers[item.singerName]
+            )
               ? item
               : null
           },
@@ -383,9 +385,9 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
         };
       },
       () => {
-        const selected = Boolean(this.state.selectedSingers[item.name]);
+        const selected = Boolean(this.state.selectedSingers[item.singerName]);
         if (selected) {
-          logEvent.selectedSinger(item.name);
+          logEvent.selectedSinger(item.singerName);
         }
       }
     );

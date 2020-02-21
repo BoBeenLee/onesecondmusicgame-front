@@ -141,9 +141,9 @@ function SingersSubmitBackDrop(props: IProps) {
                 >
                   <SearchSingerCard
                     selected={false}
-                    key={singer.name}
+                    key={singer.singerName}
                     image={"https://via.placeholder.com/150"}
-                    name={singer.name}
+                    name={singer.singerName}
                     onPress={_.partial(onSelectedItem, singer)}
                   />
                   <CloseSingerIcon source={images.closeIcon} />
