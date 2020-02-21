@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import { SingerControllerApiFactory, Singer, Track } from "__generate__/api";
+import { SingerControllerApiFactory, Singer } from "__generate__/api";
 import { requestAPI } from "src/configs/requestAPI";
 
 const singerControllerApi = SingerControllerApiFactory(
@@ -43,5 +43,8 @@ export const getAllSongsBySingerNameUsingGET = async (
 
 export const registeredSingers = async (): Promise<ISinger[]> => {
   const response = await singerControllerApi.getAllRegisteredSingerNameUsingGET();
-  return _.map(response.body, name => ({ singerName: name }));
+  return _.map(response.body!, item => ({
+    singerName: item.singerName!,
+    artworkUrl: item.artworkUrl
+  }));
 };
