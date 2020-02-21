@@ -23,18 +23,20 @@ import {
 } from "src/apis/user";
 import { getUniqueID } from "src/configs/device";
 import User from "src/stores/model/User";
-import { ErrorCode } from "src/configs/error";
 import { findItemAllUsingGET } from "src/apis/item";
 import { setUserID } from "src/configs/analytics";
 import { LoggedInMusicUser } from "__generate__/api";
 
 export type AUTH_PROVIDER = "APPLE" | "KAKAO" | "GOOGLE" | "FACEBOOK" | "NONE";
 
+const DEFAULT_SOUND_CLIEND_ID = "a281614d7f34dc30b665dfcaa3ed7505";
+
 const AuthStore = types
   .model("AuthStore", {
     provider: types.frozen<AUTH_PROVIDER>("NONE"),
     accessId: types.optional(types.string, ""),
     accessToken: types.optional(types.string, ""),
+    soundCloudCliendId: types.optional(types.string, DEFAULT_SOUND_CLIEND_ID),
     refreshToken: types.optional(types.string, ""),
     user: types.optional(types.maybeNull(User), null)
   })
@@ -235,7 +237,7 @@ const AuthStore = types
       );
       updateUserAccessToken(signInResponse);
       updateUserInfo(signInResponse);
-      updateAuthInfo();
+      updateAuthInfo(signInResponse);
     });
 
     const signUp = flow(function*({ nickname }: { nickname: string }) {
@@ -259,7 +261,7 @@ const AuthStore = types
       );
       updateUserAccessToken(signInResponse);
       updateUserInfo(signInResponse);
-      updateAuthInfo();
+      updateAuthInfo(signInResponse);
     });
 
     const updateUserAccessToken = (
@@ -289,7 +291,9 @@ const AuthStore = types
       self.user?.setUserItems(response);
     });
 
-    const updateAuthInfo = () => {
+    const updateAuthInfo = (signInResponse: LoggedInMusicUser) => {
+      self.soundCloudCliendId =
+        signInResponse.clientId ?? DEFAULT_SOUND_CLIEND_ID;
       setItem(FIELD.ACCESS_ID, self.accessId);
       setItem(FIELD.ACCESS_TOKEN, self.accessToken);
       setItem(FIELD.PROVIDER_TYPE, self.provider);
