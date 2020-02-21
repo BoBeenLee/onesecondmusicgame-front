@@ -308,7 +308,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     const likeCount = item.like;
     return (
       <SearchTrackCard
-        thumnail={item.artworkUrl}
+        thumnail={item.artworkUrl || "https://via.placeholder.com/150"}
         title={item.title}
         author={item.singer}
         isRegistered={false}
