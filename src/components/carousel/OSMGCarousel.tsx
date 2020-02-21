@@ -51,6 +51,10 @@ class OSMGCarousel<T> extends React.PureComponent<
     this.carouselRef.current?.snapToNext?.();
   };
 
+  public snapToItem = (index: number): void => {
+    this.carouselRef.current?.snapToItem?.(index);
+  };
+
   public render() {
     const { style, ...rest } = this.props;
     return (
@@ -62,7 +66,7 @@ class OSMGCarousel<T> extends React.PureComponent<
             data={this.props.data}
             sliderWidth={windowWidth}
             slideInterpolatedStyle={this.animatedStyles}
-            onSnapToItem={this.snapToItem}
+            onSnapToItem={this.onSnapToItem}
           />
         </CarouselView>
       </>
@@ -74,7 +78,7 @@ class OSMGCarousel<T> extends React.PureComponent<
     return data.length;
   };
 
-  private snapToItem = (index: number) => {
+  private onSnapToItem = (index: number) => {
     this.setState(
       {
         currentIndex: index
