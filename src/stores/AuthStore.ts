@@ -292,8 +292,8 @@ const AuthStore = types
     });
 
     const updateAuthInfo = (signInResponse: LoggedInMusicUser) => {
-      self.soundCloudCliendId =
-        signInResponse.clientId ?? DEFAULT_SOUND_CLIEND_ID;
+      // self.soundCloudCliendId =
+      //   signInResponse.clientId ?? DEFAULT_SOUND_CLIEND_ID;
       setItem(FIELD.ACCESS_ID, self.accessId);
       setItem(FIELD.ACCESS_TOKEN, self.accessToken);
       setItem(FIELD.PROVIDER_TYPE, self.provider);
