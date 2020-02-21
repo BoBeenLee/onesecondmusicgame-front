@@ -17,7 +17,7 @@ import * as url from "url";
 import * as portableFetch from "portable-fetch";
 import { Configuration } from "./configuration";
 
-const BASE_PATH = "https://34.84.5.51:8888".replace(/\/+$/, "");
+const BASE_PATH = "https://api.alsongdalsong.com".replace(/\/+$/, "");
 
 /**
  *
@@ -212,6 +212,12 @@ export interface GameResultResponse {
      * @memberof GameResultResponse
      */
     myRanking?: number;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof GameResultResponse
+     */
+    resultComment?: Array<string>;
     /**
      * 
      * @type {number}
@@ -463,6 +469,12 @@ export interface LoggedInMusicUser {
      * @memberof LoggedInMusicUser
      */
     accessTime?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof LoggedInMusicUser
+     */
+    clientId?: string;
     /**
      * 
      * @type {string}
@@ -973,6 +985,26 @@ export interface ResponseDTOListLikeHistoryResponse {
 /**
  * 
  * @export
+ * @interface ResponseDTOListSinger
+ */
+export interface ResponseDTOListSinger {
+    /**
+     * 
+     * @type {Array<Singer>}
+     * @memberof ResponseDTOListSinger
+     */
+    body?: Array<Singer>;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResponseDTOListSinger
+     */
+    status?: number;
+}
+
+/**
+ * 
+ * @export
  * @interface ResponseDTOListUserLikeHistoryResponse
  */
 export interface ResponseDTOListUserLikeHistoryResponse {
@@ -1093,6 +1125,26 @@ export interface ResponseDTOReward {
 /**
  * 
  * @export
+ * @interface ResponseDTOSetstring
+ */
+export interface ResponseDTOSetstring {
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof ResponseDTOSetstring
+     */
+    body?: Array<string>;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResponseDTOSetstring
+     */
+    status?: number;
+}
+
+/**
+ * 
+ * @export
  * @interface ResponseDTOSong
  */
 export interface ResponseDTOSong {
@@ -1168,6 +1220,26 @@ export interface Reward {
      * @memberof Reward
      */
     rewardType?: string;
+}
+
+/**
+ * 
+ * @export
+ * @interface Singer
+ */
+export interface Singer {
+    /**
+     * 
+     * @type {string}
+     * @memberof Singer
+     */
+    artworkUrl?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Singer
+     */
+    singerName?: string;
 }
 
 /**
@@ -1396,6 +1468,62 @@ export interface Sort {
      * @memberof Sort
      */
     unsorted?: boolean;
+}
+
+/**
+ * 
+ * @export
+ * @interface Track
+ */
+export interface Track {
+    /**
+     * 
+     * @type {string}
+     * @memberof Track
+     */
+    artworkUrl?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof Track
+     */
+    commentCount?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof Track
+     */
+    id?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof Track
+     */
+    singerName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Track
+     */
+    streamUrl?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof Track
+     */
+    streamable?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof Track
+     */
+    title?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Track
+     */
+    uri?: string;
 }
 
 /**
@@ -3888,6 +4016,58 @@ export const SingerControllerApiFetchParamCreator = function (configuration?: Co
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary getAllStandardSingerList
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllStandardSingerListUsingGET(options: any = {}): FetchArgs {
+            const localVarPath = `/singer/standard-list`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary getTrackListBySingerName
+         * @param {string} name name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTrackListBySingerNameUsingGET(name: string, options: any = {}): FetchArgs {
+            // verify required parameter 'name' is not null or undefined
+            if (name === null || name === undefined) {
+                throw new RequiredError('name','Required parameter name was null or undefined when calling getTrackListBySingerNameUsingGET.');
+            }
+            const localVarPath = `/singer/names/{name}`
+                .replace(`{${"name"}}`, encodeURIComponent(String(name)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -3921,7 +4101,7 @@ export const SingerControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllSingerNameUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOListstring> {
+        getAllSingerNameUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOSetstring> {
             const localVarFetchArgs = SingerControllerApiFetchParamCreator(configuration).getAllSingerNameUsingGET(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
@@ -3944,6 +4124,43 @@ export const SingerControllerApiFp = function(configuration?: Configuration) {
          */
         getAllSongsBySingerNameUsingGET(singerName: string, page: number, size: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOPageSongResponse> {
             const localVarFetchArgs = SingerControllerApiFetchParamCreator(configuration).getAllSongsBySingerNameUsingGET(singerName, page, size, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary getAllStandardSingerList
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllStandardSingerListUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTOListSinger> {
+            const localVarFetchArgs = SingerControllerApiFetchParamCreator(configuration).getAllStandardSingerListUsingGET(options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary getTrackListBySingerName
+         * @param {string} name name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTrackListBySingerNameUsingGET(name: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<Track>> {
+            const localVarFetchArgs = SingerControllerApiFetchParamCreator(configuration).getTrackListBySingerNameUsingGET(name, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -3993,6 +4210,25 @@ export const SingerControllerApiFactory = function (configuration?: Configuratio
         getAllSongsBySingerNameUsingGET(singerName: string, page: number, size: number, options?: any) {
             return SingerControllerApiFp(configuration).getAllSongsBySingerNameUsingGET(singerName, page, size, options)(fetch, basePath);
         },
+        /**
+         * 
+         * @summary getAllStandardSingerList
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAllStandardSingerListUsingGET(options?: any) {
+            return SingerControllerApiFp(configuration).getAllStandardSingerListUsingGET(options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary getTrackListBySingerName
+         * @param {string} name name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getTrackListBySingerNameUsingGET(name: string, options?: any) {
+            return SingerControllerApiFp(configuration).getTrackListBySingerNameUsingGET(name, options)(fetch, basePath);
+        },
     };
 };
 
@@ -4037,6 +4273,29 @@ export class SingerControllerApi extends BaseAPI {
      */
     public getAllSongsBySingerNameUsingGET(singerName: string, page: number, size: number, options?: any) {
         return SingerControllerApiFp(this.configuration).getAllSongsBySingerNameUsingGET(singerName, page, size, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary getAllStandardSingerList
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SingerControllerApi
+     */
+    public getAllStandardSingerListUsingGET(options?: any) {
+        return SingerControllerApiFp(this.configuration).getAllStandardSingerListUsingGET(options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary getTrackListBySingerName
+     * @param {string} name name
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SingerControllerApi
+     */
+    public getTrackListBySingerNameUsingGET(name: string, options?: any) {
+        return SingerControllerApiFp(this.configuration).getTrackListBySingerNameUsingGET(name, options)(this.fetch, this.basePath);
     }
 
 }
