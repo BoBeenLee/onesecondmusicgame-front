@@ -1,6 +1,6 @@
 import _ from "lodash";
 
-import { SingerControllerApiFactory, Singer } from "__generate__/api";
+import { SingerControllerApiFactory, Singer, Track } from "__generate__/api";
 import { requestAPI } from "src/configs/requestAPI";
 
 const singerControllerApi = SingerControllerApiFactory(

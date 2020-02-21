@@ -347,12 +347,12 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
     if (item === MOCK_ISINGER) {
       return <SearchSingerEmptyCard />;
     }
-    const { singerName } = item;
+    const { singerName, artworkUrl } = item;
     const { selectedSingers } = this.state;
     return (
       <SearchSingerCardView
         selected={Boolean(selectedSingers[item.singerName])}
-        image={"https://via.placeholder.com/150"}
+        image={artworkUrl ?? "https://via.placeholder.com/150"}
         name={singerName}
         onPress={_.partial(this.onSelectedItem, item)}
       />

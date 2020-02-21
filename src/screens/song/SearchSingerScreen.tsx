@@ -380,11 +380,11 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     if (item === MOCK_ISINGER) {
       return <SearchSingerEmptyCard />;
     }
-    const { singerName } = item;
+    const { singerName, artworkUrl } = item;
     return (
       <SearchSingerCardView
         selected={false}
-        image={"https://via.placeholder.com/150"}
+        image={artworkUrl ?? "https://via.placeholder.com/150"}
         name={singerName}
         onPress={_.partial(this.onSelectedItem, item)}
       />

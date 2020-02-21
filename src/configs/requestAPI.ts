@@ -39,7 +39,7 @@ export const requestAPI: any = async <T extends ResponseDTO>(
   });
   if (
     ![NORMAL_STATUS_, NORMAL_STATUS].some(
-      status => status === response?.data?.status
+      status => status === (response?.data?.status ?? NORMAL_STATUS)
     )
   ) {
     throw new OSMGError({

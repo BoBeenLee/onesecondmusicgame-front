@@ -42,18 +42,16 @@ const Tracks = types
         self.variables.q
       );
       for (const track of response) {
-        if (self.tracks.has(String(track.id))) {
-          continue;
-        }
         self.tracks.set(
           String(track.id),
           Song.create({
-            artworkUrl: track.artworkUrl ?? "https://via.placeholder.com/150",
-            like: track.commentCount ?? 0,
-            singer: track.singerName ?? "",
+            artworkUrl:
+              (track as any).artwork_url ?? "https://via.placeholder.com/150",
+            like: (track as any).comment_count ?? 0,
+            singer: self.variables.q,
             title: track.title ?? "",
             trackId: String(track.id),
-            url: track.streamUrl ?? ""
+            url: (track as any).stream_url ?? ""
           })
         );
       }
