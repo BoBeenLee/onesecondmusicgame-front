@@ -862,10 +862,10 @@ class GamePlayScreen extends Component<IProps, IStates> {
       () => {
         InteractionManager.runAfterInteractions(async () => {
           this.gamePlayHighlights.nextStep();
-          await this.readyForPlay();
           this.gamePlayersRef.current?.snapToItem(
             this.gamePlayHighlights.currentStep
           );
+          await this.readyForPlay();
         });
       }
     );
