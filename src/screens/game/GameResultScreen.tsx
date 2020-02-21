@@ -433,7 +433,7 @@ class GameResultScreen extends Component<IProps, IStates> {
         totalPoint: response.totalPoint ?? 0,
         myRanking: response.myRanking ?? 0,
         heartCount: response.heartCount ?? 0,
-        resultComment: []
+        resultComment: response.resultComment ?? []
       }
     });
   };
