@@ -295,7 +295,8 @@ class GameResultScreen extends Component<IProps, IStates> {
         gainPointOfThisGame: 0,
         totalPoint: 0,
         myRanking: 0,
-        heartCount: 0
+        heartCount: 0,
+        resultComment: []
       }
     };
 
@@ -316,7 +317,8 @@ class GameResultScreen extends Component<IProps, IStates> {
     const {
       gainPointOfThisGame,
       totalPoint,
-      myRanking
+      myRanking,
+      resultComment
     } = this.state.gameResult;
     const { gamePlayStepStatuses } = this.gamePlayHighlights;
 
@@ -337,9 +339,11 @@ class GameResultScreen extends Component<IProps, IStates> {
               </GainScoreView>
             </ScoreView>
             <ScoreDescription>
-              <ScoreHighlightDescription>놀랍네요!</ScoreHighlightDescription>
+              <ScoreHighlightDescription>
+                {resultComment?.[0]}
+              </ScoreHighlightDescription>
               {"\n"}
-              혹시 당신 트둥이 아닌가요?
+              {resultComment?.[1]}
             </ScoreDescription>
           </Content>
           <Footer>
@@ -428,7 +432,8 @@ class GameResultScreen extends Component<IProps, IStates> {
         gainPointOfThisGame: response.gainPointOfThisGame ?? 0,
         totalPoint: response.totalPoint ?? 0,
         myRanking: response.myRanking ?? 0,
-        heartCount: response.heartCount ?? 0
+        heartCount: response.heartCount ?? 0,
+        resultComment: []
       }
     });
   };

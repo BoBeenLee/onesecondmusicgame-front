@@ -1,8 +1,10 @@
 import _ from "lodash";
 import { flow, types } from "mobx-state-tree";
 
-import { tracks } from "src/apis/soundcloud/tracks";
-import { getAllSongsBySingerNameUsingGET } from "src/apis/singer";
+import {
+  getAllSongsBySingerNameUsingGET,
+  getTrackListBySingerName
+} from "src/apis/singer";
 import Song from "src/stores/model/Song";
 
 interface IVariables {
@@ -36,32 +38,22 @@ const Tracks = types
     };
 
     const fetch = flow(function*() {
-      let filtered: RetrieveAsyncFunc<typeof tracks> = [];
-      let response: RetrieveAsyncFunc<typeof tracks> = [];
-      do {
-        response = yield tracks({
-          ...self.variables,
-          offset: self.from,
-          limit: TRACKS_LIMIT
-        });
-        filtered = _.filter(response, item => {
-          return item.comment_count >= COMMENT_COUNT_LIMIT;
-        });
-        self.from = response.length !== 0 ? self.from + response.length : 0;
-      } while (response.length !== 0 && filtered.length === 0);
-      for (const track of filtered) {
+      const response: RetrieveAsyncFunc<typeof getTrackListBySingerName> = yield getTrackListBySingerName(
+        self.variables.q
+      );
+      for (const track of response) {
         if (self.tracks.has(String(track.id))) {
           continue;
         }
         self.tracks.set(
           String(track.id),
           Song.create({
-            artworkUrl: track.artwork_url ?? "https://via.placeholder.com/150",
-            like: 0,
-            singer: track.user?.username ?? "",
-            title: track.title,
+            artworkUrl: track.artworkUrl ?? "https://via.placeholder.com/150",
+            like: track.commentCount ?? 0,
+            singer: track.singerName ?? "",
+            title: track.title ?? "",
             trackId: String(track.id),
-            url: track.stream_url
+            url: track.streamUrl ?? ""
           })
         );
       }

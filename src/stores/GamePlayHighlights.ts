@@ -88,7 +88,7 @@ const GamePlayHighlights = types
       const response: RetrieveAsyncFunc<typeof getHighlightListUsingPOST> = yield getHighlightListUsingPOST(
         {
           numOfHighlightPerGame: GAME_ROUND_NUM,
-          singerList: _.map(selectedSingers, singer => singer.name)
+          singerList: _.map(selectedSingers, singer => singer.singerName)
         }
       );
       self.gameHighlights.replace(

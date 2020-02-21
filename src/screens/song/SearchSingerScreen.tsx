@@ -162,7 +162,7 @@ const TracksView = styled<ComponentClass<FlatListProps<ISong>>>(FlatList).attrs(
 
 const SINGER_COUMNS_LENGTH = 4;
 const MOCK_ISINGER: ISinger = {
-  name: "MOCK"
+  singerName: "MOCK"
 };
 
 @inject(
@@ -279,7 +279,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
         </Container>
         <RegisterTrackBackDrop
           showBackdrop={showTrackBackdrop}
-          singerName={selectedSinger?.name ?? ""}
+          singerName={selectedSinger?.singerName ?? ""}
           totalCount={this.tracks.trackViews.length}
           ContentComponent={
             <TracksView
@@ -369,7 +369,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
   }
 
   private singerKeyExtreactor = (item: ISinger, index: number) => {
-    return `singer${item.name}${index}`;
+    return `singer${item.singerName}${index}`;
   };
 
   private trackKeyExtractor = (item: ISong, index: number) => {
@@ -380,12 +380,12 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     if (item === MOCK_ISINGER) {
       return <SearchSingerEmptyCard />;
     }
-    const { name } = item;
+    const { singerName } = item;
     return (
       <SearchSingerCardView
         selected={false}
         image={"https://via.placeholder.com/150"}
-        name={name}
+        name={singerName}
         onPress={_.partial(this.onSelectedItem, item)}
       />
     );
@@ -397,9 +397,9 @@ class SearchSingerScreen extends Component<IProps, IStates> {
 
   private onSelectedItem = (item: ISinger) => {
     this.setState({ showTrackBackdrop: true, selectedSinger: item }, () => {
-      this.tracks.search({ q: item.name });
+      this.tracks.search({ q: item.singerName });
     });
-    logEvent.selectedSinger(item.name);
+    logEvent.selectedSinger(item.singerName);
   };
 
   private onUnSelectedItem = () => {
@@ -416,7 +416,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     const { showToast } = this.props.toastStore;
     const { selectedSinger } = this.state;
     const artworkUrl = trackItem?.artworkUrl;
-    const singerName = selectedSinger?.name ?? "";
+    const singerName = selectedSinger?.singerName ?? "";
     const title = trackItem?.title;
     const url = trackItem?.url;
     const trackId = trackItem?.trackId;
