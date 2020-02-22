@@ -2,10 +2,11 @@ import React from "react";
 import styled from "styled-components/native";
 import { ViewProps, View } from "react-native";
 
-import { Bold12, Bold14, Bold16 } from "src/components/text/Typographies";
+import { Bold12, Bold16 } from "src/components/text/Typographies";
 import ProfileImage from "src/components/image/ProfileImage";
 import colors from "src/styles/colors";
 import XEIcon from "src/components/icon/XEIcon";
+import { ClipPath } from "react-native-svg";
 
 interface IProps {
   style?: ViewProps["style"];
@@ -98,6 +99,16 @@ function GameRankCard(props: IProps) {
     }
   };
 
+  const makeIconColor = (rankDiff: number) => {
+    if (rankDiff < 0) {
+      return colors.coolGreen;
+    } else if (rankDiff === 0) {
+      return colors.white;
+    } else {
+      return colors.red400;
+    }
+  };
+
   return (
     <Container style={style}>
       <Content>
@@ -109,7 +120,7 @@ function GameRankCard(props: IProps) {
             <RankIcon
               name={makeIconName(rankDiff)}
               size={15}
-              color={colors.coolGreen}
+              color={makeIconColor(rankDiff)}
             />
             <RankDiffText>{Math.abs(rankDiff)}</RankDiffText>
           </RankDiff>
