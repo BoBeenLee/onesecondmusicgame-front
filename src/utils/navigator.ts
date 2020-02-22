@@ -33,6 +33,7 @@ const start = async () => {
     SignInScreen.open();
     return;
   }
+  await store.authStore.user?.heart?.fetchHeart();
   MainScreen.open();
 };
 
