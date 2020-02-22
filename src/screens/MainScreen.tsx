@@ -43,6 +43,7 @@ import AutoHeightImage from "src/components/image/AutoHeightImage";
 import { getDeviceWidth } from "src/utils/device";
 import UserGameItemScreen from "src/screens/user/UserGameItemScreen";
 import { logEvent } from "src/configs/analytics";
+import { getRootStore } from "src/stores/Store";
 
 interface IInject {
   store: IStore;
@@ -262,7 +263,8 @@ const RegisterSongTooltipView = styled(Tooltip)``;
 )
 @observer
 class MainScreen extends Component<IProps, IStates> {
-  public static open() {
+  public static async open() {
+    await getRootStore().authStore.user?.heart?.fetchHeart();
     setRoot({
       nextComponentId: SCREEN_IDS.MainScreen
     });
