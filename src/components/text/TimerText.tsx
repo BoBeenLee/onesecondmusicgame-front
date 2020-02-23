@@ -17,25 +17,29 @@ const ONE_SECONDS = 1000;
 
 function TimerText(props: IProps) {
   const { style, onExpire } = props;
+  const [prevSeconds, setPrevSeconds] = useState<number | null>(null);
   const [seconds, setSeconds] = useState(props.seconds);
   const intervalRef = useRef<any>(null);
 
-  const useSeconds = (seconds: number) => {
+  if (prevSeconds === null || prevSeconds !== props.seconds) {
+    setPrevSeconds(props.seconds);
+    setSeconds(props.seconds);
+  }
+
+  const useSeconds = useCallback(() => {
     if (seconds === 0) {
       onExpire();
       return;
     }
     setSeconds(seconds - 1);
-    setTimeout(_.partial(useSeconds, seconds - 1), ONE_SECONDS);
-  };
+  }, [onExpire, seconds]);
 
   useEffect(() => {
-    setTimeout(_.partial(useSeconds, seconds), ONE_SECONDS);
+    intervalRef.current = setInterval(useSeconds, ONE_SECONDS);
     return () => {
       intervalRef.current && clearInterval(intervalRef.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [onExpire]);
+  }, [props.onExpire, useSeconds]);
 
   return (
     <Container style={style}>{`${_.floor(seconds / 60)}분 ${seconds %
