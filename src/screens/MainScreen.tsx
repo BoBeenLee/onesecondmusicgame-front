@@ -264,7 +264,6 @@ const RegisterSongTooltipView = styled(Tooltip)``;
 @observer
 class MainScreen extends Component<IProps, IStates> {
   public static async open() {
-    await getRootStore().authStore.user?.heart?.fetchHeart();
     setRoot({
       nextComponentId: SCREEN_IDS.MainScreen
     });
