@@ -514,7 +514,18 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const { appStateStatus } = this.props;
     if (appStateStatus !== prevProps.appStateStatus) {
       this.nextStepIfBackgroundTimeout();
-      return;
+    }
+    if (
+      prevProps.appStateStatus === "active" &&
+      appStateStatus === "background"
+    ) {
+      await TrackPlayer.reset();
+    }
+    if (
+      prevProps.appStateStatus === "background" &&
+      appStateStatus === "active"
+    ) {
+      await this.readyForPlay();
     }
   }
 
@@ -726,29 +737,27 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const isAnswer = Boolean(currentGameHighlight?.isUserAnswer);
 
     if (isAnswer) {
-      if (currentGameHighlight?.artworkUrl) {
-        return (
-          <AnswerStatusArtworkView>
-            <AnswerStatusArtwork
-              source={{ uri: currentGameHighlight?.artworkUrl }}
-            />
-            <AnswerStatusArtworkBG source={images.correctArtworkCD} />
-          </AnswerStatusArtworkView>
-        );
-      }
-      return <AnswerStatus source={images.correctCD} />;
-    }
-    if (currentGameHighlight?.artworkUrl) {
-      return (
+      return currentGameHighlight?.artworkUrl ? (
         <AnswerStatusArtworkView>
           <AnswerStatusArtwork
             source={{ uri: currentGameHighlight?.artworkUrl }}
           />
-          <AnswerStatusArtworkBG source={images.wrongArtworkCD} />
+          <AnswerStatusArtworkBG source={images.correctArtworkCD} />
         </AnswerStatusArtworkView>
+      ) : (
+        <AnswerStatus source={images.correctCD} />
       );
     }
-    return <AnswerStatus source={images.wrongCD} />;
+    return currentGameHighlight?.artworkUrl ? (
+      <AnswerStatusArtworkView>
+        <AnswerStatusArtwork
+          source={{ uri: currentGameHighlight?.artworkUrl }}
+        />
+        <AnswerStatusArtworkBG source={images.wrongArtworkCD} />
+      </AnswerStatusArtworkView>
+    ) : (
+      <AnswerStatus source={images.wrongCD} />
+    );
   }
 
   private onSongAnswerChangeText = (text: string) => {
