@@ -11,6 +11,7 @@ interface IEnvironment {
 
 interface IAdmobEnv {
   APP_ID: string;
+  GAME_RESULT: string;
   HEART_REWARD: string;
   HEART_SCREEN: string;
 }
@@ -36,7 +37,8 @@ const buildTestAdEnv = () => ({
     ? "ca-app-pub-8725491575270284~8101981332"
     : "ca-app-pub-8725491575270284~4676713978",
   HEART_REWARD: "ca-app-pub-3940256099942544/5224354917",
-  HEART_SCREEN: "ca-app-pub-3940256099942544/8691691433"
+  HEART_SCREEN: "ca-app-pub-3940256099942544/8691691433",
+  GAME_RESULT: "ca-app-pub-3940256099942544/6300978111"
 });
 
 const buildProdAdEnv = () => ({
@@ -48,7 +50,10 @@ const buildProdAdEnv = () => ({
     : "ca-app-pub-8725491575270284/6929689833",
   HEART_SCREEN: isIOS()
     ? "ca-app-pub-8725491575270284/3439653928"
-    : "ca-app-pub-8725491575270284/8691980606"
+    : "ca-app-pub-8725491575270284/8691980606",
+  GAME_RESULT: isIOS()
+    ? "ca-app-pub-8725491575270284/6361609978"
+    : "ca-app-pub-8725491575270284/2748849786"
 });
 
 const STAGING_ENV_ENTRY: IEnvironmentEntry = {
