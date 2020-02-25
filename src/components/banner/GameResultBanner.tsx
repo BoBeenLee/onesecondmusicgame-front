@@ -12,20 +12,19 @@ interface IProps {
 const Banner = (firebase as any).admob.Banner;
 const AdRequest = (firebase as any).admob.AdRequest;
 const request = new AdRequest();
-request.addKeyword("foobar");
+request.addKeyword("game");
+request.addKeyword("quiz");
+request.addKeyword("music");
+request.addKeyword("korea");
 
 const Container = styled(Banner)``;
 
 const GameResultBanner = (props: IProps) => {
   const { style } = props;
-  const [visiable, setVisiable] = useState(false);
+  const [visiable, setVisiable] = useState(true);
 
   const onClose = () => {
     setVisiable(false);
-  };
-
-  const onLoaded = () => {
-    setVisiable(true);
   };
 
   if (!visiable) {
@@ -38,7 +37,6 @@ const GameResultBanner = (props: IProps) => {
       size={"SMART_BANNER"}
       request={request.build()}
       onAdClosed={onClose}
-      onAdLoaded={onLoaded}
     />
   );
 };
