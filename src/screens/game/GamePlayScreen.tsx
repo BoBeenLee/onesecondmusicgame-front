@@ -957,6 +957,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
       componentId,
       gamePlayHighlights: () => this.gamePlayHighlights
     });
+    await TrackPlayer.reset();
   };
 
   private exit = () => {
