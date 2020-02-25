@@ -18,10 +18,14 @@ const Container = styled(Banner)``;
 
 const GameResultBanner = (props: IProps) => {
   const { style } = props;
-  const [visiable, setVisiable] = useState(true);
+  const [visiable, setVisiable] = useState(false);
 
   const onClose = () => {
     setVisiable(false);
+  };
+
+  const onLoaded = () => {
+    setVisiable(true);
   };
 
   if (!visiable) {
@@ -34,6 +38,7 @@ const GameResultBanner = (props: IProps) => {
       size={"SMART_BANNER"}
       request={request.build()}
       onAdClosed={onClose}
+      onAdLoaded={onLoaded}
     />
   );
 };
