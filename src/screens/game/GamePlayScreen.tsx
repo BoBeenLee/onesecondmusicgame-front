@@ -859,7 +859,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private nextStep = async () => {
-    await TrackPlayer.reset();
     this.setState(
       {
         currentStepStatus: "play",
@@ -869,11 +868,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
         songAnswerSeconds: DEFAULT_LIMIT_TIME
       },
       () => {
+        this.gamePlayHighlights.nextStep();
+        this.gamePlayersRef.current?.snapToItem(
+          this.gamePlayHighlights.currentStep
+        );
         InteractionManager.runAfterInteractions(async () => {
-          this.gamePlayHighlights.nextStep();
-          this.gamePlayersRef.current?.snapToItem(
-            this.gamePlayHighlights.currentStep
-          );
+          await TrackPlayer.reset();
           await this.readyForPlay();
         });
       }
