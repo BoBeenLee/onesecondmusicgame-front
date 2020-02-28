@@ -22,7 +22,7 @@ import { SCREEN_IDS } from "src/screens/constant";
 import { setStackRoot } from "src/utils/navigator";
 import colors from "src/styles/colors";
 import HeartGroup from "src/components/icon/HeartGroup";
-import MainScreen from "src/screens/MainScreen";
+import { MainScreenStatic } from "src/screens/MainScreen";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
@@ -536,7 +536,7 @@ class GameResultScreen extends Component<IProps, IStates> {
   };
 
   private home = () => {
-    MainScreen.open();
+    MainScreenStatic.open();
   };
 }
 

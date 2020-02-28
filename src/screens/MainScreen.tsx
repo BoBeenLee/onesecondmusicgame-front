@@ -22,7 +22,7 @@ import { SCREEN_IDS } from "src/screens/constant";
 import { setRoot } from "src/utils/navigator";
 import colors from "src/styles/colors";
 import { ICodePushStore } from "src/stores/CodePushStore";
-import { IPopupProps } from "src/hocs/withPopup";
+import withPopup, { IPopupProps } from "src/hocs/withPopup";
 import HeartGroup from "src/components/icon/HeartGroup";
 import TimerText from "src/components/text/TimerText";
 import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
@@ -481,4 +481,5 @@ class MainScreen extends Component<IProps, IStates> {
   };
 }
 
-export default MainScreen;
+export const MainScreenStatic = MainScreen;
+export default withPopup(MainScreen);

@@ -8,7 +8,7 @@ import images from "src/images";
 import { IStore } from "src/stores/Store";
 import { IAuthStore } from "src/stores/AuthStore";
 import { ICodePushStore } from "src/stores/CodePushStore";
-import MainScreen from "src/screens/MainScreen";
+import { MainScreenStatic } from "src/screens/MainScreen";
 import SignInScreen from "src/screens/SignInScreen";
 import colors from "src/styles/colors";
 import GamePlayHighlights from "src/stores/GamePlayHighlights";
@@ -67,7 +67,7 @@ class SplashScreen extends React.Component<IProps> {
       SignInScreen.open();
       return;
     }
-    MainScreen.open();
+    MainScreenStatic.open();
   };
 }
 
