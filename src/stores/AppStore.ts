@@ -1,11 +1,11 @@
 import _ from "lodash";
-import { Linking } from "react-native";
+import { Linking, PlatformOSType } from "react-native";
 import { types, flow } from "mobx-state-tree";
 import { isNeedForceUpdateUsingGET } from "src/apis/versioning";
 
 const AppStore = types
   .model("AppStore", {
-    os: types.string,
+    os: types.frozen<PlatformOSType>(),
     version: types.string,
     isUpdate: types.optional(types.boolean, false)
   })
@@ -18,9 +18,15 @@ const AppStore = types
     });
     const openAppStore = flow(function*() {
       try {
-        yield Linking.openURL("google store app store");
+        if (self.os === "android") {
+          yield Linking.openURL(
+            "https://play.google.com/store/apps/details?id=kr.nexters.onesecondmusicgame"
+          );
+          return;
+        }
+        yield Linking.openURL("https://apps.apple.com/app/id1493107650");
       } catch (error) {
-        throw new Error("스토어에서 업데이트가 필요합니다.")
+        throw new Error("스토어에서 업데이트가 필요합니다.");
       }
     });
 

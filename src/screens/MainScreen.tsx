@@ -64,7 +64,13 @@ interface IStates {
 
 const Container = styled(ContainerWithStatusBar)``;
 
-const VersionDescription = styled(Bold28)``;
+const VersioningPopup = styled(OnlyConfirmPopup)`
+  width: 307px;
+`;
+
+const VersioningDescription = styled(Bold20)`
+  margin-vertical: 24px;
+`;
 
 const Header = styled.View`
   flex-direction: row;
@@ -291,45 +297,6 @@ class MainScreen extends Component<IProps, IStates> {
     this.setState({ isNotTooltipShow });
   }
 
-  public updateAppIfAvailable = async () => {
-    const { isUpdate } = this.props.appStore;
-    if (isUpdate) {
-      this.updateVersionIfAvailable();
-      return;
-    }
-    await this.updateCodePushIfAvailable();
-  };
-
-  public updateVersionIfAvailable = () => {
-    const { showPopup } = this.props.popupProps;
-    const { openAppStore } = this.props.appStore;
-
-    showPopup(
-      <OnlyConfirmPopup
-        ContentComponent={
-          <VersionDescription>새로운 버젼이 나왔어요!</VersionDescription>
-        }
-        confirmText={"업데이트"}
-        onConfirm={openAppStore}
-      />,
-      true,
-      openAppStore
-    );
-  };
-
-  public updateCodePushIfAvailable = async () => {
-    const {
-      checkCodePushAvailability,
-      updateCodePush
-    } = this.props.codePushStore;
-
-    if (await checkCodePushAvailability()) {
-      InteractionManager.runAfterInteractions(async () => {
-        await updateCodePush();
-      });
-    }
-  };
-
   public render() {
     const heart = this.props.authStore.user?.heart;
     const user = this.props.authStore.user;
@@ -509,6 +476,53 @@ class MainScreen extends Component<IProps, IStates> {
   private navigateToRanking = () => {
     const { componentId } = this.props;
     GameRankingScreen.open({ componentId });
+  };
+
+  private updateAppIfAvailable = async () => {
+    const { isUpdate } = this.props.appStore;
+    if (isUpdate) {
+      this.updateVersionIfAvailable();
+      return;
+    }
+    await this.updateCodePushIfAvailable();
+  };
+
+  private updateVersionIfAvailable = () => {
+    const { showPopup } = this.props.popupProps;
+
+    showPopup(
+      <VersioningPopup
+        ContentComponent={
+          <VersioningDescription>새로운 버젼이 나왔어요!</VersioningDescription>
+        }
+        confirmText={"업데이트"}
+        onConfirm={this.openAppStore}
+      />,
+      false
+    );
+  };
+
+  private updateCodePushIfAvailable = async () => {
+    const {
+      checkCodePushAvailability,
+      updateCodePush
+    } = this.props.codePushStore;
+
+    if (await checkCodePushAvailability()) {
+      InteractionManager.runAfterInteractions(async () => {
+        await updateCodePush();
+      });
+    }
+  };
+
+  private openAppStore = async () => {
+    const { openAppStore } = this.props.appStore;
+    const { showToast } = this.props.toastStore;
+    try {
+      await openAppStore();
+    } catch (error) {
+      showToast(error.message);
+    }
   };
 }
 

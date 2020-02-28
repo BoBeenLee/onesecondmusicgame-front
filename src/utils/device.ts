@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { Dimensions, Platform, StatusBar } from "react-native";
 
-const getOS = (): string => Platform.OS;
+const getOS = () => Platform.OS;
 
 const isAndroid = () => Platform.OS === "android";
 
