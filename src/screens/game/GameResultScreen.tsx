@@ -301,7 +301,8 @@ class GameResultScreen extends Component<IProps, IStates> {
       }
     };
 
-    loadAD(AdmobUnitID.HeartReward, ["game", "quiz", "music", "korea"], {
+    const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
+    loadAD(AdmobUnitID.HeartReward, keywords, {
       onRewarded: this.onRewarded
     });
     this.gamePlayHighlights =
@@ -314,6 +315,7 @@ class GameResultScreen extends Component<IProps, IStates> {
 
   public render() {
     const heart = this.props.authStore.user?.heart;
+    const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
     const nickname = this.props.authStore.user?.nickname ?? "";
     const {
       gainPointOfThisGame,
@@ -326,7 +328,7 @@ class GameResultScreen extends Component<IProps, IStates> {
     return (
       <Container>
         <ScrollView>
-          <GameResultBanner />
+          <GameResultBanner keywords={keywords} />
           <Header>
             <Title>게임 종료</Title>
             <GamePlayStep circles={gamePlayStepStatuses} />

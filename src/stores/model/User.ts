@@ -3,6 +3,7 @@ import { flow, types } from "mobx-state-tree";
 
 import UserItem from "src/stores/model/UserItem";
 import Heart from "src/stores/model/Heart";
+import Advertise from "src/stores/model/Advertise";
 import { myInfoChangeUsingPOST } from "src/apis/user";
 
 const User = types
@@ -12,7 +13,8 @@ const User = types
     profileImageUrl: types.optional(types.string, ""),
     userAccessToken: types.optional(types.string, ""),
     userItems: types.optional(types.map(UserItem), {}),
-    heart: types.optional(Heart, {})
+    heart: types.optional(Heart, {}),
+    advertise: types.optional(Advertise, {})
   })
   .views(self => {
     return {

@@ -446,7 +446,8 @@ class GamePlayScreen extends Component<IProps, IStates> {
         })
       );
     }
-    loadAD(AdmobUnitID.HeartReward, ["game", "quiz", "music", "korea"], {
+    const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
+    loadAD(AdmobUnitID.HeartReward, keywords, {
       onRewarded: this.onRewarded
     });
 

@@ -48,7 +48,8 @@ const Store = types
     const initializeMainApp = flow(function*() {
       yield Promise.all([
         self.singerStore.initializeSingers(),
-        self.authStore.user?.heart?.fetchHeart()
+        self.authStore.user?.heart?.fetchHeart(),
+        self.authStore.user?.advertise?.fetchKeywords()
       ]);
     });
 
