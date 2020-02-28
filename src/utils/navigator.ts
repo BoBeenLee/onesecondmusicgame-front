@@ -8,7 +8,7 @@ import colors from "src/styles/colors";
 import { delay } from "src/utils/common";
 import { getRootStore } from "src/stores/Store";
 import SignInScreen from "src/screens/SignInScreen";
-import MainScreen from "src/screens/MainScreen";
+import { MainScreenStatic } from "src/screens/MainScreen";
 
 const isLoadingByComponentId: { [key in string]: boolean } = {};
 let currentComponentId: string | null = null;
@@ -33,7 +33,7 @@ const start = async () => {
     SignInScreen.open();
     return;
   }
-  MainScreen.open();
+  MainScreenStatic.open();
 };
 
 const setRoot = async ({ nextComponentId }: { nextComponentId: string }) => {

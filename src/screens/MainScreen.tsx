@@ -22,7 +22,7 @@ import { SCREEN_IDS } from "src/screens/constant";
 import { setRoot } from "src/utils/navigator";
 import colors from "src/styles/colors";
 import { ICodePushStore } from "src/stores/CodePushStore";
-import { IPopupProps } from "src/hocs/withPopup";
+import withPopup, { IPopupProps } from "src/hocs/withPopup";
 import HeartGroup from "src/components/icon/HeartGroup";
 import TimerText from "src/components/text/TimerText";
 import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
@@ -43,11 +43,13 @@ import AutoHeightImage from "src/components/image/AutoHeightImage";
 import { getDeviceWidth } from "src/utils/device";
 import UserGameItemScreen from "src/screens/user/UserGameItemScreen";
 import { logEvent } from "src/configs/analytics";
-import { getRootStore } from "src/stores/Store";
+import { IAppStore } from "src/stores/AppStore";
+import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
 
 interface IInject {
   store: IStore;
   authStore: IAuthStore;
+  appStore: IAppStore;
   codePushStore: ICodePushStore;
   toastStore: IToastStore;
 }
@@ -61,6 +63,14 @@ interface IStates {
 }
 
 const Container = styled(ContainerWithStatusBar)``;
+
+const VersioningPopup = styled(OnlyConfirmPopup)`
+  width: 307px;
+`;
+
+const VersioningDescription = styled(Bold20)`
+  margin-vertical: 24px;
+`;
 
 const Header = styled.View`
   flex-direction: row;
@@ -257,6 +267,7 @@ const RegisterSongTooltipView = styled(Tooltip)``;
   ({ store }: { store: IStore }): IInject => ({
     store,
     authStore: store.authStore,
+    appStore: store.appStore,
     codePushStore: store.codePushStore,
     toastStore: store.toastStore
   })
@@ -279,25 +290,12 @@ class MainScreen extends Component<IProps, IStates> {
 
   public async componentDidMount() {
     const [, , isNotTooltipShow] = await Promise.all([
-      this.updateCodePushIfAvailable(),
+      this.updateAppIfAvailable(),
       this.props.store.initializeMainApp(),
       defaultItemToBoolean(FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP, false)
     ]);
     this.setState({ isNotTooltipShow });
   }
-
-  public updateCodePushIfAvailable = async () => {
-    const {
-      checkCodePushAvailability,
-      updateCodePush
-    } = this.props.codePushStore;
-
-    if (await checkCodePushAvailability()) {
-      InteractionManager.runAfterInteractions(async () => {
-        await updateCodePush();
-      });
-    }
-  };
 
   public render() {
     const heart = this.props.authStore.user?.heart;
@@ -479,6 +477,54 @@ class MainScreen extends Component<IProps, IStates> {
     const { componentId } = this.props;
     GameRankingScreen.open({ componentId });
   };
+
+  private updateAppIfAvailable = async () => {
+    const { isUpdate } = this.props.appStore;
+    if (isUpdate) {
+      this.updateVersionIfAvailable();
+      return;
+    }
+    await this.updateCodePushIfAvailable();
+  };
+
+  private updateVersionIfAvailable = () => {
+    const { showPopup } = this.props.popupProps;
+
+    showPopup(
+      <VersioningPopup
+        ContentComponent={
+          <VersioningDescription>새로운 버젼이 나왔어요!</VersioningDescription>
+        }
+        confirmText={"업데이트"}
+        onConfirm={this.openAppStore}
+      />,
+      false
+    );
+  };
+
+  private updateCodePushIfAvailable = async () => {
+    const {
+      checkCodePushAvailability,
+      updateCodePush
+    } = this.props.codePushStore;
+
+    if (await checkCodePushAvailability()) {
+      InteractionManager.runAfterInteractions(async () => {
+        await updateCodePush();
+      });
+    }
+  };
+
+  private openAppStore = async () => {
+    const { openAppStore } = this.props.appStore;
+    const { showToast } = this.props.toastStore;
+    try {
+      await openAppStore();
+    } catch (error) {
+      showToast(error.message);
+    }
+  };
 }
 
-export default MainScreen;
+export const MainScreenStatic = MainScreen;
+export default withPopup(MainScreen);

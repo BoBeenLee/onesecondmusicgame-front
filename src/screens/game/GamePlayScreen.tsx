@@ -446,7 +446,8 @@ class GamePlayScreen extends Component<IProps, IStates> {
         })
       );
     }
-    loadAD(AdmobUnitID.HeartReward, ["game", "quiz", "music", "korea"], {
+    const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
+    loadAD(AdmobUnitID.HeartReward, keywords, {
       onRewarded: this.onRewarded
     });
 
@@ -859,7 +860,6 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private nextStep = async () => {
-    await TrackPlayer.reset();
     this.setState(
       {
         currentStepStatus: "play",
@@ -869,11 +869,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
         songAnswerSeconds: DEFAULT_LIMIT_TIME
       },
       () => {
+        this.gamePlayHighlights.nextStep();
+        this.gamePlayersRef.current?.snapToItem(
+          this.gamePlayHighlights.currentStep
+        );
         InteractionManager.runAfterInteractions(async () => {
-          this.gamePlayHighlights.nextStep();
-          this.gamePlayersRef.current?.snapToItem(
-            this.gamePlayHighlights.currentStep
-          );
+          await TrackPlayer.reset();
           await this.readyForPlay();
         });
       }
@@ -957,6 +958,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
       componentId,
       gamePlayHighlights: () => this.gamePlayHighlights
     });
+    await TrackPlayer.reset();
   };
 
   private exit = () => {

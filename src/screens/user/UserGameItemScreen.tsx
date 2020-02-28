@@ -139,7 +139,9 @@ class UserGameItemScreen extends Component<IProps, IStates> {
       }
     };
     this.onRewarded = props.wrapperDisabled(this.onRewarded, "onRewarded");
-    loadAD(AdmobUnitID.HeartReward, ["game", "quiz", "music", "korea"], {
+
+    const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
+    loadAD(AdmobUnitID.HeartReward, keywords, {
       onRewarded: this.onRewarded
     });
   }
@@ -225,7 +227,8 @@ class UserGameItemScreen extends Component<IProps, IStates> {
   private requestHeartRewardAD = () => {
     if (isLoadedAD(AdmobUnitID.HeartReward)) {
       showAD(AdmobUnitID.HeartReward);
-      loadAD(AdmobUnitID.HeartReward, ["game", "quiz", "music", "korea"], {
+      const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
+      loadAD(AdmobUnitID.HeartReward, keywords, {
         onRewarded: this.onRewarded
       });
     }

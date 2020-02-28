@@ -18,7 +18,7 @@ import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
 import { SCREEN_IDS } from "src/screens/constant";
 import { setRoot } from "src/utils/navigator";
-import MainScreen from "src/screens/MainScreen";
+import { MainScreenStatic } from "src/screens/MainScreen";
 import colors from "src/styles/colors";
 import { ErrorCode } from "src/configs/error";
 import UserProfileScreen from "src/screens/user/UserProfileScreen";
@@ -192,7 +192,7 @@ class SignInScreen extends Component<IProps> {
 
     try {
       await signUp(data);
-      MainScreen.open();
+      MainScreenStatic.open();
     } catch (error) {
       showToast(error.message);
     }
@@ -204,7 +204,7 @@ class SignInScreen extends Component<IProps> {
     if (!isSignIn) {
       return;
     }
-    MainScreen.open();
+    MainScreenStatic.open();
     logEvent.signIn("FACEBOOK");
   };
 
@@ -214,7 +214,7 @@ class SignInScreen extends Component<IProps> {
     if (!isSignIn) {
       return;
     }
-    MainScreen.open();
+    MainScreenStatic.open();
     logEvent.signIn("GOOGLE");
   };
 
@@ -224,7 +224,7 @@ class SignInScreen extends Component<IProps> {
     if (!isSignIn) {
       return;
     }
-    MainScreen.open();
+    MainScreenStatic.open();
     logEvent.signIn("KAKAO");
   };
 
@@ -234,7 +234,7 @@ class SignInScreen extends Component<IProps> {
     if (!isSignIn) {
       return;
     }
-    MainScreen.open();
+    MainScreenStatic.open();
     logEvent.signIn("APPLE");
   };
 }

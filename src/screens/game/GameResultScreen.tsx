@@ -22,7 +22,7 @@ import { SCREEN_IDS } from "src/screens/constant";
 import { setStackRoot } from "src/utils/navigator";
 import colors from "src/styles/colors";
 import HeartGroup from "src/components/icon/HeartGroup";
-import MainScreen from "src/screens/MainScreen";
+import { MainScreenStatic } from "src/screens/MainScreen";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
@@ -301,7 +301,8 @@ class GameResultScreen extends Component<IProps, IStates> {
       }
     };
 
-    loadAD(AdmobUnitID.HeartReward, ["game", "quiz", "music", "korea"], {
+    const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
+    loadAD(AdmobUnitID.HeartReward, keywords, {
       onRewarded: this.onRewarded
     });
     this.gamePlayHighlights =
@@ -314,6 +315,7 @@ class GameResultScreen extends Component<IProps, IStates> {
 
   public render() {
     const heart = this.props.authStore.user?.heart;
+    const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
     const nickname = this.props.authStore.user?.nickname ?? "";
     const {
       gainPointOfThisGame,
@@ -326,7 +328,7 @@ class GameResultScreen extends Component<IProps, IStates> {
     return (
       <Container>
         <ScrollView>
-          <GameResultBanner />
+          <GameResultBanner keywords={keywords} />
           <Header>
             <Title>게임 종료</Title>
             <GamePlayStep circles={gamePlayStepStatuses} />
@@ -534,7 +536,7 @@ class GameResultScreen extends Component<IProps, IStates> {
   };
 
   private home = () => {
-    MainScreen.open();
+    MainScreenStatic.open();
   };
 }
 
