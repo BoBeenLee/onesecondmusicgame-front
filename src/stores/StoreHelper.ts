@@ -7,9 +7,11 @@ import { IPushNotificationStore } from "src/stores/PushNotificationStore";
 import { ILinkingStore } from "src/stores/LinkingStore";
 import { ICodePushStore } from "src/stores/CodePushStore";
 import { ISingerStore } from "src/stores/SingerStore";
+import { IAppStore } from "src/stores/AppStore";
 
 export interface IStoreType {
   appStateStatus: AppStateStatus;
+  appStore: IAppStore;
   authStore: IAuthStore;
   codePushStore: ICodePushStore;
   singerStore: ISingerStore;

@@ -43,11 +43,13 @@ import AutoHeightImage from "src/components/image/AutoHeightImage";
 import { getDeviceWidth } from "src/utils/device";
 import UserGameItemScreen from "src/screens/user/UserGameItemScreen";
 import { logEvent } from "src/configs/analytics";
-import { getRootStore } from "src/stores/Store";
+import { IAppStore } from "src/stores/AppStore";
+import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
 
 interface IInject {
   store: IStore;
   authStore: IAuthStore;
+  appStore: IAppStore;
   codePushStore: ICodePushStore;
   toastStore: IToastStore;
 }
@@ -61,6 +63,8 @@ interface IStates {
 }
 
 const Container = styled(ContainerWithStatusBar)``;
+
+const VersionDescription = styled(Bold28)``;
 
 const Header = styled.View`
   flex-direction: row;
@@ -257,6 +261,7 @@ const RegisterSongTooltipView = styled(Tooltip)``;
   ({ store }: { store: IStore }): IInject => ({
     store,
     authStore: store.authStore,
+    appStore: store.appStore,
     codePushStore: store.codePushStore,
     toastStore: store.toastStore
   })
@@ -279,12 +284,38 @@ class MainScreen extends Component<IProps, IStates> {
 
   public async componentDidMount() {
     const [, , isNotTooltipShow] = await Promise.all([
-      this.updateCodePushIfAvailable(),
+      this.updateAppIfAvailable(),
       this.props.store.initializeMainApp(),
       defaultItemToBoolean(FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP, false)
     ]);
     this.setState({ isNotTooltipShow });
   }
+
+  public updateAppIfAvailable = async () => {
+    const { isUpdate } = this.props.appStore;
+    if (isUpdate) {
+      this.updateVersionIfAvailable();
+      return;
+    }
+    await this.updateCodePushIfAvailable();
+  };
+
+  public updateVersionIfAvailable = () => {
+    const { showPopup } = this.props.popupProps;
+    const { openAppStore } = this.props.appStore;
+
+    showPopup(
+      <OnlyConfirmPopup
+        ContentComponent={
+          <VersionDescription>새로운 버젼이 나왔어요!</VersionDescription>
+        }
+        confirmText={"업데이트"}
+        onConfirm={openAppStore}
+      />,
+      true,
+      openAppStore
+    );
+  };
 
   public updateCodePushIfAvailable = async () => {
     const {

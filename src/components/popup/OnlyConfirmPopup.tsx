@@ -11,7 +11,7 @@ interface IProps {
   ContentComponent: React.ReactNode;
   confirmText: string;
   onConfirm: () => void;
-  onCancel: () => void;
+  onCancel?: () => void;
 }
 
 const Content = styled.View`
