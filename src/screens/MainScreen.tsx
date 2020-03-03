@@ -152,18 +152,11 @@ const Content = styled.View`
   align-items: center;
 `;
 
-const MainMirrorBallView = styled.View`
+const MainMirrorBallBackground = styled.Image`
   position: absolute;
-  top: 50px;
+  top: -30px;
   left: 0px;
   width: 100%;
-  justify-content: center;
-  align-items: center;
-`;
-
-const MainMirrorBallBackground = styled.Image`
-  width: 244px;
-  height: 310px;
   resize-mode: contain;
 `;
 
@@ -237,7 +230,7 @@ const FooterButtonText = styled(Bold12)`
 
 const MainBackground = styled(AutoHeightImage)`
   position: absolute;
-  top: 345px;
+  top: 390px;
   left: 0px;
   resize-mode: contain;
 `;
@@ -302,15 +295,14 @@ class MainScreen extends Component<IProps, IStates> {
     const user = this.props.authStore.user;
     return (
       <Container>
+        <MainMirrorBallBackground source={images.mainMirrorBall} />
         <MainBackground
           width={getDeviceWidth()}
           widthRatio={375}
           heightRatio={228}
           source={images.bgMain}
         />
-        <MainMirrorBallView>
-          <MainMirrorBallBackground source={images.mainMirrorBall} />
-        </MainMirrorBallView>
+
         <Header>
           <HeartStatus>
             <HeartGroup
