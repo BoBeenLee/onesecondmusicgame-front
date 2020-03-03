@@ -22,7 +22,7 @@ const images = {
   btnGoogle: require("./btn_google.png"),
   addEmpty: require("./group3Copy.png"),
   closeIcon: require("./group.png"),
-  mainMirrorBall: require("./group12.png"),
+  mainMirrorBall: require("./group12.gif"),
   btnRankIcon: require("./group14.png"),
   btnCDIcon: require("./btn_cd.png"),
   combinedShape: require("./combinedShape.png"),
