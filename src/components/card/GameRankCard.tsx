@@ -91,21 +91,21 @@ function GameRankCard(props: IProps) {
 
   const makeIconName = (rankDiff: number) => {
     if (rankDiff < 0) {
-      return "caret-up-min";
+      return "caret-down-min";
     } else if (rankDiff === 0) {
       return "minus-min";
     } else {
-      return "caret-down-min";
+      return "caret-up-min";
     }
   };
 
   const makeIconColor = (rankDiff: number) => {
     if (rankDiff < 0) {
-      return colors.coolGreen;
+      return colors.red400;
     } else if (rankDiff === 0) {
       return colors.white;
     } else {
-      return colors.red400;
+      return colors.coolGreen;
     }
   };
 
