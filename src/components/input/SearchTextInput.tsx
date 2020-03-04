@@ -7,6 +7,7 @@ import OSMGTextInput from "src/components/input/OSMGTextInput";
 import colors from "src/styles/colors";
 import XEIconButton from "src/components/button/XEIconButton";
 import useDebouncedCallback from "src/hooks/useDebouncedCallback";
+import { onlyUpdateForKeys } from "recompose";
 
 interface IProps extends TextInputProps {
   style?: ViewProps["style"];
@@ -58,4 +59,5 @@ function SearchTextInput(props: IProps) {
   );
 }
 
-export default SearchTextInput;
+const updateKeys: Array<keyof IProps> = ["style"];
+export default onlyUpdateForKeys(updateKeys)(SearchTextInput);
