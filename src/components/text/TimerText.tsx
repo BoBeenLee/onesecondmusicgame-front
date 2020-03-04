@@ -27,12 +27,15 @@ function TimerText(props: IProps) {
   }
 
   const useSeconds = useCallback(() => {
-    if (seconds === 0) {
+    if (seconds === 0 && prevSeconds !== 0) {
       onExpire();
       return;
     }
+    if (seconds === 0 && prevSeconds === 0) {
+      return;
+    }
     setSeconds(seconds - 1);
-  }, [onExpire, seconds]);
+  }, [onExpire, prevSeconds, seconds]);
 
   useEffect(() => {
     intervalRef.current = setInterval(useSeconds, ONE_SECONDS);
