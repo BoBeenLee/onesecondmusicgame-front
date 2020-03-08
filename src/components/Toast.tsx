@@ -1,6 +1,7 @@
 import React from "react";
 import { Animated, ViewProps } from "react-native";
 import styled from "styled-components/native";
+import { onlyUpdateForKeys } from "recompose";
 
 import { Regular14, Bold14 } from "src/components/text/Typographies";
 import colors from "src/styles/colors";
@@ -109,4 +110,5 @@ class Toast extends React.PureComponent<IProps> {
   };
 }
 
-export default Toast;
+const updateKeys: Array<keyof IProps> = ["style"];
+export default onlyUpdateForKeys(updateKeys)(Toast);

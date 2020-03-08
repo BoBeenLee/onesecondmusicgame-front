@@ -11,6 +11,7 @@ import {
 import colors from "src/styles/colors";
 import XEIcon from "src/components/icon/XEIcon";
 import { AudioType } from "src/components/player/interface";
+import { onlyUpdateForKeys } from "recompose";
 
 interface IProps {
   style?: ViewProps["style"];
@@ -20,8 +21,8 @@ interface IProps {
   isRegistered: boolean;
   isLike: boolean;
   likeCount: number;
-  onLikePress: () => void;
   audioType: AudioType;
+  onLikePress: () => void;
   onPlayToggle: () => void;
 }
 
@@ -153,4 +154,14 @@ function SearchTrackCard(props: IProps) {
   );
 }
 
-export default SearchTrackCard;
+const updateKeys: Array<keyof IProps> = [
+  "style",
+  "thumnail",
+  "title",
+  "author",
+  "isRegistered",
+  "isLike",
+  "likeCount",
+  "audioType"
+];
+export default onlyUpdateForKeys(updateKeys)(SearchTrackCard);

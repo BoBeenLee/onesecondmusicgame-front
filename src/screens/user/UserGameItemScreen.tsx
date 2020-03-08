@@ -201,26 +201,39 @@ class UserGameItemScreen extends Component<IProps, IStates> {
       Item.ItemTypeEnum.SKIP
     );
     showPopup(
-      <ChargeSkipItemPopup
-        count={userItem?.count ?? 0}
-        onInvite={this.invite}
-        onCancel={closePopup}
-      />
+      <Observer>
+        {() => {
+          return (
+            <ChargeSkipItemPopup
+              count={userItem?.count ?? 0}
+              onInvite={this.invite}
+              onCancel={closePopup}
+            />
+          );
+        }}
+      </Observer>
     );
   };
 
   private onUseFullHeartPopup = () => {
     const { showPopup, closePopup } = this.props.popupProps;
-    const userItem = this.props.authStore.user?.userItemsByItemType?.(
-      Item.ItemTypeEnum.CHARGEALLHEART
-    );
+
     showPopup(
-      <UseFullHeartPopup
-        count={userItem?.count ?? 0}
-        onConfirm={this.useFullHeart}
-        onAD={this.requestHeartRewardAD}
-        onCancel={closePopup}
-      />
+      <Observer>
+        {() => {
+          const userItem = this.props.authStore.user?.userItemsByItemType?.(
+            Item.ItemTypeEnum.CHARGEALLHEART
+          );
+          return (
+            <UseFullHeartPopup
+              count={userItem?.count ?? 0}
+              onConfirm={this.useFullHeart}
+              onAD={this.requestHeartRewardAD}
+              onCancel={closePopup}
+            />
+          );
+        }}
+      </Observer>
     );
   };
 
@@ -247,9 +260,11 @@ class UserGameItemScreen extends Component<IProps, IStates> {
     const userItem = this.props.authStore.user?.userItemsByItemType?.(
       Item.ItemTypeEnum.CHARGEALLHEART
     );
-    await userItem?.useItemType?.();
-    await this.props.authStore.user?.heart?.fetchHeart();
-    showToast("하트 풀충전 완료!");
+    if (userItem?.count !== 0) {
+      await userItem?.useItemType?.();
+      await this.props.authStore.user?.heart?.fetchHeart();
+      showToast("하트 풀충전 완료!");
+    }
   };
 
   private onRewarded = async () => {

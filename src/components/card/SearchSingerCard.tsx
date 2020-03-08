@@ -5,6 +5,7 @@ import styled from "styled-components/native";
 import { Regular12 } from "src/components/text/Typographies";
 import CheckImage from "src/components/image/CheckImage";
 import colors from "src/styles/colors";
+import { onlyUpdateForKeys } from "recompose";
 
 interface IProps {
   style?: ViewProps["style"];
@@ -39,4 +40,5 @@ function SearchSingerCard(props: IProps) {
   );
 }
 
-export default SearchSingerCard;
+const updateKeys: Array<keyof IProps> = ["style", "selected", "image", "name"];
+export default onlyUpdateForKeys(updateKeys)(SearchSingerCard);

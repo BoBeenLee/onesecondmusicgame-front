@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React, { Component } from "react";
-import styled from "styled-components/native";
+import styled, { css } from "styled-components/native";
 
 import { SCREEN_IDS } from "src/screens/constant";
 import { dismissOverlay, showOverlayTransparent } from "src/utils/navigator";
@@ -10,6 +10,7 @@ import colors from "src/styles/colors";
 import SkipIcon from "src/components/icon/SkipIcon";
 import LimitTimeProgress from "src/components/progress/LimitTimeProgress";
 import { iosStatusBarHeight } from "src/utils/device";
+import images from "src/images";
 
 interface IParams {
   onAfterClose?: () => void;
@@ -81,19 +82,43 @@ const PlayStep2 = styled.View`
   justify-content: center;
   align-items: center;
   width: 100%;
+  top: ${iosStatusBarHeight(true) + 180}px;
+  padding-horizontal: 16px;
+`;
+
+const PlayStep2Description = styled(Bold20)`
+  letter-spacing: -0.5px;
+  text-align: center;
+  color: ${colors.white};
+`;
+
+const PlayIcon = styled.Image<{ size: number }>`
+  ${({ size }) => css`
+    width: ${size}px;
+    height: ${size}px;
+  `}
+  margin-bottom: 24px;
+`;
+
+const PlayStep3 = styled.View`
+  position: absolute;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   top: ${iosStatusBarHeight(true) + 70}px;
   padding-horizontal: 16px;
 `;
 
-const PlayStep2TimeProgress = styled(LimitTimeProgress)`
+const PlayStep3TimeProgress = styled(LimitTimeProgress)`
   margin-bottom: 20px;
 `;
 
-const PlayStep2Title = styled(Bold20)`
+const PlayStep3Title = styled(Bold20)`
   color: ${colors.white};
 `;
 
-const PlayStep2HighlightTitle = styled(Bold20)`
+const PlayStep3HighlightTitle = styled(Bold20)`
   color: ${colors.lightMagentaThree};
 `;
 
@@ -127,15 +152,20 @@ class GamePlayTutorialOverlay extends Component<IProps, IStates> {
           </SkipBadge>
         </SkipButton>
       </PlayStep1>,
-      <PlayStep2 key="2">
-        <PlayStep2TimeProgress key={`1`} totalSeconds={40} seconds={12} />
-        <PlayStep2Title>
+      <PlayStep2 key={"2"}>
+        <PlayIcon size={65} source={images.playButton} />
+        <PlayStep2Description>{`재생 버튼을 눌러서
+1초 동안 노래를 들어보세요!`}</PlayStep2Description>
+      </PlayStep2>,
+      <PlayStep3 key="3">
+        <PlayStep3TimeProgress key={`1`} totalSeconds={40} seconds={12} />
+        <PlayStep3Title>
           제한 시간은 노래 1곡 당{" "}
-          <PlayStep2HighlightTitle>40초</PlayStep2HighlightTitle>!{"\n"}
-          <PlayStep2HighlightTitle>총 5곡</PlayStep2HighlightTitle>의 노래를
+          <PlayStep3HighlightTitle>40초</PlayStep3HighlightTitle>!{"\n"}
+          <PlayStep3HighlightTitle>총 5곡</PlayStep3HighlightTitle>의 노래를
           맞춰주세요!
-        </PlayStep2Title>
-      </PlayStep2>
+        </PlayStep3Title>
+      </PlayStep3>
     ];
   }
 
