@@ -14,6 +14,7 @@ import {
 
 interface IProps {
   style?: ViewProps["style"];
+  nickname?: string;
   onConfirm: (data: IForm) => Promise<void>;
 }
 
@@ -81,7 +82,7 @@ const UserProfileForm = (props: IProps) => {
   const { register, setValue, setError, handleSubmit, errors } = useForm<
     IForm
   >();
-  const [form, setForm] = useState<IForm>({ nickname: "" });
+  const [form, setForm] = useState<IForm>({ nickname: props.nickname ?? "" });
 
   useEffect(() => {
     register({ name: "nickname" }, { required: true });
@@ -98,7 +99,7 @@ const UserProfileForm = (props: IProps) => {
   return (
     <Container style={style}>
       <Content>
-        <Title>게임에 사용할 닉네임을 설정해주세요</Title>
+        <Title>게임에 사용할 닉네임을 수정해주세요.</Title>
         <NicknameInput>
           <NicknameTextInput
             onChangeText={text => {
