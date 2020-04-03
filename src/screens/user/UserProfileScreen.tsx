@@ -85,9 +85,10 @@ class UserProfileScreen extends Component<IProps, IStates> {
 
   public render() {
     const { profileImage } = this.state;
+    const nickname = this.props.authStore.user?.nickname;
     return (
       <Container>
-        <BackTopBar title="닉네임 설정" onBackPress={this.back} />
+        <BackTopBar title="닉네임 수정" onBackPress={this.back} />
         <InnerContainer
           scrollEnabled={true}
           enableOnAndroid={true}
@@ -97,7 +98,7 @@ class UserProfileScreen extends Component<IProps, IStates> {
             <ProfileImageButton onPress={this.imagePicker}>
               <ProfileImage size={81} uri={profileImage} editable={true} />
             </ProfileImageButton>
-            <UserProfileForm onConfirm={this.onConfirm} />
+            <UserProfileForm nickname={nickname} onConfirm={this.onConfirm} />
           </Content>
         </InnerContainer>
       </Container>

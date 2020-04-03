@@ -34,7 +34,7 @@ const ContainerTouchabledView = styled.TouchableWithoutFeedback`
   background-color: rgba(33, 33, 33, 0.8);
 `;
 
-const PlayStep1 = styled.View`
+const PlayStep2 = styled.View`
   position: absolute;
   flex-direction: column;
   align-items: flex-start;
@@ -76,7 +76,7 @@ const SkipBadgeText = styled(Bold18)`
   color: ${colors.paleLavender};
 `;
 
-const PlayStep2 = styled.View`
+const PlayStep1 = styled.View`
   position: absolute;
   flex-direction: column;
   justify-content: center;
@@ -86,7 +86,7 @@ const PlayStep2 = styled.View`
   padding-horizontal: 16px;
 `;
 
-const PlayStep2Description = styled(Bold20)`
+const PlayStep1Description = styled(Bold20)`
   letter-spacing: -0.5px;
   text-align: center;
   color: ${colors.white};
@@ -140,6 +140,11 @@ class GamePlayTutorialOverlay extends Component<IProps, IStates> {
     this.state = { step: 0 };
     this.GamePlaySteps = [
       <PlayStep1 key={"1"}>
+        <PlayIcon size={65} source={images.playButton} />
+        <PlayStep1Description>{`재생 버튼을 눌러서
+1초 동안 노래를 들어보세요!`}</PlayStep1Description>
+      </PlayStep1>,
+      <PlayStep2 key={"2"}>
         <SkipDescription>
           SKIP 아이템을 사용하면{"\n"}
           맞은 문제로 처리됩니다!
@@ -151,11 +156,6 @@ class GamePlayTutorialOverlay extends Component<IProps, IStates> {
             <SkipBadgeText>5</SkipBadgeText>
           </SkipBadge>
         </SkipButton>
-      </PlayStep1>,
-      <PlayStep2 key={"2"}>
-        <PlayIcon size={65} source={images.playButton} />
-        <PlayStep2Description>{`재생 버튼을 눌러서
-1초 동안 노래를 들어보세요!`}</PlayStep2Description>
       </PlayStep2>,
       <PlayStep3 key="3">
         <PlayStep3TimeProgress key={`1`} totalSeconds={40} seconds={12} />
