@@ -16,6 +16,15 @@ export default function HTML(props: any) {
           type="text/css"
           href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css"
         />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(adsbygoogle = window.adsbygoogle || []).push({});`
+          }}
+        />
         {props.headComponents}
       </head>
       <body {...props.bodyAttributes}>
