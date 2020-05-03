@@ -44,6 +44,7 @@ import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
 import { Item, GameResultResponse } from "__generate__/api";
 import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import images from "src/images";
+import AdvertiseBannerWebview from "src/components/webview/AdvertiseBannerWebview";
 import GameResultBanner from "src/components/banner/GameResultBanner";
 
 interface IInject {
@@ -328,7 +329,7 @@ class GameResultScreen extends Component<IProps, IStates> {
     return (
       <Container>
         <ScrollView>
-          <GameResultBanner keywords={keywords} />
+          <AdvertiseBannerWebview />
           <Header>
             <Title>게임 종료</Title>
             <GamePlayStep circles={gamePlayStepStatuses} />
