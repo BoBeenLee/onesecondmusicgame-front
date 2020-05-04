@@ -17,6 +17,7 @@ export default function HTML(props: any) {
           href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css"
         />
         <script
+          data-ad-client="ca-pub-7210978367146574"
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
         />
