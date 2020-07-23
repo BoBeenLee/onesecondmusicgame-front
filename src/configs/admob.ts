@@ -33,6 +33,8 @@ class AdmobUnit {
     keywords: string[],
     onListeners?: {
       onAdLoaded?: () => void;
+      onAdOpened?: () => void;
+      onAdClosed?: () => void;
       onRewarded?: (event: any) => void;
     }
   ) => {
@@ -44,6 +46,10 @@ class AdmobUnit {
     this.advert.loadAd(request.build());
     onListeners?.onAdLoaded &&
       this.advert.on("onAdLoaded", onListeners?.onAdLoaded);
+    onListeners?.onAdOpened &&
+      this.advert.on("onAdOpened", onListeners?.onAdOpened);
+    onListeners?.onAdClosed &&
+      this.advert.on("onAdClosed", onListeners?.onAdClosed);
     onListeners?.onRewarded &&
       this.advert.on("onRewarded", onListeners?.onRewarded);
   };
@@ -79,6 +85,8 @@ export const loadAD = (
   keywords: string[],
   onListeners?: {
     onAdLoaded?: () => void;
+    onAdOpened?: () => void;
+    onAdClosed?: () => void;
     onRewarded?: (event: any) => void;
   }
 ) => {
