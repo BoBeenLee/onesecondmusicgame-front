@@ -329,7 +329,7 @@ class GameResultScreen extends Component<IProps, IStates> {
     return (
       <Container>
         <ScrollView>
-          <AdvertiseBannerWebview />
+          {/* <AdvertiseBannerWebview /> */}
           <Header>
             <Title>게임 종료</Title>
             <GamePlayStep circles={gamePlayStepStatuses} />
