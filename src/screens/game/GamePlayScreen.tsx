@@ -886,7 +886,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     if (currentGameHighlight === null) {
       return;
     }
-    const { id, trackId, artworkUrl } = currentGameHighlight;
+    const { id, trackId, artworkUrl, millisecond } = currentGameHighlight;
     await TrackPlayer.add({
       id: String(id ?? "none"),
       url: makePlayStreamUriByTrackId(String(trackId)),
@@ -894,6 +894,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
       artist: "???",
       artwork: artworkUrl
     });
+    await TrackPlayer.seekTo(_.round((millisecond ?? 0) / 1000));
   };
 
   private onFinishPopup = async () => {
