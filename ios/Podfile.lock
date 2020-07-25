@@ -375,7 +375,7 @@ PODS:
     - React
   - react-native-splash-screen (3.2.0):
     - React
-  - react-native-track-player (1.1.4):
+  - react-native-track-player (1.2.3):
     - React
   - react-native-video (5.0.2):
     - React
@@ -742,7 +742,7 @@ SPEC CHECKSUMS:
   react-native-image-resizer: 9dfb844937574db849fd18a56d8e6c607b0a31d8
   react-native-safe-area-context: d227bd5ef6776683c330f44187351dc138b2a4cb
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
-  react-native-track-player: 8e912dc1fc9936adf609a88b729a2c2492fea2b8
+  react-native-track-player: 84552605df7d90e199ff8b5deceddff58d658523
   react-native-video: 961749da457e73bf0b5565edfbaffc25abfb8974
   react-native-webview: 88b0a0453a88cd7e3c0729ce8723a66783814dd6
   React-RCTActionSheet: 600b4d10e3aea0913b5a92256d2719c0cdd26d76
@@ -776,4 +776,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: a44a1a3997a7293c00c23cd5102d15d0cdbef36f
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.2
