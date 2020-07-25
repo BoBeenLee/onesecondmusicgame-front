@@ -9,7 +9,7 @@ import { Bold12, Bold18, Bold20 } from "src/components/text/Typographies";
 import colors from "src/styles/colors";
 import SkipIcon from "src/components/icon/SkipIcon";
 import LimitTimeProgress from "src/components/progress/LimitTimeProgress";
-import { iosStatusBarHeight } from "src/utils/device";
+import { iosStatusBarHeight, getBottomSpace } from "src/utils/device";
 import images from "src/images";
 
 interface IParams {
@@ -39,7 +39,7 @@ const PlayStep2 = styled.View`
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-end;
-  bottom: 15px;
+  bottom: ${15 + getBottomSpace()}px;
   left: 15px;
 `;
 
