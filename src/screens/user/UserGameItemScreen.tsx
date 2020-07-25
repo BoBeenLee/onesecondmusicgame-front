@@ -46,8 +46,7 @@ interface IProps extends IInject, IParams, IPopupProps, IDisabledProps {
 }
 
 interface IStates {
-  nicknameInput: string;
-  profileImage: string;
+  adStatus: "open" | "close" | null;
 }
 
 const Container = styled(ContainerWithStatusBar)`
@@ -128,6 +127,9 @@ class UserGameItemScreen extends Component<IProps, IStates> {
 
   constructor(props: IProps) {
     super(props);
+    this.state = {
+      adStatus: null
+    };
     this.userGameItemMap = {
       [Item.ItemTypeEnum.SKIP]: {
         IconComponent: <SkipIcon />,
@@ -142,7 +144,8 @@ class UserGameItemScreen extends Component<IProps, IStates> {
 
     const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
     loadAD(AdmobUnitID.HeartReward, keywords, {
-      onRewarded: this.onRewarded
+      onRewarded: this.onRewarded,
+      onAdClosed: this.onAdClosed
     });
   }
 
@@ -238,12 +241,12 @@ class UserGameItemScreen extends Component<IProps, IStates> {
   };
 
   private requestHeartRewardAD = () => {
-    if (isLoadedAD(AdmobUnitID.HeartReward)) {
-      showAD(AdmobUnitID.HeartReward);
-      const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
-      loadAD(AdmobUnitID.HeartReward, keywords, {
-        onRewarded: this.onRewarded
+    const { adStatus } = this.state;
+    if (isLoadedAD(AdmobUnitID.HeartReward) && adStatus !== "open") {
+      this.setState({
+        adStatus: "open"
       });
+      showAD(AdmobUnitID.HeartReward);
     }
   };
 
@@ -265,6 +268,17 @@ class UserGameItemScreen extends Component<IProps, IStates> {
       await this.props.authStore.user?.heart?.fetchHeart();
       showToast("하트 풀충전 완료!");
     }
+  };
+
+  private onAdClosed = () => {
+    const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
+    loadAD(AdmobUnitID.HeartReward, keywords, {
+      onRewarded: this.onRewarded,
+      onAdClosed: this.onAdClosed
+    });
+    this.setState({
+      adStatus: "close"
+    });
   };
 
   private onRewarded = async () => {

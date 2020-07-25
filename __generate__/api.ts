@@ -81,6 +81,86 @@ export class RequiredError extends Error {
 /**
  * 
  * @export
+ * @interface AdminRequest
+ */
+export interface AdminRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof AdminRequest
+     */
+    setting?: AdminRequest.SettingEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof AdminRequest
+     */
+    value?: number;
+}
+
+/**
+ * @export
+ * @namespace AdminRequest
+ */
+export namespace AdminRequest {
+    /**
+     * @export
+     * @enum {string}
+     */
+    export enum SettingEnum {
+        REWARDCOOLDOWNWATCHMOVIEDURATIONMINS = <any> 'REWARD_COOLDOWN_WATCH_MOVIE_DURATION_MINS',
+        POINTOFONEGAME = <any> 'POINT_OF_ONE_GAME',
+        MAXNUMOFSINGERPERGAME = <any> 'MAX_NUM_OF_SINGER_PER_GAME',
+        DEFAULTMAXHEARTCOUNT = <any> 'DEFAULT_MAX_HEART_COUNT'
+    }
+}
+
+/**
+ * 
+ * @export
+ * @interface AdminSetting
+ */
+export interface AdminSetting {
+    /**
+     * 
+     * @type {number}
+     * @memberof AdminSetting
+     */
+    id?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof AdminSetting
+     */
+    setting?: AdminSetting.SettingEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof AdminSetting
+     */
+    value?: number;
+}
+
+/**
+ * @export
+ * @namespace AdminSetting
+ */
+export namespace AdminSetting {
+    /**
+     * @export
+     * @enum {string}
+     */
+    export enum SettingEnum {
+        REWARDCOOLDOWNWATCHMOVIEDURATIONMINS = <any> 'REWARD_COOLDOWN_WATCH_MOVIE_DURATION_MINS',
+        POINTOFONEGAME = <any> 'POINT_OF_ONE_GAME',
+        MAXNUMOFSINGERPERGAME = <any> 'MAX_NUM_OF_SINGER_PER_GAME',
+        DEFAULTMAXHEARTCOUNT = <any> 'DEFAULT_MAX_HEART_COUNT'
+    }
+}
+
+/**
+ * 
+ * @export
  * @interface GameAnswer
  */
 export interface GameAnswer {
@@ -166,6 +246,38 @@ export interface GamePlayHighlightDTO {
      * @memberof GamePlayHighlightDTO
      */
     trackId?: number;
+}
+
+/**
+ * 
+ * @export
+ * @interface GamePlayLogResponse
+ */
+export interface GamePlayLogResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof GamePlayLogResponse
+     */
+    createdAt?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof GamePlayLogResponse
+     */
+    gainPointOfThisGame?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof GamePlayLogResponse
+     */
+    gameLevelType?: string;
+    /**
+     * 
+     * @type {Array<SongHighlightDTO>}
+     * @memberof GamePlayLogResponse
+     */
+    songHighlightList?: Array<SongHighlightDTO>;
 }
 
 /**
@@ -319,6 +431,52 @@ export namespace Item {
         SKIP = <any> 'SKIP',
         CHARGEALLHEART = <any> 'CHARGE_ALL_HEART'
     }
+}
+
+/**
+ * 
+ * @export
+ * @interface ItemCountInfo
+ */
+export interface ItemCountInfo {
+    /**
+     * 
+     * @type {number}
+     * @memberof ItemCountInfo
+     */
+    heartCount?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ItemCountInfo
+     */
+    skipCount?: number;
+}
+
+/**
+ * 
+ * @export
+ * @interface ItemUpdateRequest
+ */
+export interface ItemUpdateRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof ItemUpdateRequest
+     */
+    heartCount?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ItemUpdateRequest
+     */
+    nickname?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ItemUpdateRequest
+     */
+    skipCount?: number;
 }
 
 /**
@@ -650,6 +808,12 @@ export interface MusicUser {
      * @memberof MusicUser
      */
     profileDisplayPhotoFileName?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MusicUser
+     */
+    role?: string;
     /**
      * 
      * @type {string}
@@ -1205,6 +1369,20 @@ export interface ResponseDTOstring {
 /**
  * 
  * @export
+ * @interface RestrctionRequest
+ */
+export interface RestrctionRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof RestrctionRequest
+     */
+    singer?: string;
+}
+
+/**
+ * 
+ * @export
  * @interface Reward
  */
 export interface Reward {
@@ -1366,6 +1544,32 @@ export interface SongHighlightAddRequest {
      * @memberof SongHighlightAddRequest
      */
     songId?: number;
+}
+
+/**
+ * 
+ * @export
+ * @interface SongHighlightDTO
+ */
+export interface SongHighlightDTO {
+    /**
+     * 
+     * @type {number}
+     * @memberof SongHighlightDTO
+     */
+    millisecond?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof SongHighlightDTO
+     */
+    singer?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SongHighlightDTO
+     */
+    title?: string;
 }
 
 /**
@@ -1632,6 +1836,1407 @@ export interface View {
 
 
 /**
+ * AdminControllerApi - fetch parameter creator
+ * @export
+ */
+export const AdminControllerApiFetchParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary deleteRestriction
+         * @param {number} restrictionId restrictionId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteRestrictionUsingDELETE(restrictionId: number, options: any = {}): FetchArgs {
+            // verify required parameter 'restrictionId' is not null or undefined
+            if (restrictionId === null || restrictionId === undefined) {
+                throw new RequiredError('restrictionId','Required parameter restrictionId was null or undefined when calling deleteRestrictionUsingDELETE.');
+            }
+            const localVarPath = `/v1/admin/restrictions/{restrictionId}`
+                .replace(`{${"restrictionId"}}`, encodeURIComponent(String(restrictionId)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary delete
+         * @param {number} songId songId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteUsingDELETE(songId: number, options: any = {}): FetchArgs {
+            // verify required parameter 'songId' is not null or undefined
+            if (songId === null || songId === undefined) {
+                throw new RequiredError('songId','Required parameter songId was null or undefined when calling deleteUsingDELETE.');
+            }
+            const localVarPath = `/v1/admin/songs/{songId}`
+                .replace(`{${"songId"}}`, encodeURIComponent(String(songId)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary findByNickname
+         * @param {string} name name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        findByNicknameUsingGET(name: string, options: any = {}): FetchArgs {
+            // verify required parameter 'name' is not null or undefined
+            if (name === null || name === undefined) {
+                throw new RequiredError('name','Required parameter name was null or undefined when calling findByNicknameUsingGET.');
+            }
+            const localVarPath = `/v1/admin/user/findByNickname/{name}`
+                .replace(`{${"name"}}`, encodeURIComponent(String(name)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary getPlayLogsByNickname
+         * @param {string} name name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPlayLogsByNicknameUsingGET(name: string, options: any = {}): FetchArgs {
+            // verify required parameter 'name' is not null or undefined
+            if (name === null || name === undefined) {
+                throw new RequiredError('name','Required parameter name was null or undefined when calling getPlayLogsByNicknameUsingGET.');
+            }
+            const localVarPath = `/v1/admin/log/names/{name}`
+                .replace(`{${"name"}}`, encodeURIComponent(String(name)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary saveAdminSetting
+         * @param {AdminSetting} setting setting
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveAdminSettingUsingPUT(setting: AdminSetting, options: any = {}): FetchArgs {
+            // verify required parameter 'setting' is not null or undefined
+            if (setting === null || setting === undefined) {
+                throw new RequiredError('setting','Required parameter setting was null or undefined when calling saveAdminSettingUsingPUT.');
+            }
+            const localVarPath = `/v1/admin/setting`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            const needsSerialization = (<any>"AdminSetting" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(setting || {}) : (setting || "");
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary saveAdminSetting
+         * @param {number} settingId settingId
+         * @param {AdminRequest} request request
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveAdminSettingUsingPUT1(settingId: number, request: AdminRequest, options: any = {}): FetchArgs {
+            // verify required parameter 'settingId' is not null or undefined
+            if (settingId === null || settingId === undefined) {
+                throw new RequiredError('settingId','Required parameter settingId was null or undefined when calling saveAdminSettingUsingPUT1.');
+            }
+            // verify required parameter 'request' is not null or undefined
+            if (request === null || request === undefined) {
+                throw new RequiredError('request','Required parameter request was null or undefined when calling saveAdminSettingUsingPUT1.');
+            }
+            const localVarPath = `/v1/admin/settings/{settingId}`
+                .replace(`{${"settingId"}}`, encodeURIComponent(String(settingId)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            const needsSerialization = (<any>"AdminRequest" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(request || {}) : (request || "");
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary save
+         * @param {RestrctionRequest} request request
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveUsingPOST(request: RestrctionRequest, options: any = {}): FetchArgs {
+            // verify required parameter 'request' is not null or undefined
+            if (request === null || request === undefined) {
+                throw new RequiredError('request','Required parameter request was null or undefined when calling saveUsingPOST.');
+            }
+            const localVarPath = `/v1/admin/restriction`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            const needsSerialization = (<any>"RestrctionRequest" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(request || {}) : (request || "");
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary updateExcludeWord
+         * @param {number} id id
+         * @param {string} excludeWord excludeWord
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateExcludeWordUsingPOST(id: number, excludeWord: string, options: any = {}): FetchArgs {
+            // verify required parameter 'id' is not null or undefined
+            if (id === null || id === undefined) {
+                throw new RequiredError('id','Required parameter id was null or undefined when calling updateExcludeWordUsingPOST.');
+            }
+            // verify required parameter 'excludeWord' is not null or undefined
+            if (excludeWord === null || excludeWord === undefined) {
+                throw new RequiredError('excludeWord','Required parameter excludeWord was null or undefined when calling updateExcludeWordUsingPOST.');
+            }
+            const localVarPath = `/v1/admin/excludeWord/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            const needsSerialization = (<any>"string" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(excludeWord || {}) : (excludeWord || "");
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary updateExcludeWord
+         * @param {number} id id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateExcludeWordUsingPUT(id: number, options: any = {}): FetchArgs {
+            // verify required parameter 'id' is not null or undefined
+            if (id === null || id === undefined) {
+                throw new RequiredError('id','Required parameter id was null or undefined when calling updateExcludeWordUsingPUT.');
+            }
+            const localVarPath = `/v1/admin/excludeWord/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary updateItemByNickname
+         * @param {ItemUpdateRequest} itemUpdateRequest itemUpdateRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateItemByNicknameUsingPUT(itemUpdateRequest: ItemUpdateRequest, options: any = {}): FetchArgs {
+            // verify required parameter 'itemUpdateRequest' is not null or undefined
+            if (itemUpdateRequest === null || itemUpdateRequest === undefined) {
+                throw new RequiredError('itemUpdateRequest','Required parameter itemUpdateRequest was null or undefined when calling updateItemByNicknameUsingPUT.');
+            }
+            const localVarPath = `/v1/admin/item/update`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            const needsSerialization = (<any>"ItemUpdateRequest" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(itemUpdateRequest || {}) : (itemUpdateRequest || "");
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary update
+         * @param {number} songId songId
+         * @param {Song} song song
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateUsingPUT(songId: number, song: Song, options: any = {}): FetchArgs {
+            // verify required parameter 'songId' is not null or undefined
+            if (songId === null || songId === undefined) {
+                throw new RequiredError('songId','Required parameter songId was null or undefined when calling updateUsingPUT.');
+            }
+            // verify required parameter 'song' is not null or undefined
+            if (song === null || song === undefined) {
+                throw new RequiredError('song','Required parameter song was null or undefined when calling updateUsingPUT.');
+            }
+            const localVarPath = `/v1/admin/songs/{songId}`
+                .replace(`{${"songId"}}`, encodeURIComponent(String(songId)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            const needsSerialization = (<any>"Song" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(song || {}) : (song || "");
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * AdminControllerApi - functional programming interface
+ * @export
+ */
+export const AdminControllerApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary deleteRestriction
+         * @param {number} restrictionId restrictionId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteRestrictionUsingDELETE(restrictionId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<number> {
+            const localVarFetchArgs = AdminControllerApiFetchParamCreator(configuration).deleteRestrictionUsingDELETE(restrictionId, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary delete
+         * @param {number} songId songId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteUsingDELETE(songId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<number> {
+            const localVarFetchArgs = AdminControllerApiFetchParamCreator(configuration).deleteUsingDELETE(songId, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary findByNickname
+         * @param {string} name name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        findByNicknameUsingGET(name: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ItemCountInfo> {
+            const localVarFetchArgs = AdminControllerApiFetchParamCreator(configuration).findByNicknameUsingGET(name, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary getPlayLogsByNickname
+         * @param {string} name name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPlayLogsByNicknameUsingGET(name: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<GamePlayLogResponse>> {
+            const localVarFetchArgs = AdminControllerApiFetchParamCreator(configuration).getPlayLogsByNicknameUsingGET(name, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary saveAdminSetting
+         * @param {AdminSetting} setting setting
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveAdminSettingUsingPUT(setting: AdminSetting, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTO> {
+            const localVarFetchArgs = AdminControllerApiFetchParamCreator(configuration).saveAdminSettingUsingPUT(setting, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary saveAdminSetting
+         * @param {number} settingId settingId
+         * @param {AdminRequest} request request
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveAdminSettingUsingPUT1(settingId: number, request: AdminRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<number> {
+            const localVarFetchArgs = AdminControllerApiFetchParamCreator(configuration).saveAdminSettingUsingPUT1(settingId, request, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary save
+         * @param {RestrctionRequest} request request
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveUsingPOST(request: RestrctionRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<number> {
+            const localVarFetchArgs = AdminControllerApiFetchParamCreator(configuration).saveUsingPOST(request, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary updateExcludeWord
+         * @param {number} id id
+         * @param {string} excludeWord excludeWord
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateExcludeWordUsingPOST(id: number, excludeWord: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<boolean> {
+            const localVarFetchArgs = AdminControllerApiFetchParamCreator(configuration).updateExcludeWordUsingPOST(id, excludeWord, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary updateExcludeWord
+         * @param {number} id id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateExcludeWordUsingPUT(id: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<boolean> {
+            const localVarFetchArgs = AdminControllerApiFetchParamCreator(configuration).updateExcludeWordUsingPUT(id, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary updateItemByNickname
+         * @param {ItemUpdateRequest} itemUpdateRequest itemUpdateRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateItemByNicknameUsingPUT(itemUpdateRequest: ItemUpdateRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseDTO> {
+            const localVarFetchArgs = AdminControllerApiFetchParamCreator(configuration).updateItemByNicknameUsingPUT(itemUpdateRequest, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary update
+         * @param {number} songId songId
+         * @param {Song} song song
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateUsingPUT(songId: number, song: Song, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<number> {
+            const localVarFetchArgs = AdminControllerApiFetchParamCreator(configuration).updateUsingPUT(songId, song, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+    }
+};
+
+/**
+ * AdminControllerApi - factory interface
+ * @export
+ */
+export const AdminControllerApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
+    return {
+        /**
+         * 
+         * @summary deleteRestriction
+         * @param {number} restrictionId restrictionId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteRestrictionUsingDELETE(restrictionId: number, options?: any) {
+            return AdminControllerApiFp(configuration).deleteRestrictionUsingDELETE(restrictionId, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary delete
+         * @param {number} songId songId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteUsingDELETE(songId: number, options?: any) {
+            return AdminControllerApiFp(configuration).deleteUsingDELETE(songId, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary findByNickname
+         * @param {string} name name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        findByNicknameUsingGET(name: string, options?: any) {
+            return AdminControllerApiFp(configuration).findByNicknameUsingGET(name, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary getPlayLogsByNickname
+         * @param {string} name name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPlayLogsByNicknameUsingGET(name: string, options?: any) {
+            return AdminControllerApiFp(configuration).getPlayLogsByNicknameUsingGET(name, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary saveAdminSetting
+         * @param {AdminSetting} setting setting
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveAdminSettingUsingPUT(setting: AdminSetting, options?: any) {
+            return AdminControllerApiFp(configuration).saveAdminSettingUsingPUT(setting, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary saveAdminSetting
+         * @param {number} settingId settingId
+         * @param {AdminRequest} request request
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveAdminSettingUsingPUT1(settingId: number, request: AdminRequest, options?: any) {
+            return AdminControllerApiFp(configuration).saveAdminSettingUsingPUT1(settingId, request, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary save
+         * @param {RestrctionRequest} request request
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        saveUsingPOST(request: RestrctionRequest, options?: any) {
+            return AdminControllerApiFp(configuration).saveUsingPOST(request, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary updateExcludeWord
+         * @param {number} id id
+         * @param {string} excludeWord excludeWord
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateExcludeWordUsingPOST(id: number, excludeWord: string, options?: any) {
+            return AdminControllerApiFp(configuration).updateExcludeWordUsingPOST(id, excludeWord, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary updateExcludeWord
+         * @param {number} id id
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateExcludeWordUsingPUT(id: number, options?: any) {
+            return AdminControllerApiFp(configuration).updateExcludeWordUsingPUT(id, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary updateItemByNickname
+         * @param {ItemUpdateRequest} itemUpdateRequest itemUpdateRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateItemByNicknameUsingPUT(itemUpdateRequest: ItemUpdateRequest, options?: any) {
+            return AdminControllerApiFp(configuration).updateItemByNicknameUsingPUT(itemUpdateRequest, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary update
+         * @param {number} songId songId
+         * @param {Song} song song
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateUsingPUT(songId: number, song: Song, options?: any) {
+            return AdminControllerApiFp(configuration).updateUsingPUT(songId, song, options)(fetch, basePath);
+        },
+    };
+};
+
+/**
+ * AdminControllerApi - object-oriented interface
+ * @export
+ * @class AdminControllerApi
+ * @extends {BaseAPI}
+ */
+export class AdminControllerApi extends BaseAPI {
+    /**
+     * 
+     * @summary deleteRestriction
+     * @param {number} restrictionId restrictionId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminControllerApi
+     */
+    public deleteRestrictionUsingDELETE(restrictionId: number, options?: any) {
+        return AdminControllerApiFp(this.configuration).deleteRestrictionUsingDELETE(restrictionId, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary delete
+     * @param {number} songId songId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminControllerApi
+     */
+    public deleteUsingDELETE(songId: number, options?: any) {
+        return AdminControllerApiFp(this.configuration).deleteUsingDELETE(songId, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary findByNickname
+     * @param {string} name name
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminControllerApi
+     */
+    public findByNicknameUsingGET(name: string, options?: any) {
+        return AdminControllerApiFp(this.configuration).findByNicknameUsingGET(name, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary getPlayLogsByNickname
+     * @param {string} name name
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminControllerApi
+     */
+    public getPlayLogsByNicknameUsingGET(name: string, options?: any) {
+        return AdminControllerApiFp(this.configuration).getPlayLogsByNicknameUsingGET(name, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary saveAdminSetting
+     * @param {AdminSetting} setting setting
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminControllerApi
+     */
+    public saveAdminSettingUsingPUT(setting: AdminSetting, options?: any) {
+        return AdminControllerApiFp(this.configuration).saveAdminSettingUsingPUT(setting, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary saveAdminSetting
+     * @param {number} settingId settingId
+     * @param {AdminRequest} request request
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminControllerApi
+     */
+    public saveAdminSettingUsingPUT1(settingId: number, request: AdminRequest, options?: any) {
+        return AdminControllerApiFp(this.configuration).saveAdminSettingUsingPUT1(settingId, request, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary save
+     * @param {RestrctionRequest} request request
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminControllerApi
+     */
+    public saveUsingPOST(request: RestrctionRequest, options?: any) {
+        return AdminControllerApiFp(this.configuration).saveUsingPOST(request, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary updateExcludeWord
+     * @param {number} id id
+     * @param {string} excludeWord excludeWord
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminControllerApi
+     */
+    public updateExcludeWordUsingPOST(id: number, excludeWord: string, options?: any) {
+        return AdminControllerApiFp(this.configuration).updateExcludeWordUsingPOST(id, excludeWord, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary updateExcludeWord
+     * @param {number} id id
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminControllerApi
+     */
+    public updateExcludeWordUsingPUT(id: number, options?: any) {
+        return AdminControllerApiFp(this.configuration).updateExcludeWordUsingPUT(id, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary updateItemByNickname
+     * @param {ItemUpdateRequest} itemUpdateRequest itemUpdateRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminControllerApi
+     */
+    public updateItemByNicknameUsingPUT(itemUpdateRequest: ItemUpdateRequest, options?: any) {
+        return AdminControllerApiFp(this.configuration).updateItemByNicknameUsingPUT(itemUpdateRequest, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary update
+     * @param {number} songId songId
+     * @param {Song} song song
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminControllerApi
+     */
+    public updateUsingPUT(songId: number, song: Song, options?: any) {
+        return AdminControllerApiFp(this.configuration).updateUsingPUT(songId, song, options)(this.fetch, this.basePath);
+    }
+
+}
+
+/**
+ * AdminViewControllerApi - fetch parameter creator
+ * @export
+ */
+export const AdminViewControllerApiFetchParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary addItemToUser
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addItemToUserUsingGET(options: any = {}): FetchArgs {
+            const localVarPath = `/admin/addItemToUser`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary getPlayLogs
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPlayLogsUsingGET(options: any = {}): FetchArgs {
+            const localVarPath = `/admin/logView`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary getRestriction
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRestrictionUsingGET(options: any = {}): FetchArgs {
+            const localVarPath = `/admin/restrictions`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary getSetting
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSettingUsingGET(options: any = {}): FetchArgs {
+            const localVarPath = `/admin/settings`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary main
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        mainUsingGET(options: any = {}): FetchArgs {
+            const localVarPath = `/admin/main`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary refineWord
+         * @param {string} [singerName] singerName
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refineWordUsingGET(singerName?: string, options: any = {}): FetchArgs {
+            const localVarPath = `/admin/refine-word`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (singerName !== undefined) {
+                localVarQueryParameter['singerName'] = singerName;
+            }
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary settingUpdate
+         * @param {number} settingId settingId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        settingUpdateUsingGET(settingId: number, options: any = {}): FetchArgs {
+            // verify required parameter 'settingId' is not null or undefined
+            if (settingId === null || settingId === undefined) {
+                throw new RequiredError('settingId','Required parameter settingId was null or undefined when calling settingUpdateUsingGET.');
+            }
+            const localVarPath = `/admin/settings/{settingId}`
+                .replace(`{${"settingId"}}`, encodeURIComponent(String(settingId)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary songsUpdate
+         * @param {number} songId songId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        songsUpdateUsingGET(songId: number, options: any = {}): FetchArgs {
+            // verify required parameter 'songId' is not null or undefined
+            if (songId === null || songId === undefined) {
+                throw new RequiredError('songId','Required parameter songId was null or undefined when calling songsUpdateUsingGET.');
+            }
+            const localVarPath = `/admin/songs/{songId}`
+                .replace(`{${"songId"}}`, encodeURIComponent(String(songId)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * AdminViewControllerApi - functional programming interface
+ * @export
+ */
+export const AdminViewControllerApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary addItemToUser
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addItemToUserUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<string> {
+            const localVarFetchArgs = AdminViewControllerApiFetchParamCreator(configuration).addItemToUserUsingGET(options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary getPlayLogs
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPlayLogsUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<string> {
+            const localVarFetchArgs = AdminViewControllerApiFetchParamCreator(configuration).getPlayLogsUsingGET(options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary getRestriction
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRestrictionUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<string> {
+            const localVarFetchArgs = AdminViewControllerApiFetchParamCreator(configuration).getRestrictionUsingGET(options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary getSetting
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSettingUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<string> {
+            const localVarFetchArgs = AdminViewControllerApiFetchParamCreator(configuration).getSettingUsingGET(options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary main
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        mainUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<string> {
+            const localVarFetchArgs = AdminViewControllerApiFetchParamCreator(configuration).mainUsingGET(options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary refineWord
+         * @param {string} [singerName] singerName
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refineWordUsingGET(singerName?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<string> {
+            const localVarFetchArgs = AdminViewControllerApiFetchParamCreator(configuration).refineWordUsingGET(singerName, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary settingUpdate
+         * @param {number} settingId settingId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        settingUpdateUsingGET(settingId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<string> {
+            const localVarFetchArgs = AdminViewControllerApiFetchParamCreator(configuration).settingUpdateUsingGET(settingId, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary songsUpdate
+         * @param {number} songId songId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        songsUpdateUsingGET(songId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<string> {
+            const localVarFetchArgs = AdminViewControllerApiFetchParamCreator(configuration).songsUpdateUsingGET(songId, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+    }
+};
+
+/**
+ * AdminViewControllerApi - factory interface
+ * @export
+ */
+export const AdminViewControllerApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
+    return {
+        /**
+         * 
+         * @summary addItemToUser
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addItemToUserUsingGET(options?: any) {
+            return AdminViewControllerApiFp(configuration).addItemToUserUsingGET(options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary getPlayLogs
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getPlayLogsUsingGET(options?: any) {
+            return AdminViewControllerApiFp(configuration).getPlayLogsUsingGET(options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary getRestriction
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRestrictionUsingGET(options?: any) {
+            return AdminViewControllerApiFp(configuration).getRestrictionUsingGET(options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary getSetting
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSettingUsingGET(options?: any) {
+            return AdminViewControllerApiFp(configuration).getSettingUsingGET(options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary main
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        mainUsingGET(options?: any) {
+            return AdminViewControllerApiFp(configuration).mainUsingGET(options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary refineWord
+         * @param {string} [singerName] singerName
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refineWordUsingGET(singerName?: string, options?: any) {
+            return AdminViewControllerApiFp(configuration).refineWordUsingGET(singerName, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary settingUpdate
+         * @param {number} settingId settingId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        settingUpdateUsingGET(settingId: number, options?: any) {
+            return AdminViewControllerApiFp(configuration).settingUpdateUsingGET(settingId, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary songsUpdate
+         * @param {number} songId songId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        songsUpdateUsingGET(songId: number, options?: any) {
+            return AdminViewControllerApiFp(configuration).songsUpdateUsingGET(songId, options)(fetch, basePath);
+        },
+    };
+};
+
+/**
+ * AdminViewControllerApi - object-oriented interface
+ * @export
+ * @class AdminViewControllerApi
+ * @extends {BaseAPI}
+ */
+export class AdminViewControllerApi extends BaseAPI {
+    /**
+     * 
+     * @summary addItemToUser
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminViewControllerApi
+     */
+    public addItemToUserUsingGET(options?: any) {
+        return AdminViewControllerApiFp(this.configuration).addItemToUserUsingGET(options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary getPlayLogs
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminViewControllerApi
+     */
+    public getPlayLogsUsingGET(options?: any) {
+        return AdminViewControllerApiFp(this.configuration).getPlayLogsUsingGET(options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary getRestriction
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminViewControllerApi
+     */
+    public getRestrictionUsingGET(options?: any) {
+        return AdminViewControllerApiFp(this.configuration).getRestrictionUsingGET(options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary getSetting
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminViewControllerApi
+     */
+    public getSettingUsingGET(options?: any) {
+        return AdminViewControllerApiFp(this.configuration).getSettingUsingGET(options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary main
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminViewControllerApi
+     */
+    public mainUsingGET(options?: any) {
+        return AdminViewControllerApiFp(this.configuration).mainUsingGET(options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary refineWord
+     * @param {string} [singerName] singerName
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminViewControllerApi
+     */
+    public refineWordUsingGET(singerName?: string, options?: any) {
+        return AdminViewControllerApiFp(this.configuration).refineWordUsingGET(singerName, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary settingUpdate
+     * @param {number} settingId settingId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminViewControllerApi
+     */
+    public settingUpdateUsingGET(settingId: number, options?: any) {
+        return AdminViewControllerApiFp(this.configuration).settingUpdateUsingGET(settingId, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary songsUpdate
+     * @param {number} songId songId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdminViewControllerApi
+     */
+    public songsUpdateUsingGET(songId: number, options?: any) {
+        return AdminViewControllerApiFp(this.configuration).songsUpdateUsingGET(songId, options)(this.fetch, this.basePath);
+    }
+
+}
+
+/**
  * AdvertiseKeywordControllerApi - fetch parameter creator
  * @export
  */
@@ -1736,11 +3341,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
     return {
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingDELETE(options: any = {}): FetchArgs {
+        errorHtmlUsingDELETE(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
@@ -1759,11 +3364,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingGET(options: any = {}): FetchArgs {
+        errorHtmlUsingGET(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
@@ -1782,11 +3387,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingHEAD(options: any = {}): FetchArgs {
+        errorHtmlUsingHEAD(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'HEAD' }, options);
@@ -1805,11 +3410,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingOPTIONS(options: any = {}): FetchArgs {
+        errorHtmlUsingOPTIONS(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'OPTIONS' }, options);
@@ -1828,11 +3433,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPATCH(options: any = {}): FetchArgs {
+        errorHtmlUsingPATCH(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'PATCH' }, options);
@@ -1851,11 +3456,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPOST(options: any = {}): FetchArgs {
+        errorHtmlUsingPOST(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
@@ -1874,11 +3479,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPUT(options: any = {}): FetchArgs {
+        errorHtmlUsingPUT(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
@@ -1906,12 +3511,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
     return {
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingDELETE(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingDELETE(options);
+        errorHtmlUsingDELETE(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingDELETE(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1924,12 +3529,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingGET(options);
+        errorHtmlUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingGET(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1942,12 +3547,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingHEAD(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingHEAD(options);
+        errorHtmlUsingHEAD(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingHEAD(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1960,12 +3565,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingOPTIONS(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingOPTIONS(options);
+        errorHtmlUsingOPTIONS(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingOPTIONS(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1978,12 +3583,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPATCH(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingPATCH(options);
+        errorHtmlUsingPATCH(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingPATCH(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1996,12 +3601,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPOST(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingPOST(options);
+        errorHtmlUsingPOST(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingPOST(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -2014,12 +3619,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPUT(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingPUT(options);
+        errorHtmlUsingPUT(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingPUT(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -2041,66 +3646,66 @@ export const BasicErrorControllerApiFactory = function (configuration?: Configur
     return {
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingDELETE(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingDELETE(options)(fetch, basePath);
+        errorHtmlUsingDELETE(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingDELETE(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingGET(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingGET(options)(fetch, basePath);
+        errorHtmlUsingGET(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingGET(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingHEAD(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingHEAD(options)(fetch, basePath);
+        errorHtmlUsingHEAD(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingHEAD(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingOPTIONS(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingOPTIONS(options)(fetch, basePath);
+        errorHtmlUsingOPTIONS(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingOPTIONS(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPATCH(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingPATCH(options)(fetch, basePath);
+        errorHtmlUsingPATCH(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingPATCH(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPOST(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingPOST(options)(fetch, basePath);
+        errorHtmlUsingPOST(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingPOST(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary error
+         * @summary errorHtml
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorUsingPUT(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorUsingPUT(options)(fetch, basePath);
+        errorHtmlUsingPUT(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorHtmlUsingPUT(options)(fetch, basePath);
         },
     };
 };
@@ -2114,79 +3719,79 @@ export const BasicErrorControllerApiFactory = function (configuration?: Configur
 export class BasicErrorControllerApi extends BaseAPI {
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingDELETE(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingDELETE(options)(this.fetch, this.basePath);
+    public errorHtmlUsingDELETE(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingDELETE(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingGET(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingGET(options)(this.fetch, this.basePath);
+    public errorHtmlUsingGET(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingGET(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingHEAD(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingHEAD(options)(this.fetch, this.basePath);
+    public errorHtmlUsingHEAD(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingHEAD(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingOPTIONS(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingOPTIONS(options)(this.fetch, this.basePath);
+    public errorHtmlUsingOPTIONS(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingOPTIONS(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingPATCH(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingPATCH(options)(this.fetch, this.basePath);
+    public errorHtmlUsingPATCH(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingPATCH(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingPOST(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingPOST(options)(this.fetch, this.basePath);
+    public errorHtmlUsingPOST(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingPOST(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary error
+     * @summary errorHtml
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorUsingPUT(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorUsingPUT(options)(this.fetch, this.basePath);
+    public errorHtmlUsingPUT(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingPUT(options)(this.fetch, this.basePath);
     }
 
 }
@@ -2515,6 +4120,29 @@ export const HealthCheckControllerApiFetchParamCreator = function (configuration
     return {
         /**
          * 
+         * @summary cache
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cacheUsingGET(options: any = {}): FetchArgs {
+            const localVarPath = `/health/cache`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary healthCheck2
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2570,6 +4198,24 @@ export const HealthCheckControllerApiFp = function(configuration?: Configuration
     return {
         /**
          * 
+         * @summary cache
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cacheUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<number> {
+            const localVarFetchArgs = HealthCheckControllerApiFetchParamCreator(configuration).cacheUsingGET(options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
          * @summary healthCheck2
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2615,6 +4261,15 @@ export const HealthCheckControllerApiFactory = function (configuration?: Configu
     return {
         /**
          * 
+         * @summary cache
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        cacheUsingGET(options?: any) {
+            return HealthCheckControllerApiFp(configuration).cacheUsingGET(options)(fetch, basePath);
+        },
+        /**
+         * 
          * @summary healthCheck2
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2641,6 +4296,17 @@ export const HealthCheckControllerApiFactory = function (configuration?: Configu
  * @extends {BaseAPI}
  */
 export class HealthCheckControllerApi extends BaseAPI {
+    /**
+     * 
+     * @summary cache
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof HealthCheckControllerApi
+     */
+    public cacheUsingGET(options?: any) {
+        return HealthCheckControllerApiFp(this.configuration).cacheUsingGET(options)(this.fetch, this.basePath);
+    }
+
     /**
      * 
      * @summary healthCheck2
