@@ -29,11 +29,6 @@ module.exports = {
         ios: null,
         android: null // disable Android platform, other platforms will still autolink if provided
       }
-    },
-    "react-native-video": {
-      platforms: {
-        android: null // disable Android platform, other platforms will still autolink if provided
-      }
     }
   }
 };

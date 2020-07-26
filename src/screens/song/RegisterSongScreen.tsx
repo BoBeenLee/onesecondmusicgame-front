@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import { Clipboard } from "react-native";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
-import { OnLoadData, OnSeekData } from "react-native-video";
 
 import { IStore } from "src/stores/Store";
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
@@ -19,7 +18,6 @@ import { addNewSongUsingPOST } from "src/apis/song";
 import GameAudioPlayer from "src/components/player/GameAudioPlayer";
 import { makePlayStreamUri } from "src/configs/soundCloudAPI";
 import ButtonLoading from "src/components/loading/ButtonLoading";
-import AudioPlayer from "src/components/AudioPlayer";
 import MockButton from "src/components/button/MockButton";
 import OSMGTextInput from "src/components/input/OSMGTextInput";
 import { ISinger } from "src/apis/singer";
@@ -156,12 +154,6 @@ class RegisterSongScreen extends Component<IProps, IStates> {
           <RegisterSongButtonText>
             duration: {_.round(duration)}seconds
           </RegisterSongButtonText>
-          <AudioPlayer
-            source={{
-              uri: makePlayStreamUri(selectedTrackItem?.stream_url ?? "")
-            }}
-            onSeek={this.onSeek}
-          />
         </Content>
         <Footer>{this.renderRegisterSongButton}</Footer>
       </Container>
@@ -181,18 +173,6 @@ class RegisterSongScreen extends Component<IProps, IStates> {
       </RegisterSongButtonLoading>
     );
   }
-
-  private onSeek = (data: OnSeekData) => {
-    this.setState({
-      highlightSeconds: data.seekTime
-    });
-  };
-
-  private onSongLoad = (data: OnLoadData) => {
-    this.setState({
-      duration: data.duration
-    });
-  };
 
   private copyUri = () => {
     const { selectedTrackItem } = this.state;
