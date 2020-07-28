@@ -205,7 +205,6 @@ dependencies {
     implementation project(':lottie-react-native')
     implementation project(':react-native-code-push')
     implementation project(':rn-fetch-blob')
-    implementation project(':react-native-video')
     
     // Firebase dependencies
     implementation "com.google.android.gms:play-services-base:16.1.0"

@@ -43,7 +43,10 @@ storiesOf("Image", module)
     return (
       <CheckedImageView
         checked={true}
-        source={{ uri: "https://via.placeholder.com/350x350" }}
+        source={{
+          uri:
+            "https://ww.namu.la/s/aeca2e14dbb78281beabffe6d5a8b1a84233da4aa2d7b857f11baa8530908b4faf2dae5ce55389c73821b2235cfa3c4d9744bb30d3edc6efda4a446164481c78a1bb1c035715170340ab115267691293c60780de7be9857d30154151550b16b7f9caa7f3b67f3fb370bf9f51128e8fac"
+        }}
       />
     );
   });
