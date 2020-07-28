@@ -1,4 +1,10 @@
-import { AppStateStatus, InteractionManager, Clipboard } from "react-native";
+import {
+  Animated,
+  AppStateStatus,
+  InteractionManager,
+  Clipboard,
+  TouchableOpacity
+} from "react-native";
 import { Item } from "__generate__/api";
 import _ from "lodash";
 import React, { Component } from "react";
@@ -91,6 +97,10 @@ interface IStates {
 }
 
 interface ICarouselItem extends ICarousel, IGamePlayHighlightItem {}
+
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(
+  TouchableOpacity
+);
 
 const Container = styled(ContainerWithStatusBar)`
   flex: 1;
@@ -266,7 +276,7 @@ const AnswerButtonText = styled(Bold20)<{ disabled: boolean }>`
   color: ${({ disabled }) => (disabled ? colors.lavenderPink : colors.white)};
 `;
 
-const WrongPassButton = styled.TouchableOpacity`
+const WrongPassButton = styled(AnimatedTouchableOpacity)`
   width: 153px;
   height: 56px;
   flex-direction: row;
@@ -320,7 +330,7 @@ const NextStepCaption = styled(Bold17)`
   margin-bottom: 12px;
 `;
 
-const SkipButton = styled.TouchableOpacity`
+const SkipButton = styled(AnimatedTouchableOpacity)`
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -417,6 +427,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   public gameHighlightViews: ICarouselItem[] = [];
   public gamePlayersRef = React.createRef<OSMGCarousel<any>>();
   public intervalId: any;
+  public btnSkipAndWrongOpacity = new Animated.Value(1);
 
   constructor(props: IProps) {
     super(props);
@@ -640,6 +651,11 @@ class GamePlayScreen extends Component<IProps, IStates> {
         </GameContent>
         <Footer>
           <SkipButton
+            style={[
+              {
+                opacity: this.btnSkipAndWrongOpacity
+              }
+            ]}
             disabled={(userItem?.count ?? 0) === 0}
             onPress={this.useSkipItem}
           >
@@ -649,7 +665,14 @@ class GamePlayScreen extends Component<IProps, IStates> {
               <SkipBadgeText>{userItem?.count ?? 0}</SkipBadgeText>
             </SkipBadge>
           </SkipButton>
-          <WrongPassButton onPress={this.wrongPass}>
+          <WrongPassButton
+            style={[
+              {
+                opacity: this.btnSkipAndWrongOpacity
+              }
+            ]}
+            onPress={this.wrongPass}
+          >
             <WrongPassButtonText>오답으로 PASS</WrongPassButtonText>
           </WrongPassButton>
         </Footer>
@@ -876,9 +899,19 @@ class GamePlayScreen extends Component<IProps, IStates> {
         InteractionManager.runAfterInteractions(async () => {
           await TrackPlayer.reset();
           await this.readyForPlay();
+          this.progressBottomButton();
         });
       }
     );
+  };
+
+  private progressBottomButton = () => {
+    this.btnSkipAndWrongOpacity.setValue(0.2);
+    Animated.timing(this.btnSkipAndWrongOpacity, {
+      toValue: 1,
+      duration: 3000,
+      useNativeDriver: true
+    }).start();
   };
 
   private readyForPlay = async () => {
