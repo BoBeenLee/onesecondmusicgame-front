@@ -34,8 +34,8 @@ export const getAllSongsBySingerNameUsingGET = async (
   size: number
 ) => {
   const response = await singerControllerApi.getAllSongsBySingerNameUsingGET(
-    singerName,
     page,
+    singerName,
     size
   );
   return response.body!;
