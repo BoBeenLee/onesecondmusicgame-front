@@ -1,4 +1,5 @@
 import { types } from "mobx-state-tree";
+import { string } from "mobx-state-tree/dist/internal";
 
 const Song = types
   .model("Song", {
@@ -7,7 +8,8 @@ const Song = types
     singer: types.string,
     title: types.string,
     trackId: types.identifier,
-    url: types.string
+    url: types.string,
+    streamUri: types.string
   })
   .actions(self => {
     const songDislike = () => {

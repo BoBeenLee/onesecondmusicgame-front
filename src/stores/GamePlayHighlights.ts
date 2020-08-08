@@ -4,8 +4,10 @@ import { types, flow } from "mobx-state-tree";
 import { getHighlightListUsingPOST, isAnswerUsingPOST } from "src/apis/game";
 import { ISinger } from "src/apis/singer";
 import { ICircleCheckItem } from "src/components/icon/CircleCheckGroup";
+import { getPlayStreamUri } from "src/configs/soundCloudAPI";
 
 export interface IGamePlayHighlightItem extends GamePlayHighlightDTO {
+  streamUri: string;
   gameStep: number;
   isUserAnswer?: boolean;
   userAnswer?: string;
@@ -91,11 +93,25 @@ const GamePlayHighlights = types
           singerList: _.map(selectedSingers, singer => singer.singerName)
         }
       );
-      self.gameHighlights.replace(
-        _.map(response.playHighlightList, (item, index) => {
-          return { ...item, gameStep: index };
-        })
-      );
+
+      const result: IGamePlayHighlightItem[] = [];
+      for (
+        let index = 0;
+        index < (response.playHighlightList ?? []).length ?? 0;
+        index++
+      ) {
+        const item = response?.playHighlightList?.[index];
+        if (!item) {
+          continue;
+        }
+        const streamUri = yield getPlayStreamUri(item.progressiveUrl ?? "");
+        result.push({
+          ...item,
+          streamUri,
+          gameStep: index
+        });
+      }
+      self.gameHighlights.replace(result);
       self.playToken = response.playToken ?? "";
     });
 
