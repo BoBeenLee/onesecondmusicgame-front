@@ -267,6 +267,12 @@ export interface GamePlayHighlightDTO {
      * @type {string}
      * @memberof GamePlayHighlightDTO
      */
+    progressiveUrl?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GamePlayHighlightDTO
+     */
     singer?: string;
     /**
      * 
@@ -1569,6 +1575,50 @@ export interface Song {
 }
 
 /**
+ * 노래를 신규로 등록할 때 사용함.
+ * @export
+ * @interface SongCreateRequest
+ */
+export interface SongCreateRequest {
+    /**
+     * 노래의 앨범 혹은 대표 이미지 URL, 아무것도 작성하지 않으면 soundCloud 기준의 artworkUrl이 자동으로 들어가진다.
+     * @type {string}
+     * @memberof SongCreateRequest
+     */
+    artworkUrl?: string;
+    /**
+     * songUrl에 해당하는 노래에 댓글이 달려 있을 경우, 해당 댓글을 이용하여 자동으로 문제를 만들 것 인지에 대한 여부
+     * @type {boolean}
+     * @memberof SongCreateRequest
+     */
+    autoRegisterHighlights?: boolean;
+    /**
+     * 노래가 사용자들에게 퀴즈로 노출될건지 여부
+     * @type {boolean}
+     * @memberof SongCreateRequest
+     */
+    exported?: boolean;
+    /**
+     * 해당 문제의 정답.
+     * @type {string}
+     * @memberof SongCreateRequest
+     */
+    refineTitle?: string;
+    /**
+     * 등록할 노래의 URL 
+     * @type {string}
+     * @memberof SongCreateRequest
+     */
+    songUrl?: string;
+    /**
+     * 노래 제목, 아무것도 작성하지 않으면 soundCloud 기준의 제목이 자동으로 들어가진다.
+     * @type {string}
+     * @memberof SongCreateRequest
+     */
+    title?: string;
+}
+
+/**
  * 특정 Song에 등록된 Highlight들. 해당 객체의 정보를 바탕으로 문제가 출제된다.
  * @export
  * @interface SongHighlight
@@ -1978,6 +2028,108 @@ export const APIApiFetchParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * 가수의 노래를 신규로 등록한다.
+         * @summary 가수 노래 신규 등록
+         * @param {string} singerName 가수 이름
+         * @param {SongCreateRequest} songCreateRequest 등록할 노래 정보
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createNewSongUsingPOST(singerName: string, songCreateRequest: SongCreateRequest, options: any = {}): FetchArgs {
+            // verify required parameter 'singerName' is not null or undefined
+            if (singerName === null || singerName === undefined) {
+                throw new RequiredError('singerName','Required parameter singerName was null or undefined when calling createNewSongUsingPOST.');
+            }
+            // verify required parameter 'songCreateRequest' is not null or undefined
+            if (songCreateRequest === null || songCreateRequest === undefined) {
+                throw new RequiredError('songCreateRequest','Required parameter songCreateRequest was null or undefined when calling createNewSongUsingPOST.');
+            }
+            const localVarPath = `/v2/admin/singers/{singerName}/songs`
+                .replace(`{${"singerName"}}`, encodeURIComponent(String(singerName)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            const needsSerialization = (<any>"SongCreateRequest" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(songCreateRequest || {}) : (songCreateRequest || "");
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * highlightId를 이용하여 한 개의 highlight 정보를 영구적으로 삭제한다.
+         * @summary 하이라이트 삭제
+         * @param {number} highlightId 하이라이트 ID
+         * @param {number} songId 삭제할 하이라이트의 노래 ID ( default 는 장범준 노래임 )
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteHighlightUsingDELETE(highlightId: number, songId: number, options: any = {}): FetchArgs {
+            // verify required parameter 'highlightId' is not null or undefined
+            if (highlightId === null || highlightId === undefined) {
+                throw new RequiredError('highlightId','Required parameter highlightId was null or undefined when calling deleteHighlightUsingDELETE.');
+            }
+            // verify required parameter 'songId' is not null or undefined
+            if (songId === null || songId === undefined) {
+                throw new RequiredError('songId','Required parameter songId was null or undefined when calling deleteHighlightUsingDELETE.');
+            }
+            const localVarPath = `/v2/admin/songs/{songId}/highlights/{highlightId}`
+                .replace(`{${"highlightId"}}`, encodeURIComponent(String(highlightId)))
+                .replace(`{${"songId"}}`, encodeURIComponent(String(songId)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 가수의 노래를 삭제한다. 응답 결과로는 삭제된 노래의 정보가 반환된다.
+         * @summary 가수 노래 정보 삭제
+         * @param {number} songId 삭제할 노래 ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteSongUsingDELETE(songId: number, options: any = {}): FetchArgs {
+            // verify required parameter 'songId' is not null or undefined
+            if (songId === null || songId === undefined) {
+                throw new RequiredError('songId','Required parameter songId was null or undefined when calling deleteSongUsingDELETE.');
+            }
+            const localVarPath = `/v2/admin/songs/{songId}`
+                .replace(`{${"songId"}}`, encodeURIComponent(String(songId)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 가수 이름을 기반으로 가수 이름을 검색 합니다.
          * @summary 가수 정보 조회
          * @param {string} singerName 가수 이름
@@ -2008,7 +2160,7 @@ export const APIApiFetchParamCreator = function (configuration?: Configuration) 
         },
         /**
          * 가수 앨범 이미지를 변경 합니다.
-         * @summary 가수 앨범 이미지 변경
+         * @summary 가수 대표 이미지 변경
          * @param {ArtworkUrlUpdateRequest} request 변경할 앨범 이미지 URL
          * @param {string} singerName 가수 이름
          * @param {*} [options] Override http request option.
@@ -2089,7 +2241,7 @@ export const APIApiFetchParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * 가수의 정보를 변경한다.
+         * 가수의 노래 정보를 변경한다.
          * @summary 가수 노래 정보 변경
          * @param {SongUpdateRequest} request 변경할 노래 정보
          * @param {number} songId 변경할 노래 ID
@@ -2156,6 +2308,65 @@ export const APIApiFp = function(configuration?: Configuration) {
             };
         },
         /**
+         * 가수의 노래를 신규로 등록한다.
+         * @summary 가수 노래 신규 등록
+         * @param {string} singerName 가수 이름
+         * @param {SongCreateRequest} songCreateRequest 등록할 노래 정보
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createNewSongUsingPOST(singerName: string, songCreateRequest: SongCreateRequest, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Song> {
+            const localVarFetchArgs = APIApiFetchParamCreator(configuration).createNewSongUsingPOST(singerName, songCreateRequest, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * highlightId를 이용하여 한 개의 highlight 정보를 영구적으로 삭제한다.
+         * @summary 하이라이트 삭제
+         * @param {number} highlightId 하이라이트 ID
+         * @param {number} songId 삭제할 하이라이트의 노래 ID ( default 는 장범준 노래임 )
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteHighlightUsingDELETE(highlightId: number, songId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<SongHighlight> {
+            const localVarFetchArgs = APIApiFetchParamCreator(configuration).deleteHighlightUsingDELETE(highlightId, songId, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 가수의 노래를 삭제한다. 응답 결과로는 삭제된 노래의 정보가 반환된다.
+         * @summary 가수 노래 정보 삭제
+         * @param {number} songId 삭제할 노래 ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteSongUsingDELETE(songId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Song> {
+            const localVarFetchArgs = APIApiFetchParamCreator(configuration).deleteSongUsingDELETE(songId, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
          * 가수 이름을 기반으로 가수 이름을 검색 합니다.
          * @summary 가수 정보 조회
          * @param {string} singerName 가수 이름
@@ -2176,7 +2387,7 @@ export const APIApiFp = function(configuration?: Configuration) {
         },
         /**
          * 가수 앨범 이미지를 변경 합니다.
-         * @summary 가수 앨범 이미지 변경
+         * @summary 가수 대표 이미지 변경
          * @param {ArtworkUrlUpdateRequest} request 변경할 앨범 이미지 URL
          * @param {string} singerName 가수 이름
          * @param {*} [options] Override http request option.
@@ -2216,7 +2427,7 @@ export const APIApiFp = function(configuration?: Configuration) {
             };
         },
         /**
-         * 가수의 정보를 변경한다.
+         * 가수의 노래 정보를 변경한다.
          * @summary 가수 노래 정보 변경
          * @param {SongUpdateRequest} request 변경할 노래 정보
          * @param {number} songId 변경할 노래 ID
@@ -2256,6 +2467,38 @@ export const APIApiFactory = function (configuration?: Configuration, fetch?: Fe
             return APIApiFp(configuration).createHighlightUsingPOST(request, songId, options)(fetch, basePath);
         },
         /**
+         * 가수의 노래를 신규로 등록한다.
+         * @summary 가수 노래 신규 등록
+         * @param {string} singerName 가수 이름
+         * @param {SongCreateRequest} songCreateRequest 등록할 노래 정보
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createNewSongUsingPOST(singerName: string, songCreateRequest: SongCreateRequest, options?: any) {
+            return APIApiFp(configuration).createNewSongUsingPOST(singerName, songCreateRequest, options)(fetch, basePath);
+        },
+        /**
+         * highlightId를 이용하여 한 개의 highlight 정보를 영구적으로 삭제한다.
+         * @summary 하이라이트 삭제
+         * @param {number} highlightId 하이라이트 ID
+         * @param {number} songId 삭제할 하이라이트의 노래 ID ( default 는 장범준 노래임 )
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteHighlightUsingDELETE(highlightId: number, songId: number, options?: any) {
+            return APIApiFp(configuration).deleteHighlightUsingDELETE(highlightId, songId, options)(fetch, basePath);
+        },
+        /**
+         * 가수의 노래를 삭제한다. 응답 결과로는 삭제된 노래의 정보가 반환된다.
+         * @summary 가수 노래 정보 삭제
+         * @param {number} songId 삭제할 노래 ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteSongUsingDELETE(songId: number, options?: any) {
+            return APIApiFp(configuration).deleteSongUsingDELETE(songId, options)(fetch, basePath);
+        },
+        /**
          * 가수 이름을 기반으로 가수 이름을 검색 합니다.
          * @summary 가수 정보 조회
          * @param {string} singerName 가수 이름
@@ -2267,7 +2510,7 @@ export const APIApiFactory = function (configuration?: Configuration, fetch?: Fe
         },
         /**
          * 가수 앨범 이미지를 변경 합니다.
-         * @summary 가수 앨범 이미지 변경
+         * @summary 가수 대표 이미지 변경
          * @param {ArtworkUrlUpdateRequest} request 변경할 앨범 이미지 URL
          * @param {string} singerName 가수 이름
          * @param {*} [options] Override http request option.
@@ -2289,7 +2532,7 @@ export const APIApiFactory = function (configuration?: Configuration, fetch?: Fe
             return APIApiFp(configuration).updateHighlightUsingPUT(highlightId, request, songId, options)(fetch, basePath);
         },
         /**
-         * 가수의 정보를 변경한다.
+         * 가수의 노래 정보를 변경한다.
          * @summary 가수 노래 정보 변경
          * @param {SongUpdateRequest} request 변경할 노래 정보
          * @param {number} songId 변경할 노래 ID
@@ -2323,6 +2566,44 @@ export class APIApi extends BaseAPI {
     }
 
     /**
+     * 가수의 노래를 신규로 등록한다.
+     * @summary 가수 노래 신규 등록
+     * @param {string} singerName 가수 이름
+     * @param {SongCreateRequest} songCreateRequest 등록할 노래 정보
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof APIApi
+     */
+    public createNewSongUsingPOST(singerName: string, songCreateRequest: SongCreateRequest, options?: any) {
+        return APIApiFp(this.configuration).createNewSongUsingPOST(singerName, songCreateRequest, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * highlightId를 이용하여 한 개의 highlight 정보를 영구적으로 삭제한다.
+     * @summary 하이라이트 삭제
+     * @param {number} highlightId 하이라이트 ID
+     * @param {number} songId 삭제할 하이라이트의 노래 ID ( default 는 장범준 노래임 )
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof APIApi
+     */
+    public deleteHighlightUsingDELETE(highlightId: number, songId: number, options?: any) {
+        return APIApiFp(this.configuration).deleteHighlightUsingDELETE(highlightId, songId, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 가수의 노래를 삭제한다. 응답 결과로는 삭제된 노래의 정보가 반환된다.
+     * @summary 가수 노래 정보 삭제
+     * @param {number} songId 삭제할 노래 ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof APIApi
+     */
+    public deleteSongUsingDELETE(songId: number, options?: any) {
+        return APIApiFp(this.configuration).deleteSongUsingDELETE(songId, options)(this.fetch, this.basePath);
+    }
+
+    /**
      * 가수 이름을 기반으로 가수 이름을 검색 합니다.
      * @summary 가수 정보 조회
      * @param {string} singerName 가수 이름
@@ -2336,7 +2617,7 @@ export class APIApi extends BaseAPI {
 
     /**
      * 가수 앨범 이미지를 변경 합니다.
-     * @summary 가수 앨범 이미지 변경
+     * @summary 가수 대표 이미지 변경
      * @param {ArtworkUrlUpdateRequest} request 변경할 앨범 이미지 URL
      * @param {string} singerName 가수 이름
      * @param {*} [options] Override http request option.
@@ -2362,7 +2643,7 @@ export class APIApi extends BaseAPI {
     }
 
     /**
-     * 가수의 정보를 변경한다.
+     * 가수의 노래 정보를 변경한다.
      * @summary 가수 노래 정보 변경
      * @param {SongUpdateRequest} request 변경할 노래 정보
      * @param {number} songId 변경할 노래 ID

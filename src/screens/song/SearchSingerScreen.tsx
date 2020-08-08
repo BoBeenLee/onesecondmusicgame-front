@@ -35,7 +35,6 @@ import BackTopBar from "src/components/topbar/BackTopBar";
 import RegisterTrackBackDrop from "src/components/backdrop/RegisterTrackBackDrop";
 import Tracks, { ITracks } from "src/stores/Tracks";
 import SearchTrackCard from "src/components/card/SearchTrackCard";
-import { makePlayStreamUri } from "src/configs/soundCloudAPI";
 import {
   getUserHistoryUsingGET,
   dislikeUsingPOST,
@@ -353,10 +352,10 @@ class SearchSingerScreen extends Component<IProps, IStates> {
       await TrackPlayer.reset();
     }
     this.setState({ playingTrackItem: item });
-    const { trackId, url, title, singer, artworkUrl } = item;
+    const { trackId, url, title, singer, artworkUrl, streamUri } = item;
     await TrackPlayer.add({
       id: String(trackId),
-      url: makePlayStreamUri(url),
+      url: streamUri,
       title: title,
       artist: singer,
       artwork: artworkUrl

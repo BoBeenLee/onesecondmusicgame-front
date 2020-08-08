@@ -56,7 +56,6 @@ import SkipIcon from "src/components/icon/SkipIcon";
 import images from "src/images";
 import IconButton from "src/components/button/IconButton";
 import ConfirmPopup from "src/components/popup/ConfirmPopup";
-import { makePlayStreamUriByTrackId } from "src/configs/soundCloudAPI";
 import { delay } from "src/utils/common";
 import MainScreen from "src/screens/MainScreen";
 import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
@@ -919,10 +918,16 @@ class GamePlayScreen extends Component<IProps, IStates> {
     if (currentGameHighlight === null) {
       return;
     }
-    const { id, trackId, artworkUrl, millisecond } = currentGameHighlight;
+    const {
+      id,
+      trackId,
+      artworkUrl,
+      millisecond,
+      streamUri
+    } = currentGameHighlight;
     await TrackPlayer.add({
       id: String(id ?? "none"),
-      url: makePlayStreamUriByTrackId(String(trackId)),
+      url: streamUri,
       title: "?????",
       artist: "???",
       artwork: artworkUrl
