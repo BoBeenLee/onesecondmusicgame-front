@@ -3,7 +3,6 @@ import { Provider } from "mobx-react/native";
 import React, { Component } from "react";
 
 import { IStore } from "src/stores/Store";
-import "mobx-react-lite/batchingForReactDom";
 
 const withStore = (store: IStore) => <P extends object>(
   TargetComponent: React.ComponentType<P>
