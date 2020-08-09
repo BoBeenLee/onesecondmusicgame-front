@@ -93,6 +93,12 @@ const SignInButton = styled(IconButton)`
   margin-bottom: 9px;
 `;
 
+const AppleSignInButton = styled(AppleButton)`
+  height: 49px;
+  margin-horizontal: 44px;
+  margin-bottom: 9px;
+`;
+
 @inject(
   ({ store }: { store: IStore }): IInject => ({
     authStore: store.authStore,
@@ -134,13 +140,10 @@ class SignInScreen extends Component<IProps> {
           </Description>
           <ButtonGroup>
             {appleAuth.isSupported ? (
-              <AppleButton
-                buttonStyle={AppleButton.Style.WHITE}
+              <AppleSignInButton
+                cornerRadius={10}
+                buttonStyle={AppleButton.Style.WHITE_OUTLINE}
                 buttonType={AppleButton.Type.SIGN_IN}
-                style={{
-                  width: 160,
-                  height: 45
-                }}
                 onPress={this.appleSignIn}
               />
             ) : null}
