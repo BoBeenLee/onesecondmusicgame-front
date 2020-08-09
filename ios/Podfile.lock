@@ -422,7 +422,7 @@ PODS:
     - React
   - rn-fetch-blob (0.11.2):
     - React-Core
-  - RNAppleAuthentication (0.1.1):
+  - RNAppleAuthentication (1.1.2):
     - React
   - RNCAsyncStorage (1.6.3):
     - React
@@ -753,7 +753,7 @@ SPEC CHECKSUMS:
   ReactNativeART: c496c53089b3149663215d74d6f1adb3a62e07eb
   ReactNativeNavigation: fb74494c1b6f0abd36a17c7af40f804f77d3181f
   rn-fetch-blob: f525a73a78df9ed5d35e67ea65e79d53c15255bc
-  RNAppleAuthentication: 9cca53676f5f010ffbf33eb99604383bfe0eb020
+  RNAppleAuthentication: 473b2c076f1a48a537610580a168c1fb6d0a90c6
   RNCAsyncStorage: 6b57de0f6cb0dcfd17521af1681fa39001d3efff
   RNDeviceInfo: e5976ab5c3bed0b5c78f188e0b8abb139b33a9da
   RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
