@@ -4,7 +4,12 @@ import { Platform } from "react-native";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
 import { GoogleSigninButton } from "@react-native-community/google-signin";
-import { AppleButton } from "@invertase/react-native-apple-authentication";
+import appleAuth, {
+  AppleButton,
+  AppleAuthRequestOperation,
+  AppleAuthRequestScope,
+  AppleAuthCredentialState
+} from "@invertase/react-native-apple-authentication";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import {
@@ -88,6 +93,12 @@ const SignInButton = styled(IconButton)`
   margin-bottom: 9px;
 `;
 
+const AppleSignInButton = styled(AppleButton)`
+  height: 49px;
+  margin-horizontal: 44px;
+  margin-bottom: 9px;
+`;
+
 @inject(
   ({ store }: { store: IStore }): IInject => ({
     authStore: store.authStore,
@@ -128,17 +139,14 @@ class SignInScreen extends Component<IProps> {
             으로{"\n"} 알쏭달쏭과 함께 음악을 맞춰봐요~
           </Description>
           <ButtonGroup>
-            {Platform.select({
-              android: null,
-              ios: (
-                <AppleButton
-                  cornerRadius={5}
-                  buttonStyle={AppleButton.Style.WHITE}
-                  buttonType={AppleButton.Type.CONTINUE}
-                  onPress={this.appleSignIn}
-                />
-              )
-            })}
+            {appleAuth.isSupported ? (
+              <AppleSignInButton
+                cornerRadius={10}
+                buttonStyle={AppleButton.Style.WHITE_OUTLINE}
+                buttonType={AppleButton.Type.SIGN_IN}
+                onPress={this.appleSignIn}
+              />
+            ) : null}
             <SignInButton source={images.btnKakao} onPress={this.kakaoSignIn} />
             <SignInButton
               source={images.btnFacebook}

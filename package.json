@@ -1,6 +1,6 @@
 {
   "name": "kr.nexters.onesecondmusicgame",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -43,7 +43,7 @@
     "release": "release-it --ci"
   },
   "dependencies": {
-    "@invertase/react-native-apple-authentication": "^0.1.1",
+    "@invertase/react-native-apple-authentication": "^1.1.2",
     "@react-native-community/art": "^1.1.2",
     "@react-native-community/async-storage": "^1.4.2",
     "@react-native-community/google-signin": "^3.0.3",
