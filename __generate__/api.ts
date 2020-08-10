@@ -970,6 +970,26 @@ export interface RankViewModel {
 /**
  * 
  * @export
+ * @interface ResponseBodyWrapperListstring
+ */
+export interface ResponseBodyWrapperListstring {
+    /**
+     * 응답 실패 사유
+     * @type {string}
+     * @memberof ResponseBodyWrapperListstring
+     */
+    errorMsg?: string;
+    /**
+     * 응답 성공 시 응답 클래스
+     * @type {Array<string>}
+     * @memberof ResponseBodyWrapperListstring
+     */
+    result?: Array<string>;
+}
+
+/**
+ * 
+ * @export
  * @interface ResponseBodyWrapperobject
  */
 export interface ResponseBodyWrapperobject {
@@ -2197,6 +2217,44 @@ export const APIApiFetchParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * 가수의 노래의 노출 여부를 변경한다.
+         * @summary 가수 노래 노출 여부 변경
+         * @param {string} exported 변경할 노래 정보
+         * @param {number} songId 변경할 노래 ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateExportedOfSongUsingPUT(exported: string, songId: number, options: any = {}): FetchArgs {
+            // verify required parameter 'exported' is not null or undefined
+            if (exported === null || exported === undefined) {
+                throw new RequiredError('exported','Required parameter exported was null or undefined when calling updateExportedOfSongUsingPUT.');
+            }
+            // verify required parameter 'songId' is not null or undefined
+            if (songId === null || songId === undefined) {
+                throw new RequiredError('songId','Required parameter songId was null or undefined when calling updateExportedOfSongUsingPUT.');
+            }
+            const localVarPath = `/v2/admin/songs/{songId}/exported`
+                .replace(`{${"songId"}}`, encodeURIComponent(String(songId)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            const needsSerialization = (<any>"string" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(exported || {}) : (exported || "");
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Admin UI에 알맞게 highlightId 만을 이용하여 하이라이트 정보를 변경한다.
          * @summary 하이라이트 정보 변경
          * @param {number} highlightId 하이라이트 ID
@@ -2234,6 +2292,44 @@ export const APIApiFetchParamCreator = function (configuration?: Configuration) 
             localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
             const needsSerialization = (<any>"HighlightUpdateOrCreateRequest" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
             localVarRequestOptions.body =  needsSerialization ? JSON.stringify(request || {}) : (request || "");
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 가수의 노래 refine title만 변경한다.
+         * @summary 가수 노래의 refined_title만 변경 
+         * @param {string} refineTitle 변경할 노래 정보
+         * @param {number} songId 변경할 노래 ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateRefinedTitleOfSongUsingPUT(refineTitle: string, songId: number, options: any = {}): FetchArgs {
+            // verify required parameter 'refineTitle' is not null or undefined
+            if (refineTitle === null || refineTitle === undefined) {
+                throw new RequiredError('refineTitle','Required parameter refineTitle was null or undefined when calling updateRefinedTitleOfSongUsingPUT.');
+            }
+            // verify required parameter 'songId' is not null or undefined
+            if (songId === null || songId === undefined) {
+                throw new RequiredError('songId','Required parameter songId was null or undefined when calling updateRefinedTitleOfSongUsingPUT.');
+            }
+            const localVarPath = `/v2/admin/songs/{songId}/refinedTitle`
+                .replace(`{${"songId"}}`, encodeURIComponent(String(songId)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+            const needsSerialization = (<any>"string" !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.body =  needsSerialization ? JSON.stringify(refineTitle || {}) : (refineTitle || "");
 
             return {
                 url: url.format(localVarUrlObj),
@@ -2406,6 +2502,26 @@ export const APIApiFp = function(configuration?: Configuration) {
             };
         },
         /**
+         * 가수의 노래의 노출 여부를 변경한다.
+         * @summary 가수 노래 노출 여부 변경
+         * @param {string} exported 변경할 노래 정보
+         * @param {number} songId 변경할 노래 ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateExportedOfSongUsingPUT(exported: string, songId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Song> {
+            const localVarFetchArgs = APIApiFetchParamCreator(configuration).updateExportedOfSongUsingPUT(exported, songId, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
          * Admin UI에 알맞게 highlightId 만을 이용하여 하이라이트 정보를 변경한다.
          * @summary 하이라이트 정보 변경
          * @param {number} highlightId 하이라이트 ID
@@ -2416,6 +2532,26 @@ export const APIApiFp = function(configuration?: Configuration) {
          */
         updateHighlightUsingPUT(highlightId: number, request: HighlightUpdateOrCreateRequest, songId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<SongHighlight> {
             const localVarFetchArgs = APIApiFetchParamCreator(configuration).updateHighlightUsingPUT(highlightId, request, songId, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 가수의 노래 refine title만 변경한다.
+         * @summary 가수 노래의 refined_title만 변경 
+         * @param {string} refineTitle 변경할 노래 정보
+         * @param {number} songId 변경할 노래 ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateRefinedTitleOfSongUsingPUT(refineTitle: string, songId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Song> {
+            const localVarFetchArgs = APIApiFetchParamCreator(configuration).updateRefinedTitleOfSongUsingPUT(refineTitle, songId, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -2520,6 +2656,17 @@ export const APIApiFactory = function (configuration?: Configuration, fetch?: Fe
             return APIApiFp(configuration).updateArtworkUrlUsingPUT(request, singerName, options)(fetch, basePath);
         },
         /**
+         * 가수의 노래의 노출 여부를 변경한다.
+         * @summary 가수 노래 노출 여부 변경
+         * @param {string} exported 변경할 노래 정보
+         * @param {number} songId 변경할 노래 ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateExportedOfSongUsingPUT(exported: string, songId: number, options?: any) {
+            return APIApiFp(configuration).updateExportedOfSongUsingPUT(exported, songId, options)(fetch, basePath);
+        },
+        /**
          * Admin UI에 알맞게 highlightId 만을 이용하여 하이라이트 정보를 변경한다.
          * @summary 하이라이트 정보 변경
          * @param {number} highlightId 하이라이트 ID
@@ -2530,6 +2677,17 @@ export const APIApiFactory = function (configuration?: Configuration, fetch?: Fe
          */
         updateHighlightUsingPUT(highlightId: number, request: HighlightUpdateOrCreateRequest, songId: number, options?: any) {
             return APIApiFp(configuration).updateHighlightUsingPUT(highlightId, request, songId, options)(fetch, basePath);
+        },
+        /**
+         * 가수의 노래 refine title만 변경한다.
+         * @summary 가수 노래의 refined_title만 변경 
+         * @param {string} refineTitle 변경할 노래 정보
+         * @param {number} songId 변경할 노래 ID
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateRefinedTitleOfSongUsingPUT(refineTitle: string, songId: number, options?: any) {
+            return APIApiFp(configuration).updateRefinedTitleOfSongUsingPUT(refineTitle, songId, options)(fetch, basePath);
         },
         /**
          * 가수의 노래 정보를 변경한다.
@@ -2629,6 +2787,19 @@ export class APIApi extends BaseAPI {
     }
 
     /**
+     * 가수의 노래의 노출 여부를 변경한다.
+     * @summary 가수 노래 노출 여부 변경
+     * @param {string} exported 변경할 노래 정보
+     * @param {number} songId 변경할 노래 ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof APIApi
+     */
+    public updateExportedOfSongUsingPUT(exported: string, songId: number, options?: any) {
+        return APIApiFp(this.configuration).updateExportedOfSongUsingPUT(exported, songId, options)(this.fetch, this.basePath);
+    }
+
+    /**
      * Admin UI에 알맞게 highlightId 만을 이용하여 하이라이트 정보를 변경한다.
      * @summary 하이라이트 정보 변경
      * @param {number} highlightId 하이라이트 ID
@@ -2640,6 +2811,19 @@ export class APIApi extends BaseAPI {
      */
     public updateHighlightUsingPUT(highlightId: number, request: HighlightUpdateOrCreateRequest, songId: number, options?: any) {
         return APIApiFp(this.configuration).updateHighlightUsingPUT(highlightId, request, songId, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 가수의 노래 refine title만 변경한다.
+     * @summary 가수 노래의 refined_title만 변경 
+     * @param {string} refineTitle 변경할 노래 정보
+     * @param {number} songId 변경할 노래 ID
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof APIApi
+     */
+    public updateRefinedTitleOfSongUsingPUT(refineTitle: string, songId: number, options?: any) {
+        return APIApiFp(this.configuration).updateRefinedTitleOfSongUsingPUT(refineTitle, songId, options)(this.fetch, this.basePath);
     }
 
     /**
@@ -6393,6 +6577,44 @@ export const SingerControllerApiFetchParamCreator = function (configuration?: Co
             };
         },
         /**
+         * 각 trackId에 해당하는 progressive url을 내려준다.
+         * @summary progressive url 반환해주는 API
+         * @param {Array<number>} trackIds trackIds
+         * @param {string} u name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProgressiveUrlUsingGET(trackIds: Array<number>, u: string, options: any = {}): FetchArgs {
+            // verify required parameter 'trackIds' is not null or undefined
+            if (trackIds === null || trackIds === undefined) {
+                throw new RequiredError('trackIds','Required parameter trackIds was null or undefined when calling getProgressiveUrlUsingGET.');
+            }
+            // verify required parameter 'u' is not null or undefined
+            if (u === null || u === undefined) {
+                throw new RequiredError('u','Required parameter u was null or undefined when calling getProgressiveUrlUsingGET.');
+            }
+            const localVarPath = `/singer/names/{name}/songs/progressive-url`
+                .replace(`{${"가수 이름"}}`, encodeURIComponent(String(u)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (trackIds) {
+                localVarQueryParameter['trackIds'] = trackIds;
+            }
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 
          * @summary getTrackListBySingerName
          * @param {string} name name
@@ -6506,6 +6728,26 @@ export const SingerControllerApiFp = function(configuration?: Configuration) {
             };
         },
         /**
+         * 각 trackId에 해당하는 progressive url을 내려준다.
+         * @summary progressive url 반환해주는 API
+         * @param {Array<number>} trackIds trackIds
+         * @param {string} u name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProgressiveUrlUsingGET(trackIds: Array<number>, u: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ResponseBodyWrapperListstring> {
+            const localVarFetchArgs = SingerControllerApiFetchParamCreator(configuration).getProgressiveUrlUsingGET(trackIds, u, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
          * 
          * @summary getTrackListBySingerName
          * @param {string} name name
@@ -6573,6 +6815,17 @@ export const SingerControllerApiFactory = function (configuration?: Configuratio
             return SingerControllerApiFp(configuration).getAllStandardSingerListUsingGET(options)(fetch, basePath);
         },
         /**
+         * 각 trackId에 해당하는 progressive url을 내려준다.
+         * @summary progressive url 반환해주는 API
+         * @param {Array<number>} trackIds trackIds
+         * @param {string} u name
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getProgressiveUrlUsingGET(trackIds: Array<number>, u: string, options?: any) {
+            return SingerControllerApiFp(configuration).getProgressiveUrlUsingGET(trackIds, u, options)(fetch, basePath);
+        },
+        /**
          * 
          * @summary getTrackListBySingerName
          * @param {string} name name
@@ -6637,6 +6890,19 @@ export class SingerControllerApi extends BaseAPI {
      */
     public getAllStandardSingerListUsingGET(options?: any) {
         return SingerControllerApiFp(this.configuration).getAllStandardSingerListUsingGET(options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 각 trackId에 해당하는 progressive url을 내려준다.
+     * @summary progressive url 반환해주는 API
+     * @param {Array<number>} trackIds trackIds
+     * @param {string} u name
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SingerControllerApi
+     */
+    public getProgressiveUrlUsingGET(trackIds: Array<number>, u: string, options?: any) {
+        return SingerControllerApiFp(this.configuration).getProgressiveUrlUsingGET(trackIds, u, options)(this.fetch, this.basePath);
     }
 
     /**
