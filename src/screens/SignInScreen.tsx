@@ -93,10 +93,18 @@ const SignInButton = styled(IconButton)`
   margin-bottom: 9px;
 `;
 
-const AppleSignInButton = styled(AppleButton)`
+const AppleSignIn = styled.View`
+  width: 100%;
   height: 49px;
-  margin-horizontal: 44px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   margin-bottom: 9px;
+`;
+
+const AppleSignInButton = styled(AppleButton)`
+  width: 326px;
+  height: 49px;
 `;
 
 @inject(
@@ -138,15 +146,17 @@ class SignInScreen extends Component<IProps> {
             <HightlightDescription>간편한 SNS 로그인</HightlightDescription>
             으로{"\n"} 알쏭달쏭과 함께 음악을 맞춰봐요~
           </Description>
-          <ButtonGroup>
-            {appleAuth.isSupported ? (
+          {appleAuth.isSupported ? (
+            <AppleSignIn>
               <AppleSignInButton
                 cornerRadius={10}
                 buttonStyle={AppleButton.Style.WHITE_OUTLINE}
                 buttonType={AppleButton.Type.SIGN_IN}
                 onPress={this.appleSignIn}
               />
-            ) : null}
+            </AppleSignIn>
+          ) : null}
+          <ButtonGroup>
             <SignInButton source={images.btnKakao} onPress={this.kakaoSignIn} />
             <SignInButton
               source={images.btnFacebook}

@@ -26,18 +26,3 @@ export const makePlayStreamUriByTrackId = (trackId: string) => {
     getRootStore().authStore.soundCloudCliendId
   }`;
 };
-
-export const getPlayStreamUri = async (uri: string) => {
-  if (!uri) {
-    return "";
-  }
-  const response: AxiosResponse<{ url: string }> = await axios({
-    url: uri,
-    params: {
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      client_id: getRootStore().authStore.soundCloudCliendId
-    }
-  });
-  const data = response.data;
-  return data.url;
-};

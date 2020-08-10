@@ -45,6 +45,7 @@ import images from "src/images";
 import withDisabled, { IDisabledProps } from "src/hocs/withDisabled";
 import { addNewSongUsingPOST } from "src/apis/song";
 import { logEvent } from "src/configs/analytics";
+import { getTrackToPlayStreamUri } from "src/apis/soundcloud/playStream";
 
 interface IInject {
   singerStore: ISingerStore;
@@ -352,7 +353,8 @@ class SearchSingerScreen extends Component<IProps, IStates> {
       await TrackPlayer.reset();
     }
     this.setState({ playingTrackItem: item });
-    const { trackId, url, title, singer, artworkUrl, streamUri } = item;
+    const { trackId, url, title, singer, artworkUrl } = item;
+    const streamUri = await getTrackToPlayStreamUri(trackId);
     await TrackPlayer.add({
       id: String(trackId),
       url: streamUri,
