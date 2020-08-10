@@ -6,7 +6,6 @@ import {
   getTrackListBySingerName
 } from "src/apis/singer";
 import Song from "src/stores/model/Song";
-import { getPlayStreamUri } from "src/configs/soundCloudAPI";
 
 interface IVariables {
   q: string;
@@ -43,7 +42,6 @@ const Tracks = types
         self.variables.q
       );
       for (const track of response) {
-        const streamUri = yield getPlayStreamUri(track.uri ?? "");
         self.tracks.set(
           String(track.id),
           Song.create({
@@ -53,8 +51,7 @@ const Tracks = types
             singer: self.variables.q,
             title: track.title ?? "",
             trackId: String(track.id),
-            url: track.uri ?? "",
-            streamUri
+            url: track.uri ?? ""
           })
         );
       }
@@ -70,7 +67,6 @@ const Tracks = types
         30
       );
       for (const track of response?.content ?? []) {
-        const streamUri = yield getPlayStreamUri(track.url ?? "");
         self.tracks.set(
           String(track.trackId),
           Song.create({
@@ -79,8 +75,7 @@ const Tracks = types
             singer: track.singer ?? "",
             title: track.title ?? "",
             trackId: String(track.trackId),
-            url: track.url ?? "",
-            streamUri
+            url: track.url ?? ""
           })
         );
       }
