@@ -4,7 +4,7 @@ import { types, flow } from "mobx-state-tree";
 import { getHighlightListUsingPOST, isAnswerUsingPOST } from "src/apis/game";
 import { ISinger } from "src/apis/singer";
 import { ICircleCheckItem } from "src/components/icon/CircleCheckGroup";
-import { getPlayStreamUri } from "src/configs/soundCloudAPI";
+import { getPlayStreamUri } from "src/apis/soundcloud/playStream";
 
 export interface IGamePlayHighlightItem extends GamePlayHighlightDTO {
   streamUri: string;
