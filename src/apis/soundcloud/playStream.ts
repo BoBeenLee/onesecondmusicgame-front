@@ -13,10 +13,12 @@ export const getTrackToPlayStreamUri = async (trackId: string) => {
       client_id: getRootStore().authStore.soundCloudCliendId
     }
   });
-  const tracksResponse = response.data;
-  return await getPlayStreamUri(
-    tracksResponse.media.transcodings?.[0]?.url ?? ""
-  );
+  const transcodings = response.data.media?.transcodings ?? [];
+  for (const transcode of transcodings) {
+    if ((transcode.url ?? "").endsWith("/progressive")) {
+      return await getPlayStreamUri(transcode.url);
+    }
+  }
 };
 
 export const getPlayStreamUri = async (uri: string) => {
