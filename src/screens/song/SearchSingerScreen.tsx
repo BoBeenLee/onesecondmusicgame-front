@@ -355,6 +355,9 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     this.setState({ playingTrackItem: item });
     const { trackId, url, title, singer, artworkUrl } = item;
     const streamUri = await getTrackToPlayStreamUri(trackId);
+    if (!streamUri) {
+      return;
+    }
     await TrackPlayer.add({
       id: String(trackId),
       url: streamUri,
