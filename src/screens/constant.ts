@@ -6,6 +6,7 @@ const SCREEN_IDS = {
   RegisterSongScreen: "app.RegisterSongScreen",
   GamePlayScreen: "app.GamePlayScreen",
   GameRankingScreen: "app.GameRankingScreen",
+  GameAllRankingScreen: "app.GameAllRankingScreen",
   GameResultScreen: "app.GameResultScreen",
   GameSearchSingerScreen: "app.GameSearchSingerScreen",
   SearchSingerScreen: "app.SearchSingerScreen",
