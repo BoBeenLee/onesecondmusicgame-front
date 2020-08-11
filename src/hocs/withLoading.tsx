@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import styled from "styled-components/native";
 
 import Loading from "src/components/loading/Loading";
-import { ViewProps } from "react-native";
 
 interface IStates {
   isLoading: boolean;
@@ -20,8 +19,17 @@ const OverlayView = styled.View`
   height: 100%;
   justify-content: center;
   align-items: center;
-  background-color: #eee;
-  opacity: 0.4;
+  background-color: #000;
+  opacity: 0.3;
+  z-index: 99;
+`;
+
+const LoadingView = styled.View`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
   z-index: 99;
 `;
 
@@ -43,9 +51,12 @@ const withLoading = (LoadingComponent: any = Loading) => <P extends object>(
             isLoading={isLoading}
           />
           {this.isLoadingShow() && (
-            <OverlayView>
-              <LoadingComponent />
-            </OverlayView>
+            <React.Fragment>
+              <OverlayView />
+              <LoadingView>
+                <LoadingComponent />
+              </LoadingView>
+            </React.Fragment>
           )}
         </React.Fragment>
       );

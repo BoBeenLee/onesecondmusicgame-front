@@ -14,18 +14,9 @@ const Container = styled.View`
   z-index: 999;
 `;
 
-const LoadingView = styled.View`
-  width: 96px;
-  height: 96px;
-  background-color: #eee;
-  border-radius: 8px;
-  justify-content: center;
-  align-items: center;
-`;
-
 const LoadingLottieView = styled(LottieView)`
-  width: 72px;
-  height: 72px;
+  width: 120px;
+  height: 120px;
 `;
 
 const Loading = () => {
@@ -33,15 +24,13 @@ const Loading = () => {
 
   return (
     <Container>
-      <LoadingView>
-        <LoadingLottieView
-          autoPlay={false}
-          ref={playAnimation}
-          loop={true}
-          speed={1}
-          source={loadingAnimation}
-        />
-      </LoadingView>
+      <LoadingLottieView
+        autoPlay={false}
+        ref={playAnimation}
+        loop={true}
+        speed={1}
+        source={loadingAnimation}
+      />
     </Container>
   );
 };

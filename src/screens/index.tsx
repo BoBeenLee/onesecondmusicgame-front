@@ -17,6 +17,7 @@ import SplashScreen from "src/screens/SplashScreen";
 import SignInScreen from "src/screens/SignInScreen";
 import MainScreen from "src/screens/MainScreen";
 import withToast from "src/hocs/withToast";
+import withLoading from "src/hocs/withLoading";
 import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
 import GamePlayScreen from "src/screens/game/GamePlayScreen";
 import GameRankingScreen from "src/screens/game/GameRankingScreen";
@@ -50,6 +51,7 @@ const enhanceOverlayScreen = (Component: React.ComponentType<any>) => {
 
 const enhanceScreen = (Component: React.ComponentType<any>) => {
   const EnhancedComponent = compose(
+    withLoading(),
     withToast,
     withPopup,
     withAppState,
