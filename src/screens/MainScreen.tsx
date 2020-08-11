@@ -45,6 +45,7 @@ import UserGameItemScreen from "src/screens/user/UserGameItemScreen";
 import { logEvent } from "src/configs/analytics";
 import { IAppStore } from "src/stores/AppStore";
 import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
+import withLoading, { ILoadingProps } from "src/hocs/withLoading";
 
 interface IInject {
   store: IStore;
@@ -54,7 +55,7 @@ interface IInject {
   toastStore: IToastStore;
 }
 
-interface IProps extends IInject, IPopupProps {
+interface IProps extends IInject, IPopupProps, ILoadingProps {
   componentId: string;
 }
 
@@ -279,6 +280,10 @@ class MainScreen extends Component<IProps, IStates> {
     this.state = {
       isNotTooltipShow: true
     };
+
+    this.navigateToGamePlay =
+      props.wrapperLoading?.(this.navigateToGamePlay) ??
+      this.navigateToGamePlay;
   }
 
   public async componentDidMount() {
@@ -519,4 +524,4 @@ class MainScreen extends Component<IProps, IStates> {
 }
 
 export const MainScreenStatic = MainScreen;
-export default withPopup(MainScreen);
+export default MainScreen;
