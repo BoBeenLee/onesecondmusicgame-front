@@ -5,7 +5,7 @@ import {
   Clipboard,
   TouchableOpacity
 } from "react-native";
-import { Item } from "__generate__/api";
+import { Item, ItemItemTypeEnum } from "__generate__/api";
 import _ from "lodash";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
@@ -606,7 +606,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     } = this.gamePlayHighlights;
     const { songAnswerInput, songAnswerSeconds } = this.state;
     const userItem = this.props.authStore.user?.userItemsByItemType(
-      Item.ItemTypeEnum.SKIP
+      ItemItemTypeEnum.SKIP
     );
     return (
       <>
@@ -820,7 +820,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   private useSkipItem = async () => {
     const { playToken, currentGameHighlight, answer } = this.gamePlayHighlights;
     const userItem = this.props.authStore.user?.userItemsByItemType(
-      Item.ItemTypeEnum.SKIP
+      ItemItemTypeEnum.SKIP
     );
     await userItem?.useItemType?.({
       playToken,
@@ -971,7 +971,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
     const { showPopup } = this.props.popupProps;
     const fullHeartCount =
       this.props.authStore.user?.userItemsByItemType(
-        Item.ItemTypeEnum.CHARGEALLHEART
+        ItemItemTypeEnum.CHARGEALLHEART
       )?.count ?? 0;
     showPopup(
       <GainFullHeartPopup heartCount={fullHeartCount} onConfirm={this.finish} />

@@ -1,62 +1,46 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse, AxiosInstance } from "axios";
 import _ from "lodash";
 
 import env from "src/configs/env";
-import { ResponseDTO } from "__generate__/api";
 import { OSMGError } from "./error";
 import { getRootStore } from "src/stores/Store";
-
-interface IOptions {
-  body: object;
-  headers: object;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  method: any;
-  query: object;
-}
 
 const NORMAL_STATUS = 200;
 const NORMAL_STATUS_ = 2000;
 
-export const requestAPI: any = async <T extends ResponseDTO>(
-  url: string,
-  options: IOptions
-) => {
+export const requestAPI = (): AxiosInstance => {
   const userAccessToken = getRootStore().authStore.user?.userAccessToken;
   const headers = {
-    ...(userAccessToken ? { token: userAccessToken } : {}),
-    ...options.headers
+    ...(userAccessToken ? { token: userAccessToken } : {})
   };
   const configs: AxiosRequestConfig = {
-    headers,
-    data: options.body,
-    params: options.query,
-    method: options.method,
-    url
+    headers
   };
-  const response: AxiosResponse<T> = await axios({
+
+  const client = axios.create({
     baseURL: env.API_URL,
     ...configs
   });
-  if (
-    ![NORMAL_STATUS_, NORMAL_STATUS].some(
-      status => status === (response?.data?.status ?? NORMAL_STATUS)
-    )
-  ) {
-    throw new OSMGError({
-      status: response?.data?.status ?? 0,
-      body: response?.data?.body ?? `${response?.data?.status ?? ""}`
-    });
-  }
-  const responseDTO: Partial<Response> = {
-    headers: response.headers,
-    ok: response.status === NORMAL_STATUS,
-    status: response.status,
-    statusText: response.statusText,
-    url: response.config.url ?? "",
-    redirected: false,
-    json: () => Promise.resolve(response.data)
-  };
-  return responseDTO;
+
+  client.interceptors.response.use(
+    response => {
+      if (
+        ![NORMAL_STATUS_, NORMAL_STATUS].some(
+          status => status === (response?.data?.status ?? NORMAL_STATUS)
+        )
+      ) {
+        throw new OSMGError({
+          status: response?.data?.status ?? 0,
+          body: response?.data?.body ?? `${response?.data?.status ?? ""}`
+        });
+      }
+      return response;
+    },
+    error => {
+      return Promise.reject(error);
+    }
+  );
+  return client;
 };
 
 export const initialize = () => {

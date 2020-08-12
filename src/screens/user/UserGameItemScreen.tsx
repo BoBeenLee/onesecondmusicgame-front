@@ -21,7 +21,7 @@ import colors from "src/styles/colors";
 import BackTopBar from "src/components/topbar/BackTopBar";
 import { IUserItem } from "src/stores/model/UserItem";
 import GameItemEmptyCard from "src/components/card/GameItemEmptyCard";
-import { Item } from "__generate__/api";
+import { Item, ItemItemTypeEnum } from "__generate__/api";
 import GameItemCard from "src/components/card/GameItemCard";
 import SkipIcon from "src/components/icon/SkipIcon";
 import images from "src/images";
@@ -55,7 +55,7 @@ const Container = styled(ContainerWithStatusBar)`
 `;
 
 const Content = styled<
-  ComponentClass<FlatListProps<Item.ItemTypeEnum | "MOCK">>
+  ComponentClass<FlatListProps<ItemItemTypeEnum | "MOCK">>
 >(FlatList).attrs({
   contentContainerStyle: {
     flex: 1,
@@ -92,9 +92,9 @@ const HeartImage = styled.Image`
 `;
 
 const MOCK_GAME_ITEM = "MOCK";
-const USER_GAME_ITEMS: Array<Item.ItemTypeEnum | "MOCK"> = [
-  Item.ItemTypeEnum.CHARGEALLHEART,
-  Item.ItemTypeEnum.SKIP,
+const USER_GAME_ITEMS: Array<ItemItemTypeEnum | "MOCK"> = [
+  ItemItemTypeEnum.CHARGEALLHEART,
+  ItemItemTypeEnum.SKIP,
   MOCK_GAME_ITEM,
   MOCK_GAME_ITEM,
   MOCK_GAME_ITEM,
@@ -119,7 +119,7 @@ class UserGameItemScreen extends Component<IProps, IStates> {
   }
 
   public userGameItemMap: {
-    [key in Item.ItemTypeEnum]: {
+    [key in ItemItemTypeEnum]: {
       IconComponent: React.ReactNode;
       onPopup: () => void;
     };
@@ -131,11 +131,11 @@ class UserGameItemScreen extends Component<IProps, IStates> {
       adStatus: null
     };
     this.userGameItemMap = {
-      [Item.ItemTypeEnum.SKIP]: {
+      [ItemItemTypeEnum.SKIP]: {
         IconComponent: <SkipIcon />,
         onPopup: this.onSkipItemPopup
       },
-      [Item.ItemTypeEnum.CHARGEALLHEART]: {
+      [ItemItemTypeEnum.CHARGEALLHEART]: {
         IconComponent: <HeartImage source={images.inviteHeart} />,
         onPopup: this.onUseFullHeartPopup
       }
@@ -164,13 +164,13 @@ class UserGameItemScreen extends Component<IProps, IStates> {
   }
 
   private userItemKeyExtreactor = (
-    item: Item.ItemTypeEnum | "MOCK",
+    item: ItemItemTypeEnum | "MOCK",
     index: number
   ) => {
     return `userItem${index}`;
   };
 
-  private renderUserItem: ListRenderItem<Item.ItemTypeEnum | "MOCK"> = ({
+  private renderUserItem: ListRenderItem<ItemItemTypeEnum | "MOCK"> = ({
     item,
     index
   }) => {
@@ -201,7 +201,7 @@ class UserGameItemScreen extends Component<IProps, IStates> {
   private onSkipItemPopup = () => {
     const { showPopup, closePopup } = this.props.popupProps;
     const userItem = this.props.authStore.user?.userItemsByItemType?.(
-      Item.ItemTypeEnum.SKIP
+      ItemItemTypeEnum.SKIP
     );
     showPopup(
       <Observer>
@@ -225,7 +225,7 @@ class UserGameItemScreen extends Component<IProps, IStates> {
       <Observer>
         {() => {
           const userItem = this.props.authStore.user?.userItemsByItemType?.(
-            Item.ItemTypeEnum.CHARGEALLHEART
+            ItemItemTypeEnum.CHARGEALLHEART
           );
           return (
             <UseFullHeartPopup
@@ -261,7 +261,7 @@ class UserGameItemScreen extends Component<IProps, IStates> {
   private useFullHeart = async () => {
     const { showToast } = this.props.toastStore;
     const userItem = this.props.authStore.user?.userItemsByItemType?.(
-      Item.ItemTypeEnum.CHARGEALLHEART
+      ItemItemTypeEnum.CHARGEALLHEART
     );
     if (userItem?.count !== 0) {
       await userItem?.useItemType?.();
@@ -299,7 +299,7 @@ class UserGameItemScreen extends Component<IProps, IStates> {
     const { showPopup, closePopup } = this.props.popupProps;
     const fullHeartCount =
       this.props.authStore.user?.userItemsByItemType(
-        Item.ItemTypeEnum.CHARGEALLHEART
+        ItemItemTypeEnum.CHARGEALLHEART
       )?.count ?? 0;
     showPopup(
       <GainFullHeartPopup heartCount={fullHeartCount} onConfirm={closePopup} />
