@@ -1,11 +1,8 @@
 import { VersioningControllerApiFactory } from "__generate__/api";
 import { requestAPI } from "src/configs/requestAPI";
 
-const versioningKeywordControllerApi = VersioningControllerApiFactory(
-  undefined,
-  requestAPI,
-  ""
-);
+const versioningKeywordControllerApi = () =>
+  VersioningControllerApiFactory(undefined, "", requestAPI());
 
 interface IVersioningKeywordRequest {
   os: string;
@@ -15,9 +12,9 @@ interface IVersioningKeywordRequest {
 export const isNeedForceUpdateUsingGET = async (
   request: IVersioningKeywordRequest
 ) => {
-  const response = await versioningKeywordControllerApi.isNeedForceUpdateUsingGET(
+  const response = await versioningKeywordControllerApi().isNeedForceUpdateUsingGET(
     request.os,
     request.version
   );
-  return response.body!;
+  return response.data.body!;
 };
