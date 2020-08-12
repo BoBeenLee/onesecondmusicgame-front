@@ -5,31 +5,29 @@ import {
 } from "__generate__/api";
 import { requestAPI } from "src/configs/requestAPI";
 
-const likeControllerApi = LikeControllerApiFactory(undefined, requestAPI, "");
-const likeHistoryControllerApi = LikeHistoryControllerApiFactory(
-  undefined,
-  requestAPI,
-  ""
-);
+const likeControllerApi = () =>
+  LikeControllerApiFactory(undefined, "", requestAPI());
+const likeHistoryControllerApi = () =>
+  LikeHistoryControllerApiFactory(undefined, "", requestAPI());
 
 export const likeUsingPOST = async (params: LikeRequest) => {
-  const response = await likeControllerApi.likeUsingPOST(params);
-  return response.body ?? [];
+  const response = await likeControllerApi().likeUsingPOST(params);
+  return response.data.body ?? [];
 };
 
 export const dislikeUsingPOST = async (params: LikeRequest) => {
-  const response = await likeControllerApi.dislikeUsingPOST(params);
-  return response.body ?? [];
+  const response = await likeControllerApi().dislikeUsingPOST(params);
+  return response.data.body ?? [];
 };
 
 export const getLikeHistoryUsingGET = async (trackId: number) => {
-  const response = await likeHistoryControllerApi.getLikeHistoryUsingGET(
+  const response = await likeHistoryControllerApi().getLikeHistoryUsingGET(
     trackId
   );
-  return response.body;
+  return response.data.body;
 };
 
 export const getUserHistoryUsingGET = async () => {
-  const response = await likeHistoryControllerApi.getUserHistoryUsingGET();
-  return response.body;
+  const response = await likeHistoryControllerApi().getUserHistoryUsingGET();
+  return response.data.body;
 };
