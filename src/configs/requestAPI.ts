@@ -11,7 +11,8 @@ const NORMAL_STATUS_ = 2000;
 export const requestAPI = (): AxiosInstance => {
   const userAccessToken = getRootStore().authStore.user?.userAccessToken;
   const headers = {
-    ...(userAccessToken ? { token: userAccessToken } : {})
+    ...(userAccessToken ? { token: userAccessToken } : {}),
+    "x-user-id": ""
   };
   const configs: AxiosRequestConfig = {
     headers
