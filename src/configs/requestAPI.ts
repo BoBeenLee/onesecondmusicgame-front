@@ -10,9 +10,10 @@ const NORMAL_STATUS_ = 2000;
 
 export const requestAPI = (): AxiosInstance => {
   const userAccessToken = getRootStore().authStore.user?.userAccessToken;
+  const nickname = getRootStore().authStore.user?.nickname;
   const headers = {
     ...(userAccessToken ? { token: userAccessToken } : {}),
-    "x-user-id": ""
+    ...(nickname ? { "x-user-nickname": nickname } : {})
   };
   const configs: AxiosRequestConfig = {
     headers
