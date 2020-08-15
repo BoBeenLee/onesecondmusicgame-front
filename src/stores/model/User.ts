@@ -1,4 +1,4 @@
-import { Item } from "__generate__/api";
+import { Item, ItemItemTypeEnum } from "__generate__/api";
 import { flow, types } from "mobx-state-tree";
 
 import UserItem from "src/stores/model/UserItem";
@@ -21,7 +21,7 @@ const User = types
       get userItemViews() {
         return Array.from(self.userItems.values());
       },
-      userItemsByItemType(itemType: Item.ItemTypeEnum) {
+      userItemsByItemType(itemType: ItemItemTypeEnum) {
         return self.userItems.get(String(itemType));
       }
     };

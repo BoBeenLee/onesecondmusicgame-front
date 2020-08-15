@@ -1,4 +1,4 @@
-import { Item } from "__generate__/api";
+import { ItemItemTypeEnum } from "__generate__/api";
 import { flow, types } from "mobx-state-tree";
 
 import { useItemUsingPUT } from "src/apis/item";
@@ -8,13 +8,13 @@ interface IUseItemParams {
   playToken: string;
 }
 
-const userItemToName = new Map<Item.ItemTypeEnum, string>()
-  .set(Item.ItemTypeEnum.SKIP, "스킵")
-  .set(Item.ItemTypeEnum.CHARGEALLHEART, "하트 풀 충전");
+const userItemToName = new Map<ItemItemTypeEnum, string>()
+  .set(ItemItemTypeEnum.SKIP, "스킵")
+  .set(ItemItemTypeEnum.CHARGEALLHEART, "하트 풀 충전");
 
 const UserItem = types
   .model("UserItem", {
-    itemType: types.frozen<Item.ItemTypeEnum>(),
+    itemType: types.frozen<ItemItemTypeEnum>(),
     count: types.optional(types.number, 0),
     name: types.optional(types.string, "")
   })

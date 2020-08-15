@@ -84,7 +84,10 @@ const upload = async (
   setUploadProgress?: (currentProgress: number, totalProgress: number) => void
 ) => {
   const uploadResponse = await uploadProgress(params, setUploadProgress);
-  const response: ResponseDTO = await uploadResponse.json();
+  const response: {
+    status: number;
+    body: string;
+  } = await uploadResponse.json();
   if (
     ![NORMAL_STATUS_, NORMAL_STATUS].some(status => status === response?.status)
   ) {

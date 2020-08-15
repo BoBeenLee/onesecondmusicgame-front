@@ -41,7 +41,7 @@ import CircleCheckGroup from "src/components/icon/CircleCheckGroup";
 import XEIcon from "src/components/icon/XEIcon";
 import TimerText from "src/components/text/TimerText";
 import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
-import { Item, GameResultResponse } from "__generate__/api";
+import { Item, ItemItemTypeEnum, GameResultResponse } from "__generate__/api";
 import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import images from "src/images";
 import AdvertiseBannerWebview from "src/components/webview/AdvertiseBannerWebview";
@@ -446,7 +446,7 @@ class GameResultScreen extends Component<IProps, IStates> {
   private onUseFullHeartPopup = () => {
     const { showPopup, closePopup } = this.props.popupProps;
     const userItem = this.props.authStore.user?.userItemsByItemType?.(
-      Item.ItemTypeEnum.CHARGEALLHEART
+      ItemItemTypeEnum.CHARGEALLHEART
     );
     showPopup(
       <UseFullHeartPopup
@@ -461,7 +461,7 @@ class GameResultScreen extends Component<IProps, IStates> {
   private useFullHeart = () => {
     const { showToast } = this.props.toastStore;
     const userItem = this.props.authStore.user?.userItemsByItemType?.(
-      Item.ItemTypeEnum.CHARGEALLHEART
+      ItemItemTypeEnum.CHARGEALLHEART
     );
 
     const { closePopup } = this.props.popupProps;
@@ -493,7 +493,7 @@ class GameResultScreen extends Component<IProps, IStates> {
     const { showPopup, closePopup } = this.props.popupProps;
     const fullHeartCount =
       this.props.authStore.user?.userItemsByItemType(
-        Item.ItemTypeEnum.CHARGEALLHEART
+        ItemItemTypeEnum.CHARGEALLHEART
       )?.count ?? 0;
     showPopup(
       <GainFullHeartPopup heartCount={fullHeartCount} onConfirm={closePopup} />
