@@ -1926,6 +1926,42 @@ export const APIApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * 가수 이름을 기반으로 신규 가수를 등록합니다.
+         * @summary 가수 신규 등록
+         * @param {string} singerName 가수 이름
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createNewSingerUsingPOST: async (singerName: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'singerName' is not null or undefined
+            if (singerName === null || singerName === undefined) {
+                throw new RequiredError('singerName','Required parameter singerName was null or undefined when calling createNewSingerUsingPOST.');
+            }
+            const localVarPath = `/v2/admin/singers/{singerName}`
+                .replace(`{${"singerName"}}`, encodeURIComponent(String(singerName)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 가수의 노래를 신규로 등록한다.
          * @summary 가수 노래 신규 등록
          * @param {string} singerName 가수 이름
@@ -2220,6 +2256,51 @@ export const APIApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
+         * 해당 가수가 유저들에게 노출 되는지의 여부를 변경한다.
+         * @summary 가수 노출 여부 변경
+         * @param {string} singerName 변경할 가수 이름
+         * @param {string} hasHighlight 변경할 노래 정보
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateHasHighlightUsingPUT: async (singerName: string, hasHighlight: string, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'singerName' is not null or undefined
+            if (singerName === null || singerName === undefined) {
+                throw new RequiredError('singerName','Required parameter singerName was null or undefined when calling updateHasHighlightUsingPUT.');
+            }
+            // verify required parameter 'hasHighlight' is not null or undefined
+            if (hasHighlight === null || hasHighlight === undefined) {
+                throw new RequiredError('hasHighlight','Required parameter hasHighlight was null or undefined when calling updateHasHighlightUsingPUT.');
+            }
+            const localVarPath = `/v2/admin/singers/{singerName}/has-highlight`
+                .replace(`{${"singerName"}}`, encodeURIComponent(String(singerName)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof hasHighlight !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(hasHighlight !== undefined ? hasHighlight : {}) : (hasHighlight || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Admin UI에 알맞게 highlightId 만을 이용하여 하이라이트 정보를 변경한다.
          * @summary 하이라이트 정보 변경
          * @param {number} highlightId 하이라이트 ID
@@ -2385,6 +2466,20 @@ export const APIApiFp = function(configuration?: Configuration) {
             };
         },
         /**
+         * 가수 이름을 기반으로 신규 가수를 등록합니다.
+         * @summary 가수 신규 등록
+         * @param {string} singerName 가수 이름
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async createNewSingerUsingPOST(singerName: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SingerInfoView>> {
+            const localVarAxiosArgs = await APIApiAxiosParamCreator(configuration).createNewSingerUsingPOST(singerName, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
          * 가수의 노래를 신규로 등록한다.
          * @summary 가수 노래 신규 등록
          * @param {string} singerName 가수 이름
@@ -2488,6 +2583,21 @@ export const APIApiFp = function(configuration?: Configuration) {
             };
         },
         /**
+         * 해당 가수가 유저들에게 노출 되는지의 여부를 변경한다.
+         * @summary 가수 노출 여부 변경
+         * @param {string} singerName 변경할 가수 이름
+         * @param {string} hasHighlight 변경할 노래 정보
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateHasHighlightUsingPUT(singerName: string, hasHighlight: string, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Singer>> {
+            const localVarAxiosArgs = await APIApiAxiosParamCreator(configuration).updateHasHighlightUsingPUT(singerName, hasHighlight, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
          * Admin UI에 알맞게 highlightId 만을 이용하여 하이라이트 정보를 변경한다.
          * @summary 하이라이트 정보 변경
          * @param {number} highlightId 하이라이트 ID
@@ -2552,6 +2662,16 @@ export const APIApiFactory = function (configuration?: Configuration, basePath?:
          */
         createHighlightUsingPOST(songId: number, request: HighlightUpdateOrCreateRequest, options?: any): AxiosPromise<SongHighlight> {
             return APIApiFp(configuration).createHighlightUsingPOST(songId, request, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 가수 이름을 기반으로 신규 가수를 등록합니다.
+         * @summary 가수 신규 등록
+         * @param {string} singerName 가수 이름
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createNewSingerUsingPOST(singerName: string, options?: any): AxiosPromise<SingerInfoView> {
+            return APIApiFp(configuration).createNewSingerUsingPOST(singerName, options).then((request) => request(axios, basePath));
         },
         /**
          * 가수의 노래를 신규로 등록한다.
@@ -2629,6 +2749,17 @@ export const APIApiFactory = function (configuration?: Configuration, basePath?:
             return APIApiFp(configuration).updateExportedOfSongUsingPUT(songId, exported, options).then((request) => request(axios, basePath));
         },
         /**
+         * 해당 가수가 유저들에게 노출 되는지의 여부를 변경한다.
+         * @summary 가수 노출 여부 변경
+         * @param {string} singerName 변경할 가수 이름
+         * @param {string} hasHighlight 변경할 노래 정보
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateHasHighlightUsingPUT(singerName: string, hasHighlight: string, options?: any): AxiosPromise<Singer> {
+            return APIApiFp(configuration).updateHasHighlightUsingPUT(singerName, hasHighlight, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Admin UI에 알맞게 highlightId 만을 이용하여 하이라이트 정보를 변경한다.
          * @summary 하이라이트 정보 변경
          * @param {number} highlightId 하이라이트 ID
@@ -2683,6 +2814,18 @@ export class APIApi extends BaseAPI {
      */
     public createHighlightUsingPOST(songId: number, request: HighlightUpdateOrCreateRequest, options?: any) {
         return APIApiFp(this.configuration).createHighlightUsingPOST(songId, request, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 가수 이름을 기반으로 신규 가수를 등록합니다.
+     * @summary 가수 신규 등록
+     * @param {string} singerName 가수 이름
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof APIApi
+     */
+    public createNewSingerUsingPOST(singerName: string, options?: any) {
+        return APIApiFp(this.configuration).createNewSingerUsingPOST(singerName, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2772,6 +2915,19 @@ export class APIApi extends BaseAPI {
      */
     public updateExportedOfSongUsingPUT(songId: number, exported: string, options?: any) {
         return APIApiFp(this.configuration).updateExportedOfSongUsingPUT(songId, exported, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 해당 가수가 유저들에게 노출 되는지의 여부를 변경한다.
+     * @summary 가수 노출 여부 변경
+     * @param {string} singerName 변경할 가수 이름
+     * @param {string} hasHighlight 변경할 노래 정보
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof APIApi
+     */
+    public updateHasHighlightUsingPUT(singerName: string, hasHighlight: string, options?: any) {
+        return APIApiFp(this.configuration).updateHasHighlightUsingPUT(singerName, hasHighlight, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

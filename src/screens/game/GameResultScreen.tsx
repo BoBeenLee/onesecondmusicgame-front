@@ -36,12 +36,17 @@ import { GamePlayScreenStatic } from "src/screens/game/GamePlayScreen";
 import GamePlayHighlights, {
   IGamePlayHighlights
 } from "src/stores/GamePlayHighlights";
-import { gameResultUsingPOST } from "src/apis/game";
+import { gameResultV2UsingPOST } from "src/apis/game";
 import CircleCheckGroup from "src/components/icon/CircleCheckGroup";
 import XEIcon from "src/components/icon/XEIcon";
 import TimerText from "src/components/text/TimerText";
 import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
-import { Item, ItemItemTypeEnum, GameResultResponse } from "__generate__/api";
+import {
+  Item,
+  ItemItemTypeEnum,
+  GameResultResponse,
+  ScoreViewModelScoreTypeEnum
+} from "__generate__/api";
 import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import images from "src/images";
 import AdvertiseBannerWebview from "src/components/webview/AdvertiseBannerWebview";
@@ -427,16 +432,20 @@ class GameResultScreen extends Component<IProps, IStates> {
 
   private initialize = async () => {
     const { toGameAnswers, playToken } = this.gamePlayHighlights;
-    const response = await gameResultUsingPOST({
+    const response = await gameResultV2UsingPOST({
       gameAnswerList: toGameAnswers,
       playToken
     });
+    const resultItem = _.find(
+      response.scoreViewModelList ?? [],
+      item => item.scoreType === ScoreViewModelScoreTypeEnum.SEASON
+    );
     await this.props.authStore.user?.heart?.fetchHeart();
     this.setState({
       gameResult: {
         gainPointOfThisGame: response.gainPointOfThisGame ?? 0,
-        totalPoint: response.totalPoint ?? 0,
-        myRanking: response.myRanking ?? 0,
+        totalPoint: resultItem?.score?.point ?? 0,
+        myRanking: resultItem?.ranking ?? 0,
         heartCount: response.heartCount ?? 0,
         resultComment: response.resultComment ?? []
       }
