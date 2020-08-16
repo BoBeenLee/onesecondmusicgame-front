@@ -51,6 +51,7 @@ import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import images from "src/images";
 import AdvertiseBannerWebview from "src/components/webview/AdvertiseBannerWebview";
 import GameResultBanner from "src/components/banner/GameResultBanner";
+import withLoading, { LoadingProps } from "src/hocs/withLoading";
 
 interface IInject {
   authStore: IAuthStore;
@@ -62,7 +63,7 @@ interface IParams {
   gamePlayHighlights: () => IGamePlayHighlights;
 }
 
-interface IProps extends IInject, IParams, IPopupProps {}
+interface IProps extends IInject, IParams, IPopupProps, LoadingProps {}
 
 interface IStates {
   gameResult: NoUndefinedField<GameResultResponse>;
@@ -313,6 +314,9 @@ class GameResultScreen extends Component<IProps, IStates> {
     });
     this.gamePlayHighlights =
       props?.gamePlayHighlights?.() ?? GamePlayHighlights.create({});
+    this.navigateToGamePlay =
+      this.props.loadingProps.wrapperLoading?.(this.navigateToGamePlay) ??
+      this.navigateToGamePlay;
   }
 
   public async componentDidMount() {
