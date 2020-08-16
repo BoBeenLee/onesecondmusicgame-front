@@ -208,7 +208,11 @@ class SearchSingerScreen extends Component<IProps, IStates> {
   }
 
   public async componentDidMount() {
-    await this.initialize();
+    try {
+      await this.initialize();
+    } catch (error) {
+      console.tron.log(error, error.message);
+    }
   }
 
   public componentWillUnmount() {

@@ -356,7 +356,7 @@ const SkipBadgeText = styled(Bold18)`
   color: ${colors.paleLavender};
 `;
 
-const HiddenAnswerCopyButton = styled.TouchableWithoutFeedback``;
+const HiddenAnswerCopyButton = styled.TouchableOpacity``;
 const HiddenAnswerCopyButtonView = styled.View`
   position: absolute;
   top: 0px;
