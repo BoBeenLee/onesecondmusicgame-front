@@ -30,7 +30,7 @@ import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
 import BackTopBar from "src/components/topbar/BackTopBar";
 import XEIcon from "src/components/icon/XEIcon";
 import { logEvent } from "src/configs/analytics";
-import withLoading, { ILoadingProps } from "src/hocs/withLoading";
+import withLoading, { LoadingProps } from "src/hocs/withLoading";
 
 interface IInject {
   singerStore: ISingerStore;
@@ -48,7 +48,7 @@ interface IProps
   extends IParams,
     IInject,
     IScrollDirectionProps,
-    ILoadingProps {}
+    LoadingProps {}
 
 interface IStates {
   selectedSingers: { [key in string]: ISinger | null };
@@ -236,7 +236,8 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
 
     this.state = { selectedSingers: {}, showMinimumSubmit: true };
     this.singers.initialize({ q: "" });
-    this.submit = props.wrapperLoading?.(this.submit) ?? this.submit;
+    this.submit =
+      props.loadingProps.wrapperLoading?.(this.submit) ?? this.submit;
   }
 
   public async componentDidMount() {

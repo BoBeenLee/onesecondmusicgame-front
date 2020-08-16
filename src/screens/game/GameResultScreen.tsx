@@ -526,12 +526,12 @@ class GameResultScreen extends Component<IProps, IStates> {
     closePopup();
   };
 
-  private navigateToGamePlay = () => {
+  private navigateToGamePlay = async () => {
     const { componentId } = this.props;
     const { showToast } = this.props.toastStore;
     const heart = this.props.authStore.user?.heart!;
     try {
-      GamePlayScreenStatic.open({
+      await GamePlayScreenStatic.open({
         componentId,
         heartCount: heart?.heartCount ?? 0
       });
