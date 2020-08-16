@@ -30,7 +30,7 @@ import ChargeSkipItemPopup from "src/components/popup/ChargeSkipItemPopup";
 import { makeAppShareLink } from "src/utils/dynamicLink";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
-import withDisabled, { IDisabledProps } from "src/hocs/withDisabled";
+import withDisabled, { DisabledProps } from "src/hocs/withDisabled";
 import { delay } from "src/utils/common";
 interface IInject {
   authStore: IAuthStore;
@@ -41,7 +41,7 @@ interface IParams {
   componentId: string;
 }
 
-interface IProps extends IInject, IParams, IPopupProps, IDisabledProps {
+interface IProps extends IInject, IParams, IPopupProps, DisabledProps {
   componentId: string;
 }
 
@@ -140,7 +140,10 @@ class UserGameItemScreen extends Component<IProps, IStates> {
         onPopup: this.onUseFullHeartPopup
       }
     };
-    this.onRewarded = props.wrapperDisabled(this.onRewarded, "onRewarded");
+    this.onRewarded = props.disabledProps.wrapperDisabled(
+      this.onRewarded,
+      "onRewarded"
+    );
 
     const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
     loadAD(AdmobUnitID.HeartReward, keywords, {

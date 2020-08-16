@@ -35,7 +35,7 @@ import OSMGCarousel, { ICarousel } from "src/components/carousel/OSMGCarousel";
 import GameAudioPlayer from "src/components/player/GameAudioPlayer";
 import OSMGTextInput from "src/components/input/OSMGTextInput";
 import { IPopupProps } from "src/hocs/withPopup";
-import withDisabled, { IDisabledProps } from "src/hocs/withDisabled";
+import withDisabled, { DisabledProps } from "src/hocs/withDisabled";
 import ChargeFullHeartPopup from "src/components/popup/ChargeFullHeartPopup";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
@@ -80,7 +80,7 @@ interface IParams {
 interface IProps
   extends IInject,
     IPopupProps,
-    IDisabledProps,
+    DisabledProps,
     IBackHandlerProps {
   componentId: string;
   selectedSingers: ISinger[];
@@ -437,10 +437,19 @@ class GamePlayScreen extends Component<IProps, IStates> {
       songAnswerInput: "",
       songAnswerSeconds: DEFAULT_LIMIT_TIME
     };
-    this.nextStep = props.wrapperDisabled(this.nextStep, "nextStep");
-    this.useSkipItem = props.wrapperDisabled(this.useSkipItem, "useSkipItem");
-    this.wrongPass = props.wrapperDisabled(this.wrongPass, "wrongPass");
-    this.submitAnswer = props.wrapperDisabled(
+    this.nextStep = props.disabledProps.wrapperDisabled(
+      this.nextStep,
+      "nextStep"
+    );
+    this.useSkipItem = props.disabledProps.wrapperDisabled(
+      this.useSkipItem,
+      "useSkipItem"
+    );
+    this.wrongPass = props.disabledProps.wrapperDisabled(
+      this.wrongPass,
+      "wrongPass"
+    );
+    this.submitAnswer = props.disabledProps.wrapperDisabled(
       this.submitAnswer,
       "submitAnswer"
     );
