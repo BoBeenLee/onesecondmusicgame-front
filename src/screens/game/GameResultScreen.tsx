@@ -49,7 +49,6 @@ import {
 } from "__generate__/api";
 import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import images from "src/images";
-import AdvertiseBannerWebview from "src/components/webview/AdvertiseBannerWebview";
 import GameResultBanner from "src/components/banner/GameResultBanner";
 import withLoading, { LoadingProps } from "src/hocs/withLoading";
 
@@ -339,7 +338,6 @@ class GameResultScreen extends Component<IProps, IStates> {
     return (
       <Container>
         <ScrollView>
-          {/* <AdvertiseBannerWebview /> */}
           <Header>
             <Title>게임 종료</Title>
             <GamePlayStep circles={gamePlayStepStatuses} />
