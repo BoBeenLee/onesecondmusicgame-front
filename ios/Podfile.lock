@@ -199,10 +199,6 @@ PODS:
   - Permission-Notifications (2.0.6):
     - RNPermissions
   - PersonalizedAdConsent (1.0.5)
-  - Picker (4.3.7):
-    - Picker/Core (= 4.3.7)
-  - Picker/Core (4.3.7):
-    - React
   - PromisesObjC (1.2.9)
   - Protobuf (3.12.0)
   - RCTRequired (0.63.2)
@@ -389,7 +385,7 @@ PODS:
     - React
   - react-native-image-resizer (1.1.0):
     - React
-  - react-native-safe-area-context (0.7.2):
+  - react-native-safe-area-context (3.1.4):
     - React
   - react-native-splash-screen (3.2.0):
     - React
@@ -557,7 +553,6 @@ DEPENDENCIES:
   - lottie-ios (from `../node_modules/lottie-ios`)
   - lottie-react-native (from `../node_modules/lottie-react-native`)
   - Permission-Notifications (from `../node_modules/react-native-permissions/ios/Notifications.podspec`)
-  - Picker (from `../node_modules/react-native-picker`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
   - React (from `../node_modules/react-native/`)
@@ -671,8 +666,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/lottie-react-native"
   Permission-Notifications:
     :path: "../node_modules/react-native-permissions/ios/Notifications.podspec"
-  Picker:
-    :path: "../node_modules/react-native-picker"
   RCTRequired:
     :path: "../node_modules/react-native/Libraries/RCTRequired"
   RCTTypeSafety:
@@ -817,7 +810,6 @@ SPEC CHECKSUMS:
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
   Permission-Notifications: 407fd49975376178cc3c6f85d79dfb5ccf812851
   PersonalizedAdConsent: dbecabb3467df967c16d9cebc2ef4a8890e4bbd8
-  Picker: 4f1722c94059567cabd80e53d0ef72ca290d2b93
   PromisesObjC: b48e0338dbbac2207e611750777895f7a5811b75
   Protobuf: 2793fcd0622a00b546c60e7cbbcc493e043e9bb9
   RCTRequired: f13f25e7b12f925f1f6a6a8c69d929a03c0129fe
@@ -833,7 +825,7 @@ SPEC CHECKSUMS:
   react-native-fbsdk: b94a83971c496a35803f38b921aec6d637ba07b5
   react-native-image-picker: 7e19aefccd42aad840a758181e16ce05d4e95578
   react-native-image-resizer: 9dfb844937574db849fd18a56d8e6c607b0a31d8
-  react-native-safe-area-context: d227bd5ef6776683c330f44187351dc138b2a4cb
+  react-native-safe-area-context: 0ed9288ed4409beabb0817b54efc047286fc84da
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-track-player: 84552605df7d90e199ff8b5deceddff58d658523
   react-native-webview: 88b0a0453a88cd7e3c0729ce8723a66783814dd6
