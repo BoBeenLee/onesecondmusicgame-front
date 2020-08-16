@@ -43,7 +43,7 @@ import { IStore } from "src/stores/Store";
 import GameResultScreen from "src/screens/game/GameResultScreen";
 import GameSearchSingerScreen from "src/screens/game/GameSearchSingerScreen";
 import { ISinger } from "src/apis/singer";
-import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
+import { AdmobUnitID, loadAD, AdmobUnit } from "src/configs/admob";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import GamePlayHighlights, {
   IGamePlayHighlightItem,
@@ -427,6 +427,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   public gamePlayersRef = React.createRef<OSMGCarousel<any>>();
   public intervalId: any;
   public btnSkipAndWrongOpacity = new Animated.Value(1);
+  public admobUnit: AdmobUnit;
 
   constructor(props: IProps) {
     super(props);
@@ -466,7 +467,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
       );
     }
     const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
-    loadAD(AdmobUnitID.HeartReward, keywords, {
+    this.admobUnit = loadAD(AdmobUnitID.HeartReward, keywords, {
       onRewarded: this.onRewarded
     });
 
@@ -959,7 +960,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private requestHeartRewardAD = () => {
-    showAD(AdmobUnitID.HeartReward);
+    this.admobUnit.show();
   };
 
   private onRewarded = async () => {

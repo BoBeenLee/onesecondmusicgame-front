@@ -5,7 +5,6 @@ import {
   GoogleSignin,
   statusCodes
 } from "@react-native-community/google-signin";
-import firebase, { RNFirebase, AuthCredential } from "react-native-firebase";
 import { LoginManager, AccessToken } from "react-native-fbsdk";
 import appleAuth, {
   AppleAuthRealUserStatus,
@@ -132,16 +131,6 @@ const AuthStore = types
       try {
         const userInfo: RetrieveAsyncFunc<typeof GoogleSignin.signIn> = yield GoogleSignin.signIn();
         const tokenInfo: RetrieveAsyncFunc<typeof GoogleSignin.getTokens> = yield GoogleSignin.getTokens();
-
-        const credential = firebase.auth.GoogleAuthProvider.credential(
-          tokenInfo.idToken,
-          tokenInfo.accessToken
-        );
-        const firebaseUserCredential: RetrieveAsyncFunc<(
-          credential: AuthCredential
-        ) => Promise<
-          RNFirebase.UserCredential
-        >> = yield firebase.auth().signInWithCredential(credential);
 
         self.accessId = userInfo.user.id;
         self.accessToken = tokenInfo.accessToken;
