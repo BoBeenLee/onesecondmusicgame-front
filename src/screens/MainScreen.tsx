@@ -236,7 +236,7 @@ const MainBackground = styled(AutoHeightImage)`
   resize-mode: contain;
 `;
 
-const DevelopButton = styled.TouchableWithoutFeedback``;
+const DevelopButton = styled.TouchableOpacity``;
 
 const DeveloperButtonView = styled.View`
   position: absolute;
