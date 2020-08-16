@@ -3,14 +3,7 @@ module.exports = {
   dependencies: {
     "react-native-navigation": {
       platforms: {
-        ios: null,
-        android: null // disable Android platform, other platforms will still autolink if provided
-      }
-    },
-    "react-native-firebase": {
-      platforms: {
-        ios: null,
-        android: null // disable Android platform, other platforms will still autolink if provided
+        ios: null
       }
     },
     "lottie-react-native": {

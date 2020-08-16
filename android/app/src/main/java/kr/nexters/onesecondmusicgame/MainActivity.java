@@ -8,7 +8,6 @@ import kr.nexters.onesecondmusicgame.MainApplication;
 import com.facebook.react.modules.core.PermissionListener;
 import com.imagepicker.permissions.OnImagePickerPermissionsCallback;
 import com.reactnativenavigation.NavigationActivity;
-import com.reactnativenavigation.utils.CommandListenerAdapter;
 import com.reactnativenavigation.viewcontrollers.navigator.Navigator;
 import android.content.Intent;
 import android.webkit.WebView;
@@ -20,7 +19,7 @@ public class MainActivity extends NavigationActivity implements OnImagePickerPer
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.show(this);
+       SplashScreen.show(this);
 
         if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true);
@@ -31,15 +30,6 @@ public class MainActivity extends NavigationActivity implements OnImagePickerPer
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void invokeDefaultOnBackPressed() {
-        Navigator navigator = getNavigator();
-        if (!navigator.handleBack(new CommandListenerAdapter())) {
-            super.onBackPressed();
-            moveTaskToBack(true);
-        }
     }
 
     @Override

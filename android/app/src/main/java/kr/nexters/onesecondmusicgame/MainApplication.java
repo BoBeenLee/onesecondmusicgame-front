@@ -19,16 +19,6 @@ import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.react.NavigationReactNativeHost;
 import com.reactnativenavigation.react.ReactGateway;
 
-import io.invertase.firebase.RNFirebasePackage;
-import io.invertase.firebase.analytics.RNFirebaseAnalyticsPackage;
-import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
-import io.invertase.firebase.fabric.crashlytics.RNFirebaseCrashlyticsPackage;
-import io.invertase.firebase.instanceid.RNFirebaseInstanceIdPackage;
-import io.invertase.firebase.links.RNFirebaseLinksPackage;
-import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
-import io.invertase.firebase.config.RNFirebaseRemoteConfigPackage;
-import io.invertase.firebase.auth.RNFirebaseAuthPackage;
-import io.invertase.firebase.admob.RNFirebaseAdMobPackage;
 import com.microsoft.codepush.react.CodePush;
 import com.airbnb.android.react.lottie.LottiePackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
@@ -52,72 +42,53 @@ import com.guichaguri.trackplayer.TrackPlayer;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 import com.imagepicker.ImagePickerPackage;
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
+import androidx.multidex.MultiDex;
 
 public class MainApplication extends NavigationApplication {
+     private final ReactNativeHost mReactNativeHost = new NavigationReactNativeHost(this) {
+        @javax.annotation.Nullable
+        @Override
+        protected String getJSBundleFile() {
+            return CodePush.getJSBundleFile();
+        }
+
+        @Override
+        public boolean getUseDeveloperSupport() {
+            return BuildConfig.DEBUG;
+        }
+
+        @Override
+        protected List<ReactPackage> getPackages() {
+            List<ReactPackage> packages = new PackageList(this).getPackages();
+            packages.addAll(Arrays.<ReactPackage>asList(
+                new LottiePackage(),
+                new CodePush(getString(R.string.reactNativeCodePush_androidDeploymentKey), MainApplication.this, getUseDeveloperSupport(),
+                            R.string.CodePushPublicKey),
+                new RNFetchBlobPackage()
+            ));
+            return packages;
+        }
+
+        @Override
+        protected String getJSMainModuleName() {
+          return "index";
+        }
+    };
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
+
+
+     @Override
+    public ReactNativeHost getReactNativeHost() {
+        return mReactNativeHost;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
-    }
-
-    @Override
-    protected ReactGateway createReactGateway() {
-        ReactNativeHost host = new NavigationReactNativeHost(this, isDebug(), createAdditionalReactPackages()) {
-            @javax.annotation.Nullable
-            @Override
-            protected String getJSBundleFile() {
-                return CodePush.getJSBundleFile();
-            }
-        };
-        return new ReactGateway(this, isDebug(), host);
-    }
-
-    @Override
-    public boolean isDebug() {
-        return BuildConfig.DEBUG;
-    }
-
-    protected List<ReactPackage> getPackages() {
-        // Add additional packages you require here
-        // No need to add RnnPackage and MainReactPackage
-        return Arrays.<ReactPackage>asList(
-                new RNFirebasePackage(),
-                new RNFirebaseAnalyticsPackage(),
-                new RNFirebaseMessagingPackage(),
-                new RNFirebaseCrashlyticsPackage(),
-                new RNFirebaseInstanceIdPackage(),
-                new RNFirebaseLinksPackage(),
-                new RNFirebaseNotificationsPackage(),
-                new RNFirebaseRemoteConfigPackage(),
-                new RNFirebaseAuthPackage(),
-                new RNFirebaseAdMobPackage(),
-                new LottiePackage(),
-                new CodePush(getString(R.string.reactNativeCodePush_androidDeploymentKey), MainApplication.this, isDebug(),
-                        R.string.CodePushPublicKey),
-                new SplashScreenReactPackage(),
-                new RNKakaoLoginsPackage(),
-                new RNFetchBlobPackage(),
-                new VectorIconsPackage(),
-                new SvgPackage(),
-                new RNDeviceInfo(),
-                new LinearGradientPackage(),
-                new PickerViewPackage(),
-                new AsyncStoragePackage(),
-                new RNCWebViewPackage(),
-                new ReanimatedPackage(),
-                new RNGestureHandlerPackage(),
-                new RNPermissionsPackage(),
-                new RNGoogleSigninPackage(),
-                new FBSDKPackage(),
-                new RNSentryPackage(),
-                new TrackPlayer(),
-                new SafeAreaContextPackage(),
-                new ImagePickerPackage(),
-                new ImageResizerPackage()
-        );
-    }
-
-    @Override
-    public List<ReactPackage> createAdditionalReactPackages() {
-        return getPackages();
     }
 }

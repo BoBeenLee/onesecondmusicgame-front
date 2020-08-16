@@ -1,6 +1,8 @@
 import _ from "lodash";
 import { flow, types } from "mobx-state-tree";
-import firebase from "react-native-firebase";
+import dynamicLinks, {
+  FirebaseDynamicLinksTypes
+} from "@react-native-firebase/dynamic-links";
 import {
   isAppShareLink,
   makeLinkPayload,
@@ -32,19 +34,21 @@ const LinkingStore = types
   })
   .actions(self => {
     const getInitialLink = flow(function*() {
-      const url = yield firebase.links().getInitialLink();
-      if (url) {
-        self.setLinkURL(url);
+      const link: FirebaseDynamicLinksTypes.DynamicLink | null = yield dynamicLinks().getInitialLink();
+      if (link?.url) {
+        self.setLinkURL(link.url);
       }
     });
 
     const initialize = flow(function*() {
       yield getInitialLink();
-      self.removeLinkingListener = firebase.links().onLink(url => {
-        if (url) {
-          self.setLinkURL(url);
+      self.removeLinkingListener = dynamicLinks().onLink(
+        (link: FirebaseDynamicLinksTypes.DynamicLink) => {
+          if (link.url) {
+            self.setLinkURL(link.url);
+          }
         }
-      });
+      );
     });
 
     const beforeDestroy = () => {

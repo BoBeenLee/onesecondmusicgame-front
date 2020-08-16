@@ -1,15 +1,20 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import _ from "lodash";
 import { flow, types } from "mobx-state-tree";
-import firebase, { RNFirebase } from "react-native-firebase";
+import messaging, {
+  FirebaseMessagingTypes
+} from "@react-native-firebase/messaging";
 
-import {
-  Notification,
-  NotificationOpen
-} from "react-native-firebase/notifications";
 import { isAndroid } from "src/utils/device";
 
 const CHANNEL_ID = "onesecondmusicgame-channel";
+
+enum AuthorizationStatus {
+  NOT_DETERMINED = -1,
+  DENIED = 0,
+  AUTHORIZED = 1,
+  PROVISIONAL = 2
+}
 
 const PushNotificationStore = types
   .model("PushNotification", {
@@ -18,9 +23,7 @@ const PushNotificationStore = types
   })
   .volatile(() => {
     return {
-      removeNotificationDisplayedListener: _.identity,
-      removeNotificationListener: _.identity,
-      removeNotificationOpendedListener: _.identity
+      removeNotificationListener: _.identity
     };
   })
   .actions(self => {
@@ -31,59 +34,44 @@ const PushNotificationStore = types
     });
 
     const getNotificationOpen = flow(function*() {
-      const notificationOpen: RetrieveAsyncFunc<() => Promise<
-        RNFirebase.notifications.NotificationOpen
-      >> = yield firebase.notifications().getInitialNotification();
+      const notificationOpen = yield messaging().getInitialNotification();
       return notificationOpen;
     });
 
     const initializeNotification = () => {
-      const channel = new firebase.notifications.Android.Channel(
-        CHANNEL_ID,
-        "onesecondmusicgame Channel",
-        firebase.notifications.Android.Importance.Max
-      ).setDescription("onesecondmusicgame channel");
-
-      // Create the channel
-      firebase.notifications().android.createChannel(channel);
-
-      self.removeNotificationOpendedListener = firebase
-        .notifications()
-        .onNotificationOpened((notificationOpen: NotificationOpen) => {
-          const notification = notificationOpen.notification;
-        });
-      self.removeNotificationListener = firebase
-        .notifications()
-        .onNotification((notification: Notification) => {
-          if (isAndroid()) {
-            notification.android.setChannelId(CHANNEL_ID);
-          }
-          firebase.notifications().displayNotification(notification);
-        });
+      self.removeNotificationListener = messaging().setBackgroundMessageHandler(
+        async message => {
+          // const notifiaction: Notification = {
+          //   title: message.notification?.title ?? "",
+          //   body: message.notification?.body ?? "",
+          //   android: {
+          //     channelId: channel
+          //   }
+          // };
+          // await notifee.displayNotification(notifiaction);
+        }
+      );
     };
 
     const fetchFCMToken = flow(function*() {
-      return (self.fcmToken = yield firebase.messaging().getToken());
+      return (self.fcmToken = yield messaging().getToken());
     });
 
     const requestPushPermission = flow(function*() {
-      const enabled = yield firebase.messaging().hasPermission();
-
-      if (enabled) {
+      const currentStatus: AuthorizationStatus = yield messaging().hasPermission();
+      const isEnabled = (status: AuthorizationStatus) =>
+        [AuthorizationStatus.AUTHORIZED, AuthorizationStatus.PROVISIONAL].some(
+          authStatus => authStatus === status
+        );
+      if (isEnabled(currentStatus)) {
         return;
       }
-      try {
-        yield firebase.messaging().requestPermission();
-        return (self.pushPermission = true);
-      } catch (error) {
-        return (self.pushPermission = false);
-      }
+      const authStatus = yield messaging().requestPermission();
+      return (self.pushPermission = isEnabled(authStatus));
     });
 
     const beforeDestroy = () => {
-      self.removeNotificationDisplayedListener();
       self.removeNotificationListener();
-      self.removeNotificationOpendedListener();
     };
 
     return {

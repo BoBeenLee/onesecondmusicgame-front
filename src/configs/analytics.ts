@@ -1,5 +1,5 @@
 import _ from "lodash";
-import firebase from "react-native-firebase";
+import rnFirebaseAnalytics from "@react-native-firebase/analytics";
 
 import { traverseObjectKeys, traverseObjectSliceStr } from "src/utils/string";
 
@@ -19,7 +19,7 @@ export interface IEventResult {
 const EVENT_TYPE_MAX_LENGTH = 40;
 
 export function initialize() {
-  firebase.analytics().setAnalyticsCollectionEnabled(true);
+  // nothing
 }
 
 function firebaseLogEvent(eventData: IEventResult) {
@@ -48,7 +48,7 @@ function firebaseLogEvent(eventData: IEventResult) {
     _.omit(eventData, ["eventType"]),
     100
   );
-  firebase.analytics().logEvent(eventData.eventType, parameters);
+  rnFirebaseAnalytics().logEvent(eventData.eventType, parameters);
 }
 
 export const logEvent = {
@@ -91,7 +91,7 @@ export const logEvent = {
 };
 
 export function firebaseSetUserId(userId: string) {
-  firebase.analytics().setUserId(userId);
+  rnFirebaseAnalytics().setUserId(userId);
 }
 
 export function setUserID(userId: string) {
@@ -99,5 +99,5 @@ export function setUserID(userId: string) {
 }
 
 export function setCurrentScreen(componentName: string) {
-  firebase.analytics().setCurrentScreen(componentName);
+  rnFirebaseAnalytics().setCurrentScreen(componentName);
 }

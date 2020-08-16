@@ -15,9 +15,6 @@
 #import "RNSplashScreen.h"
 #import <KakaoOpenSDK/KakaoOpenSDK.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import "RNFirebaseLinks.h"
-#import "RNFirebaseNotifications.h"
-#import "RNFirebaseMessaging.h"
 
 @import Firebase;
 @implementation AppDelegate
@@ -25,8 +22,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [FIROptions defaultOptions].deepLinkURLScheme = @"onesecondmusicgame";
-    [FIRApp configure];
-    [RNFirebaseNotifications configure];
+    if ([FIRApp defaultApp] == nil) {
+      [FIRApp configure];
+    }
     [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
   
     NSURL *jsCodeLocation;
@@ -39,20 +37,6 @@
     [ReactNativeNavigation bootstrap:jsCodeLocation launchOptions:launchOptions];
     [RNSplashScreen show];
     return YES;
-}
-
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
-{
-  [[RNFirebaseNotifications instance] didReceiveLocalNotification:notification];
-}
-
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(nonnull NSDictionary *)userInfo
-fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHandler{
-  [[RNFirebaseNotifications instance] didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
-}
-
-- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings {
-  [[RNFirebaseMessaging instance] didRegisterUserNotificationSettings:notificationSettings];
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
@@ -85,13 +69,7 @@ fetchCompletionHandler:(nonnull void (^)(UIBackgroundFetchResult))completionHand
     if ([[FBSDKApplicationDelegate sharedInstance] application:application openURL:url options:options]) {
       return YES;
     }
-    return [[RNFirebaseLinks instance] application:application openURL:url options:options];
-}
-
-- (BOOL)application:(UIApplication *)application
-continueUserActivity:(NSUserActivity *)userActivity
- restorationHandler:(void (^)(NSArray *))restorationHandler {
-     return [[RNFirebaseLinks instance] application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
+    return false;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

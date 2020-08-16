@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ViewProps } from "react-native";
-import firebase from "react-native-firebase";
+import { BannerAd } from "@react-native-firebase/admob";
+
 import styled from "styled-components/native";
 
 import env from "src/configs/env";
@@ -10,20 +11,13 @@ interface IProps {
   keywords: string[];
 }
 
-const Banner = (firebase as any).admob.Banner;
-const AdRequest = (firebase as any).admob.AdRequest;
-
-const Container = styled(Banner)``;
+const Container = styled(BannerAd)``;
 
 const GameResultBanner = (props: IProps) => {
   const { style, keywords } = props;
   const [visible, setVisible] = useState(false);
-  const request = useRef<any>(new AdRequest());
 
   useEffect(() => {
-    for (const keyword of keywords) {
-      request.current.addKeyword(keyword);
-    }
     setVisible(true);
   }, []);
 
@@ -39,7 +33,10 @@ const GameResultBanner = (props: IProps) => {
       style={style}
       unitId={env.buildAdEnv().GAME_RESULT}
       size={"SMART_BANNER"}
-      request={request.current.build()}
+      requestOptions={{
+        requestNonPersonalizedAdsOnly: true,
+        keywords
+      }}
       onAdClosed={onClose}
     />
   );

@@ -1,26 +1,26 @@
 import _ from "lodash";
-import firebase from "react-native-firebase";
+import rnFirebaseRemoteConfig from "@react-native-firebase/remote-config";
 
 import { isProduction } from "src/configs/env";
 import { isJSON } from "src/utils/common";
 
+const buildRemoteConfig = _.once(async () => {
+  const remoteConfig = rnFirebaseRemoteConfig();
+  remoteConfig.setDefaults({});
+  await remoteConfig.fetch(0);
+  remoteConfig.fetchAndActivate();
+  return remoteConfig;
+});
+
 const initialize = async () => {
-  try {
-    if (!isProduction()) {
-      firebase.config().enableDeveloperMode();
-    }
-    firebase.config().setDefaults({});
-    await firebase.config().fetch(0);
-    firebase.config().activateFetched();
-  } catch (error) {
-    return;
-  }
+  return await buildRemoteConfig();
 };
 
 const getStringValue = async (key: string, defaultValue: string) => {
   try {
-    const value = await firebase.config().getValue(key);
-    return value.val();
+    const remoteConfig = await buildRemoteConfig();
+    const value = await remoteConfig.getValue(key);
+    return value.asString();
   } catch (error) {
     return defaultValue;
   }
@@ -28,16 +28,18 @@ const getStringValue = async (key: string, defaultValue: string) => {
 
 const getBooleanValue = async (key: string, defaultValue: boolean) => {
   try {
-    const value = await firebase.config().getValue(key);
-    return value.val() ? Boolean(value.val()) : false;
+    const remoteConfig = await buildRemoteConfig();
+    const value = await remoteConfig.getValue(key);
+    return value.asBoolean();
   } catch (error) {
     return defaultValue;
   }
 };
 
 const getJSONValue = async <T>(key: string, defaultValue: T) => {
-  const value = await firebase.config().getValue(key);
-  const val = value.val();
+  const remoteConfig = await buildRemoteConfig();
+  const value = await remoteConfig.getValue(key);
+  const val = value.asString();
 
   if (!isJSON(val)) {
     return defaultValue;
@@ -52,10 +54,7 @@ const getJSONValue = async <T>(key: string, defaultValue: T) => {
 
 const getRemoteConfig = async <T>(key: string, defaultValue: T) => {
   try {
-    await firebase.config().fetch(0);
-    await firebase.config().activateFetched();
-    const value = (await firebase.config().getValue(key)).val();
-
+    const value = await getStringValue(key, "");
     if (isJSON(value)) {
       return JSON.parse(value);
     } else {

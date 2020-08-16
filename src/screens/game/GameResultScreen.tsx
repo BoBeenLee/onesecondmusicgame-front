@@ -29,7 +29,7 @@ import { IStore } from "src/stores/Store";
 import GameRankingScreen from "src/screens/game/GameRankingScreen";
 import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
 import { IPopupProps } from "src/hocs/withPopup";
-import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
+import { AdmobUnitID, loadAD, AdmobUnit } from "src/configs/admob";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import { makeAppShareLink } from "src/utils/dynamicLink";
 import { GamePlayScreenStatic } from "src/screens/game/GamePlayScreen";
@@ -294,6 +294,7 @@ class GameResultScreen extends Component<IProps, IStates> {
   }
 
   public gamePlayHighlights: IGamePlayHighlights;
+  public admobUnit: AdmobUnit;
 
   constructor(props: IProps) {
     super(props);
@@ -309,7 +310,7 @@ class GameResultScreen extends Component<IProps, IStates> {
     };
 
     const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
-    loadAD(AdmobUnitID.HeartReward, keywords, {
+    this.admobUnit = loadAD(AdmobUnitID.HeartReward, keywords, {
       onRewarded: this.onRewarded
     });
     this.gamePlayHighlights =
@@ -485,7 +486,7 @@ class GameResultScreen extends Component<IProps, IStates> {
   };
 
   private requestHeartRewardAD = () => {
-    showAD(AdmobUnitID.HeartReward);
+    this.admobUnit.show();
   };
 
   private onRewarded = async () => {

@@ -9,7 +9,7 @@ import {
 import { inject, observer, Observer } from "mobx-react";
 import styled from "styled-components/native";
 
-import { AdmobUnitID, loadAD, showAD, isLoadedAD } from "src/configs/admob";
+import { AdmobUnitID, loadAD, AdmobUnit } from "src/configs/admob";
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
 import { IPopupProps } from "src/hocs/withPopup";
@@ -124,6 +124,7 @@ class UserGameItemScreen extends Component<IProps, IStates> {
       onPopup: () => void;
     };
   };
+  public admobUnit: AdmobUnit;
 
   constructor(props: IProps) {
     super(props);
@@ -146,7 +147,7 @@ class UserGameItemScreen extends Component<IProps, IStates> {
     );
 
     const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
-    loadAD(AdmobUnitID.HeartReward, keywords, {
+    this.admobUnit = loadAD(AdmobUnitID.HeartReward, keywords, {
       onRewarded: this.onRewarded,
       onAdClosed: this.onAdClosed
     });
@@ -245,11 +246,11 @@ class UserGameItemScreen extends Component<IProps, IStates> {
 
   private requestHeartRewardAD = () => {
     const { adStatus } = this.state;
-    if (isLoadedAD(AdmobUnitID.HeartReward) && adStatus !== "open") {
+    if (this.admobUnit.isLoaded() && adStatus !== "open") {
       this.setState({
         adStatus: "open"
       });
-      showAD(AdmobUnitID.HeartReward);
+      this.admobUnit.show();
     }
   };
 
