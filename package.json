@@ -78,7 +78,6 @@
     "react-fast-compare": "^2.0.4",
     "react-hook-form": "^4.8.2",
     "react-native": "0.63.2",
-    "react-native-backdrop": "^2.1.1",
     "react-native-code-push": "^6.3.0",
     "react-native-device-info": "^5.2.1",
     "react-native-fbsdk": "^1.1.1",
