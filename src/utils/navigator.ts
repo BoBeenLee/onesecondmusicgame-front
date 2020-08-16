@@ -227,6 +227,7 @@ const showOverlayTransparent = async (componentId: string, params?: object) => {
       name: componentId,
       options: {
         layout: {
+          componentBackgroundColor: "transparent",
           backgroundColor: "transparent"
         },
         overlay: {
