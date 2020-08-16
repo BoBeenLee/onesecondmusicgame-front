@@ -60,7 +60,7 @@ const Container = styled(Animated.View)`
   background-color: ${colors.white};
 `;
 
-const ToastView = styled.TouchableWithoutFeedback``;
+const ToastView = styled.TouchableOpacity``;
 
 const ToastText = styled(Bold14)`
   color: ${colors.darkTwo};
@@ -95,7 +95,8 @@ class Toast extends React.PureComponent<IProps> {
 
   private show = () => {
     Animated.spring(this.opacity, {
-      toValue: 1
+      toValue: 1,
+      useNativeDriver: true
     }).start(() => {
       const { delay } = this.props;
       setTimeout(this.hide, delay);
@@ -105,7 +106,8 @@ class Toast extends React.PureComponent<IProps> {
   private hide = () => {
     const { onFinish } = this.props;
     Animated.spring(this.opacity, {
-      toValue: 0
+      toValue: 0,
+      useNativeDriver: true
     }).start(onFinish);
   };
 }

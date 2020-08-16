@@ -3,11 +3,12 @@ import {
   AppStateStatus,
   InteractionManager,
   Clipboard,
-  TouchableOpacity
+  TouchableOpacity,
+  ListRenderItem
 } from "react-native";
 import { Item, ItemItemTypeEnum } from "__generate__/api";
 import _ from "lodash";
-import React, { Component } from "react";
+import React, { Component, ComponentClass } from "react";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -31,7 +32,10 @@ import { push, popTo, getCurrentComponentId } from "src/utils/navigator";
 import CircleCheckGroup from "src/components/icon/CircleCheckGroup";
 import LimitTimeProgress from "src/components/progress/LimitTimeProgress";
 import colors from "src/styles/colors";
-import OSMGCarousel, { ICarousel } from "src/components/carousel/OSMGCarousel";
+import OSMGCarousel, {
+  IProps as ICarouselProps,
+  ICarousel
+} from "src/components/carousel/OSMGCarousel";
 import GameAudioPlayer from "src/components/player/GameAudioPlayer";
 import OSMGTextInput from "src/components/input/OSMGTextInput";
 import { IPopupProps } from "src/hocs/withPopup";
@@ -133,7 +137,9 @@ const GamePlayStep = styled(CircleCheckGroup)`
   margin-bottom: 32px;
 `;
 
-const GamePlayers = styled(OSMGCarousel)``;
+const GamePlayers = styled<ComponentClass<ICarouselProps<ICarouselItem>>>(
+  OSMGCarousel
+)``;
 
 const GamePlayerItem = styled.View`
   width: 100%;
@@ -356,7 +362,7 @@ const SkipBadgeText = styled(Bold18)`
   color: ${colors.paleLavender};
 `;
 
-const HiddenAnswerCopyButton = styled.TouchableWithoutFeedback``;
+const HiddenAnswerCopyButton = styled.TouchableOpacity``;
 const HiddenAnswerCopyButtonView = styled.View`
   position: absolute;
   top: 0px;
@@ -797,7 +803,10 @@ class GamePlayScreen extends Component<IProps, IStates> {
     this.setState({ songAnswerInput: text });
   };
 
-  private renderItem = (props: { item: ICarouselItem; index: number }) => {
+  private renderItem: ListRenderItem<ICarouselItem> = (props: {
+    item: ICarouselItem;
+    index: number;
+  }) => {
     return (
       <GamePlayerItem key={`gamePlayer${props.index}`}>
         <GameAudioPlayer
