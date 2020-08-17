@@ -34,7 +34,10 @@ const Singers = types
     const fetch = flow(function*() {
       self.filterSingers.replace(
         self.singers.filter(item => {
-          return _.includes(item.singerName, self.variables.q);
+          return _.includes(
+            item.singerName.toLowerCase(),
+            self.variables.q.toLowerCase()
+          );
         })
       );
     });
