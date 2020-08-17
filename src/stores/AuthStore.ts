@@ -5,7 +5,6 @@ import {
   GoogleSignin,
   statusCodes
 } from "@react-native-community/google-signin";
-import firebase, { RNFirebase, AuthCredential } from "react-native-firebase";
 import { LoginManager, AccessToken } from "react-native-fbsdk";
 import appleAuth, {
   AppleAuthRealUserStatus,
@@ -44,6 +43,16 @@ const AuthStore = types
     return {
       get isGuest() {
         return self.provider === "NONE";
+      },
+      get socialType() {
+        const byType: Record<AUTH_PROVIDER, string> = {
+          APPLE: "애플 연동됨",
+          KAKAO: "카카오 연동됨",
+          GOOGLE: "Google 연동됨",
+          FACEBOOK: "페이스북 연동됨",
+          NONE: ""
+        };
+        return byType[self.provider];
       }
     };
   })
@@ -132,16 +141,6 @@ const AuthStore = types
       try {
         const userInfo: RetrieveAsyncFunc<typeof GoogleSignin.signIn> = yield GoogleSignin.signIn();
         const tokenInfo: RetrieveAsyncFunc<typeof GoogleSignin.getTokens> = yield GoogleSignin.getTokens();
-
-        const credential = firebase.auth.GoogleAuthProvider.credential(
-          tokenInfo.idToken,
-          tokenInfo.accessToken
-        );
-        const firebaseUserCredential: RetrieveAsyncFunc<(
-          credential: AuthCredential
-        ) => Promise<
-          RNFirebase.UserCredential
-        >> = yield firebase.auth().signInWithCredential(credential);
 
         self.accessId = userInfo.user.id;
         self.accessToken = tokenInfo.accessToken;
@@ -301,6 +300,7 @@ const AuthStore = types
 
     const signOut = () => {
       clear();
+      updateAuthInfo();
     };
 
     return {

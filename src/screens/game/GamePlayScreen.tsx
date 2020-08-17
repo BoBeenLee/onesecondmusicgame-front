@@ -3,11 +3,12 @@ import {
   AppStateStatus,
   InteractionManager,
   Clipboard,
-  TouchableOpacity
+  TouchableOpacity,
+  ListRenderItem
 } from "react-native";
 import { Item, ItemItemTypeEnum } from "__generate__/api";
 import _ from "lodash";
-import React, { Component } from "react";
+import React, { Component, ComponentClass } from "react";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -31,11 +32,14 @@ import { push, popTo, getCurrentComponentId } from "src/utils/navigator";
 import CircleCheckGroup from "src/components/icon/CircleCheckGroup";
 import LimitTimeProgress from "src/components/progress/LimitTimeProgress";
 import colors from "src/styles/colors";
-import OSMGCarousel, { ICarousel } from "src/components/carousel/OSMGCarousel";
+import OSMGCarousel, {
+  IProps as ICarouselProps,
+  ICarousel
+} from "src/components/carousel/OSMGCarousel";
 import GameAudioPlayer from "src/components/player/GameAudioPlayer";
 import OSMGTextInput from "src/components/input/OSMGTextInput";
-import { IPopupProps } from "src/hocs/withPopup";
-import withDisabled, { IDisabledProps } from "src/hocs/withDisabled";
+import { PopupProps } from "src/hocs/withPopup";
+import withDisabled, { DisabledProps } from "src/hocs/withDisabled";
 import ChargeFullHeartPopup from "src/components/popup/ChargeFullHeartPopup";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
@@ -43,7 +47,7 @@ import { IStore } from "src/stores/Store";
 import GameResultScreen from "src/screens/game/GameResultScreen";
 import GameSearchSingerScreen from "src/screens/game/GameSearchSingerScreen";
 import { ISinger } from "src/apis/singer";
-import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
+import { AdmobUnitID, loadAD, AdmobUnit } from "src/configs/admob";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import GamePlayHighlights, {
   IGamePlayHighlightItem,
@@ -77,11 +81,7 @@ interface IParams {
   heartCount: number;
 }
 
-interface IProps
-  extends IInject,
-    IPopupProps,
-    IDisabledProps,
-    IBackHandlerProps {
+interface IProps extends IInject, PopupProps, DisabledProps, IBackHandlerProps {
   componentId: string;
   selectedSingers: ISinger[];
   gamePlayHighlights: () => IGamePlayHighlights;
@@ -133,7 +133,9 @@ const GamePlayStep = styled(CircleCheckGroup)`
   margin-bottom: 32px;
 `;
 
-const GamePlayers = styled(OSMGCarousel)``;
+const GamePlayers = styled<ComponentClass<ICarouselProps<ICarouselItem>>>(
+  OSMGCarousel
+)``;
 
 const GamePlayerItem = styled.View`
   width: 100%;
@@ -356,7 +358,7 @@ const SkipBadgeText = styled(Bold18)`
   color: ${colors.paleLavender};
 `;
 
-const HiddenAnswerCopyButton = styled.TouchableWithoutFeedback``;
+const HiddenAnswerCopyButton = styled.TouchableOpacity``;
 const HiddenAnswerCopyButtonView = styled.View`
   position: absolute;
   top: 0px;
@@ -427,6 +429,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   public gamePlayersRef = React.createRef<OSMGCarousel<any>>();
   public intervalId: any;
   public btnSkipAndWrongOpacity = new Animated.Value(1);
+  public admobUnit: AdmobUnit;
 
   constructor(props: IProps) {
     super(props);
@@ -437,10 +440,19 @@ class GamePlayScreen extends Component<IProps, IStates> {
       songAnswerInput: "",
       songAnswerSeconds: DEFAULT_LIMIT_TIME
     };
-    this.nextStep = props.wrapperDisabled(this.nextStep, "nextStep");
-    this.useSkipItem = props.wrapperDisabled(this.useSkipItem, "useSkipItem");
-    this.wrongPass = props.wrapperDisabled(this.wrongPass, "wrongPass");
-    this.submitAnswer = props.wrapperDisabled(
+    this.nextStep = props.disabledProps.wrapperDisabled(
+      this.nextStep,
+      "nextStep"
+    );
+    this.useSkipItem = props.disabledProps.wrapperDisabled(
+      this.useSkipItem,
+      "useSkipItem"
+    );
+    this.wrongPass = props.disabledProps.wrapperDisabled(
+      this.wrongPass,
+      "wrongPass"
+    );
+    this.submitAnswer = props.disabledProps.wrapperDisabled(
       this.submitAnswer,
       "submitAnswer"
     );
@@ -457,7 +469,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
       );
     }
     const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
-    loadAD(AdmobUnitID.HeartReward, keywords, {
+    this.admobUnit = loadAD(AdmobUnitID.HeartReward, keywords, {
       onRewarded: this.onRewarded
     });
 
@@ -787,7 +799,10 @@ class GamePlayScreen extends Component<IProps, IStates> {
     this.setState({ songAnswerInput: text });
   };
 
-  private renderItem = (props: { item: ICarouselItem; index: number }) => {
+  private renderItem: ListRenderItem<ICarouselItem> = (props: {
+    item: ICarouselItem;
+    index: number;
+  }) => {
     return (
       <GamePlayerItem key={`gamePlayer${props.index}`}>
         <GameAudioPlayer
@@ -950,7 +965,7 @@ class GamePlayScreen extends Component<IProps, IStates> {
   };
 
   private requestHeartRewardAD = () => {
-    showAD(AdmobUnitID.HeartReward);
+    this.admobUnit.show();
   };
 
   private onRewarded = async () => {

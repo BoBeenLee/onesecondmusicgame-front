@@ -44,7 +44,7 @@ const OuterContainer = styled.View`
   height: 100%;
 `;
 
-const OverlayTouchabedView = styled.TouchableWithoutFeedback`
+const OverlayTouchabedView = styled.TouchableOpacity`
   position: absolute;
   width: 100%;
   height: 100%;
@@ -115,10 +115,10 @@ class Backdrop extends React.Component<IProps, IStates> {
     this.panResponder = PanResponder.create({
       onMoveShouldSetPanResponder: (__, ___) => true,
       onMoveShouldSetPanResponderCapture: (__, ___) => true,
-      onPanResponderMove: Animated.event([
-        null,
-        { dy: this.backDropContentDistance }
-      ]),
+      onPanResponderMove: Animated.event(
+        [null, { dy: this.backDropContentDistance }],
+        { useNativeDriver: true }
+      ),
       onPanResponderRelease: (__, gestureState) => {
         const { dy } = gestureState;
 
@@ -218,7 +218,8 @@ class Backdrop extends React.Component<IProps, IStates> {
     this.isAnimating = true;
     Animated.timing(this.backDropContentDistance, {
       duration: ANIMATION_DURATION,
-      toValue
+      toValue,
+      useNativeDriver: true
     }).start(() => {
       if (_.isFunction(callback)) {
         callback();

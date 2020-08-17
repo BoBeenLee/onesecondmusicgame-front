@@ -2,16 +2,18 @@ import hoistNonReactStatic from "hoist-non-react-statics";
 import _ from "lodash";
 import React, { Component } from "react";
 
-interface IProps {
+type IProps = {
   componentId: string;
-}
+};
 
-export interface IDisabledProps {
-  isDiabledUniqueId: (uniqueId: string) => boolean;
-  wrapperDisabled: (func: any, uniqueId?: string) => any;
-}
+export type DisabledProps = {
+  disabledProps: {
+    isDiabledUniqueId: (uniqueId: string) => boolean;
+    wrapperDisabled: (func: any, uniqueId?: string) => any;
+  };
+};
 
-const withDisabled = <T extends IDisabledProps, P>(
+const withDisabled = <T extends DisabledProps, P>(
   TargetComponent: React.ComponentType<T> & P
 ) => {
   class WithDisabled extends Component<T & IProps> {
@@ -26,10 +28,16 @@ const withDisabled = <T extends IDisabledProps, P>(
       return (
         <TargetComponent
           {...(this.props as any)}
-          wrapperDisabled={this.wrapperDisabled}
-          isDiabledUniqueId={this.isDiabledUniqueId}
+          disabledProps={this.disabledProps}
         />
       );
+    }
+
+    private get disabledProps() {
+      return {
+        wrapperDisabled: this.wrapperDisabled,
+        isDiabledUniqueId: this.isDiabledUniqueId
+      };
     }
 
     private wrapperDisabled = (

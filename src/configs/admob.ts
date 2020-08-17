@@ -1,66 +1,54 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import _ from "lodash";
-import firebase from "react-native-firebase";
+import admob, {
+  RewardedAd,
+  InterstitialAd,
+  MaxAdContentRating,
+  FirebaseAdMobTypes,
+  AdEventType,
+  RewardedAdEventType
+} from "@react-native-firebase/admob";
 
 import env from "src/configs/env";
 
-interface AdRequest {
-  addKeyword: (keyword: string) => AdRequest;
-  build: () => any;
-}
+export class AdmobUnit {
+  public advert: FirebaseAdMobTypes.MobileAd;
 
-interface IAdvert {
-  loadAd: (request: any) => void;
-  isLoaded: () => boolean;
-  show: () => void;
-  on: (event: string, callback: (event?: any) => void) => void;
-}
-
-interface IAdmobModule {
-  initialize: (id: string) => void;
-  interstitial: (unitId: string) => IAdvert;
-  rewarded: (unitId: string) => IAdvert;
-}
-
-class AdmobUnit {
-  public advert: IAdvert;
-
-  constructor(buildAdvert: () => IAdvert) {
-    this.advert = buildAdvert();
+  constructor(advert: FirebaseAdMobTypes.MobileAd) {
+    this.advert = advert;
   }
 
-  public load = (
-    keywords: string[],
-    onListeners?: {
-      onAdLoaded?: () => void;
-      onAdOpened?: () => void;
-      onAdClosed?: () => void;
-      onRewarded?: (event: any) => void;
-    }
-  ) => {
-    const request: AdRequest = new (firebase as any).admob.AdRequest();
-
-    for (const keyword of keywords) {
-      request.addKeyword(keyword);
-    }
-    this.advert.loadAd(request.build());
-    onListeners?.onAdLoaded &&
-      this.advert.on("onAdLoaded", onListeners?.onAdLoaded);
-    onListeners?.onAdOpened &&
-      this.advert.on("onAdOpened", onListeners?.onAdOpened);
-    onListeners?.onAdClosed &&
-      this.advert.on("onAdClosed", onListeners?.onAdClosed);
-    onListeners?.onRewarded &&
-      this.advert.on("onRewarded", onListeners?.onRewarded);
+  public load = (onListeners?: {
+    onAdLoaded?: () => void;
+    onAdOpened?: () => void;
+    onAdClosed?: () => void;
+    onRewarded?: (event: FirebaseAdMobTypes.RewardedAdReward) => void;
+  }) => {
+    this.advert.load();
+    this.advert.onAdEvent((type, error, data) => {
+      switch (type) {
+        case AdEventType.LOADED:
+          onListeners?.onAdLoaded?.();
+          break;
+        case AdEventType.OPENED:
+          onListeners?.onAdOpened?.();
+          break;
+        case AdEventType.CLOSED:
+          onListeners?.onAdClosed?.();
+          break;
+        case RewardedAdEventType.EARNED_REWARD:
+          onListeners?.onRewarded?.(data);
+      }
+    });
   };
 
   public show = () => {
-    if (this.advert.isLoaded()) {
+    if (this.advert.loaded) {
       this.advert.show();
     }
   };
   public isLoaded = () => {
-    return this.advert.isLoaded();
+    return this.advert.loaded;
   };
 }
 
@@ -69,15 +57,27 @@ export enum AdmobUnitID {
   HeartScreen = "HeartScreen"
 }
 
-const admobs: { [key in keyof typeof AdmobUnitID]: AdmobUnit } = {
-  [AdmobUnitID.HeartReward]: new AdmobUnit(() => {
-    const admobModule = (firebase as any).admob() as IAdmobModule;
-    return admobModule.rewarded(env.buildAdEnv().HEART_REWARD);
-  }),
-  [AdmobUnitID.HeartScreen]: new AdmobUnit(() => {
-    const admobModule = (firebase as any).admob() as IAdmobModule;
-    return admobModule.interstitial(env.buildAdEnv().HEART_SCREEN);
-  })
+const admobs: {
+  [key in AdmobUnitID]: (keywords: string[]) => AdmobUnit;
+} = {
+  [AdmobUnitID.HeartReward]: (keywords: string[]) => {
+    const request = RewardedAd.createForAdRequest(
+      env.buildAdEnv().HEART_REWARD,
+      {
+        keywords: Array.from(keywords)
+      }
+    );
+    return new AdmobUnit(request);
+  },
+  [AdmobUnitID.HeartScreen]: (keywords: string[]) => {
+    const request = InterstitialAd.createForAdRequest(
+      env.buildAdEnv().HEART_SCREEN,
+      {
+        keywords: Array.from(keywords)
+      }
+    );
+    return new AdmobUnit(request);
+  }
 };
 
 export const loadAD = (
@@ -89,19 +89,22 @@ export const loadAD = (
     onAdClosed?: () => void;
     onRewarded?: (event: any) => void;
   }
-) => {
-  admobs[admobUnitID].load(keywords, onListeners);
+): AdmobUnit => {
+  const request = admobs[admobUnitID](keywords);
+  request.load(onListeners);
+  return request;
 };
 
-export const showAD = (admobUnitID: AdmobUnitID) => {
-  admobs[admobUnitID].show();
-};
+export const initialize = async () => {
+  await admob().setRequestConfiguration({
+    // Update all future requests suitable for parental guidance
+    maxAdContentRating: MaxAdContentRating.PG,
 
-export const isLoadedAD = (admobUnitID: AdmobUnitID) => {
-  return admobs[admobUnitID].isLoaded();
-};
+    // Indicates that you want your content treated as child-directed for purposes of COPPA.
+    tagForChildDirectedTreatment: true,
 
-export const initialize = () => {
-  const admobModule = (firebase as any).admob() as IAdmobModule;
-  admobModule.initialize(env.buildAdEnv().APP_ID);
+    // Indicates that you want the ad request to be handled in a
+    // manner suitable for users under the age of consent.
+    tagForUnderAgeOfConsent: true
+  });
 };

@@ -1,5 +1,5 @@
 import { getSnapshot } from "mobx-state-tree";
-import firebase from "react-native-firebase";
+import iid from "@react-native-firebase/iid";
 import _ from "lodash";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
@@ -22,11 +22,11 @@ import { pop, showStackModal, dismissAllModals } from "src/utils/navigator";
 import colors from "src/styles/colors";
 import ModalTopBar from "src/components/topbar/ModalTopBar";
 import { makeAppShareLink } from "src/utils/dynamicLink";
-import { AdmobUnitID, loadAD, showAD } from "src/configs/admob";
+import { AdmobUnitID, loadAD, AdmobUnit } from "src/configs/admob";
 import { ICodePushStore } from "src/stores/CodePushStore";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import Singers, { ISingers } from "src/stores/Singers";
-import { IPopupProps } from "src/hocs/withPopup";
+import { PopupProps } from "src/hocs/withPopup";
 import { FIELD, getItems } from "src/utils/storage";
 import { ILinkingStore } from "src/stores/LinkingStore";
 import { IPushNotificationStore } from "src/stores/PushNotificationStore";
@@ -45,7 +45,7 @@ interface IParams {
   componentId: string;
 }
 
-interface IProps extends IInject, IPopupProps {
+interface IProps extends IInject, PopupProps {
   componentId: string;
 }
 
@@ -96,6 +96,8 @@ class DeveloperScreen extends Component<IProps, IStates> {
   }
 
   public singers: ISingers = Singers.create();
+  public admobUnit1: AdmobUnit;
+  public admobUnit2: AdmobUnit;
 
   constructor(props: IProps) {
     super(props);
@@ -105,6 +107,14 @@ class DeveloperScreen extends Component<IProps, IStates> {
       storages: "",
       storeSnapshot: ""
     };
+    this.admobUnit1 = loadAD(
+      AdmobUnitID.HeartReward,
+      ["game", "quiz", "music", "korea"],
+      {
+        onRewarded: this.onRewarded
+      }
+    );
+    this.admobUnit2 = loadAD(AdmobUnitID.HeartScreen, ["game", "quiz"]);
   }
 
   public async componentDidMount() {
@@ -112,10 +122,6 @@ class DeveloperScreen extends Component<IProps, IStates> {
     this.fetchAllStorage();
     this.fetchIID();
     await this.singers.initialize({ q: "" });
-    loadAD(AdmobUnitID.HeartReward, ["game", "quiz", "music", "korea"], {
-      onRewarded: this.onRewarded
-    });
-    loadAD(AdmobUnitID.HeartScreen, ["game", "quiz"]);
   }
 
   public render() {
@@ -216,9 +222,9 @@ class DeveloperScreen extends Component<IProps, IStates> {
   };
 
   private fetchIID = async () => {
-    const iid = await firebase.iid().getToken();
+    const instanceId = await iid().get();
     this.setState({
-      iid
+      iid: instanceId
     });
   };
 
@@ -241,11 +247,11 @@ class DeveloperScreen extends Component<IProps, IStates> {
   };
 
   private requestHeartRewardAD = () => {
-    showAD(AdmobUnitID.HeartReward);
+    this.admobUnit1.show();
   };
 
   private requestHeartScreenAD = () => {
-    showAD(AdmobUnitID.HeartScreen);
+    this.admobUnit2.show();
   };
 
   private shareLink = async () => {

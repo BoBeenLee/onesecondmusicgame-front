@@ -11,7 +11,7 @@ interface IStates {
   closeCallback: () => void;
 }
 
-export interface IPopupProps {
+export type PopupProps = {
   popupProps: {
     showPopup: (
       PopupComponent: JSX.Element | null,
@@ -20,7 +20,7 @@ export interface IPopupProps {
     ) => void;
     closePopup: () => void;
   };
-}
+};
 
 const Container = styled.View`
   width: 100%;
@@ -33,14 +33,14 @@ const INITIAL_STATES = {
   closeOverlay: true
 };
 
-const withPopup = <P extends IPopupProps>(
+const withPopup = <P extends PopupProps>(
   TargetComponent: React.ComponentType<P>
 ) => {
   const WithPopup = class WithPopupAnonymous extends PureComponent<
-    Subtract<P, IPopupProps>,
+    Subtract<P, PopupProps>,
     IStates
   > {
-    constructor(props: Subtract<P, IPopupProps>) {
+    constructor(props: Subtract<P, PopupProps>) {
       super(props);
 
       this.state = INITIAL_STATES;

@@ -9,10 +9,10 @@ import {
 import { inject, observer, Observer } from "mobx-react";
 import styled from "styled-components/native";
 
-import { AdmobUnitID, loadAD, showAD, isLoadedAD } from "src/configs/admob";
+import { AdmobUnitID, loadAD, AdmobUnit } from "src/configs/admob";
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
-import { IPopupProps } from "src/hocs/withPopup";
+import { PopupProps } from "src/hocs/withPopup";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
@@ -30,7 +30,7 @@ import ChargeSkipItemPopup from "src/components/popup/ChargeSkipItemPopup";
 import { makeAppShareLink } from "src/utils/dynamicLink";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
-import withDisabled, { IDisabledProps } from "src/hocs/withDisabled";
+import withDisabled, { DisabledProps } from "src/hocs/withDisabled";
 import { delay } from "src/utils/common";
 interface IInject {
   authStore: IAuthStore;
@@ -41,7 +41,7 @@ interface IParams {
   componentId: string;
 }
 
-interface IProps extends IInject, IParams, IPopupProps, IDisabledProps {
+interface IProps extends IInject, IParams, PopupProps, DisabledProps {
   componentId: string;
 }
 
@@ -124,6 +124,7 @@ class UserGameItemScreen extends Component<IProps, IStates> {
       onPopup: () => void;
     };
   };
+  public admobUnit: AdmobUnit;
 
   constructor(props: IProps) {
     super(props);
@@ -140,10 +141,13 @@ class UserGameItemScreen extends Component<IProps, IStates> {
         onPopup: this.onUseFullHeartPopup
       }
     };
-    this.onRewarded = props.wrapperDisabled(this.onRewarded, "onRewarded");
+    this.onRewarded = props.disabledProps.wrapperDisabled(
+      this.onRewarded,
+      "onRewarded"
+    );
 
     const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
-    loadAD(AdmobUnitID.HeartReward, keywords, {
+    this.admobUnit = loadAD(AdmobUnitID.HeartReward, keywords, {
       onRewarded: this.onRewarded,
       onAdClosed: this.onAdClosed
     });
@@ -242,11 +246,11 @@ class UserGameItemScreen extends Component<IProps, IStates> {
 
   private requestHeartRewardAD = () => {
     const { adStatus } = this.state;
-    if (isLoadedAD(AdmobUnitID.HeartReward) && adStatus !== "open") {
+    if (this.admobUnit.isLoaded() && adStatus !== "open") {
       this.setState({
         adStatus: "open"
       });
-      showAD(AdmobUnitID.HeartReward);
+      this.admobUnit.show();
     }
   };
 

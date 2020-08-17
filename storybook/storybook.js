@@ -3,6 +3,7 @@ import { getStorybookUI, configure } from "@storybook/react-native";
 import { Navigation } from "react-native-navigation";
 import SplashScreen from "react-native-splash-screen";
 
+import withSafeAreaView from "src/hocs/withSafeAreaView";
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 // import withStore from "src/hocs/withStore";
 // import { getRootStore } from "src/stores/Store";
@@ -33,7 +34,9 @@ class StorybookUIHMRRoot extends Component {
 }
 
 function start() {
-  Navigation.registerComponent("storybook.UI", () => StorybookUIHMRRoot);
+  Navigation.registerComponent("storybook.UI", () =>
+    withSafeAreaView(StorybookUIHMRRoot)
+  );
 
   Navigation.events().registerAppLaunchedListener(() => {
     Navigation.setDefaultOptions({

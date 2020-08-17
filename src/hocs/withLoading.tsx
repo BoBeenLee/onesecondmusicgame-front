@@ -4,14 +4,16 @@ import styled from "styled-components/native";
 
 import Loading from "src/components/loading/Loading";
 
-interface IStates {
+type States = {
   isLoading: boolean;
-}
+};
 
-export interface ILoadingProps {
-  wrapperLoading?: (func: any) => any;
-  isLoading?: boolean;
-}
+export type LoadingProps = {
+  loadingProps: {
+    wrapperLoading?: (func: any) => any;
+    isLoading?: boolean;
+  };
+};
 
 const OverlayView = styled.View`
   position: absolute;
@@ -36,19 +38,17 @@ const LoadingView = styled.View`
 const withLoading = (LoadingComponent: any = Loading) => <P extends object>(
   TargetComponent: React.ComponentType<P>
 ): any => {
-  class WithLoading extends Component<Subtract<P, ILoadingProps>, IStates> {
+  class WithLoading extends Component<Subtract<P, LoadingProps>, States> {
     public state = {
       isLoading: false
     };
 
     public render() {
-      const { isLoading } = this.state;
       return (
         <React.Fragment>
           <TargetComponent
             {...(this.props as P)}
-            wrapperLoading={this.wrapperLoading}
-            isLoading={isLoading}
+            loadingProps={this.loadingProps}
           />
           {this.isLoadingShow() && (
             <React.Fragment>
@@ -60,6 +60,14 @@ const withLoading = (LoadingComponent: any = Loading) => <P extends object>(
           )}
         </React.Fragment>
       );
+    }
+
+    private get loadingProps() {
+      const { isLoading } = this.state;
+      return {
+        wrapperLoading: this.wrapperLoading,
+        isLoading: isLoading
+      };
     }
 
     private wrapperLoading = (func: any) => {

@@ -29,7 +29,7 @@ const Container = styled.View`
   background-color: rgba(33, 33, 33, 0.8);
 `;
 
-const ContainerTouchabledView = styled.TouchableWithoutFeedback`
+const ContainerTouchabledView = styled.TouchableOpacity`
   flex: 1;
   background-color: rgba(33, 33, 33, 0.8);
 `;

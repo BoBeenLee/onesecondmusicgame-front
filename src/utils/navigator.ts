@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Layout, Navigation, Options } from "react-native-navigation";
+import {
+  Layout,
+  Navigation,
+  LayoutComponent,
+  AnimationOptions,
+  LayoutStackChildren,
+  Options
+} from "react-native-navigation";
 
 import { SCREEN_IDS } from "src/screens/constant";
 import { pushTransition } from "src/screens/styles/animations";
@@ -18,16 +25,17 @@ const start = async () => {
   const store = getRootStore();
   Navigation.setDefaultOptions({
     layout: {
-      backgroundColor: colors.darkBlueGrey,
+      backgroundColor: "#fff",
       orientation: ["portrait"]
     },
     statusBar: {
-      backgroundColor: colors.darkBlueGrey,
-      style: "light"
+      backgroundColor: colors.white,
+      style: "dark"
     },
     topBar: topbars.emptyTopBar()
   });
   await store.initializeApp();
+
   const { isGuest } = store.authStore;
   if (isGuest) {
     SignInScreen.open();
@@ -87,7 +95,7 @@ const setStackRoot = async ({
   componentId: string;
   nextComponentId: string;
   params?: object;
-  animtaions?: any;
+  animtaions?: AnimationOptions;
   options?: Options;
 }) =>
   await protectedMultiClick(() => {
@@ -96,7 +104,7 @@ const setStackRoot = async ({
         name: nextComponentId,
         options: {
           ...options,
-          animations: animtaions as any
+          animations: animtaions
         },
         passProps: params
       }
@@ -146,7 +154,7 @@ const push = async ({
   componentId: string;
   nextComponentId: string;
   params?: object;
-  animtaions?: any;
+  animtaions?: AnimationOptions;
   options?: Options;
 }) =>
   await protectedMultiClick(async () => {
@@ -155,7 +163,7 @@ const push = async ({
         name: nextComponentId,
         options: {
           ...options,
-          animations: animtaions as any
+          animations: animtaions
         },
         passProps: params
       }
@@ -175,7 +183,15 @@ const showModal = async (params: Layout) =>
     await Navigation.showModal(params);
   }, String(params.component?.name) ?? "showModal")(params);
 
-const showStackModal = async (componentId: string, params?: object) =>
+const showStackModal = async ({
+  componentId,
+  params,
+  layouts = []
+}: {
+  componentId: string;
+  params?: object;
+  layouts?: LayoutStackChildren[];
+}) =>
   await protectedMultiClick(async () => {
     await Navigation.showModal({
       stack: {
@@ -185,7 +201,8 @@ const showStackModal = async (componentId: string, params?: object) =>
               name: componentId,
               passProps: params
             }
-          }
+          },
+          ...layouts
         ]
       }
     });
@@ -210,6 +227,7 @@ const showOverlayTransparent = async (componentId: string, params?: object) => {
       name: componentId,
       options: {
         layout: {
+          componentBackgroundColor: "transparent",
           backgroundColor: "transparent"
         },
         overlay: {

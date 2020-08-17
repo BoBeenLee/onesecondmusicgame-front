@@ -24,8 +24,8 @@ const Text = styled.Text<{ fontType: FontType }>`
   include-font-padding: false;
 `;
 
-function FMText({ fontType = "REGULAR", ...props }: ITextProps) {
+function OSMGText({ fontType = "REGULAR", ...props }: ITextProps) {
   return <Text fontType={fontType} {...props} />;
 }
 
-export default FMText;
+export default OSMGText;

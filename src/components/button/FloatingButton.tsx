@@ -45,7 +45,8 @@ function FloatingButton(props: IProps) {
       _.map(composeShowOrderItems(animations.current), animation => {
         return Animated.timing(animation, {
           duration: 200,
-          toValue
+          toValue,
+          useNativeDriver: true
         });
       })
     ).start(callback);

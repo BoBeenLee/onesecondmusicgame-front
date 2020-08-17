@@ -14,6 +14,7 @@ const SCREEN_IDS = {
   GamePlayTutorialOverlay: "app.GamePlayTutorialOverlay",
   GameReadyPlayOverlay: "app.GameReadyPlayOverlay",
   UserProfileScreen: "app.UserProfileScreen",
+  UserProfileEditScreen: "app.UserProfileEditScreen",
   UserGameItemScreen: "app.UserGameItemScreen"
 };
 

@@ -1,11 +1,7 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import { ViewProps } from "react-native";
-import Carousel, {
-  CarouselProperties,
-  CarouselStatic,
-  AdditionalParallaxProps
-} from "react-native-snap-carousel";
+import Carousel, { CarouselProperties } from "react-native-snap-carousel";
 import styled from "styled-components/native";
 
 import { Regular12 } from "src/components/text/Typographies";
@@ -16,7 +12,7 @@ export interface ICarousel {
   key: string;
 }
 
-interface IProps<T> extends CarouselProperties<T> {
+export interface IProps<T> extends CarouselProperties<T> {
   style?: ViewProps["style"];
 }
 
@@ -28,13 +24,11 @@ const windowWidth = getDeviceWidth();
 
 const CarouselView = styled.View``;
 
-const CarouselBox = styled(Carousel)``;
-
 class OSMGCarousel<T> extends React.PureComponent<
   IProps<T & ICarousel>,
   IStates
 > {
-  public carouselRef = React.createRef<CarouselStatic<T>>();
+  public carouselRef = React.createRef<Carousel<T>>();
 
   constructor(props: IProps<T & ICarousel>) {
     super(props);
@@ -60,7 +54,7 @@ class OSMGCarousel<T> extends React.PureComponent<
     return (
       <>
         <CarouselView style={style}>
-          <CarouselBox
+          <Carousel
             {...rest}
             ref={this.carouselRef as any}
             data={this.props.data}

@@ -163,9 +163,13 @@ class RegisterSongScreen extends Component<IProps, IStates> {
   private get renderRegisterSongButton() {
     return (
       <RegisterSongButtonLoading>
-        {({ wrapperLoading, isLoading }) => {
+        {({ loadingProps }) => {
           return (
-            <RegisterSongButton onPress={wrapperLoading(this.register)}>
+            <RegisterSongButton
+              onPress={
+                loadingProps?.wrapperLoading?.(this.register) ?? this.register
+              }
+            >
               <RegisterSongButtonText>1초 노래 등록하기</RegisterSongButtonText>
             </RegisterSongButton>
           );

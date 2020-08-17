@@ -42,7 +42,7 @@ import {
 } from "src/apis/like";
 import { LikeHistoryResponse } from "__generate__/api";
 import images from "src/images";
-import withDisabled, { IDisabledProps } from "src/hocs/withDisabled";
+import withDisabled, { DisabledProps } from "src/hocs/withDisabled";
 import { addNewSongUsingPOST } from "src/apis/song";
 import { logEvent } from "src/configs/analytics";
 import { getTrackToPlayStreamUri } from "src/apis/soundcloud/playStream";
@@ -56,7 +56,7 @@ interface IParams {
   componentId: string;
 }
 
-interface IProps extends IParams, IInject, IDisabledProps {}
+interface IProps extends IParams, IInject, DisabledProps {}
 
 interface IStates {
   showTrackBackdrop: boolean;
@@ -195,7 +195,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     };
     this.singers.initialize({ q: "" });
     this.tracks = Tracks.create();
-    this.appendTrack = props.wrapperDisabled(this.appendTrack);
+    this.appendTrack = props.disabledProps.wrapperDisabled(this.appendTrack);
 
     this.playbackStateListener = addEventListener(
       "playback-state",
