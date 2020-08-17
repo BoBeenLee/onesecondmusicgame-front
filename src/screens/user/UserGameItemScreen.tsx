@@ -12,7 +12,7 @@ import styled from "styled-components/native";
 import { AdmobUnitID, loadAD, AdmobUnit } from "src/configs/admob";
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
-import { IPopupProps } from "src/hocs/withPopup";
+import { PopupProps } from "src/hocs/withPopup";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
@@ -41,7 +41,7 @@ interface IParams {
   componentId: string;
 }
 
-interface IProps extends IInject, IParams, IPopupProps, DisabledProps {
+interface IProps extends IInject, IParams, PopupProps, DisabledProps {
   componentId: string;
 }
 

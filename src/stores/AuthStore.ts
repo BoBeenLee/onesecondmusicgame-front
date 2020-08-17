@@ -43,6 +43,16 @@ const AuthStore = types
     return {
       get isGuest() {
         return self.provider === "NONE";
+      },
+      get socialType() {
+        const byType: Record<AUTH_PROVIDER, string> = {
+          APPLE: "애플 연동됨",
+          KAKAO: "카카오 연동됨",
+          GOOGLE: "Google 연동됨",
+          FACEBOOK: "페이스북 연동됨",
+          NONE: ""
+        };
+        return byType[self.provider];
       }
     };
   })
@@ -290,6 +300,7 @@ const AuthStore = types
 
     const signOut = () => {
       clear();
+      updateAuthInfo();
     };
 
     return {

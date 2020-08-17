@@ -22,7 +22,7 @@ import { SCREEN_IDS } from "src/screens/constant";
 import { setRoot } from "src/utils/navigator";
 import colors from "src/styles/colors";
 import { ICodePushStore } from "src/stores/CodePushStore";
-import withPopup, { IPopupProps } from "src/hocs/withPopup";
+import withPopup, { PopupProps } from "src/hocs/withPopup";
 import HeartGroup from "src/components/icon/HeartGroup";
 import TimerText from "src/components/text/TimerText";
 import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
@@ -45,7 +45,7 @@ import UserGameItemScreen from "src/screens/user/UserGameItemScreen";
 import { logEvent } from "src/configs/analytics";
 import { IAppStore } from "src/stores/AppStore";
 import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
-import withLoading, { LoadingProps } from "src/hocs/withLoading";
+import { LoadingProps } from "src/hocs/withLoading";
 
 interface IInject {
   store: IStore;
@@ -55,7 +55,7 @@ interface IInject {
   toastStore: IToastStore;
 }
 
-interface IProps extends IInject, IPopupProps, LoadingProps {
+interface IProps extends IInject, PopupProps, LoadingProps {
   componentId: string;
 }
 
@@ -415,17 +415,8 @@ class MainScreen extends Component<IProps, IStates> {
     const { componentId } = this.props;
 
     UserProfileScreen.open({
-      componentId,
-      onConfirm: this.updateUser
+      componentId
     });
-  };
-
-  private updateUser = async (data: IForm) => {
-    const { showToast } = this.props.toastStore;
-    const { nickname } = data;
-    const { updateUser } = this.props.authStore;
-    await updateUser({ nickname });
-    showToast("닉네임 변경완료");
   };
 
   private navigateToGamePlay = async () => {

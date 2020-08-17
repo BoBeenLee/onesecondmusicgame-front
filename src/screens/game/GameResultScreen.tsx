@@ -28,7 +28,7 @@ import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
 import GameRankingScreen from "src/screens/game/GameRankingScreen";
 import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
-import { IPopupProps } from "src/hocs/withPopup";
+import { PopupProps } from "src/hocs/withPopup";
 import { AdmobUnitID, loadAD, AdmobUnit } from "src/configs/admob";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import { makeAppShareLink } from "src/utils/dynamicLink";
@@ -62,7 +62,7 @@ interface IParams {
   gamePlayHighlights: () => IGamePlayHighlights;
 }
 
-interface IProps extends IInject, IParams, IPopupProps, LoadingProps {}
+interface IProps extends IInject, IParams, PopupProps, LoadingProps {}
 
 interface IStates {
   gameResult: NoUndefinedField<GameResultResponse>;

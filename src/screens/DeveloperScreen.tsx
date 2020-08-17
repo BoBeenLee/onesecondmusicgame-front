@@ -26,7 +26,7 @@ import { AdmobUnitID, loadAD, AdmobUnit } from "src/configs/admob";
 import { ICodePushStore } from "src/stores/CodePushStore";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import Singers, { ISingers } from "src/stores/Singers";
-import { IPopupProps } from "src/hocs/withPopup";
+import { PopupProps } from "src/hocs/withPopup";
 import { FIELD, getItems } from "src/utils/storage";
 import { ILinkingStore } from "src/stores/LinkingStore";
 import { IPushNotificationStore } from "src/stores/PushNotificationStore";
@@ -45,7 +45,7 @@ interface IParams {
   componentId: string;
 }
 
-interface IProps extends IInject, IPopupProps {
+interface IProps extends IInject, PopupProps {
   componentId: string;
 }
 
