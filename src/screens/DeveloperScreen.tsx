@@ -92,7 +92,9 @@ const ButtonText = styled(Bold12)`
 @observer
 class DeveloperScreen extends Component<IProps, IStates> {
   public static open() {
-    return showStackModal(SCREEN_IDS.DeveloperScreen);
+    return showStackModal({
+      componentId: SCREEN_IDS.DeveloperScreen
+    });
   }
 
   public singers: ISingers = Singers.create();

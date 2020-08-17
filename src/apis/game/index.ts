@@ -30,5 +30,5 @@ export const gameResultUsingPOST = async (params: GameResultRequest) => {
 
 export const gameResultV2UsingPOST = async (params: GameResultRequest) => {
   const response = await gameControllerApiV2().gameResultUsingPOST1(params);
-  return response.data;
+  return response.data.body!;
 };

@@ -27,6 +27,7 @@ interface IInject {
 
 interface IParams {
   componentId: string;
+  onConfirm?: (data: IForm) => void;
 }
 
 interface IProps extends IInject, IParams, PopupProps, LoadingProps {
@@ -139,8 +140,13 @@ class UserProfileEditScreen extends Component<IProps, IStates> {
   };
 
   private onConfirm = async (data: IForm) => {
-    await this.updateUser(data);
-    this.back();
+    const { onConfirm } = this.props;
+    if (!onConfirm) {
+      await this.updateUser(data);
+      this.back();
+      return;
+    }
+    onConfirm(data);
   };
 
   private updateUser = async (data: IForm) => {

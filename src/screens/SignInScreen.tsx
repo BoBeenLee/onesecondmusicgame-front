@@ -3,12 +3,8 @@ import React, { Component } from "react";
 import { Platform } from "react-native";
 import { inject, observer } from "mobx-react";
 import styled from "styled-components/native";
-import { GoogleSigninButton } from "@react-native-community/google-signin";
 import appleAuth, {
-  AppleButton,
-  AppleAuthRequestOperation,
-  AppleAuthRequestScope,
-  AppleAuthCredentialState
+  AppleButton
 } from "@invertase/react-native-apple-authentication";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
@@ -31,6 +27,7 @@ import { IForm } from "src/components/form/UserProfileForm";
 import images from "src/images";
 import IconButton from "src/components/button/IconButton";
 import { logEvent } from "src/configs/analytics";
+import UserProfileEditScreen from "./user/UserProfileEditScreen";
 
 interface IInject {
   authStore: IAuthStore;
@@ -194,7 +191,7 @@ class SignInScreen extends Component<IProps> {
           status => status === error.status
         )
       ) {
-        UserProfileScreen.open({
+        UserProfileEditScreen.open({
           componentId,
           onConfirm: this.fallbackSignUpAndSignIn
         });

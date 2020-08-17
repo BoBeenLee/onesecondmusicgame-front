@@ -4575,7 +4575,7 @@ export const Class01APIV2ApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async gameResultUsingPOST1(resultRequest: GameResultRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GameResultResponseV2>> {
+        async gameResultUsingPOST1(resultRequest: GameResultRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOGameResultResponseV2>> {
             const localVarAxiosArgs = await Class01APIV2ApiAxiosParamCreator(configuration).gameResultUsingPOST1(resultRequest, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -4598,7 +4598,7 @@ export const Class01APIV2ApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        gameResultUsingPOST1(resultRequest: GameResultRequest, options?: any): AxiosPromise<GameResultResponseV2> {
+        gameResultUsingPOST1(resultRequest: GameResultRequest, options?: any): AxiosPromise<ResponseDTOGameResultResponseV2> {
             return Class01APIV2ApiFp(configuration).gameResultUsingPOST1(resultRequest, options).then((request) => request(axios, basePath));
         },
     };

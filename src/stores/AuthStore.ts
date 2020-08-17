@@ -236,7 +236,7 @@ const AuthStore = types
       );
       updateUserAccessToken(signInResponse);
       updateUserInfo(signInResponse);
-      updateAuthInfo(signInResponse);
+      updateAuthInfo();
     });
 
     const signUp = flow(function*({ nickname }: { nickname: string }) {
@@ -260,7 +260,7 @@ const AuthStore = types
       );
       updateUserAccessToken(signInResponse);
       updateUserInfo(signInResponse);
-      updateAuthInfo(signInResponse);
+      updateAuthInfo();
     });
 
     const updateUserAccessToken = (
@@ -290,7 +290,7 @@ const AuthStore = types
       self.user?.setUserItems(response);
     });
 
-    const updateAuthInfo = (signInResponse: LoggedInMusicUser) => {
+    const updateAuthInfo = () => {
       // self.soundCloudCliendId =
       //   signInResponse.clientId ?? DEFAULT_SOUND_CLIEND_ID;
       setItem(FIELD.ACCESS_ID, self.accessId);
