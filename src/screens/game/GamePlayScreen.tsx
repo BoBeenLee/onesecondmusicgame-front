@@ -38,7 +38,7 @@ import OSMGCarousel, {
 } from "src/components/carousel/OSMGCarousel";
 import GameAudioPlayer from "src/components/player/GameAudioPlayer";
 import OSMGTextInput from "src/components/input/OSMGTextInput";
-import { IPopupProps } from "src/hocs/withPopup";
+import { PopupProps } from "src/hocs/withPopup";
 import withDisabled, { DisabledProps } from "src/hocs/withDisabled";
 import ChargeFullHeartPopup from "src/components/popup/ChargeFullHeartPopup";
 import { IAuthStore } from "src/stores/AuthStore";
@@ -81,11 +81,7 @@ interface IParams {
   heartCount: number;
 }
 
-interface IProps
-  extends IInject,
-    IPopupProps,
-    DisabledProps,
-    IBackHandlerProps {
+interface IProps extends IInject, PopupProps, DisabledProps, IBackHandlerProps {
   componentId: string;
   selectedSingers: ISinger[];
   gamePlayHighlights: () => IGamePlayHighlights;

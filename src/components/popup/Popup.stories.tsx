@@ -10,6 +10,7 @@ import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
 import UseFullHeartPopup from "src/components/popup/UseFullHeartPopup";
 import ChargeFullHeartPopup from "src/components/popup/ChargeFullHeartPopup";
 import ExhaustFullHeartPopup from "src/components/popup/ExhaustFullHeartPopup";
+import LogoutConfirmPopup from "src/components/popup/LogoutConfirmPopup";
 import Heart from "src/stores/model/Heart";
 
 const CenterView = styled.View`
@@ -71,6 +72,14 @@ storiesOf("Popup", module)
     return (
       <ExhaustFullHeartPopup
         onInvite={action("onInvite")}
+        onCancel={action("onCancel")}
+      />
+    );
+  })
+  .add("LogoutConfirmPopup", () => {
+    return (
+      <LogoutConfirmPopup
+        onConfirm={action("onConfirm")}
         onCancel={action("onCancel")}
       />
     );

@@ -7,7 +7,7 @@ import ImagePicker from "react-native-image-picker";
 
 import { SCREEN_IDS } from "src/screens/constant";
 import { push, pop } from "src/utils/navigator";
-import { IPopupProps } from "src/hocs/withPopup";
+import { PopupProps } from "src/hocs/withPopup";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
@@ -18,6 +18,7 @@ import BackTopBar from "src/components/topbar/BackTopBar";
 import MockButton from "src/components/button/MockButton";
 import ProfileImage from "src/components/image/ProfileImage";
 import { myInfoChangeUsingPOST } from "src/apis/user";
+import { LoadingProps } from "src/hocs/withLoading";
 
 interface IInject {
   authStore: IAuthStore;
@@ -26,10 +27,9 @@ interface IInject {
 
 interface IParams {
   componentId: string;
-  onConfirm: (data: IForm) => Promise<void>;
 }
 
-interface IProps extends IInject, IParams, IPopupProps {
+interface IProps extends IInject, IParams, PopupProps, LoadingProps {
   componentId: string;
 }
 
@@ -68,7 +68,7 @@ class UserProfileEditScreen extends Component<IProps, IStates> {
     const { componentId, ...restParams } = params;
     return push({
       componentId: componentId,
-      nextComponentId: SCREEN_IDS.UserProfileScreen,
+      nextComponentId: SCREEN_IDS.UserProfileEditScreen,
       params: restParams
     });
   }
@@ -81,6 +81,9 @@ class UserProfileEditScreen extends Component<IProps, IStates> {
       nicknameInput: "",
       profileImage: !_.isEmpty(profileImageUrl) ? profileImageUrl : ""
     };
+
+    this.onConfirm =
+      props.loadingProps.wrapperLoading?.(this.onConfirm) ?? this.onConfirm;
   }
 
   public render() {
@@ -88,7 +91,7 @@ class UserProfileEditScreen extends Component<IProps, IStates> {
     const nickname = this.props.authStore.user?.nickname;
     return (
       <Container>
-        <BackTopBar title="닉네임 수정" onBackPress={this.back} />
+        <BackTopBar title="프로필 편집" onBackPress={this.back} />
         <InnerContainer
           scrollEnabled={true}
           enableOnAndroid={true}
@@ -136,9 +139,16 @@ class UserProfileEditScreen extends Component<IProps, IStates> {
   };
 
   private onConfirm = async (data: IForm) => {
-    const { onConfirm } = this.props;
-    await onConfirm?.(data);
+    await this.updateUser(data);
     this.back();
+  };
+
+  private updateUser = async (data: IForm) => {
+    const { showToast } = this.props.toastStore;
+    const { nickname } = data;
+    const { updateUser } = this.props.authStore;
+    await updateUser({ nickname });
+    showToast("닉네임 변경완료");
   };
 
   private back = () => {
