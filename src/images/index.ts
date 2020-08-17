@@ -36,6 +36,7 @@ const images = {
   profileDefault: require("./profileDefault.png"),
   icGameItemEmpty: require("./ic_game_item_empty.png"),
   icSinger: require("./ic_singer.png"),
-  lightRanking: require("./light_ranking.gif")
+  lightRanking: require("./light_ranking.gif"),
+  icWhiteArrowRight: require("./ic_white_arrow.png")
 };
 export default images;

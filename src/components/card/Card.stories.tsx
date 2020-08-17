@@ -7,6 +7,7 @@ import SearchTrackCard from "src/components/card/SearchTrackCard";
 import GameRankCard from "src/components/card/GameRankCard";
 import GameTopRankCard from "src/components/card/GameTopRankCard";
 import SearchSingerCard from "src/components/card/SearchSingerCard";
+import UserItemCard from "./UserItemCard";
 
 const CenterView = styled.View`
   flex: 1;
@@ -76,6 +77,15 @@ storiesOf("Card", module)
         selected={true}
         image="https://via.placeholder.com/350x350"
         name="jasmin"
+        onPress={action("onPress")}
+      />
+    );
+  })
+  .add("UserItemCard", () => {
+    return (
+      <UserItemCard
+        title="오픈소스 라이선스"
+        description="오픈소스 소프트웨어에 대한 라이선스 세부정보"
         onPress={action("onPress")}
       />
     );

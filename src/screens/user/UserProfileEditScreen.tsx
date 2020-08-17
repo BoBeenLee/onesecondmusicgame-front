@@ -17,6 +17,7 @@ import UserProfileForm, { IForm } from "src/components/form/UserProfileForm";
 import BackTopBar from "src/components/topbar/BackTopBar";
 import MockButton from "src/components/button/MockButton";
 import ProfileImage from "src/components/image/ProfileImage";
+import { myInfoChangeUsingPOST } from "src/apis/user";
 
 interface IInject {
   authStore: IAuthStore;
@@ -42,6 +43,8 @@ const Container = styled(ContainerWithStatusBar)`
   flex-direction: column;
 `;
 
+const InnerContainer = styled(KeyboardAwareScrollView).attrs({})``;
+
 const Content = styled.View`
   flex: 1;
   flex-direction: column;
@@ -51,7 +54,7 @@ const Content = styled.View`
   padding-horizontal: 41px;
 `;
 
-const Bottom = styled.View``;
+const ProfileImageButton = styled.TouchableOpacity``;
 
 @inject(
   ({ store }: { store: IStore }): IInject => ({
@@ -60,7 +63,7 @@ const Bottom = styled.View``;
   })
 )
 @observer
-class UserProfileScreen extends Component<IProps, IStates> {
+class UserProfileEditScreen extends Component<IProps, IStates> {
   public static open(params: IParams) {
     const { componentId, ...restParams } = params;
     return push({
@@ -82,15 +85,55 @@ class UserProfileScreen extends Component<IProps, IStates> {
 
   public render() {
     const { profileImage } = this.state;
+    const nickname = this.props.authStore.user?.nickname;
     return (
       <Container>
-        <BackTopBar title="계정 설정" onBackPress={this.back} />
-        <Content>
-          <ProfileImage size={81} uri={profileImage} editable={false} />
-        </Content>
+        <BackTopBar title="닉네임 수정" onBackPress={this.back} />
+        <InnerContainer
+          scrollEnabled={true}
+          enableOnAndroid={true}
+          enableAutomaticScroll={true}
+        >
+          <Content>
+            <ProfileImageButton onPress={this.imagePicker}>
+              <ProfileImage size={81} uri={profileImage} editable={true} />
+            </ProfileImageButton>
+            <UserProfileForm nickname={nickname} onConfirm={this.onConfirm} />
+          </Content>
+        </InnerContainer>
       </Container>
     );
   }
+
+  private imagePicker = () => {
+    const { showToast } = this.props.toastStore;
+    const options = {
+      title: "프로필 이미지 불러오기",
+      storageOptions: {
+        skipBackup: true,
+        path: "images"
+      }
+    };
+    ImagePicker.showImagePicker(options, async response => {
+      if (response.didCancel) {
+        showToast("User cancelled image picker");
+      } else if (response.error) {
+        showToast("ImagePicker Error: " + response.error);
+      } else if (response.customButton) {
+        showToast("User tapped custom button: " + response.customButton);
+      } else {
+        try {
+          await this.props.authStore?.user?.changeProfileImage(response.uri);
+          this.setState({
+            profileImage: response.uri
+          });
+          showToast("이미지 변경 완료");
+        } catch (error) {
+          showToast(error.message);
+        }
+      }
+    });
+  };
 
   private onConfirm = async (data: IForm) => {
     const { onConfirm } = this.props;
@@ -104,4 +147,4 @@ class UserProfileScreen extends Component<IProps, IStates> {
   };
 }
 
-export default UserProfileScreen;
+export default UserProfileEditScreen;

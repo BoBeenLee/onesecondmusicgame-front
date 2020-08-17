@@ -26,6 +26,7 @@ import GameSearchSingerScreen from "src/screens/game/GameSearchSingerScreen";
 import GamePlayTutorialOverlay from "src/screens/tutorial/GamePlayTutorialOverlay";
 import SearchSingerScreen from "src/screens/song/SearchSingerScreen";
 import UserProfileScreen from "src/screens/user/UserProfileScreen";
+import UserProfileEditScreen from "src/screens/user/UserProfileEditScreen";
 import DeveloperScreen from "src/screens/DeveloperScreen";
 import UserGameItemScreen from "src/screens/user/UserGameItemScreen";
 import GameReadyPlayOverlay from "src/screens/game/GameReadyPlayOverlay";
@@ -114,6 +115,10 @@ const screens: IScreenProps[] = [
   {
     Component: UserProfileScreen,
     id: SCREEN_IDS.UserProfileScreen
+  },
+  {
+    Component: UserProfileEditScreen,
+    id: SCREEN_IDS.UserProfileEditScreen
   },
   {
     Component: DeveloperScreen,
