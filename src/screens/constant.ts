@@ -15,7 +15,8 @@ const SCREEN_IDS = {
   GameReadyPlayOverlay: "app.GameReadyPlayOverlay",
   UserProfileScreen: "app.UserProfileScreen",
   UserProfileEditScreen: "app.UserProfileEditScreen",
-  UserGameItemScreen: "app.UserGameItemScreen"
+  UserGameItemScreen: "app.UserGameItemScreen",
+  OpensourceScreen: "app.OpensourceScreen"
 };
 
 export { SCREEN_IDS };

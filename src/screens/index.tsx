@@ -31,6 +31,7 @@ import DeveloperScreen from "src/screens/DeveloperScreen";
 import UserGameItemScreen from "src/screens/user/UserGameItemScreen";
 import GameReadyPlayOverlay from "src/screens/game/GameReadyPlayOverlay";
 import GameAllRankingScreen from "src/screens/game/GameAllRankingScreen";
+import OpensourceScreen from "src/screens/user/OpensourceScreen";
 
 interface IScreenProps {
   id: string;
@@ -135,6 +136,10 @@ const screens: IScreenProps[] = [
   {
     Component: GameAllRankingScreen,
     id: SCREEN_IDS.GameAllRankingScreen
+  },
+  {
+    Component: OpensourceScreen,
+    id: SCREEN_IDS.OpensourceScreen
   }
 ];
 
