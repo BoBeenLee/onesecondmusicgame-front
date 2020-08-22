@@ -4,7 +4,8 @@ import {
   InteractionManager,
   Clipboard,
   TouchableOpacity,
-  ListRenderItem
+  ListRenderItem,
+  Alert
 } from "react-native";
 import { Item, ItemItemTypeEnum } from "__generate__/api";
 import _ from "lodash";
@@ -69,6 +70,7 @@ import { logEvent } from "src/configs/analytics";
 import SingerNameCard from "src/components/card/SingerNameCard";
 import { getScreenHeight } from "src/utils/device";
 import withBackHandler, { IBackHandlerProps } from "src/hocs/withBackHandler";
+import { storage } from "src/utils/storage";
 
 interface IInject {
   appStateStatus: AppStateStatus;
@@ -964,7 +966,12 @@ class GamePlayScreen extends Component<IProps, IStates> {
     );
   };
 
-  private requestHeartRewardAD = () => {
+  private requestHeartRewardAD = async () => {
+    const todayAdmobUnitCount = await storage().todayAdmobUnitCount();
+    if (todayAdmobUnitCount > 3) {
+      Alert.alert("오늘 하루 광고를 다보았습니다. 다음날 다시보세요.");
+      return;
+    }
     this.admobUnit.show();
   };
 
