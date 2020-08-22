@@ -40,6 +40,10 @@ export const today = (): Moment.Moment => {
   return moment();
 };
 
+export const todayFormat = () => {
+  return transformMomentToString(today());
+};
+
 export const dayDuration = (
   startMoment: Moment.Moment,
   endMoment: Moment.Moment

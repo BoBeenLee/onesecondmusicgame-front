@@ -4,6 +4,7 @@ import _ from "lodash";
 import { isJSON } from "src/utils/common";
 import { defaultNumber } from "src/utils/number";
 import { AUTH_PROVIDER } from "src/stores/AuthStore";
+import { todayFormat } from "src/utils/date";
 
 // tslint:disable:object-literal-sort-keys
 export type StorageType =
@@ -15,20 +16,6 @@ export type StorageType =
   | "DO_NOT_SHOW_GAME_PLAY"
   | "DO_NOT_SHOW_REGISTER_SONG_TOOLTIP"
   | "ADMOB_UNITS_BY_DATE";
-
-// {
-//   ACCESS_ID: "ACCESS_ID",
-//   ACCESS_TOKEN: "ACCESS_TOKEN",
-// CODE_PUSH: `CODE_PUSH_${_.upperCase(getOS())}_${getVersion()
-//   .split(".")
-//   .join("")}`,
-//   REFRESH_TOKEN: "REFRESH_TOKEN",
-//   PROVIDER_TYPE: "PROVIDER_TYPE",
-//   SHARED_ACCESS_ID: "SHARED_ACCESS_ID",
-//   DO_NOT_SHOW_GAME_PLAY: "DO_NOT_SHOW_GAME_PLAY",
-//   DO_NOT_SHOW_REGISTER_SONG_TOOLTIP: "DO_NOT_SHOW_REGISTER_SONG_TOOLTIP",
-//   ADMOB_UNITS_BY_DATE: "ADMOB_UNITS_BY_DATE"
-// };
 
 export function storageFactory(
   setItem: (key: string, value: string) => Promise<any>,
@@ -129,6 +116,15 @@ export function storageFactory(
         setStorageItem("ACCESS_TOKEN", accessToken),
         setStorageItem("REFRESH_TOKEN", refreshToken)
       ]);
+    },
+    increaseAdmobUnits: async () => {
+      const map = await getJSONWithDefault<Record<string, number>>(
+        "ADMOB_UNITS_BY_DATE",
+        {}
+      );
+      const todayCount = await getStorages.todayAdmobUnitCount();
+      map[todayFormat()] = todayCount + 1;
+      setStorageItem("ADMOB_UNITS_BY_DATE", JSON.stringify(map));
     }
   };
 
@@ -170,6 +166,13 @@ export function storageFactory(
         accessToken,
         refreshToken
       };
+    },
+    todayAdmobUnitCount: async () => {
+      const map = await getJSONWithDefault<Record<string, number>>(
+        "ADMOB_UNITS_BY_DATE",
+        {}
+      );
+      return map[todayFormat()] ?? 0;
     }
   };
 
