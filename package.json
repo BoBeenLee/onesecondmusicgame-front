@@ -45,7 +45,7 @@
   "dependencies": {
     "@invertase/react-native-apple-authentication": "^1.1.2",
     "@react-native-community/art": "^1.1.2",
-    "@react-native-community/async-storage": "^1.4.2",
+    "@react-native-community/async-storage": "^1.11.0",
     "@react-native-community/google-signin": "^3.0.3",
     "@react-native-firebase/admob": "^7.4.1",
     "@react-native-firebase/analytics": "^7.4.1",
