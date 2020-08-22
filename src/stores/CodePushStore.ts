@@ -3,8 +3,9 @@ import { flow, types } from "mobx-state-tree";
 import codePush from "react-native-code-push";
 
 import { getJSONValue } from "src/configs/remoteConfig";
-import { defaultItemTo, FIELD, setItem } from "src/utils/storage";
-import { getUniqueID } from "src/configs/device";
+import { storage } from "src/utils/storage";
+import { getUniqueID, getVersion } from "src/configs/device";
+import { getOS } from "src/utils/device";
 
 interface ICodePushData {
   codePushBuild: number;
@@ -12,15 +13,19 @@ interface ICodePushData {
   deviceIds: string[];
 }
 
-const INITIAL_CODE_PUSH_DATA: ICodePushData = {
+export const INITIAL_CODE_PUSH_DATA: ICodePushData = {
   codePushBuild: 0,
   updateNote: "",
   deviceIds: []
 };
 
+export const CODE_PUSH_KEY = `CODE_PUSH_${_.upperCase(getOS())}_${getVersion()
+  .split(".")
+  .join("")}`;
+
 const CodePushStore = types
   .model("CodePushStore", {
-    codePushKey: types.optional(types.string, FIELD.CODE_PUSH),
+    codePushKey: types.optional(types.string, CODE_PUSH_KEY),
     currentCodePushData: types.optional(
       types.frozen<ICodePushData>(),
       INITIAL_CODE_PUSH_DATA
@@ -42,10 +47,9 @@ const CodePushStore = types
     const initialize = flow(function*() {
       try {
         const targetDeviceID = getUniqueID();
-        self.currentCodePushData = yield defaultItemTo<ICodePushData>(
-          self.codePushKey,
-          INITIAL_CODE_PUSH_DATA
-        );
+        self.currentCodePushData = yield storage().getCodePushData<
+          ICodePushData
+        >(self.codePushKey, INITIAL_CODE_PUSH_DATA);
         self.newCodePushData = yield getJSONValue<ICodePushData>(
           self.codePushKey,
           INITIAL_CODE_PUSH_DATA
@@ -102,7 +106,10 @@ const CodePushStore = types
 
     const updateCodePushData = flow(function*() {
       self.currentCodePushData = self.newCodePushData;
-      yield setItem(self.codePushKey, JSON.stringify(self.newCodePushData));
+      yield storage().saveCodePushData<ICodePushData>(
+        self.codePushKey,
+        self.newCodePushData
+      );
     });
 
     const notifyAppReady = flow(function*() {

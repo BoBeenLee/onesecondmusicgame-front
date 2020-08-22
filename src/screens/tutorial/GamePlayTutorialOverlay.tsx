@@ -4,7 +4,7 @@ import styled, { css } from "styled-components/native";
 
 import { SCREEN_IDS } from "src/screens/constant";
 import { dismissOverlay, showOverlayTransparent } from "src/utils/navigator";
-import { defaultItemToBoolean, FIELD, setItem } from "src/utils/storage";
+import { storage } from "src/utils/storage";
 import { Bold12, Bold18, Bold20 } from "src/components/text/Typographies";
 import colors from "src/styles/colors";
 import SkipIcon from "src/components/icon/SkipIcon";
@@ -124,12 +124,12 @@ const PlayStep3HighlightTitle = styled(Bold20)`
 
 class GamePlayTutorialOverlay extends Component<IProps, IStates> {
   public static async open(params: IParams) {
-    if (await defaultItemToBoolean(FIELD.DO_NOT_SHOW_GAME_PLAY, false)) {
+    if (await storage().getDoNotShowGamePlay()) {
       params.onAfterClose?.();
       return;
     }
     await showOverlayTransparent(SCREEN_IDS.GamePlayTutorialOverlay, params);
-    await setItem(FIELD.DO_NOT_SHOW_GAME_PLAY, "true");
+    await storage().saveDoNotShowGamePlay(true);
   }
 
   public GamePlaySteps: React.ReactNode[];

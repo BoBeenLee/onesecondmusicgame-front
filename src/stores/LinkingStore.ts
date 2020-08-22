@@ -8,7 +8,7 @@ import {
   makeLinkPayload,
   IShareLinkPayload
 } from "src/utils/dynamicLink";
-import { FIELD, setItem } from "src/utils/storage";
+import { storage } from "src/utils/storage";
 
 const LinkingStore = types
   .model("LinkingStore", {
@@ -24,7 +24,7 @@ const LinkingStore = types
       self.linkingURL = url;
       if (isAppShareLink(url)) {
         const linkPayload = makeLinkPayload<IShareLinkPayload>(url);
-        setItem(FIELD.SHARED_ACCESS_ID, linkPayload.accessId ?? "");
+        storage().saveSharedAccessId(linkPayload.accessId ?? "");
       }
     };
 

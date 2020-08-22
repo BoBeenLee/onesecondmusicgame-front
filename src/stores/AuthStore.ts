@@ -14,7 +14,7 @@ import appleAuth, {
   AppleAuthError
 } from "@invertase/react-native-apple-authentication";
 
-import { defaultItemToString, FIELD, setItem } from "src/utils/storage";
+import { storage } from "src/utils/storage";
 import {
   signInUsingPOST,
   signUpUsingPOST,
@@ -93,12 +93,8 @@ const AuthStore = types
         accessId,
         accessToken,
         refreshToken
-      ] = yield Promise.all([
-        defaultItemToString(FIELD.PROVIDER_TYPE, "NONE"),
-        defaultItemToString(FIELD.ACCESS_ID, ""),
-        defaultItemToString(FIELD.ACCESS_TOKEN, ""),
-        defaultItemToString(FIELD.REFRESH_TOKEN, "")
-      ]);
+      ] = yield storage().getToken();
+
       self.provider = provider;
       self.accessId = accessId;
       self.accessToken = accessToken;
@@ -241,10 +237,7 @@ const AuthStore = types
 
     const signUp = flow(function*({ nickname }: { nickname: string }) {
       const deviceId = getUniqueID();
-      const sharedAccessId = yield defaultItemToString(
-        FIELD.SHARED_ACCESS_ID,
-        ""
-      );
+      const sharedAccessId = yield storage().getSharedAccessId();
       yield signUpUsingPOST({
         accessId: self.accessId,
         deviceId: deviceId,
@@ -293,9 +286,12 @@ const AuthStore = types
     const updateAuthInfo = () => {
       // self.soundCloudCliendId =
       //   signInResponse.clientId ?? DEFAULT_SOUND_CLIEND_ID;
-      setItem(FIELD.ACCESS_ID, self.accessId);
-      setItem(FIELD.ACCESS_TOKEN, self.accessToken);
-      setItem(FIELD.PROVIDER_TYPE, self.provider);
+      storage().saveToken({
+        provider: self.provider,
+        accessId: self.accessId,
+        accessToken: self.accessToken,
+        refreshToken: ""
+      });
     };
 
     const signOut = () => {

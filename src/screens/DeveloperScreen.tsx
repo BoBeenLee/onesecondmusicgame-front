@@ -23,11 +23,15 @@ import colors from "src/styles/colors";
 import ModalTopBar from "src/components/topbar/ModalTopBar";
 import { makeAppShareLink } from "src/utils/dynamicLink";
 import { AdmobUnitID, loadAD, AdmobUnit } from "src/configs/admob";
-import { ICodePushStore } from "src/stores/CodePushStore";
+import {
+  ICodePushStore,
+  CODE_PUSH_KEY,
+  INITIAL_CODE_PUSH_DATA
+} from "src/stores/CodePushStore";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import Singers, { ISingers } from "src/stores/Singers";
 import { PopupProps } from "src/hocs/withPopup";
-import { FIELD, getItems } from "src/utils/storage";
+import { storage } from "src/utils/storage";
 import { ILinkingStore } from "src/stores/LinkingStore";
 import { IPushNotificationStore } from "src/stores/PushNotificationStore";
 import { getBuildNumber, getVersion, getUniqueID } from "src/configs/device";
@@ -217,9 +221,27 @@ class DeveloperScreen extends Component<IProps, IStates> {
   };
 
   private fetchAllStorage = async () => {
-    const storages = await getItems(_.values(FIELD));
+    const [
+      doNotShowRegisterSongTooltip,
+      doNotShowGamePlay,
+      sharedAccessId,
+      codePushData,
+      token
+    ] = await Promise.all([
+      storage().getDoNotShowRegisterSongTooltip(),
+      storage().getDoNotShowGamePlay(),
+      storage().getSharedAccessId(),
+      storage().getCodePushData(CODE_PUSH_KEY, INITIAL_CODE_PUSH_DATA),
+      storage().getToken()
+    ]);
     this.setState({
-      storages: JSON.stringify(storages, undefined, 2)
+      storages: JSON.stringify({
+        doNotShowRegisterSongTooltip,
+        doNotShowGamePlay,
+        sharedAccessId,
+        codePushData,
+        token
+      })
     });
   };
 
