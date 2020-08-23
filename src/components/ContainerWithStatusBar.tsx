@@ -5,7 +5,7 @@ import SafeAreaView from "react-native-safe-area-view";
 import LinearGradient from "react-native-linear-gradient";
 
 import colors from "src/styles/colors";
-import { isAndroid } from "src/utils/device";
+import { isAndroid, getBottomSpace } from "src/utils/device";
 
 interface IProps {
   children?: React.ReactNode;
@@ -15,18 +15,24 @@ interface IProps {
 
 const SafeAreaContainer = styled(SafeAreaView)`
   flex: 1;
-  background-color: ${colors.darkBlueGrey};
+  background-color: ${colors.darkIndigo};
 `;
 
 const AndroidContainer = styled.View`
   flex: 1;
-  background-color: ${colors.darkBlueGrey};
+  background-color: ${colors.darkIndigo};
 `;
 
 const Container = styled(LinearGradient).attrs({
   colors: [colors.darkIndigo, colors.almostBlack]
 })`
   flex: 1;
+`;
+
+const Bottom = styled.View`
+  width: 100%;
+  height: ${getBottomSpace()}px;
+  background-color: ${colors.almostBlack};
 `;
 
 function ContainerWithStatusBar({
@@ -42,9 +48,12 @@ function ContainerWithStatusBar({
     );
   }
   return (
-    <SafeAreaContainer>
-      <Container style={style}>{children}</Container>
-    </SafeAreaContainer>
+    <React.Fragment>
+      <SafeAreaContainer>
+        <Container style={style}>{children}</Container>
+      </SafeAreaContainer>
+      <Bottom />
+    </React.Fragment>
   );
 }
 
