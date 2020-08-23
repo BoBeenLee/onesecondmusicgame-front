@@ -101,7 +101,7 @@ class GameAllRankingScreen extends Component<IProps> {
   public static open(params: IParams) {
     return push({
       componentId: params.componentId,
-      nextComponentId: SCREEN_IDS.GameRankingScreen
+      nextComponentId: SCREEN_IDS.GameAllRankingScreen
     });
   }
 
