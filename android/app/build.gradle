@@ -147,8 +147,8 @@ android {
         applicationId "kr.nexters.onesecondmusicgame"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 46
-        versionName "1.0.25"
+        versionCode 48
+        versionName "1.0.26"
         multiDexEnabled true
     }
     signingConfigs {
