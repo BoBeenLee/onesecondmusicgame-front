@@ -2,6 +2,7 @@ import Moment, { duration, MomentInput } from "moment";
 import moment from "moment/min/moment-with-locales";
 
 const DEFAULT_FORMAT = "YYYY.MM.DD";
+export const DATE_FORMAT1 = "YYYY년 MM월";
 export const DEFAULT_HH_MM_SS_FORMAT = "YYYY-MM-DD HH:mm:ss.SSS";
 
 const DATE_FORMAT_MAP = new Map().set("M", "개월").set("D", "일");
@@ -40,8 +41,8 @@ export const today = (): Moment.Moment => {
   return moment();
 };
 
-export const todayFormat = () => {
-  return transformMomentToString(today());
+export const todayFormat = (format: string = DEFAULT_FORMAT) => {
+  return transformMomentToString(today(), format);
 };
 
 export const dayDuration = (

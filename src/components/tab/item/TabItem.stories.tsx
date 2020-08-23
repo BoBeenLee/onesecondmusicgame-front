@@ -1,3 +1,4 @@
+import { action } from "@storybook/addon-actions";
 import { storiesOf } from "@storybook/react-native";
 import React from "react";
 import styled from "styled-components/native";
@@ -13,5 +14,9 @@ const Container = styled.View`
 storiesOf("TabItem", module)
   .addDecorator((getStory: any) => <Container>{getStory()}</Container>)
   .add("with RankTabItem", () => (
-    <RankTabItem title="월간 랭킹" active={true} />
+    <RankTabItem
+      title="월간 랭킹"
+      active={true}
+      onSelected={action("onSelected")}
+    />
   ));

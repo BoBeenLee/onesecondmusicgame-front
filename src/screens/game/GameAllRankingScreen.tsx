@@ -16,7 +16,11 @@ import MonthlyRanks from "src/stores/MonthlyRanks";
 import { RankView } from "__generate__/api";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
-import { transformTimeToString } from "src/utils/date";
+import {
+  transformTimeToString,
+  todayFormat,
+  DATE_FORMAT1
+} from "src/utils/date";
 import images from "src/images";
 import RankTabItem from "src/components/tab/item/RankTabItem";
 import TransparentTabView, {
@@ -246,23 +250,23 @@ class GameAllRankingScreen extends Component<Props, States> {
                   <RankHeader>
                     <TitleGroup>
                       <TitleBackgroundImage source={images.bgRankTitle} />
-                      <Title>2020년 8월의 음잘알</Title>
+                      <Title>{todayFormat(DATE_FORMAT1)}의 음잘알</Title>
                     </TitleGroup>
                     <TopRankView>
                       <GameTopRankCardView
-                        rank={2}
+                        rank={"2"}
                         profileImage={secondRank?.profileImageUrl ?? ""}
                         name={secondRank?.nickname ?? ""}
                         score={secondRank?.point ?? 0}
                       />
                       <GameTopRankCardView
-                        rank={1}
+                        rank={"1"}
                         profileImage={firstRank?.profileImageUrl ?? ""}
                         name={firstRank?.nickname ?? ""}
                         score={firstRank?.point ?? 0}
                       />
                       <GameTopRankCardView
-                        rank={3}
+                        rank={"3"}
                         profileImage={thirdRank?.profileImageUrl ?? ""}
                         name={thirdRank?.nickname ?? ""}
                         score={thirdRank?.point ?? 0}
@@ -288,7 +292,13 @@ class GameAllRankingScreen extends Component<Props, States> {
     return (
       <Observer>
         {() => {
-          const { time, rankViews, myRank, lastSeasonTop3 } = this.seasonRanks;
+          const {
+            rankViews,
+            myRank,
+            lastSeasonTop3,
+            isMyRankIncludeRanks,
+            finishThisSeasonFormat
+          } = this.seasonRanks;
           const [firstRank, secondRank, thirdRank, ...restRank] = rankViews;
 
           return (
@@ -298,10 +308,10 @@ class GameAllRankingScreen extends Component<Props, States> {
                   <RankHeader>
                     <TitleGroup>
                       <TitleBackgroundImage source={images.bgRankTitle} />
-                      <Title>2020년 8월의 음잘알</Title>
+                      <Title>{todayFormat(DATE_FORMAT1)}의 음잘알</Title>
                     </TitleGroup>
                     <PreviousSeasonTop3
-                      title="지난 시즌2 TOP 3 음잘알"
+                      title="지난 시즌 TOP 3 음잘알"
                       data={_.slice(
                         _.map(lastSeasonTop3, item => {
                           return {
@@ -315,36 +325,33 @@ class GameAllRankingScreen extends Component<Props, States> {
                     />
                     <TopRankView>
                       <GameTopRankCardView
-                        rank={2}
+                        rank={"2"}
                         profileImage={secondRank?.profileImageUrl ?? ""}
                         name={secondRank?.nickname ?? ""}
                         score={secondRank?.point ?? 0}
                       />
                       <GameTopRankCardView
-                        rank={1}
+                        rank={"1"}
                         profileImage={firstRank?.profileImageUrl ?? ""}
                         name={firstRank?.nickname ?? ""}
                         score={firstRank?.point ?? 0}
                       />
                       <GameTopRankCardView
-                        rank={3}
+                        rank={"3"}
                         profileImage={thirdRank?.profileImageUrl ?? ""}
                         name={thirdRank?.nickname ?? ""}
                         score={thirdRank?.point ?? 0}
                       />
                     </TopRankView>
                     <Podium resizeMode="contain" source={images.podium} />
-                    <RankCaption>
-                      *{transformTimeToString(time, "YYYY-MM-DD HH시 mm분 ")}
-                      기준의 랭킹입니다.{" "}
-                    </RankCaption>
+                    <RankCaption>{finishThisSeasonFormat}</RankCaption>
                   </RankHeader>
                 ),
-                ListFooterComponent: (
+                ListFooterComponent: isMyRankIncludeRanks ? null : (
                   <RankBottom>
                     <TopArrowIcon source={images.icTopArrow} />
                     <MyGameRankCard
-                      rank={0}
+                      rank={"???"}
                       profileImage={myRank?.profileImageUrl ?? ""}
                       name={myRank?.nickname ?? ""}
                       score={myRank?.point ?? 0}
@@ -370,7 +377,7 @@ class GameAllRankingScreen extends Component<Props, States> {
     ListFooterComponent?: React.ComponentType<any> | React.ReactElement | null;
     rankViews: RankView[];
   }) => {
-    const { isRefresh, refresh, time } = this.monthlyRanks;
+    const { isRefresh, refresh } = this.monthlyRanks;
     return (
       <Result
         ListHeaderComponent={ListHeaderComponent}
@@ -386,14 +393,18 @@ class GameAllRankingScreen extends Component<Props, States> {
   };
 
   private rankKeyExtreactor = (item: RankView, index: number) => {
-    return `${index}`;
+    return `${item.nickname ?? ""}${index}`;
   };
 
-  private renderRankItem: ListRenderItem<RankView> = ({ item, index }) => {
+  private renderRankItem: ListRenderItem<RankView & { isMyRank?: boolean }> = ({
+    item,
+    index
+  }) => {
     return (
       <GameRankCardView>
         <GameRankCard
-          rank={index + 4}
+          isMyRank={item?.isMyRank ?? false}
+          rank={String(index + 4)}
           profileImage={item?.profileImageUrl ?? ""}
           name={item?.nickname ?? ""}
           score={item?.point ?? 0}

@@ -54,7 +54,7 @@ storiesOf("Card", module)
   .add("GameRankCard", () => {
     return (
       <GameRankCard
-        rank={1}
+        rank={"1"}
         profileImage="https://via.placeholder.com/350x350"
         name="jasmin"
         score={83}
@@ -65,7 +65,7 @@ storiesOf("Card", module)
   .add("GameTopRankCard", () => {
     return (
       <GameTopRankCard
-        rank={1}
+        rank={"1"}
         profileImage="https://via.placeholder.com/350x350"
         name="jasmin"
         score={83}
