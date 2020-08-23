@@ -7,7 +7,8 @@ import SearchTrackCard from "src/components/card/SearchTrackCard";
 import GameRankCard from "src/components/card/GameRankCard";
 import GameTopRankCard from "src/components/card/GameTopRankCard";
 import SearchSingerCard from "src/components/card/SearchSingerCard";
-import UserItemCard from "./UserItemCard";
+import UserItemCard from "src/components/card/UserItemCard";
+import PreviousSeasonTop3Card from "src/components/card/PreviousSeasonTop3Card";
 
 const CenterView = styled.View`
   flex: 1;
@@ -87,6 +88,23 @@ storiesOf("Card", module)
         title="오픈소스 라이선스"
         description="오픈소스 소프트웨어에 대한 라이선스 세부정보"
         onPress={action("onPress")}
+      />
+    );
+  })
+  .add("PreviousSeasonTop3Card", () => {
+    return (
+      <PreviousSeasonTop3Card
+        title="지난 시즌2 TOP 3 음잘알"
+        data={[
+          {
+            name: "아이즈원 예나",
+            point: 123456
+          },
+          {
+            name: "아이즈원 예나",
+            point: 123456
+          }
+        ]}
       />
     );
   });
