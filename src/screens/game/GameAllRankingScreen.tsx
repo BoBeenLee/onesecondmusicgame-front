@@ -105,6 +105,7 @@ const PreviousSeasonTop3 = styled(PreviousSeasonTop3Card)`
 `;
 
 const TopRankView = styled.View`
+  width: 340px;
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
@@ -115,17 +116,34 @@ const GameTopRankCardView = styled(GameTopRankCard)`
   flex: 1;
 `;
 
-const Result = styled<ComponentClass<FlatListProps<RankView>>>(FlatList).attrs({
-  contentContainerStyle: {
-    paddingLeft: 27,
-    paddingRight: 27
-  }
-})`
+const Result = styled<ComponentClass<FlatListProps<RankView>>>(FlatList)`
   flex: 1;
   width: 100%;
 `;
 
-const GameRankCardView = styled(GameRankCard)``;
+const RankBottom = styled.View`
+  flex-direction: column;
+  align-items: center;
+`;
+
+const TopArrowIcon = styled.Image`
+  width: 37px;
+  height: 32px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+`;
+
+const GameRankCardView = styled.View`
+  width: 100%;
+  padding-left: 12px;
+  padding-right: 12px;
+`;
+
+const MyGameRankCard = styled(GameRankCard)`
+  width: 100%;
+  background-color: ${colors.pinkyPurple};
+  border-radius: 0px;
+`;
 
 const GameRankSeperator = styled.View`
   width: 100%;
@@ -270,7 +288,7 @@ class GameAllRankingScreen extends Component<Props, States> {
     return (
       <Observer>
         {() => {
-          const { isRefresh, refresh, time, rankViews } = this.seasonRanks;
+          const { time, rankViews, myRank, lastSeasonTop3 } = this.seasonRanks;
           const [firstRank, secondRank, thirdRank, ...restRank] = rankViews;
 
           return (
@@ -284,16 +302,16 @@ class GameAllRankingScreen extends Component<Props, States> {
                     </TitleGroup>
                     <PreviousSeasonTop3
                       title="지난 시즌2 TOP 3 음잘알"
-                      data={[
-                        {
-                          name: "아이즈원 예나",
-                          point: 123456
-                        },
-                        {
-                          name: "아이즈원 예나",
-                          point: 123456
-                        }
-                      ]}
+                      data={_.slice(
+                        _.map(lastSeasonTop3, item => {
+                          return {
+                            name: item.nickname ?? "",
+                            point: item.point ?? 0
+                          };
+                        }),
+                        0,
+                        3
+                      )}
                     />
                     <TopRankView>
                       <GameTopRankCardView
@@ -322,6 +340,18 @@ class GameAllRankingScreen extends Component<Props, States> {
                     </RankCaption>
                   </RankHeader>
                 ),
+                ListFooterComponent: (
+                  <RankBottom>
+                    <TopArrowIcon source={images.icTopArrow} />
+                    <MyGameRankCard
+                      rank={0}
+                      profileImage={myRank?.profileImageUrl ?? ""}
+                      name={myRank?.nickname ?? ""}
+                      score={myRank?.point ?? 0}
+                      rankDiff={myRank?.rankDiff ?? 0}
+                    />
+                  </RankBottom>
+                ),
                 rankViews: restRank
               })}
             </MonthlyRank>
@@ -333,15 +363,18 @@ class GameAllRankingScreen extends Component<Props, States> {
 
   private renderRanks = ({
     ListHeaderComponent,
+    ListFooterComponent,
     rankViews
   }: {
     ListHeaderComponent: React.ComponentType<any> | React.ReactElement | null;
+    ListFooterComponent?: React.ComponentType<any> | React.ReactElement | null;
     rankViews: RankView[];
   }) => {
     const { isRefresh, refresh, time } = this.monthlyRanks;
     return (
       <Result
         ListHeaderComponent={ListHeaderComponent}
+        ListFooterComponent={ListFooterComponent}
         data={rankViews}
         renderItem={this.renderRankItem}
         keyExtractor={this.rankKeyExtreactor}
@@ -358,13 +391,15 @@ class GameAllRankingScreen extends Component<Props, States> {
 
   private renderRankItem: ListRenderItem<RankView> = ({ item, index }) => {
     return (
-      <GameRankCardView
-        rank={index + 4}
-        profileImage={item?.profileImageUrl ?? ""}
-        name={item?.nickname ?? ""}
-        score={item?.point ?? 0}
-        rankDiff={item?.rankDiff ?? 0}
-      />
+      <GameRankCardView>
+        <GameRankCard
+          rank={index + 4}
+          profileImage={item?.profileImageUrl ?? ""}
+          name={item?.nickname ?? ""}
+          score={item?.point ?? 0}
+          rankDiff={item?.rankDiff ?? 0}
+        />
+      </GameRankCardView>
     );
   };
 

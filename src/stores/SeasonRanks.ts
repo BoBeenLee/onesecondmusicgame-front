@@ -16,7 +16,10 @@ const SeasonRanks = types
   .model("SeasonRanks", {
     isRefresh: types.optional(types.boolean, false),
     ranks: types.optional(types.array(types.frozen<RankView>()), []),
-    time: types.optional(types.number, 0)
+    lastSeasonTop3: types.optional(types.array(types.frozen<RankView>()), []),
+    time: types.optional(types.number, 0),
+    timeToFinishThisSeason: types.optional(types.number, 0),
+    myRank: types.frozen<RankView | null>(null)
   })
   .views(self => {
     return {
@@ -33,8 +36,12 @@ const SeasonRanks = types
 
     const fetch = flow(function*() {
       const response: RetrieveAsyncFunc<typeof getRankingInfoOfSeasonUsingGET> = yield getRankingInfoOfSeasonUsingGET();
-      self.time = (response?.time ?? 0) * 1000;
-      self.ranks.replace(response?.rankViewList ?? []);
+      self.timeToFinishThisSeason = response?.timeToFinishThisSeason ?? 0;
+      self.myRank = response?.myRank ?? null;
+      self.ranks.replace(response?.currentSeasonRanking?.rankViewList ?? []);
+      self.lastSeasonTop3.replace(
+        response?.currentSeasonRanking?.rankViewList ?? []
+      );
     });
 
     const initialize = flow(function*() {
