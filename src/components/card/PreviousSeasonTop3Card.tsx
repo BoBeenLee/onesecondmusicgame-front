@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components/native";
 import colors from "src/styles/colors";
 import { Bold14, Bold12 } from "../text/Typographies";
+import { ViewProps } from "react-native";
 
 export type SeasonItem = {
   name: string;
@@ -10,6 +11,7 @@ export type SeasonItem = {
 };
 
 type Props = {
+  style?: ViewProps["style"];
   title: string;
   data: SeasonItem[];
 };
@@ -61,9 +63,9 @@ const RankPoint = styled(Bold12)`
 `;
 
 const PreviousSeasonTop3Card = (props: Props) => {
-  const { title, data } = props;
+  const { style, title, data } = props;
   return (
-    <Container>
+    <Container style={style}>
       <Header>
         <HeaderSeperator />
         <Title>{title}</Title>

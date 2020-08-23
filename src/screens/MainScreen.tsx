@@ -46,6 +46,7 @@ import { logEvent } from "src/configs/analytics";
 import { IAppStore } from "src/stores/AppStore";
 import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
 import { LoadingProps } from "src/hocs/withLoading";
+import GameAllRankingScreen from "src/screens/game/GameAllRankingScreen";
 
 interface IInject {
   store: IStore;
@@ -463,7 +464,7 @@ class MainScreen extends Component<IProps, IStates> {
 
   private navigateToRanking = () => {
     const { componentId } = this.props;
-    GameRankingScreen.open({ componentId });
+    GameAllRankingScreen.open({ componentId });
   };
 
   private updateAppIfAvailable = async () => {

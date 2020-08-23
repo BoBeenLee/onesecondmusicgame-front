@@ -1,23 +1,33 @@
 import React from "react";
+import { ViewProps } from "react-native";
 import styled, { css } from "styled-components/native";
 
 import { Bold18 } from "src/components/text/Typographies";
 import colors from "src/styles/colors";
 
 type Props = {
+  style?: ViewProps["style"];
   active: boolean;
   title: string;
+  onSelected: () => void;
 };
 
-const Container = styled.View`
+const Container = styled.TouchableOpacity`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 `;
 
-const Title = styled(Bold18)`
-  color: ${colors.paleCyan};
+const Title = styled(Bold18)<{ active: boolean }>`
+  ${({ active }) =>
+    active
+      ? css`
+          color: ${colors.paleCyan};
+        `
+      : css`
+          color: ${colors.warmBlue};
+        `};
   margin-bottom: 5px;
 `;
 
@@ -35,10 +45,10 @@ const Underline = styled.View<{ active: boolean }>`
 `;
 
 const RankTabItem = (props: Props) => {
-  const { title, active } = props;
+  const { style, title, active, onSelected } = props;
   return (
-    <Container>
-      <Title>{title}</Title>
+    <Container style={style} onPress={onSelected}>
+      <Title active={active}>{title}</Title>
       <Underline active={active} />
     </Container>
   );

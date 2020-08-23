@@ -16,7 +16,7 @@ import BackTopBar from "src/components/topbar/BackTopBar";
 import GameTopRankCard from "src/components/card/GameTopRankCard";
 import GameRankCard from "src/components/card/GameRankCard";
 import colors from "src/styles/colors";
-import Ranks from "src/stores/Ranks";
+import MonthlyRanks from "src/stores/MonthlyRanks";
 import { RankView } from "__generate__/api";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
@@ -105,7 +105,7 @@ class GameRankingScreen extends Component<IProps> {
     });
   }
 
-  public ranks = Ranks.create();
+  public ranks = MonthlyRanks.create();
 
   constructor(props: IProps) {
     super(props);

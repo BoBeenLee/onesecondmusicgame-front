@@ -2121,8 +2121,8 @@ export const APIApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * 가수의 노래 정보를 변경한다.
-         * @summary 가수 노래 정보 변경
+         * 가수의 노래 이미지 변경한다.
+         * @summary 가수 노래 이미지 변경
          * @param {number} songId 변경할 노래 ID
          * @param {SongUpdateRequest} request 변경할 노래 정보
          * @param {*} [options] Override http request option.
@@ -2538,8 +2538,8 @@ export const APIApiFp = function(configuration?: Configuration) {
             };
         },
         /**
-         * 가수의 노래 정보를 변경한다.
-         * @summary 가수 노래 정보 변경
+         * 가수의 노래 이미지 변경한다.
+         * @summary 가수 노래 이미지 변경
          * @param {number} songId 변경할 노래 ID
          * @param {SongUpdateRequest} request 변경할 노래 정보
          * @param {*} [options] Override http request option.
@@ -2716,8 +2716,8 @@ export const APIApiFactory = function (configuration?: Configuration, basePath?:
             return APIApiFp(configuration).getSingerInfoUsingGET(singerName, options).then((request) => request(axios, basePath));
         },
         /**
-         * 가수의 노래 정보를 변경한다.
-         * @summary 가수 노래 정보 변경
+         * 가수의 노래 이미지 변경한다.
+         * @summary 가수 노래 이미지 변경
          * @param {number} songId 변경할 노래 ID
          * @param {SongUpdateRequest} request 변경할 노래 정보
          * @param {*} [options] Override http request option.
@@ -2879,8 +2879,8 @@ export class APIApi extends BaseAPI {
     }
 
     /**
-     * 가수의 노래 정보를 변경한다.
-     * @summary 가수 노래 정보 변경
+     * 가수의 노래 이미지 변경한다.
+     * @summary 가수 노래 이미지 변경
      * @param {number} songId 변경할 노래 ID
      * @param {SongUpdateRequest} request 변경할 노래 정보
      * @param {*} [options] Override http request option.
