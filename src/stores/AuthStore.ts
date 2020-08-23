@@ -88,12 +88,12 @@ const AuthStore = types
     };
 
     const initialize = flow(function*() {
-      const [
+      const {
         provider,
         accessId,
         accessToken,
         refreshToken
-      ] = yield storage().getToken();
+      } = yield storage().getToken();
 
       self.provider = provider;
       self.accessId = accessId;

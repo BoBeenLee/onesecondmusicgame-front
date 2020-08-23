@@ -22,8 +22,8 @@ export function storageFactory(
   getItem: (key: string) => Promise<string>,
   clear: () => void
 ) {
-  const setStorageItem = (key: StorageType, value: string) => {
-    return setItem(key, value);
+  const setStorageItem = async (key: StorageType, value: string) => {
+    await setItem(key, value);
   };
 
   const getStringWithDefault = async (
