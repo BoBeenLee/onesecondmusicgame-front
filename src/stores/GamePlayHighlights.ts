@@ -44,6 +44,23 @@ const GamePlayHighlights = types
           };
         });
       },
+      get gamePlayStepResultStatuses(): ICircleCheckItem[] {
+        return self.gameHighlights.map((item, index) => {
+          if (self.currentStep < index) {
+            return {
+              check: "x",
+              active: false
+            };
+          }
+          return {
+            check:
+              Boolean(item.isUserAnswer) || item?.isUserAnswer === undefined
+                ? "o"
+                : "x",
+            active: self.currentStep === index
+          };
+        });
+      },
       get gameTotalRoundNum() {
         return self.gameHighlights.length;
       },

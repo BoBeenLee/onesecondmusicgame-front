@@ -325,7 +325,6 @@ class GameResultScreen extends Component<IProps, IStates> {
 
   public render() {
     const heart = this.props.authStore.user?.heart;
-    const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
     const nickname = this.props.authStore.user?.nickname ?? "";
     const {
       gainPointOfThisGame,
@@ -333,14 +332,14 @@ class GameResultScreen extends Component<IProps, IStates> {
       myRanking,
       resultComment
     } = this.state.gameResult;
-    const { gamePlayStepStatuses } = this.gamePlayHighlights;
+    const { gamePlayStepResultStatuses } = this.gamePlayHighlights;
 
     return (
       <Container>
         <ScrollView>
           <Header>
             <Title>게임 종료</Title>
-            <GamePlayStep circles={gamePlayStepStatuses} />
+            <GamePlayStep circles={gamePlayStepResultStatuses} />
           </Header>
           <Content>
             <ScoreView>
