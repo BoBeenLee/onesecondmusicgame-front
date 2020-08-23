@@ -11,6 +11,7 @@ interface IProps {
   children?: React.ReactNode;
   style?: ViewProps["style"];
   statusBarColor?: string;
+  bottomBackgroundColor?: string;
 }
 
 const SafeAreaContainer = styled(SafeAreaView)`
@@ -29,15 +30,16 @@ const Container = styled(LinearGradient).attrs({
   flex: 1;
 `;
 
-const Bottom = styled.View`
+const Bottom = styled.View<{ bottomBackgroundColor: string }>`
   width: 100%;
   height: ${getBottomSpace()}px;
-  background-color: ${colors.almostBlack};
+  background-color: ${({ bottomBackgroundColor }) => bottomBackgroundColor};
 `;
 
 function ContainerWithStatusBar({
   children,
   statusBarColor = "white",
+  bottomBackgroundColor = colors.almostBlack,
   style
 }: IProps) {
   if (isAndroid()) {
@@ -52,7 +54,7 @@ function ContainerWithStatusBar({
       <SafeAreaContainer>
         <Container style={style}>{children}</Container>
       </SafeAreaContainer>
-      <Bottom />
+      <Bottom bottomBackgroundColor={bottomBackgroundColor} />
     </React.Fragment>
   );
 }

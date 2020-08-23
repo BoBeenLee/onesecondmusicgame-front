@@ -250,7 +250,7 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
     const singerViewRows = _.ceil(singerViews.length / SINGER_COUMNS_LENGTH);
 
     return (
-      <Container>
+      <Container bottomBackgroundColor={colors.darkTwo}>
         <InnerContainer
           scrollEnabled={false}
           enableOnAndroid={true}
