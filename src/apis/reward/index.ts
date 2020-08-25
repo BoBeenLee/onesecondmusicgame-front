@@ -10,8 +10,6 @@ export enum RewardType {
 }
 
 export const rewardForWatchingAdUsingPOST = async (type: RewardType) => {
-  const response = await rewardControllerApi().rewardForWatchingAdUsingPOST(
-    type
-  );
+  const response = await rewardControllerApi().rewardForWatchingAd(type);
   return response.data.body;
 };

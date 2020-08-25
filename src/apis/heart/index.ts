@@ -5,11 +5,11 @@ const heartControllerApi = () =>
   HeartControllerApiFactory(undefined, "", requestAPI());
 
 export const checkMyHeartUsingGET = async () => {
-  const response = await heartControllerApi().checkMyHeartUsingGET();
+  const response = await heartControllerApi().checkMyHeart();
   return response.data.body!;
 };
 
 export const useHeartUsingPUT = async () => {
-  const response = await heartControllerApi().useHeartUsingPUT();
+  const response = await heartControllerApi().useHeart();
   return response.data.body!;
 };

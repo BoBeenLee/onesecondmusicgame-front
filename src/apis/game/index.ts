@@ -14,21 +14,21 @@ const gameControllerApiV2 = () =>
   Class01APIV2ApiFactory(undefined, "", requestAPI());
 
 export const getHighlightListUsingPOST = async (params: GameStartRequest) => {
-  const response = await gameControllerApi().getHighlightListUsingPOST(params);
+  const response = await gameControllerApi().getHighlightList(params);
   return response.data.body!;
 };
 
 export const isAnswerUsingPOST = async (params: GameAnswerCheckRequest) => {
-  const response = await gameControllerApi().isAnswerUsingPOST(params);
+  const response = await gameControllerApi().isAnswer(params);
   return response.data.body!;
 };
 
 export const gameResultUsingPOST = async (params: GameResultRequest) => {
-  const response = await gameControllerApi().gameResultUsingPOST(params);
+  const response = await gameControllerApi().gameResult(params);
   return response.data.body!;
 };
 
 export const gameResultV2UsingPOST = async (params: GameResultRequest) => {
-  const response = await gameControllerApiV2().gameResultUsingPOST1(params);
+  const response = await gameControllerApiV2().gameResult1(params);
   return response.data.body!;
 };

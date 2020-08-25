@@ -11,7 +11,7 @@ export interface ISinger extends Singer {
 }
 
 export const singers = async (): Promise<ISinger[]> => {
-  const response = await singerControllerApi().getAllStandardSingerListUsingGET();
+  const response = await singerControllerApi().getAllStandardSingerList();
   return _.map(response.data.body ?? [], item => ({
     singerName: item.singerName!,
     artworkUrl: item.artworkUrl
@@ -19,9 +19,7 @@ export const singers = async (): Promise<ISinger[]> => {
 };
 
 export const getTrackListBySingerName = async (name: string) => {
-  const response = await singerControllerApi().getTrackListBySingerNameUsingGET(
-    name
-  );
+  const response = await singerControllerApi().getTrackListBySingerName(name);
   return response.data;
 };
 
@@ -30,16 +28,16 @@ export const getAllSongsBySingerNameUsingGET = async (
   page: number,
   size: number
 ) => {
-  const response = await singerControllerApi().getAllSongsBySingerNameUsingGET(
-    page,
+  const response = await singerControllerApi().getAllSongsBySingerName(
     singerName,
+    page,
     size
   );
   return response.data.body!;
 };
 
 export const registeredSingers = async (): Promise<ISinger[]> => {
-  const response = await singerControllerApi().getAllRegisteredSingerNameUsingGET();
+  const response = await singerControllerApi().getAllRegisteredSingerName();
   return _.map(response.data.body ?? [], item => ({
     singerName: item.singerName!,
     artworkUrl: item.artworkUrl

@@ -8,11 +8,11 @@ const songControllerApi = () =>
   SongControllerApiFactory(undefined, "", requestAPI());
 
 export const songByTrackId = async (trackId: number) => {
-  const response = await songControllerApi().getSongUsingGET(trackId);
+  const response = await songControllerApi().getSong(trackId);
   return response.data.body;
 };
 
 export const addNewSongUsingPOST = async (params: SongRegisterRequest) => {
-  const response = await songControllerApi().addNewSongUsingPOST(params);
+  const response = await songControllerApi().addNewSong(params);
   return response.data.body;
 };

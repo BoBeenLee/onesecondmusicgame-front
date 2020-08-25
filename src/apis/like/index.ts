@@ -11,23 +11,21 @@ const likeHistoryControllerApi = () =>
   LikeHistoryControllerApiFactory(undefined, "", requestAPI());
 
 export const likeUsingPOST = async (params: LikeRequest) => {
-  const response = await likeControllerApi().likeUsingPOST(params);
+  const response = await likeControllerApi().like(params);
   return response.data.body ?? [];
 };
 
 export const dislikeUsingPOST = async (params: LikeRequest) => {
-  const response = await likeControllerApi().dislikeUsingPOST(params);
+  const response = await likeControllerApi().dislike(params);
   return response.data.body ?? [];
 };
 
 export const getLikeHistoryUsingGET = async (trackId: number) => {
-  const response = await likeHistoryControllerApi().getLikeHistoryUsingGET(
-    trackId
-  );
+  const response = await likeHistoryControllerApi().getLikeHistory(trackId);
   return response.data.body;
 };
 
 export const getUserHistoryUsingGET = async () => {
-  const response = await likeHistoryControllerApi().getUserHistoryUsingGET();
+  const response = await likeHistoryControllerApi().getUserHistory();
   return response.data.body;
 };

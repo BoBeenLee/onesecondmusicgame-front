@@ -12,7 +12,7 @@ interface IVersioningKeywordRequest {
 export const isNeedForceUpdateUsingGET = async (
   request: IVersioningKeywordRequest
 ) => {
-  const response = await versioningKeywordControllerApi().isNeedForceUpdateUsingGET(
+  const response = await versioningKeywordControllerApi().isNeedForceUpdate(
     request.os,
     request.version
   );

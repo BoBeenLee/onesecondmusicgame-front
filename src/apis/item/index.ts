@@ -5,11 +5,11 @@ const itemControllerApi = () =>
   ItemControllerApiFactory(undefined, "", requestAPI());
 
 export const findItemAllUsingGET = async () => {
-  const response = await itemControllerApi().findItemAllUsingGET();
+  const response = await itemControllerApi().findItemAll();
   return response.data.body!;
 };
 
 export const useItemUsingPUT = async (params: ItemUseRequest) => {
-  const response = await itemControllerApi().useItemUsingPUT(params);
+  const response = await itemControllerApi().useItem(params);
   return response.data.body!;
 };

@@ -2,8 +2,7 @@ import {
   MusicUserControllerApiFactory,
   UserLoginRequest,
   UserSignUpRequest,
-  NicknameChangeRequest,
-  ResponseDTOstring
+  NicknameChangeRequest
 } from "__generate__/api";
 import { requestAPI } from "src/configs/requestAPI";
 import upload from "src/configs/upload";
@@ -14,17 +13,17 @@ const userControllerApi = () =>
   MusicUserControllerApiFactory(undefined, "", requestAPI());
 
 export const signInUsingPOST = async (request: UserLoginRequest) => {
-  const response = await userControllerApi().signInUsingPOST(request);
+  const response = await userControllerApi().signIn(request);
   return response.data.body!;
 };
 
 export const signUpUsingPOST = async (request: UserSignUpRequest) => {
-  const response = await userControllerApi().signUpUsingPOST(request);
+  const response = await userControllerApi().signUp(request);
   return response.data.body!;
 };
 
 export const myInfoChangeUsingPUT = async (request: NicknameChangeRequest) => {
-  const response = await userControllerApi().myInfoChangeUsingPUT(request);
+  const response = await userControllerApi().myInfoChange(request);
   return response.data.body!;
 };
 

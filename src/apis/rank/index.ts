@@ -5,16 +5,16 @@ const rankingControllerApi = () =>
   RankingControllerApiFactory(undefined, "", requestAPI());
 
 export const getRankingInfoUsingGET = async () => {
-  const response = await rankingControllerApi().getRankingInfoUsingGET();
+  const response = await rankingControllerApi().getRankingInfo();
   return response.data.body;
 };
 
 export const getRankingInfoOfMonthsUsingGET = async () => {
-  const response = await rankingControllerApi().getRankingInfoOfMonthsUsingGET();
+  const response = await rankingControllerApi().getRankingInfoOfMonths();
   return response.data.body;
 };
 
 export const getRankingInfoOfSeasonUsingGET = async () => {
-  const response = await rankingControllerApi().getRankingInfoOfSeasonUsingGET();
+  const response = await rankingControllerApi().getRankingInfoOfSeason();
   return response.data.body;
 };
