@@ -687,6 +687,37 @@ export interface MusicUser {
 /**
  * 
  * @export
+ * @interface MyRankView
+ */
+export interface MyRankView {
+    /**
+     * 내 닉네임
+     * @type {string}
+     * @memberof MyRankView
+     */
+    nickname?: string;
+    /**
+     * 내 포인트(스코어)
+     * @type {number}
+     * @memberof MyRankView
+     */
+    point?: number;
+    /**
+     * 내 프로필 이미지
+     * @type {string}
+     * @memberof MyRankView
+     */
+    profileImageUrl?: string;
+    /**
+     * 내 랭킹
+     * @type {number}
+     * @memberof MyRankView
+     */
+    ranking?: number;
+}
+/**
+ * 
+ * @export
  * @interface NicknameChangeRequest
  */
 export interface NicknameChangeRequest {
@@ -820,44 +851,44 @@ export interface Pageable {
  */
 export interface RankView {
     /**
-     * 
+     * 해당 랭킹의 유저 닉네임
      * @type {string}
      * @memberof RankView
      */
     nickname?: string;
     /**
-     * 
+     * 해당 랭킹 유저의 포인트(스코어)
      * @type {number}
      * @memberof RankView
      */
     point?: number;
     /**
-     * 
+     * 해당 랭킹 유저의 프로필 이미지
      * @type {string}
      * @memberof RankView
      */
     profileImageUrl?: string;
     /**
-     * 
+     * 해당 랭킹 유저의 등락 순위
      * @type {number}
      * @memberof RankView
      */
     rankDiff?: number;
 }
 /**
- * 
+ * 랭킹 정보를 저장하는 뷰 모델.
  * @export
  * @interface RankViewModel
  */
 export interface RankViewModel {
     /**
-     * 
+     * 랭킹 리스트
      * @type {Array<RankView>}
      * @memberof RankViewModel
      */
     rankViewList?: Array<RankView>;
     /**
-     * 
+     * 랭킹 기준 시간
      * @type {number}
      * @memberof RankViewModel
      */
@@ -1208,6 +1239,25 @@ export interface ResponseDTOReward {
 /**
  * 
  * @export
+ * @interface ResponseDTOSeasonRankingView
+ */
+export interface ResponseDTOSeasonRankingView {
+    /**
+     * 
+     * @type {SeasonRankingView}
+     * @memberof ResponseDTOSeasonRankingView
+     */
+    body?: SeasonRankingView;
+    /**
+     * 
+     * @type {number}
+     * @memberof ResponseDTOSeasonRankingView
+     */
+    status?: number;
+}
+/**
+ * 
+ * @export
  * @interface ResponseDTOSetstring
  */
 export interface ResponseDTOSetstring {
@@ -1348,6 +1398,37 @@ export enum ScoreViewModelScoreTypeEnum {
     MONTHLY = 'MONTHLY'
 }
 
+/**
+ * 
+ * @export
+ * @interface SeasonRankingView
+ */
+export interface SeasonRankingView {
+    /**
+     * 
+     * @type {RankViewModel}
+     * @memberof SeasonRankingView
+     */
+    currentSeasonRanking?: RankViewModel;
+    /**
+     * 지난 시즌 탑 3
+     * @type {Array<RankView>}
+     * @memberof SeasonRankingView
+     */
+    lastSeasonTop3?: Array<RankView>;
+    /**
+     * 
+     * @type {MyRankView}
+     * @memberof SeasonRankingView
+     */
+    myRank?: MyRankView;
+    /**
+     * 이번 시즌이 끝날 때 까지 남은 시간
+     * @type {number}
+     * @memberof SeasonRankingView
+     */
+    timeToFinishThisSeason?: number;
+}
 /**
  * 가수 정보를 갖고 있는 오브젝트.
  * @export
@@ -2121,8 +2202,8 @@ export const APIApiAxiosParamCreator = function (configuration?: Configuration) 
             };
         },
         /**
-         * 가수의 노래 정보를 변경한다.
-         * @summary 가수 노래 정보 변경
+         * 가수의 노래 이미지 변경한다.
+         * @summary 가수 노래 이미지 변경
          * @param {number} songId 변경할 노래 ID
          * @param {SongUpdateRequest} request 변경할 노래 정보
          * @param {*} [options] Override http request option.
@@ -2538,8 +2619,8 @@ export const APIApiFp = function(configuration?: Configuration) {
             };
         },
         /**
-         * 가수의 노래 정보를 변경한다.
-         * @summary 가수 노래 정보 변경
+         * 가수의 노래 이미지 변경한다.
+         * @summary 가수 노래 이미지 변경
          * @param {number} songId 변경할 노래 ID
          * @param {SongUpdateRequest} request 변경할 노래 정보
          * @param {*} [options] Override http request option.
@@ -2716,8 +2797,8 @@ export const APIApiFactory = function (configuration?: Configuration, basePath?:
             return APIApiFp(configuration).getSingerInfoUsingGET(singerName, options).then((request) => request(axios, basePath));
         },
         /**
-         * 가수의 노래 정보를 변경한다.
-         * @summary 가수 노래 정보 변경
+         * 가수의 노래 이미지 변경한다.
+         * @summary 가수 노래 이미지 변경
          * @param {number} songId 변경할 노래 ID
          * @param {SongUpdateRequest} request 변경할 노래 정보
          * @param {*} [options] Override http request option.
@@ -2879,8 +2960,8 @@ export class APIApi extends BaseAPI {
     }
 
     /**
-     * 가수의 노래 정보를 변경한다.
-     * @summary 가수 노래 정보 변경
+     * 가수의 노래 이미지 변경한다.
+     * @summary 가수 노래 이미지 변경
      * @param {number} songId 변경할 노래 ID
      * @param {SongUpdateRequest} request 변경할 노래 정보
      * @param {*} [options] Override http request option.
@@ -4575,7 +4656,7 @@ export const Class01APIV2ApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async gameResultUsingPOST1(resultRequest: GameResultRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GameResultResponseV2>> {
+        async gameResultUsingPOST1(resultRequest: GameResultRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOGameResultResponseV2>> {
             const localVarAxiosArgs = await Class01APIV2ApiAxiosParamCreator(configuration).gameResultUsingPOST1(resultRequest, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -4598,7 +4679,7 @@ export const Class01APIV2ApiFactory = function (configuration?: Configuration, b
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        gameResultUsingPOST1(resultRequest: GameResultRequest, options?: any): AxiosPromise<GameResultResponseV2> {
+        gameResultUsingPOST1(resultRequest: GameResultRequest, options?: any): AxiosPromise<ResponseDTOGameResultResponseV2> {
             return Class01APIV2ApiFp(configuration).gameResultUsingPOST1(resultRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -6477,7 +6558,7 @@ export const RankingControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getRankingInfoOfSeasonUsingGET(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTORankViewModel>> {
+        async getRankingInfoOfSeasonUsingGET(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOSeasonRankingView>> {
             const localVarAxiosArgs = await RankingControllerApiAxiosParamCreator(configuration).getRankingInfoOfSeasonUsingGET(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -6521,7 +6602,7 @@ export const RankingControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRankingInfoOfSeasonUsingGET(options?: any): AxiosPromise<ResponseDTORankViewModel> {
+        getRankingInfoOfSeasonUsingGET(options?: any): AxiosPromise<ResponseDTOSeasonRankingView> {
             return RankingControllerApiFp(configuration).getRankingInfoOfSeasonUsingGET(options).then((request) => request(axios, basePath));
         },
         /**

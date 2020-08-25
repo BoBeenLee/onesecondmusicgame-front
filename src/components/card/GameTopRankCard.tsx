@@ -8,28 +8,28 @@ import ProfileImage from "src/components/image/ProfileImage";
 
 interface IProps {
   style?: ViewProps["style"];
-  rank: number;
+  rank: string;
   name: string;
   profileImage: string;
   score: number;
 }
 
 interface IContainerProps {
-  rank: number;
+  rank: string;
 }
 
-const Container = styled.View`
+const Container = styled.View<IContainerProps>`
   flex: 1;
   flex-direction: column;
   align-items: center;
   position: relative;
   ${(props: IContainerProps) => {
     switch (props.rank) {
-      case 2:
+      case "2":
         return css`
           top: 30px;
         `;
-      case 3:
+      case "3":
         return css`
           top: 60px;
         `;

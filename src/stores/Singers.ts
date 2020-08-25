@@ -2,6 +2,7 @@ import _ from "lodash";
 import { flow, types } from "mobx-state-tree";
 
 import { singers, ISinger } from "src/apis/singer";
+import { includesForSearch } from "src/utils/string";
 
 const mocks = [{ singerName: "a," }, { singerName: "b" }];
 
@@ -34,7 +35,7 @@ const Singers = types
     const fetch = flow(function*() {
       self.filterSingers.replace(
         self.singers.filter(item => {
-          return _.includes(item.singerName, self.variables.q);
+          return includesForSearch(item.singerName, self.variables.q);
         })
       );
     });

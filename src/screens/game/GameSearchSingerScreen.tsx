@@ -163,7 +163,8 @@ const Bottom = styled.View`
   width: 100%;
   justify-content: center;
   align-items: center;
-  border-radius: 24px;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
   background-color: ${colors.darkTwo};
   padding-horizontal: 41px;
   padding-bottom: 31px;
@@ -249,7 +250,7 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
     const singerViewRows = _.ceil(singerViews.length / SINGER_COUMNS_LENGTH);
 
     return (
-      <Container>
+      <Container bottomBackgroundColor={colors.darkTwo}>
         <InnerContainer
           scrollEnabled={false}
           enableOnAndroid={true}

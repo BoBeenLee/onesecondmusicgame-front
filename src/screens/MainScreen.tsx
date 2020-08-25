@@ -38,7 +38,7 @@ import UserItemPopup from "src/components/popup/UserItemPopup";
 import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import DeveloperScreen from "src/screens/DeveloperScreen";
 import Tooltip from "src/components/tooltip/Tooltip";
-import { FIELD, setItem, defaultItemToBoolean } from "src/utils/storage";
+import { storage } from "src/utils/storage";
 import AutoHeightImage from "src/components/image/AutoHeightImage";
 import { getDeviceWidth } from "src/utils/device";
 import UserGameItemScreen from "src/screens/user/UserGameItemScreen";
@@ -46,6 +46,7 @@ import { logEvent } from "src/configs/analytics";
 import { IAppStore } from "src/stores/AppStore";
 import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
 import { LoadingProps } from "src/hocs/withLoading";
+import GameAllRankingScreen from "src/screens/game/GameAllRankingScreen";
 
 interface IInject {
   store: IStore;
@@ -290,7 +291,7 @@ class MainScreen extends Component<IProps, IStates> {
     const [, , isNotTooltipShow] = await Promise.all([
       this.updateAppIfAvailable(),
       this.props.store.initializeMainApp(),
-      defaultItemToBoolean(FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP, false)
+      storage().getDoNotShowRegisterSongTooltip()
     ]);
     this.setState({ isNotTooltipShow });
   }
@@ -407,7 +408,7 @@ class MainScreen extends Component<IProps, IStates> {
 
   private hideRegisterSongTooltip = () => {
     this.setState({ isNotTooltipShow: true }, async () => {
-      await setItem(FIELD.DO_NOT_SHOW_REGISTER_SONG_TOOLTIP, "true");
+      await storage().saveDoNotShowRegisterSongTooltip(true);
     });
   };
 
@@ -463,7 +464,7 @@ class MainScreen extends Component<IProps, IStates> {
 
   private navigateToRanking = () => {
     const { componentId } = this.props;
-    GameRankingScreen.open({ componentId });
+    GameAllRankingScreen.open({ componentId });
   };
 
   private updateAppIfAvailable = async () => {

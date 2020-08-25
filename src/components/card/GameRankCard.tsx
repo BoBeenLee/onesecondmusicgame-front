@@ -1,31 +1,38 @@
 import React from "react";
-import styled from "styled-components/native";
+import styled, { css } from "styled-components/native";
 import { ViewProps, View } from "react-native";
 
 import { Bold12, Bold16 } from "src/components/text/Typographies";
 import ProfileImage from "src/components/image/ProfileImage";
 import colors from "src/styles/colors";
 import XEIcon from "src/components/icon/XEIcon";
-import { ClipPath } from "react-native-svg";
 
 interface IProps {
   style?: ViewProps["style"];
-  rank: number;
+  isMyRank?: boolean;
+  rank: string;
   name: string;
   profileImage: string;
   score: number;
   rankDiff: number;
 }
 
-const Container = styled.View`
+const Container = styled.View<{ isMyRank: boolean }>`
   width: 100%;
   height: 82px;
   flex-direction: row;
   align-items: center;
   border-radius: 8px;
-  background-color: ${colors.blueberry};
   padding-left: 19px;
   padding-right: 36px;
+  ${({ isMyRank }) =>
+    isMyRank
+      ? css`
+          background-color: ${colors.pinkyPurple};
+        `
+      : css`
+          background-color: ${colors.blueberry};
+        `}
 `;
 
 const Content = styled.View`
@@ -87,7 +94,7 @@ const Score = styled(Bold12)`
 `;
 
 function GameRankCard(props: IProps) {
-  const { style, rank, profileImage, name, score, rankDiff } = props;
+  const { style, isMyRank, rank, profileImage, name, score, rankDiff } = props;
 
   const makeIconName = (rankDiff: number) => {
     if (rankDiff < 0) {
@@ -110,7 +117,7 @@ function GameRankCard(props: IProps) {
   };
 
   return (
-    <Container style={style}>
+    <Container style={style} isMyRank={Boolean(isMyRank)}>
       <Content>
         <LeftWrapper>
           <Rank>

@@ -2,113 +2,204 @@ import AsyncStorage from "@react-native-community/async-storage";
 import _ from "lodash";
 
 import { isJSON } from "src/utils/common";
-import { getOS } from "src/utils/device";
-import { getVersion } from "src/configs/device";
+import { defaultNumber } from "src/utils/number";
+import { AUTH_PROVIDER } from "src/stores/AuthStore";
+import { todayFormat } from "src/utils/date";
 
 // tslint:disable:object-literal-sort-keys
-export const FIELD = {
-  ACCESS_ID: "ACCESS_ID",
-  ACCESS_TOKEN: "ACCESS_TOKEN",
-  CODE_PUSH: `CODE_PUSH_${_.upperCase(getOS())}_${getVersion()
-    .split(".")
-    .join("")}`,
-  REFRESH_TOKEN: "REFRESH_TOKEN",
-  PROVIDER_TYPE: "PROVIDER_TYPE",
-  SHARED_ACCESS_ID: "SHARED_ACCESS_ID",
-  DO_NOT_SHOW_GAME_PLAY: "DO_NOT_SHOW_GAME_PLAY",
-  DO_NOT_SHOW_REGISTER_SONG_TOOLTIP: "DO_NOT_SHOW_REGISTER_SONG_TOOLTIP"
-};
+export type StorageType =
+  | "ACCESS_ID"
+  | "ACCESS_TOKEN"
+  | "REFRESH_TOKEN"
+  | "PROVIDER_TYPE"
+  | "SHARED_ACCESS_ID"
+  | "DO_NOT_SHOW_GAME_PLAY"
+  | "DO_NOT_SHOW_REGISTER_SONG_TOOLTIP"
+  | "ADMOB_UNITS_BY_DATE";
 
-export const setItem = (key: string, value: string) => {
-  return new Promise((resolve, reject) => {
-    AsyncStorage.multiSet([[key, value]], errors => {
-      if (_.isEmpty(errors)) {
-        resolve(true);
-        return;
-      }
-      reject(_.first(errors));
-    });
-  });
-};
+export function storageFactory(
+  setItem: (key: string, value: string) => Promise<any>,
+  getItem: (key: string) => Promise<string>,
+  clear: () => void
+) {
+  const setStorageItem = async (key: StorageType, value: string) => {
+    await setItem(key, value);
+  };
 
-export const multiSet = (data: Array<[string, string]>) => {
-  AsyncStorage.multiSet(data);
-};
-
-export const getItem = (key: string): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    AsyncStorage.multiGet([key], (errors, result) => {
-      if (_.isEmpty(errors)) {
-        resolve(_.get(_.first(result), ["1"], "")!);
-        return;
-      }
-      reject(_.first(errors));
-    });
-  });
-};
-
-export const getItems = async (keys: string[]) => {
-  const values = await Promise.all(keys.map(key => getItem(key)));
-  return keys.reduce((res, key, index) => {
-    return {
-      ...res,
-      [key]: values[index]
-    };
-  }, {});
-};
-
-export const defaultItemTo = async <T>(
-  key: string,
-  defaultItem: T
-): Promise<T> => {
-  try {
-    const itemJSON = await getItem(key);
-    if (!isJSON(itemJSON)) {
+  const getStringWithDefault = async (
+    key: StorageType,
+    defaultItem: string
+  ): Promise<string> => {
+    try {
+      const itemString = await getItem(key);
+      return _.isEmpty(itemString) ? defaultItem : itemString;
+    } catch (error) {
       return defaultItem;
     }
-    return JSON.parse(itemJSON) as T;
-  } catch (error) {
-    // NOTHING
-  }
-  return defaultItem;
-};
+  };
 
-export const defaultItemToBoolean = async (
-  key: string,
-  defaultItem: boolean
-): Promise<boolean> => {
-  try {
-    const itemString = await getItem(key);
-    return _.isEmpty(itemString) ? defaultItem : itemString === "true";
-  } catch (error) {
+  const getBooleanWithDefault = async (
+    key: StorageType,
+    defaultItem: boolean
+  ): Promise<boolean> => {
+    try {
+      const itemString = await getItem(key);
+      return _.isEmpty(itemString) ? defaultItem : itemString === "true";
+    } catch (error) {
+      return defaultItem;
+    }
+  };
+
+  const getNumberWithDefault = async (
+    key: StorageType,
+    defaultItem: number
+  ): Promise<number> => {
+    try {
+      const itemString = await getItem(key);
+      return defaultNumber(itemString, defaultItem);
+    } catch (error) {
+      return defaultItem;
+    }
+  };
+
+  const getJSONWithDefault = async <T>(
+    key: StorageType,
+    defaultItem: T
+  ): Promise<T> => {
+    try {
+      const itemJSON = await getItem(key);
+      if (!isJSON(itemJSON)) {
+        return defaultItem;
+      }
+      return JSON.parse(itemJSON) as T;
+    } catch (error) {
+      // NOTHING
+    }
     return defaultItem;
-  }
-};
+  };
 
-export const defaultItemToString = async (
-  key: string,
-  defaultItem: string
-): Promise<string> => {
-  try {
-    const itemString = await getItem(key);
-    return _.isEmpty(itemString) ? defaultItem : itemString;
-  } catch (error) {
-    return defaultItem;
-  }
-};
+  const setStorages = {
+    saveDoNotShowRegisterSongTooltip: async (
+      doNotShowRegisterSongTooltip: boolean
+    ) => {
+      await setStorageItem(
+        "DO_NOT_SHOW_REGISTER_SONG_TOOLTIP",
+        doNotShowRegisterSongTooltip ? "true" : "false"
+      );
+    },
+    saveDoNotShowGamePlay: async (doNotShowGamePlay: boolean) => {
+      await setStorageItem(
+        "DO_NOT_SHOW_GAME_PLAY",
+        doNotShowGamePlay ? "true" : "false"
+      );
+    },
+    saveSharedAccessId: async (accessId: string) => {
+      await setStorageItem("SHARED_ACCESS_ID", accessId);
+    },
+    saveCodePushData: async <T>(codePushKey: string, data: T) => {
+      await setStorageItem(codePushKey as any, JSON.stringify(data));
+    },
+    saveToken: async ({
+      provider,
+      accessId,
+      accessToken,
+      refreshToken
+    }: {
+      provider: AUTH_PROVIDER;
+      accessId: string;
+      accessToken: string;
+      refreshToken: string;
+    }) => {
+      await Promise.all([
+        setStorageItem("PROVIDER_TYPE", provider),
+        setStorageItem("ACCESS_ID", accessId),
+        setStorageItem("ACCESS_TOKEN", accessToken),
+        setStorageItem("REFRESH_TOKEN", refreshToken)
+      ]);
+    },
+    increaseAdmobUnits: async () => {
+      const map = await getJSONWithDefault<Record<string, number>>(
+        "ADMOB_UNITS_BY_DATE",
+        {}
+      );
+      const todayCount = await getStorages.todayAdmobUnitCount();
+      map[todayFormat()] = todayCount + 1;
+      setStorageItem("ADMOB_UNITS_BY_DATE", JSON.stringify(map));
+    }
+  };
 
-export const defaultItemToNumber = async (
-  key: string,
-  defaultItem: number
-): Promise<number> => {
-  try {
-    const itemString = await getItem(key);
-    return _.isNumber(itemString) ? Number(itemString) : defaultItem;
-  } catch (error) {
-    return defaultItem;
-  }
-};
+  const getStorages = {
+    getDoNotShowRegisterSongTooltip: () => {
+      return getBooleanWithDefault("DO_NOT_SHOW_REGISTER_SONG_TOOLTIP", false);
+    },
+    getDoNotShowGamePlay: () => {
+      return getBooleanWithDefault("DO_NOT_SHOW_GAME_PLAY", false);
+    },
+    getSharedAccessId: () => {
+      return getStringWithDefault("SHARED_ACCESS_ID", "");
+    },
+    getCodePushData: async <T>(
+      codePushKey: string,
+      defaultData: T
+    ): Promise<T> => {
+      const response = await getJSONWithDefault(
+        codePushKey as any,
+        defaultData
+      );
+      return response;
+    },
+    getToken: async () => {
+      const [
+        provider,
+        accessId,
+        accessToken,
+        refreshToken
+      ] = await Promise.all([
+        getStringWithDefault("PROVIDER_TYPE", "NONE"),
+        getStringWithDefault("ACCESS_ID", ""),
+        getStringWithDefault("ACCESS_TOKEN", ""),
+        getStringWithDefault("REFRESH_TOKEN", "")
+      ]);
+      return {
+        provider,
+        accessId,
+        accessToken,
+        refreshToken
+      };
+    },
+    todayAdmobUnitCount: async () => {
+      const map = await getJSONWithDefault<Record<string, number>>(
+        "ADMOB_UNITS_BY_DATE",
+        {}
+      );
+      return map[todayFormat()] ?? 0;
+    }
+  };
 
-export const clear = () => {
-  return AsyncStorage.clear();
-};
+  return {
+    ...setStorages,
+    ...getStorages,
+    setItem,
+    getStringWithDefault,
+    getBooleanWithDefault,
+    getNumberWithDefault,
+    getJSONWithDefault,
+    clear
+  };
+}
+
+export const storage = _.once(() => {
+  const setItem = async (key: string, value: string) => {
+    AsyncStorage.setItem(key, value);
+  };
+
+  const getItem = async (key: string): Promise<string> => {
+    const response = await AsyncStorage.getItem(key);
+    return response ?? "";
+  };
+
+  const clear = () => {
+    return AsyncStorage.clear();
+  };
+  return storageFactory(setItem, getItem, clear);
+});

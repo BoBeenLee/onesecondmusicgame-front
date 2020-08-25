@@ -35,3 +35,7 @@ export const traverseObjectSliceStr = (
   }
   return o;
 };
+
+export const includesForSearch = (target: string, search: string) => {
+  return target.toUpperCase().includes(search.toUpperCase());
+};

@@ -4,7 +4,8 @@ import {
   FlatListProps,
   FlatList,
   ListRenderItem,
-  Clipboard
+  Clipboard,
+  Alert
 } from "react-native";
 import { inject, observer, Observer } from "mobx-react";
 import styled from "styled-components/native";
@@ -32,6 +33,7 @@ import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
 import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import withDisabled, { DisabledProps } from "src/hocs/withDisabled";
 import { delay } from "src/utils/common";
+import { storage } from "src/utils/storage";
 interface IInject {
   authStore: IAuthStore;
   toastStore: IToastStore;
@@ -244,12 +246,17 @@ class UserGameItemScreen extends Component<IProps, IStates> {
     );
   };
 
-  private requestHeartRewardAD = () => {
+  private requestHeartRewardAD = async () => {
     const { adStatus } = this.state;
+    const todayAdmobUnitCount = await storage().todayAdmobUnitCount();
     if (this.admobUnit.isLoaded() && adStatus !== "open") {
       this.setState({
         adStatus: "open"
       });
+      if (todayAdmobUnitCount > 3) {
+        Alert.alert("오늘 하루 광고를 다보았습니다. 다음날 다시보세요.");
+        return;
+      }
       this.admobUnit.show();
     }
   };

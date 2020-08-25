@@ -1,16 +1,19 @@
 import { flow, types } from "mobx-state-tree";
-import { getRankingInfoUsingGET } from "src/apis/rank";
+import {
+  getRankingInfoUsingGET,
+  getRankingInfoOfMonthsUsingGET
+} from "src/apis/rank";
 import { RankView } from "__generate__/api";
 
-export interface IRankItem {
+export interface IMonthlyRankItem {
   nickname: string;
   point: number;
   rankDiff: number;
   profileImageUrl: string;
 }
 
-const Ranks = types
-  .model("Ranks", {
+const MonthlyRanks = types
+  .model("MonthlyRanks", {
     isRefresh: types.optional(types.boolean, false),
     ranks: types.optional(types.array(types.frozen<RankView>()), []),
     time: types.optional(types.number, 0)
@@ -29,7 +32,7 @@ const Ranks = types
     };
 
     const fetch = flow(function*() {
-      const response: RetrieveAsyncFunc<typeof getRankingInfoUsingGET> = yield getRankingInfoUsingGET();
+      const response: RetrieveAsyncFunc<typeof getRankingInfoOfMonthsUsingGET> = yield getRankingInfoOfMonthsUsingGET();
       self.time = (response?.time ?? 0) * 1000;
       self.ranks.replace(response?.rankViewList ?? []);
     });
@@ -56,6 +59,6 @@ const Ranks = types
     };
   });
 
-export type IRanks = typeof Ranks.Type;
+export type IMonthlyRanks = typeof MonthlyRanks.Type;
 
-export default Ranks;
+export default MonthlyRanks;

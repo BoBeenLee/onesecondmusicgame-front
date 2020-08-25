@@ -16,7 +16,7 @@ import BackTopBar from "src/components/topbar/BackTopBar";
 import GameTopRankCard from "src/components/card/GameTopRankCard";
 import GameRankCard from "src/components/card/GameRankCard";
 import colors from "src/styles/colors";
-import Ranks from "src/stores/Ranks";
+import MonthlyRanks from "src/stores/MonthlyRanks";
 import { RankView } from "__generate__/api";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
@@ -105,7 +105,7 @@ class GameRankingScreen extends Component<IProps> {
     });
   }
 
-  public ranks = Ranks.create();
+  public ranks = MonthlyRanks.create();
 
   constructor(props: IProps) {
     super(props);
@@ -125,19 +125,19 @@ class GameRankingScreen extends Component<IProps> {
             <Header>
               <TopRankView>
                 <GameTopRankCardView
-                  rank={2}
+                  rank={"2"}
                   profileImage={secondRank?.profileImageUrl ?? ""}
                   name={secondRank?.nickname ?? ""}
                   score={secondRank?.point ?? 0}
                 />
                 <GameTopRankCardView
-                  rank={1}
+                  rank={"1"}
                   profileImage={firstRank?.profileImageUrl ?? ""}
                   name={firstRank?.nickname ?? ""}
                   score={firstRank?.point ?? 0}
                 />
                 <GameTopRankCardView
-                  rank={3}
+                  rank={"3"}
                   profileImage={thirdRank?.profileImageUrl ?? ""}
                   name={thirdRank?.nickname ?? ""}
                   score={thirdRank?.point ?? 0}
@@ -170,7 +170,7 @@ class GameRankingScreen extends Component<IProps> {
   private renderRankItem: ListRenderItem<RankView> = ({ item, index }) => {
     return (
       <GameRankCardView
-        rank={index + 4}
+        rank={String(index + 4)}
         profileImage={item?.profileImageUrl ?? ""}
         name={item?.nickname ?? ""}
         score={item?.point ?? 0}

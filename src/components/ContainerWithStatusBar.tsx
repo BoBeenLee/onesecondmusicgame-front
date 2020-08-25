@@ -5,22 +5,23 @@ import SafeAreaView from "react-native-safe-area-view";
 import LinearGradient from "react-native-linear-gradient";
 
 import colors from "src/styles/colors";
-import { isAndroid } from "src/utils/device";
+import { isAndroid, getBottomSpace } from "src/utils/device";
 
 interface IProps {
   children?: React.ReactNode;
   style?: ViewProps["style"];
   statusBarColor?: string;
+  bottomBackgroundColor?: string;
 }
 
 const SafeAreaContainer = styled(SafeAreaView)`
   flex: 1;
-  background-color: ${colors.darkBlueGrey};
+  background-color: ${colors.darkIndigo};
 `;
 
 const AndroidContainer = styled.View`
   flex: 1;
-  background-color: ${colors.darkBlueGrey};
+  background-color: ${colors.darkIndigo};
 `;
 
 const Container = styled(LinearGradient).attrs({
@@ -29,9 +30,16 @@ const Container = styled(LinearGradient).attrs({
   flex: 1;
 `;
 
+const Bottom = styled.View<{ bottomBackgroundColor: string }>`
+  width: 100%;
+  height: ${getBottomSpace()}px;
+  background-color: ${({ bottomBackgroundColor }) => bottomBackgroundColor};
+`;
+
 function ContainerWithStatusBar({
   children,
   statusBarColor = "white",
+  bottomBackgroundColor = colors.almostBlack,
   style
 }: IProps) {
   if (isAndroid()) {
@@ -42,9 +50,12 @@ function ContainerWithStatusBar({
     );
   }
   return (
-    <SafeAreaContainer>
-      <Container style={style}>{children}</Container>
-    </SafeAreaContainer>
+    <React.Fragment>
+      <SafeAreaContainer>
+        <Container style={style}>{children}</Container>
+      </SafeAreaContainer>
+      <Bottom bottomBackgroundColor={bottomBackgroundColor} />
+    </React.Fragment>
   );
 }
 
