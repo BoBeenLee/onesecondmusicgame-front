@@ -39,6 +39,7 @@ const images = {
   lightRanking: require("./light_ranking.gif"),
   icWhiteArrowRight: require("./ic_white_arrow.png"),
   icTopArrow: require("./ic_top_arrow.png"),
-  bgRankTitle: require("./bg_rank_title.png")
+  bgRankTitle: require("./bg_rank_title.png"),
+  bgRankTitleBomb: require("./bg_rank_title_bomb.png")
 };
 export default images;

@@ -69,9 +69,16 @@ const TabContent = styled(TransparentTabView)``;
 const TitleGroup = styled.View`
   flex-direction: column;
   align-items: center;
-  width: 301px;
+  width: 347px;
   height: 72px;
   margin-top: 30px;
+`;
+
+const TitleBackground = styled.View`
+  flex-direction: column;
+  align-items: center;
+  width: 295px;
+  height: 68px;
 `;
 
 const Title = styled(Bold18)`
@@ -84,6 +91,20 @@ const TitleBackgroundImage = styled.Image`
   position: absolute;
   width: 100%;
   height: 100%;
+`;
+
+const TitleBombLeft = styled.Image`
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  left: 0px;
+`;
+
+const TitleBombRight = styled.Image`
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  right: 0px;
 `;
 
 const MonthlyRank = styled.View`
@@ -249,8 +270,12 @@ class GameAllRankingScreen extends Component<Props, States> {
                 ListHeaderComponent: (
                   <RankHeader>
                     <TitleGroup>
-                      <TitleBackgroundImage source={images.bgRankTitle} />
-                      <Title>{todayFormat(DATE_FORMAT1)}의 음잘알</Title>
+                      <TitleBombLeft source={images.bgRankTitleBomb} />
+                      <TitleBombRight source={images.bgRankTitleBomb} />
+                      <TitleBackground>
+                        <TitleBackgroundImage source={images.bgRankTitle} />
+                        <Title>{todayFormat(DATE_FORMAT1)}의 음잘알</Title>
+                      </TitleBackground>
                     </TitleGroup>
                     <TopRankView>
                       <GameTopRankCardView
@@ -307,7 +332,12 @@ class GameAllRankingScreen extends Component<Props, States> {
                 ListHeaderComponent: (
                   <RankHeader>
                     <TitleGroup>
-                      <TitleBackgroundImage source={images.bgRankTitle} />
+                      <TitleBombLeft source={images.bgRankTitleBomb} />
+                      <TitleBombRight source={images.bgRankTitleBomb} />
+                      <TitleBackground>
+                        <TitleBackgroundImage source={images.bgRankTitle} />
+                        <Title>{todayFormat(DATE_FORMAT1)}의 음잘알</Title>
+                      </TitleBackground>
                       <Title>{todayFormat(DATE_FORMAT1)}의 음잘알</Title>
                     </TitleGroup>
                     <PreviousSeasonTop3
