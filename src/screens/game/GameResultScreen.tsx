@@ -45,7 +45,8 @@ import {
   Item,
   ItemItemTypeEnum,
   GameResultResponse,
-  ScoreViewModelScoreTypeEnum
+  ScoreViewModelScoreTypeEnum,
+  GameResultResponseV2
 } from "__generate__/api";
 import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import images from "src/images";
@@ -65,7 +66,7 @@ interface IParams {
 interface IProps extends IInject, IParams, PopupProps, LoadingProps {}
 
 interface IStates {
-  gameResult: NoUndefinedField<GameResultResponse>;
+  gameResult: NoUndefinedField<GameResultResponseV2>;
 }
 
 const Container = styled(ContainerWithStatusBar)`
@@ -192,6 +193,11 @@ const ResultSectionMyRankRow = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 4px;
+`;
+
+const RankType = styled(Regular14)`
+  color: ${colors.lightGrey};
 `;
 
 const Rank = styled(Bold16)`
@@ -201,10 +207,12 @@ const Rank = styled(Bold16)`
 
 const Name = styled(Bold16)`
   color: ${colors.paleLavender};
+  margin-left: 10px;
 `;
 
 const Score = styled(Regular14)`
   color: ${colors.paleLavender};
+  margin-left: 30px;
 `;
 
 const ResultSectionRemainHeartRow = styled.View`
@@ -301,8 +309,7 @@ class GameResultScreen extends Component<IProps, IStates> {
     this.state = {
       gameResult: {
         gainPointOfThisGame: 0,
-        totalPoint: 0,
-        myRanking: 0,
+        scoreViewModelList: [],
         heartCount: 0,
         resultComment: []
       }
@@ -326,12 +333,7 @@ class GameResultScreen extends Component<IProps, IStates> {
   public render() {
     const heart = this.props.authStore.user?.heart;
     const nickname = this.props.authStore.user?.nickname ?? "";
-    const {
-      gainPointOfThisGame,
-      totalPoint,
-      myRanking,
-      resultComment
-    } = this.state.gameResult;
+    const { gainPointOfThisGame, resultComment } = this.state.gameResult;
     const { gamePlayStepResultStatuses } = this.gamePlayHighlights;
 
     return (
@@ -347,7 +349,9 @@ class GameResultScreen extends Component<IProps, IStates> {
                 <GainScoreTitle>이번 게임 점수</GainScoreTitle>
                 <GainScore>{gainPointOfThisGame}점</GainScore>
                 <TotalScoreTitle>누적 점수</TotalScoreTitle>
-                <TotalScore>{totalPoint}점</TotalScore>
+                <TotalScore>
+                  {this.monthlyScore?.score?.point ?? 0}점
+                </TotalScore>
               </GainScoreView>
             </ScoreView>
             <ScoreDescription>
@@ -372,11 +376,20 @@ class GameResultScreen extends Component<IProps, IStates> {
                 />
               </ResultSectionHeaderRow>
               <ResultSectionMyRankRow>
+                <RankType>월간랭킹</RankType>
                 <ResultSectionGroup>
-                  <Rank>{myRanking}위</Rank>
+                  <Rank>{this.monthlyScore?.ranking ?? "??"}위</Rank>
                   <Name>{nickname}</Name>
+                  <Score>{this.monthlyScore?.score?.point ?? 0}점</Score>
                 </ResultSectionGroup>
-                <Score>{totalPoint}점</Score>
+              </ResultSectionMyRankRow>
+              <ResultSectionMyRankRow>
+                <RankType>시즌랭킹</RankType>
+                <ResultSectionGroup>
+                  <Rank>{this.seasonScore?.ranking ?? "??"}위</Rank>
+                  <Name>{nickname}</Name>
+                  <Score>{this.seasonScore?.score?.point ?? 0}점</Score>
+                </ResultSectionGroup>
               </ResultSectionMyRankRow>
             </ResultSection>
             <ResultSection onPress={this.onUseFullHeartPopup}>
@@ -427,6 +440,22 @@ class GameResultScreen extends Component<IProps, IStates> {
     );
   }
 
+  private get seasonScore() {
+    const { scoreViewModelList } = this.state.gameResult;
+    return _.find(
+      scoreViewModelList,
+      item => item.scoreType === ScoreViewModelScoreTypeEnum.SEASON
+    );
+  }
+
+  private get monthlyScore() {
+    const { scoreViewModelList } = this.state.gameResult;
+    return _.find(
+      scoreViewModelList,
+      item => item.scoreType === ScoreViewModelScoreTypeEnum.MONTHLY
+    );
+  }
+
   private chargeTime = async () => {
     const heart = this.props.authStore.user?.heart;
     await heart?.fetchHeart?.();
@@ -438,16 +467,20 @@ class GameResultScreen extends Component<IProps, IStates> {
       gameAnswerList: toGameAnswers,
       playToken
     });
-    const resultItem = _.find(
-      response.scoreViewModelList ?? [],
-      item => item.scoreType === ScoreViewModelScoreTypeEnum.SEASON
-    );
     await this.props.authStore.user?.heart?.fetchHeart();
     this.setState({
       gameResult: {
         gainPointOfThisGame: response.gainPointOfThisGame ?? 0,
-        totalPoint: resultItem?.score?.point ?? 0,
-        myRanking: resultItem?.ranking ?? 0,
+        scoreViewModelList: (response.scoreViewModelList ?? []).map(item => {
+          return {
+            score: {
+              point: item.score?.point ?? 0,
+              id: item.score?.id ?? 0
+            },
+            ranking: item.ranking ?? 0,
+            scoreType: item.scoreType!
+          };
+        }),
         heartCount: response.heartCount ?? 0,
         resultComment: response.resultComment ?? []
       }
