@@ -154,7 +154,8 @@ const ScoreHighlightDescription = styled(Bold24)`
 
 const ResultSection = styled.TouchableOpacity`
   width: 100%;
-  height: 97px;
+  min-height: 97px;
+  padding-vertical: 20px;
   padding-horizontal: 20px;
   flex-direction: column;
   justify-content: center;
@@ -211,8 +212,9 @@ const Name = styled(Bold16)`
 `;
 
 const Score = styled(Regular14)`
+  width: 80px;
   color: ${colors.paleLavender};
-  margin-left: 30px;
+  text-align: right;
 `;
 
 const ResultSectionRemainHeartRow = styled.View`
