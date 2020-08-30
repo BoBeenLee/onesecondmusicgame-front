@@ -21,6 +21,7 @@ const colors = {
   robinEggBlue: "#82fcfa",
   purpleishPink: "#e860d2",
   pinkyPurpleTwo: "#c343c1",
+  pinkPurple: "#e82cea",
   lavender: "#c6afeb",
   palePurple: "#b096da",
   pinkyPurpleThree: "#c442c2",

@@ -19,10 +19,7 @@ interface IProps {
   title: string;
   author: string;
   isRegistered: boolean;
-  isLike: boolean;
-  likeCount: number;
   audioType: AudioType;
-  onLikePress: () => void;
   onPlayToggle: () => void;
 }
 
@@ -41,10 +38,10 @@ const Content = styled.View`
 `;
 
 const ThumnailView = styled.View`
-  width: 76px;
-  height: 72px;
+  width: 61px;
+  height: 61px;
   border-radius: 8px;
-  margin-right: 31px;
+  margin-right: 13px;
   overflow: hidden;
 `;
 
@@ -74,17 +71,6 @@ const RegisteredSongText = styled(Regular14)`
 
 const PlayIcon = styled(XEIcon)``;
 
-const HeartView = styled.View`
-  flex-direction: row;
-  align-items: center;
-`;
-
-const HeartIcon = styled(XEIcon)``;
-
-const HeartCount = styled(Bold12)`
-  color: ${colors.lightGrey};
-`;
-
 const GroupButton = styled.TouchableOpacity`
   flex-direction: column;
   justify-content: center;
@@ -103,9 +89,6 @@ function SearchTrackCard(props: IProps) {
     title,
     author,
     isRegistered,
-    isLike,
-    likeCount,
-    onLikePress,
     audioType,
     onPlayToggle
   } = props;
@@ -122,12 +105,7 @@ function SearchTrackCard(props: IProps) {
             <RegisteredSongText>
               이미 등록되어 있는 곡 입니다.
             </RegisteredSongText>
-          ) : (
-            <HeartView>
-              <HeartIcon name="heart" size={10} color={colors.brightMagenta} />
-              <HeartCount>{likeCount}</HeartCount>
-            </HeartView>
-          )}
+          ) : null}
         </TrackView>
         {isRegistered ? null : (
           <>
@@ -138,14 +116,6 @@ function SearchTrackCard(props: IProps) {
                 color={colors.lightGrey}
               />
               <ButtonText>미리듣기</ButtonText>
-            </GroupButton>
-            <GroupButton onPress={onLikePress}>
-              <HeartIcon
-                name={isLike ? "heart" : "heart-o"}
-                size={33}
-                color={isLike ? colors.brightMagenta : colors.lightGrey}
-              />
-              <ButtonText>좋아요</ButtonText>
             </GroupButton>
           </>
         )}
@@ -160,8 +130,6 @@ const updateKeys: Array<keyof IProps> = [
   "title",
   "author",
   "isRegistered",
-  "isLike",
-  "likeCount",
   "audioType"
 ];
 export default onlyUpdateForKeys(updateKeys)(SearchTrackCard);
