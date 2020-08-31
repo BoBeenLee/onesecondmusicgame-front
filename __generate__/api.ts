@@ -283,8 +283,65 @@ export interface HeartResponse {
 export interface InlineObject {
     /**
      * 
-     * @type {any}
+     * @type {GameStartRequest}
      * @memberof InlineObject
+     */
+    gameRequest?: GameStartRequest;
+    /**
+     * 
+     * @type {MusicUser}
+     * @memberof InlineObject
+     */
+    musicUser?: MusicUser;
+}
+/**
+ * 
+ * @export
+ * @interface InlineObject1
+ */
+export interface InlineObject1 {
+    /**
+     * 
+     * @type {GameResultRequest}
+     * @memberof InlineObject1
+     */
+    resultRequest?: GameResultRequest;
+    /**
+     * 
+     * @type {MusicUser}
+     * @memberof InlineObject1
+     */
+    musicUser?: MusicUser;
+}
+/**
+ * 
+ * @export
+ * @interface InlineObject2
+ */
+export interface InlineObject2 {
+    /**
+     * 
+     * @type {GameAnswerCheckRequest}
+     * @memberof InlineObject2
+     */
+    answerCheckRequest?: GameAnswerCheckRequest;
+    /**
+     * 
+     * @type {MusicUser}
+     * @memberof InlineObject2
+     */
+    musicUser?: MusicUser;
+}
+/**
+ * 
+ * @export
+ * @interface InlineObject3
+ */
+export interface InlineObject3 {
+    /**
+     * 
+     * @type {any}
+     * @memberof InlineObject3
      */
     profileImage?: any;
 }
@@ -1330,11 +1387,17 @@ export interface Song {
      */
     refinedTitle?: string;
     /**
-     * 이 노래의 주인인 가수 정보.
+     * 이 노래의 주인인 가수 이름.
      * @type {string}
      * @memberof Song
      */
-    singer?: string;
+    singerName?: string;
+    /**
+     * 
+     * @type {Singer}
+     * @memberof Song
+     */
+    singer?: Singer;
     /**
      * true : 사용자들에게 출제 되고 있는 문제임 / false : 사용자들에게 출제 되고 있지 않은 노래임.
      * @type {boolean}
@@ -1359,6 +1422,12 @@ export interface Song {
      * @memberof Song
      */
     songHighlight?: Array<SongHighlight>;
+    /**
+     * 노래의 길이(milliseconds)
+     * @type {number}
+     * @memberof Song
+     */
+    duration?: number;
 }
 /**
  * 특정 Song에 등록된 Highlight들. 해당 객체의 정보를 바탕으로 문제가 출제된다.
@@ -1868,14 +1937,14 @@ export const GameControllerApiAxiosParamCreator = function (configuration?: Conf
     return {
         /**
          * 
-         * @param {GameResultRequest} gameResultRequest 
+         * @param {InlineObject1} inlineObject1 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        gameResult: async (gameResultRequest: GameResultRequest, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'gameResultRequest' is not null or undefined
-            if (gameResultRequest === null || gameResultRequest === undefined) {
-                throw new RequiredError('gameResultRequest','Required parameter gameResultRequest was null or undefined when calling gameResult.');
+        gameResult: async (inlineObject1: InlineObject1, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'inlineObject1' is not null or undefined
+            if (inlineObject1 === null || inlineObject1 === undefined) {
+                throw new RequiredError('inlineObject1','Required parameter inlineObject1 was null or undefined when calling gameResult.');
             }
             const localVarPath = `/game/result`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
@@ -1896,8 +1965,8 @@ export const GameControllerApiAxiosParamCreator = function (configuration?: Conf
             delete localVarUrlObj.search;
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof gameResultRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(gameResultRequest !== undefined ? gameResultRequest : {}) : (gameResultRequest || "");
+            const needsSerialization = (typeof inlineObject1 !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(inlineObject1 !== undefined ? inlineObject1 : {}) : (inlineObject1 || "");
 
             return {
                 url: globalImportUrl.format(localVarUrlObj),
@@ -1906,14 +1975,14 @@ export const GameControllerApiAxiosParamCreator = function (configuration?: Conf
         },
         /**
          * 
-         * @param {GameStartRequest} gameStartRequest 
+         * @param {InlineObject} inlineObject 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getHighlightList: async (gameStartRequest: GameStartRequest, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'gameStartRequest' is not null or undefined
-            if (gameStartRequest === null || gameStartRequest === undefined) {
-                throw new RequiredError('gameStartRequest','Required parameter gameStartRequest was null or undefined when calling getHighlightList.');
+        getHighlightList: async (inlineObject: InlineObject, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'inlineObject' is not null or undefined
+            if (inlineObject === null || inlineObject === undefined) {
+                throw new RequiredError('inlineObject','Required parameter inlineObject was null or undefined when calling getHighlightList.');
             }
             const localVarPath = `/game/start`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
@@ -1934,8 +2003,8 @@ export const GameControllerApiAxiosParamCreator = function (configuration?: Conf
             delete localVarUrlObj.search;
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof gameStartRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(gameStartRequest !== undefined ? gameStartRequest : {}) : (gameStartRequest || "");
+            const needsSerialization = (typeof inlineObject !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(inlineObject !== undefined ? inlineObject : {}) : (inlineObject || "");
 
             return {
                 url: globalImportUrl.format(localVarUrlObj),
@@ -1944,14 +2013,14 @@ export const GameControllerApiAxiosParamCreator = function (configuration?: Conf
         },
         /**
          * 
-         * @param {GameAnswerCheckRequest} gameAnswerCheckRequest 
+         * @param {InlineObject2} inlineObject2 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        isAnswer: async (gameAnswerCheckRequest: GameAnswerCheckRequest, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'gameAnswerCheckRequest' is not null or undefined
-            if (gameAnswerCheckRequest === null || gameAnswerCheckRequest === undefined) {
-                throw new RequiredError('gameAnswerCheckRequest','Required parameter gameAnswerCheckRequest was null or undefined when calling isAnswer.');
+        isAnswer: async (inlineObject2: InlineObject2, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'inlineObject2' is not null or undefined
+            if (inlineObject2 === null || inlineObject2 === undefined) {
+                throw new RequiredError('inlineObject2','Required parameter inlineObject2 was null or undefined when calling isAnswer.');
             }
             const localVarPath = `/game/answer`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
@@ -1972,8 +2041,8 @@ export const GameControllerApiAxiosParamCreator = function (configuration?: Conf
             delete localVarUrlObj.search;
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof gameAnswerCheckRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(gameAnswerCheckRequest !== undefined ? gameAnswerCheckRequest : {}) : (gameAnswerCheckRequest || "");
+            const needsSerialization = (typeof inlineObject2 !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(inlineObject2 !== undefined ? inlineObject2 : {}) : (inlineObject2 || "");
 
             return {
                 url: globalImportUrl.format(localVarUrlObj),
@@ -2020,12 +2089,12 @@ export const GameControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {GameResultRequest} gameResultRequest 
+         * @param {InlineObject1} inlineObject1 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async gameResult(gameResultRequest: GameResultRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOGameResultResponse>> {
-            const localVarAxiosArgs = await GameControllerApiAxiosParamCreator(configuration).gameResult(gameResultRequest, options);
+        async gameResult(inlineObject1: InlineObject1, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOGameResultResponse>> {
+            const localVarAxiosArgs = await GameControllerApiAxiosParamCreator(configuration).gameResult(inlineObject1, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -2033,12 +2102,12 @@ export const GameControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {GameStartRequest} gameStartRequest 
+         * @param {InlineObject} inlineObject 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getHighlightList(gameStartRequest: GameStartRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOGameStartResponse>> {
-            const localVarAxiosArgs = await GameControllerApiAxiosParamCreator(configuration).getHighlightList(gameStartRequest, options);
+        async getHighlightList(inlineObject: InlineObject, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOGameStartResponse>> {
+            const localVarAxiosArgs = await GameControllerApiAxiosParamCreator(configuration).getHighlightList(inlineObject, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -2046,12 +2115,12 @@ export const GameControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {GameAnswerCheckRequest} gameAnswerCheckRequest 
+         * @param {InlineObject2} inlineObject2 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async isAnswer(gameAnswerCheckRequest: GameAnswerCheckRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOBoolean>> {
-            const localVarAxiosArgs = await GameControllerApiAxiosParamCreator(configuration).isAnswer(gameAnswerCheckRequest, options);
+        async isAnswer(inlineObject2: InlineObject2, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOBoolean>> {
+            const localVarAxiosArgs = await GameControllerApiAxiosParamCreator(configuration).isAnswer(inlineObject2, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -2080,30 +2149,30 @@ export const GameControllerApiFactory = function (configuration?: Configuration,
     return {
         /**
          * 
-         * @param {GameResultRequest} gameResultRequest 
+         * @param {InlineObject1} inlineObject1 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        gameResult(gameResultRequest: GameResultRequest, options?: any): AxiosPromise<ResponseDTOGameResultResponse> {
-            return GameControllerApiFp(configuration).gameResult(gameResultRequest, options).then((request) => request(axios, basePath));
+        gameResult(inlineObject1: InlineObject1, options?: any): AxiosPromise<ResponseDTOGameResultResponse> {
+            return GameControllerApiFp(configuration).gameResult(inlineObject1, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {GameStartRequest} gameStartRequest 
+         * @param {InlineObject} inlineObject 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getHighlightList(gameStartRequest: GameStartRequest, options?: any): AxiosPromise<ResponseDTOGameStartResponse> {
-            return GameControllerApiFp(configuration).getHighlightList(gameStartRequest, options).then((request) => request(axios, basePath));
+        getHighlightList(inlineObject: InlineObject, options?: any): AxiosPromise<ResponseDTOGameStartResponse> {
+            return GameControllerApiFp(configuration).getHighlightList(inlineObject, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {GameAnswerCheckRequest} gameAnswerCheckRequest 
+         * @param {InlineObject2} inlineObject2 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        isAnswer(gameAnswerCheckRequest: GameAnswerCheckRequest, options?: any): AxiosPromise<ResponseDTOBoolean> {
-            return GameControllerApiFp(configuration).isAnswer(gameAnswerCheckRequest, options).then((request) => request(axios, basePath));
+        isAnswer(inlineObject2: InlineObject2, options?: any): AxiosPromise<ResponseDTOBoolean> {
+            return GameControllerApiFp(configuration).isAnswer(inlineObject2, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2125,35 +2194,35 @@ export const GameControllerApiFactory = function (configuration?: Configuration,
 export class GameControllerApi extends BaseAPI {
     /**
      * 
-     * @param {GameResultRequest} gameResultRequest 
+     * @param {InlineObject1} inlineObject1 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof GameControllerApi
      */
-    public gameResult(gameResultRequest: GameResultRequest, options?: any) {
-        return GameControllerApiFp(this.configuration).gameResult(gameResultRequest, options).then((request) => request(this.axios, this.basePath));
+    public gameResult(inlineObject1: InlineObject1, options?: any) {
+        return GameControllerApiFp(this.configuration).gameResult(inlineObject1, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @param {GameStartRequest} gameStartRequest 
+     * @param {InlineObject} inlineObject 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof GameControllerApi
      */
-    public getHighlightList(gameStartRequest: GameStartRequest, options?: any) {
-        return GameControllerApiFp(this.configuration).getHighlightList(gameStartRequest, options).then((request) => request(this.axios, this.basePath));
+    public getHighlightList(inlineObject: InlineObject, options?: any) {
+        return GameControllerApiFp(this.configuration).getHighlightList(inlineObject, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @param {GameAnswerCheckRequest} gameAnswerCheckRequest 
+     * @param {InlineObject2} inlineObject2 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof GameControllerApi
      */
-    public isAnswer(gameAnswerCheckRequest: GameAnswerCheckRequest, options?: any) {
-        return GameControllerApiFp(this.configuration).isAnswer(gameAnswerCheckRequest, options).then((request) => request(this.axios, this.basePath));
+    public isAnswer(inlineObject2: InlineObject2, options?: any) {
+        return GameControllerApiFp(this.configuration).isAnswer(inlineObject2, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2391,10 +2460,15 @@ export const HeartControllerApiAxiosParamCreator = function (configuration?: Con
     return {
         /**
          * 
+         * @param {MusicUser} musicUser 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        checkMyHeart: async (options: any = {}): Promise<RequestArgs> => {
+        checkMyHeart: async (musicUser: MusicUser, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'musicUser' is not null or undefined
+            if (musicUser === null || musicUser === undefined) {
+                throw new RequiredError('musicUser','Required parameter musicUser was null or undefined when calling checkMyHeart.');
+            }
             const localVarPath = `/heart/check`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
@@ -2404,6 +2478,10 @@ export const HeartControllerApiAxiosParamCreator = function (configuration?: Con
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (musicUser !== undefined) {
+                localVarQueryParameter['musicUser'] = musicUser;
+            }
 
 
     
@@ -2420,10 +2498,11 @@ export const HeartControllerApiAxiosParamCreator = function (configuration?: Con
         },
         /**
          * 
+         * @param {MusicUser} [musicUser] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        useHeart: async (options: any = {}): Promise<RequestArgs> => {
+        useHeart: async (musicUser?: MusicUser, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/heart/use`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
@@ -2436,11 +2515,15 @@ export const HeartControllerApiAxiosParamCreator = function (configuration?: Con
 
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
             // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
             delete localVarUrlObj.search;
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof musicUser !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(musicUser !== undefined ? musicUser : {}) : (musicUser || "");
 
             return {
                 url: globalImportUrl.format(localVarUrlObj),
@@ -2458,11 +2541,12 @@ export const HeartControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {MusicUser} musicUser 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async checkMyHeart(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOHeartResponse>> {
-            const localVarAxiosArgs = await HeartControllerApiAxiosParamCreator(configuration).checkMyHeart(options);
+        async checkMyHeart(musicUser: MusicUser, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOHeartResponse>> {
+            const localVarAxiosArgs = await HeartControllerApiAxiosParamCreator(configuration).checkMyHeart(musicUser, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -2470,11 +2554,12 @@ export const HeartControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {MusicUser} [musicUser] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async useHeart(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOHeartResponse>> {
-            const localVarAxiosArgs = await HeartControllerApiAxiosParamCreator(configuration).useHeart(options);
+        async useHeart(musicUser?: MusicUser, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOHeartResponse>> {
+            const localVarAxiosArgs = await HeartControllerApiAxiosParamCreator(configuration).useHeart(musicUser, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -2491,19 +2576,21 @@ export const HeartControllerApiFactory = function (configuration?: Configuration
     return {
         /**
          * 
+         * @param {MusicUser} musicUser 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        checkMyHeart(options?: any): AxiosPromise<ResponseDTOHeartResponse> {
-            return HeartControllerApiFp(configuration).checkMyHeart(options).then((request) => request(axios, basePath));
+        checkMyHeart(musicUser: MusicUser, options?: any): AxiosPromise<ResponseDTOHeartResponse> {
+            return HeartControllerApiFp(configuration).checkMyHeart(musicUser, options).then((request) => request(axios, basePath));
         },
         /**
          * 
+         * @param {MusicUser} [musicUser] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        useHeart(options?: any): AxiosPromise<ResponseDTOHeartResponse> {
-            return HeartControllerApiFp(configuration).useHeart(options).then((request) => request(axios, basePath));
+        useHeart(musicUser?: MusicUser, options?: any): AxiosPromise<ResponseDTOHeartResponse> {
+            return HeartControllerApiFp(configuration).useHeart(musicUser, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2517,22 +2604,24 @@ export const HeartControllerApiFactory = function (configuration?: Configuration
 export class HeartControllerApi extends BaseAPI {
     /**
      * 
+     * @param {MusicUser} musicUser 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof HeartControllerApi
      */
-    public checkMyHeart(options?: any) {
-        return HeartControllerApiFp(this.configuration).checkMyHeart(options).then((request) => request(this.axios, this.basePath));
+    public checkMyHeart(musicUser: MusicUser, options?: any) {
+        return HeartControllerApiFp(this.configuration).checkMyHeart(musicUser, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
+     * @param {MusicUser} [musicUser] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof HeartControllerApi
      */
-    public useHeart(options?: any) {
-        return HeartControllerApiFp(this.configuration).useHeart(options).then((request) => request(this.axios, this.basePath));
+    public useHeart(musicUser?: MusicUser, options?: any) {
+        return HeartControllerApiFp(this.configuration).useHeart(musicUser, options).then((request) => request(this.axios, this.basePath));
     }
 
 }
@@ -3098,11 +3187,11 @@ export const MusicUserControllerApiAxiosParamCreator = function (configuration?:
         },
         /**
          * 
-         * @param {InlineObject} [inlineObject] 
+         * @param {InlineObject3} [inlineObject3] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        myInfoChange1: async (inlineObject?: InlineObject, options: any = {}): Promise<RequestArgs> => {
+        myInfoChange1: async (inlineObject3?: InlineObject3, options: any = {}): Promise<RequestArgs> => {
             const localVarPath = `/user/profile/dp`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
@@ -3122,8 +3211,8 @@ export const MusicUserControllerApiAxiosParamCreator = function (configuration?:
             delete localVarUrlObj.search;
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof inlineObject !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(inlineObject !== undefined ? inlineObject : {}) : (inlineObject || "");
+            const needsSerialization = (typeof inlineObject3 !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(inlineObject3 !== undefined ? inlineObject3 : {}) : (inlineObject3 || "");
 
             return {
                 url: globalImportUrl.format(localVarUrlObj),
@@ -3297,12 +3386,12 @@ export const MusicUserControllerApiFp = function(configuration?: Configuration) 
         },
         /**
          * 
-         * @param {InlineObject} [inlineObject] 
+         * @param {InlineObject3} [inlineObject3] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async myInfoChange1(inlineObject?: InlineObject, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOString>> {
-            const localVarAxiosArgs = await MusicUserControllerApiAxiosParamCreator(configuration).myInfoChange1(inlineObject, options);
+        async myInfoChange1(inlineObject3?: InlineObject3, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOString>> {
+            const localVarAxiosArgs = await MusicUserControllerApiAxiosParamCreator(configuration).myInfoChange1(inlineObject3, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -3379,12 +3468,12 @@ export const MusicUserControllerApiFactory = function (configuration?: Configura
         },
         /**
          * 
-         * @param {InlineObject} [inlineObject] 
+         * @param {InlineObject3} [inlineObject3] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        myInfoChange1(inlineObject?: InlineObject, options?: any): AxiosPromise<ResponseDTOString> {
-            return MusicUserControllerApiFp(configuration).myInfoChange1(inlineObject, options).then((request) => request(axios, basePath));
+        myInfoChange1(inlineObject3?: InlineObject3, options?: any): AxiosPromise<ResponseDTOString> {
+            return MusicUserControllerApiFp(configuration).myInfoChange1(inlineObject3, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3444,13 +3533,13 @@ export class MusicUserControllerApi extends BaseAPI {
 
     /**
      * 
-     * @param {InlineObject} [inlineObject] 
+     * @param {InlineObject3} [inlineObject3] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MusicUserControllerApi
      */
-    public myInfoChange1(inlineObject?: InlineObject, options?: any) {
-        return MusicUserControllerApiFp(this.configuration).myInfoChange1(inlineObject, options).then((request) => request(this.axios, this.basePath));
+    public myInfoChange1(inlineObject3?: InlineObject3, options?: any) {
+        return MusicUserControllerApiFp(this.configuration).myInfoChange1(inlineObject3, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
