@@ -7,7 +7,7 @@ import colors from "src/styles/colors";
 import Backdrop, { IBackDropMethod } from "src/components/backdrop/BackDrop";
 import XEIcon from "src/components/icon/XEIcon";
 import { ISinger } from "src/apis/singer";
-import SearchSingerCard from "src/components/card/SearchSingerCard";
+import SearchThumnailSingerCard from "src/components/card/SearchThumnailSingerCard";
 import useShowAnimation, {
   IAnimationFuncParams
 } from "src/hooks/useShowAnimation";
@@ -139,7 +139,7 @@ function SingersSubmitBackDrop(props: IProps) {
                 <SearchSingerCardView
                   onPress={_.partial(onSelectedItem, singer)}
                 >
-                  <SearchSingerCard
+                  <SearchThumnailSingerCard
                     selected={false}
                     key={singer.singerName}
                     image={"https://via.placeholder.com/150"}

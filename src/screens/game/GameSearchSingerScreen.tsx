@@ -18,7 +18,7 @@ import { push, pop } from "src/utils/navigator";
 import colors from "src/styles/colors";
 import SearchTextInput from "src/components/input/SearchTextInput";
 import { ISinger } from "src/apis/singer";
-import SearchSingerCard from "src/components/card/SearchSingerCard";
+import SearchThumnailSingerCard from "src/components/card/SearchThumnailSingerCard";
 import { filterNull } from "src/utils/common";
 import { IStore } from "src/stores/Store";
 import { ISingerStore } from "src/stores/SingerStore";
@@ -26,7 +26,7 @@ import { IToastStore } from "src/stores/ToastStore";
 import withScrollDirection, {
   IScrollDirectionProps
 } from "src/hocs/withScrollDirection";
-import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
+import SearchSingerScreen from "src/screens/song/SearchSingerScreen";
 import BackTopBar from "src/components/topbar/BackTopBar";
 import XEIcon from "src/components/icon/XEIcon";
 import { logEvent } from "src/configs/analytics";
@@ -108,7 +108,7 @@ const Result = styled<ComponentClass<FlatListProps<ISinger>>>(FlatList).attrs({
   width: 100%;
 `;
 
-const SearchSingerCardView = styled(SearchSingerCard)`
+const SearchSingerCardView = styled(SearchThumnailSingerCard)`
   flex: 1;
   margin: 8px;
 `;
@@ -414,7 +414,7 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
 
   private navigateToRegisterSong = () => {
     const { componentId } = this.props;
-    RegisterSongScreen.open({
+    SearchSingerScreen.open({
       componentId
     });
   };

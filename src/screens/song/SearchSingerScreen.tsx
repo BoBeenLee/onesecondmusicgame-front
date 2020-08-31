@@ -35,17 +35,13 @@ import BackTopBar from "src/components/topbar/BackTopBar";
 import RegisterTrackBackDrop from "src/components/backdrop/RegisterTrackBackDrop";
 import Tracks, { ITracks } from "src/stores/Tracks";
 import SearchTrackCard from "src/components/card/SearchTrackCard";
-import {
-  getUserHistoryUsingGET,
-  dislikeUsingPOST,
-  likeUsingPOST
-} from "src/apis/like";
+import { getUserHistoryUsingGET } from "src/apis/like";
 import { LikeHistoryResponse } from "__generate__/api";
 import images from "src/images";
 import withDisabled, { DisabledProps } from "src/hocs/withDisabled";
-import { addNewSongUsingPOST } from "src/apis/song";
 import { logEvent } from "src/configs/analytics";
 import { getTrackToPlayStreamUri } from "src/apis/soundcloud/playStream";
+import RegisterSongScreen from "./RegisterSongScreen";
 
 interface IInject {
   singerStore: ISingerStore;
@@ -300,7 +296,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     return (
       <SearchSingerCardView
         name={singerName}
-        searhWord={q}
+        searchWord={q}
         onPress={_.partial(this.onSelectedItem, item)}
       />
     );
@@ -350,6 +346,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
               ? "play"
               : "stop"
           }
+          onSelected={_.partial(this.onSelected, item)}
           onPlayToggle={_.partial(this.onPlayToggle, item)}
         />
       </SearchTrackView>
@@ -370,6 +367,14 @@ class SearchSingerScreen extends Component<IProps, IStates> {
         },
         {}
       )
+    });
+  };
+
+  private onSelected = (item: ISong) => {
+    const { componentId } = this.props;
+    RegisterSongScreen.open({
+      componentId,
+      song: () => item
     });
   };
 

@@ -12,15 +12,10 @@ import { push, popTo, pop, getCurrentComponentId } from "src/utils/navigator";
 import BackTopBar from "src/components/topbar/BackTopBar";
 import colors from "src/styles/colors";
 import { ITrackItem } from "src/apis/soundcloud/interface";
-import SearchSingerScreen from "src/screens/song/SearchSingerScreen";
 import { IToastStore } from "src/stores/ToastStore";
 import { addNewSongUsingPOST } from "src/apis/song";
-import GameAudioPlayer from "src/components/player/GameAudioPlayer";
-import { makePlayStreamUri } from "src/configs/soundCloudAPI";
 import ButtonLoading from "src/components/loading/ButtonLoading";
-import MockButton from "src/components/button/MockButton";
-import OSMGTextInput from "src/components/input/OSMGTextInput";
-import { ISinger } from "src/apis/singer";
+import Song, { ISong } from "src/stores/model/Song";
 
 interface IInject {
   toastStore: IToastStore;
@@ -28,16 +23,14 @@ interface IInject {
 
 interface IParams {
   componentId: string;
+  song: () => ISong;
 }
 
 interface IProps extends IInject, IParams {
   parentComponentId: string;
-  selectedTrackItem?: ITrackItem;
-  singerName: string;
 }
 
 interface IStates {
-  selectedTrackItem: ITrackItem | null;
   duration: number;
   highlightSeconds: number;
 }
@@ -54,25 +47,6 @@ const Content = styled.View`
 `;
 
 const SongTitle = styled(Bold18)``;
-
-const GameSongPlayer = styled(GameAudioPlayer)`
-  margin-top: 24px;
-  margin-bottom: 20px;
-`;
-
-const RegisterSongDescription = styled(Bold12)`
-  text-align: center;
-`;
-
-const SingerTextInput = styled(OSMGTextInput)`
-  margin-top: 20px;
-  margin-bottom: 20px;
-`;
-
-const Thumnail = styled.Image`
-  width: 50px;
-  height: 50px;
-`;
 
 const Footer = styled.View`
   flex-direction: column;
@@ -101,56 +75,46 @@ const RegisterSongButtonText = styled(Bold12)``;
 @observer
 class RegisterSongScreen extends Component<IProps, IStates> {
   public static open(params: IParams) {
-    const navigateToRegisterSong = (
-      selectedTrackItem: ITrackItem,
-      singerName: string
-    ) => {
-      push({
-        componentId: getCurrentComponentId(),
-        nextComponentId: SCREEN_IDS.RegisterSongScreen,
-        params: {
-          parentComponentId: params.componentId,
-          selectedTrackItem,
-          singerName
-        }
-      });
-    };
-    SearchSingerScreen.open({
-      componentId: params.componentId
+    const { componentId, song } = params;
+    push({
+      componentId,
+      nextComponentId: SCREEN_IDS.RegisterSongScreen,
+      params: {
+        parentComponentId: params.componentId,
+        song
+      }
     });
   }
 
+  public song: ISong = Song.create({
+    artworkUrl: "",
+    like: 0,
+    singer: "",
+    title: "",
+    trackId: "",
+    url: ""
+  });
+
   constructor(props: IProps) {
     super(props);
+
+    if (props.song) {
+      this.song = props.song();
+    }
     this.state = {
-      selectedTrackItem: props?.selectedTrackItem ?? null,
       duration: 0,
       highlightSeconds: 0
     };
   }
 
   public render() {
-    const { selectedTrackItem, duration, highlightSeconds } = this.state;
-    const { singerName } = this.props;
+    const { duration } = this.state;
+    const { title } = this.song;
     return (
       <Container>
-        <BackTopBar title="노래 등록" onBackPress={this.back} />
+        <BackTopBar title="노래 구간선택" onBackPress={this.back} />
         <Content>
-          <SongTitle>{selectedTrackItem?.title}</SongTitle>
-          <GameSongPlayer size={200} onPlay={_.identity} />
-          <RegisterSongDescription>
-            {`원하는 노래 구간을 지정해주세요!
-미 지정 시, 랜덤으로 구간 지정됩니다.`}
-          </RegisterSongDescription>
-          <SingerTextInput placeholder="가수이름 입력" value={singerName} />
-          <Thumnail
-            source={{
-              uri:
-                selectedTrackItem?.artwork_url ??
-                "https://via.placeholder.com/150"
-            }}
-          />
-          <MockButton name={`copy stream uri`} onPress={this.copyUri} />
+          <SongTitle>{title}</SongTitle>
           <RegisterSongButtonText>
             duration: {_.round(duration)}seconds
           </RegisterSongButtonText>
@@ -170,7 +134,9 @@ class RegisterSongScreen extends Component<IProps, IStates> {
                 loadingProps?.wrapperLoading?.(this.register) ?? this.register
               }
             >
-              <RegisterSongButtonText>1초 노래 등록하기</RegisterSongButtonText>
+              <RegisterSongButtonText>
+                노래 구간 추가하기
+              </RegisterSongButtonText>
             </RegisterSongButton>
           );
         }}
@@ -178,24 +144,17 @@ class RegisterSongScreen extends Component<IProps, IStates> {
     );
   }
 
-  private copyUri = () => {
-    const { selectedTrackItem } = this.state;
-    Clipboard.setString(makePlayStreamUri(selectedTrackItem?.stream_url ?? ""));
-  };
-
   private register = async () => {
     const { showToast } = this.props.toastStore;
-    const { selectedTrackItem, highlightSeconds } = this.state;
-    const { singerName } = this.props;
-    const title = selectedTrackItem?.title;
-    const url = selectedTrackItem?.uri;
+    const { highlightSeconds } = this.state;
+    const { title, url, singer } = this.song;
 
-    if (![title, singerName, url].some(value => !!value)) {
+    if (![title, singer, url].some(value => !!value)) {
       return;
     }
     try {
       await addNewSongUsingPOST({
-        singerName,
+        singerName: singer,
         url: url ?? "",
         highlightSeconds: [highlightSeconds]
       });

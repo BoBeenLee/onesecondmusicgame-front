@@ -10,7 +10,7 @@ import { onlyUpdateForKeys } from "recompose";
 interface IProps {
   style?: ViewProps["style"];
   name: string;
-  searhWord: string;
+  searchWord: string;
   onPress: () => void;
 }
 
@@ -28,7 +28,7 @@ const HighlightName = styled(Bold16)`
 `;
 
 function SearchSingerCard(props: IProps) {
-  const { style, name, searhWord, onPress } = props;
+  const { style, name, searchWord: searhWord, onPress } = props;
   return (
     <Container style={style} onPress={onPress}>
       <HighlighterText
@@ -41,5 +41,5 @@ function SearchSingerCard(props: IProps) {
   );
 }
 
-const updateKeys: Array<keyof IProps> = ["style", "name", "searhWord"];
+const updateKeys: Array<keyof IProps> = ["style", "name", "searchWord"];
 export default onlyUpdateForKeys(updateKeys)(SearchSingerCard);

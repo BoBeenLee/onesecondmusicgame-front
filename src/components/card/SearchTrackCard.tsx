@@ -20,10 +20,11 @@ interface IProps {
   author: string;
   isRegistered: boolean;
   audioType: AudioType;
+  onSelected: () => void;
   onPlayToggle: () => void;
 }
 
-const Container = styled.View`
+const Container = styled.TouchableOpacity`
   flex-direction: row;
   align-items: center;
   padding-vertical: 11px;
@@ -90,10 +91,11 @@ function SearchTrackCard(props: IProps) {
     author,
     isRegistered,
     audioType,
+    onSelected,
     onPlayToggle
   } = props;
   return (
-    <Container style={style}>
+    <Container style={style} onPress={onSelected}>
       <Content>
         <ThumnailView>
           <Thumnail source={{ uri: thumnail }} />
