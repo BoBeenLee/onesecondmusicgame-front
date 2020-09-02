@@ -1371,6 +1371,12 @@ export interface Song {
      * @memberof Song
      */
     duration?: number;
+    /**
+     * 사클에서 제공해주는 음악 재생 바 그림(?)
+     * @type {string}
+     * @memberof Song
+     */
+    waveformUrl?: string;
 }
 /**
  * 특정 Song에 등록된 Highlight들. 해당 객체의 정보를 바탕으로 문제가 출제된다.
