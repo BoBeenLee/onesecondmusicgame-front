@@ -32,29 +32,29 @@ const Singers = types
       self.filterSingers.clear();
     };
 
-    const fetch = flow(function*() {
+    const fetch = () => {
       self.filterSingers.replace(
         self.singers.filter(item => {
           return includesForSearch(item.singerName, self.variables.q);
         })
       );
-    });
+    };
 
-    const initialize = flow(function*(variables: IVariables) {
+    const initialize = (variables: IVariables) => {
       self.variables = variables;
       clear();
-      yield fetch();
-    });
+      fetch();
+    };
 
-    const refresh = flow(function*() {
+    const refresh = () => {
       if (self.isRefresh) {
         return;
       }
       self.isRefresh = true;
       clear();
-      yield fetch();
+      fetch();
       self.isRefresh = false;
-    });
+    };
 
     return {
       clear,
@@ -64,9 +64,9 @@ const Singers = types
   })
   .actions(self => {
     const debounceInitialize = _.debounce(self.initialize, 500);
-    const search = flow(function*(variables: IVariables) {
-      yield debounceInitialize(variables);
-    });
+    const search = (variables: IVariables) => {
+      debounceInitialize(variables);
+    };
     return {
       search
     };

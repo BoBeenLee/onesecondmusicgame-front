@@ -1,27 +1,31 @@
 import _ from "lodash";
 import { flow, types } from "mobx-state-tree";
 
-import {
-  getAllSongsBySingerNameUsingGET,
-  getTrackListBySingerName
-} from "src/apis/singer";
+import { getAllSongsBySingerNameUsingGET } from "src/apis/singer";
 import Song from "src/stores/model/Song";
 
 interface IVariables {
   q: string;
 }
 
+const DEFAULT_PAGE_SIZE = 30;
+
 const Tracks = types
   .model("Tracks", {
     from: types.optional(types.number, 0),
+    size: types.optional(types.number, DEFAULT_PAGE_SIZE),
     isRefresh: types.optional(types.boolean, false),
     tracks: types.optional(types.map(Song), {}),
+    totalCount: types.optional(types.number, 0),
     variables: types.optional(types.frozen<IVariables>(), {
       q: ""
     })
   })
   .views(self => {
     return {
+      get hasMore() {
+        return self.from * self.size <= self.totalCount;
+      },
       get trackViews() {
         return Array.from(self.tracks.values());
       }
@@ -35,33 +39,10 @@ const Tracks = types
     };
 
     const fetch = flow(function*() {
-      const response: RetrieveAsyncFunc<typeof getTrackListBySingerName> = yield getTrackListBySingerName(
-        self.variables.q
-      );
-      for (const track of response) {
-        self.tracks.set(
-          String(track.id),
-          Song.create({
-            artworkUrl:
-              (track as any).artwork_url ?? "https://via.placeholder.com/150",
-            like: (track as any).comment_count ?? 0,
-            singer: self.variables.q,
-            title: track.title ?? "",
-            trackId: String(track.id),
-            url: track.uri ?? ""
-          })
-        );
-      }
-    });
-
-    const initialize = flow(function*(variables: IVariables) {
-      self.variables = variables;
-      self.from = 0;
-      clear();
       const response: RetrieveAsyncFunc<typeof getAllSongsBySingerNameUsingGET> = yield getAllSongsBySingerNameUsingGET(
         self.variables.q,
         self.from,
-        30
+        self.size
       );
       for (const track of response?.content ?? []) {
         self.tracks.set(
@@ -76,6 +57,13 @@ const Tracks = types
           })
         );
       }
+      self.totalCount = response.totalElements ?? 0;
+    });
+
+    const initialize = flow(function*(variables: IVariables) {
+      self.variables = variables;
+      self.from = 0;
+      clear();
       yield fetch();
     });
 
@@ -90,9 +78,10 @@ const Tracks = types
     });
 
     const append = flow(function*() {
-      if (self.from === 0) {
+      if (!self.hasMore) {
         return;
       }
+      self.from += 1;
       yield fetch();
     });
 
@@ -104,12 +93,8 @@ const Tracks = types
     };
   })
   .actions(self => {
-    const debounceInitialize = _.debounce(self.initialize, 500);
-    const search = flow(function*(variables: IVariables) {
-      yield debounceInitialize(variables);
-    });
     return {
-      search
+      search: self.initialize
     };
   });
 

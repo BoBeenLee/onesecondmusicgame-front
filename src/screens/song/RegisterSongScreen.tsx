@@ -215,7 +215,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
         parentComponentId: params.componentId,
         song,
         waveformUrl: trackResponse.waveform_url,
-        duration: trackResponse.duration / 1000
+        duration: (trackResponse.duration ?? 0) / 1000
       }
     });
   }

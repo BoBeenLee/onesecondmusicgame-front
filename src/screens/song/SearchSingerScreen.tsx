@@ -199,9 +199,12 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     this.singers.initialize({ q: "" });
     this.tracks = Tracks.create();
     this.appendTrack = props.disabledProps.wrapperDisabled(this.appendTrack);
-    this.onSelectedSong =
-      props.loadingProps.wrapperLoading?.(this.onSelectedSong) ??
-      this.onSelectedSong;
+    this.onSelectedTrack =
+      props.loadingProps.wrapperLoading?.(this.onSelectedTrack) ??
+      this.onSelectedTrack;
+    this.onSelectedSinger =
+      props.loadingProps.wrapperLoading?.(this.onSelectedSinger) ??
+      this.onSelectedSinger;
 
     this.playbackStateListener = addEventListener(
       "playback-state",
@@ -241,8 +244,8 @@ class SearchSingerScreen extends Component<IProps, IStates> {
             <SearchView>
               <SearchInput
                 placeholder="가수명을 검색해주세요"
-                onChangeInput={this.search}
-                onSearch={this.search}
+                onChangeInput={this.searchSinger}
+                onSearch={this.searchSinger}
                 onFocus={this.onSearchFocus}
               />
             </SearchView>
@@ -306,12 +309,13 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     );
   };
 
-  private search = (text: string) => {
+  private searchSinger = (text: string) => {
     this.singers.search({ q: text });
   };
 
   private get renderTracks() {
     const {
+      totalCount,
       trackViews,
       refresh: trackRefresh,
       isRefresh: isTrackRefresh
@@ -319,7 +323,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
 
     return (
       <React.Fragment>
-        <TrackTotal>전체 {this.tracks.trackViews.length}</TrackTotal>
+        <TrackTotal>전체 {totalCount}</TrackTotal>
         <TracksView
           data={trackViews}
           renderItem={this.renderSearchTrackItem}
@@ -350,7 +354,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
               ? "play"
               : "stop"
           }
-          onSelected={_.partial(this.onSelectedSong, item)}
+          onSelected={_.partial(this.onSelectedTrack, item)}
           onPlayToggle={_.partial(this.onPlayToggle, item)}
         />
       </SearchTrackView>
@@ -374,7 +378,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     });
   };
 
-  private onSelectedSong = async (item: ISong) => {
+  private onSelectedTrack = async (item: ISong) => {
     const { componentId } = this.props;
     await RegisterSongScreen.open({
       componentId,
@@ -416,10 +420,9 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     return `${item.trackId}${index}`;
   };
 
-  private onSelectedSinger = (item: ISinger) => {
-    this.setState({ showSearchTrack: true, selectedSinger: item }, () => {
-      this.tracks.search({ q: item.singerName });
-    });
+  private onSelectedSinger = async (item: ISinger) => {
+    await this.tracks.search({ q: item.singerName });
+    this.setState({ showSearchTrack: true, selectedSinger: item });
     logEvent.selectedSinger(item.singerName);
   };
 
