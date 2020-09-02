@@ -36,6 +36,7 @@ interface IParams {
 
 interface IProps extends IInject, IParams {
   parentComponentId: string;
+  uri: string;
   waveformUrl: string;
   duration: number;
 }
@@ -214,6 +215,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
       params: {
         parentComponentId: params.componentId,
         song,
+        uri: trackResponse.uri,
         waveformUrl: trackResponse.waveform_url,
         duration: (trackResponse.duration ?? 0) / 1000
       }
@@ -437,16 +439,17 @@ class RegisterSongScreen extends Component<IProps, IStates> {
 
   private register = async () => {
     const { showToast } = this.props.toastStore;
+    const { uri } = this.props;
     const { highlightSeconds } = this.state;
-    const { title, url, singer } = this.song;
+    const { title, singer } = this.song;
 
-    if (![title, singer, url].some(value => !!value)) {
+    if (![title, singer, uri].some(value => !!value)) {
       return;
     }
     try {
       await addNewSongUsingPOST({
         singerName: singer,
-        url: url ?? "",
+        url: uri ?? "",
         highlightSeconds: filterEmpty(_.values(highlightSeconds))
       });
       this.goHome();
