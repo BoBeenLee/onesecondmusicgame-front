@@ -40,7 +40,8 @@ const Time = styled(Bold14)<{ left: number }>`
 
 const Content = styled.View<{ width: number; height: number }>`
   width: ${({ width }) => width}px;
-  height: ${({ height }) => height + 150}px;
+  height: ${({ height }) => height + 180}px;
+  padding-bottom: 30px;
 `;
 
 const SelectedGroup = styled.View<{ position: number; height: number }>`

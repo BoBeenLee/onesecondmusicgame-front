@@ -165,7 +165,7 @@ const SearchTrackView = styled.View`
 `;
 
 const SearchTrackItem = styled(SearchTrackCard)`
-  width: 353px;
+  min-width: 353px;
 `;
 
 @inject(

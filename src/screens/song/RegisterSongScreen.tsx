@@ -57,8 +57,8 @@ const Header = styled.View`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 40px;
-  margin-bottom: 40px;
+  margin-top: 30px;
+  margin-bottom: 30px;
   padding-left: 30px;
   padding-right: 30px;
 `;
@@ -70,7 +70,6 @@ const SongTitle = styled(Bold18)`
 
 const Content = styled.View`
   flex-direction: column;
-  justify-content: space-between;
   padding-top: 30px;
 `;
 
