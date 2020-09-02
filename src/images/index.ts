@@ -40,6 +40,14 @@ const images = {
   icWhiteArrowRight: require("./ic_white_arrow.png"),
   icTopArrow: require("./ic_top_arrow.png"),
   bgRankTitle: require("./bg_rank_title.png"),
-  bgRankTitleBomb: require("./bg_rank_title_bomb.png")
+  bgRankTitleBomb: require("./bg_rank_title_bomb.png"),
+  btnRegisterPlay: require("./btn_register_play.png"),
+  btnRegisterForward: require("./btn_register_forward.png"),
+  btnRegisterBackward: require("./btn_register_backward.png"),
+  bgSelectedHighlightPlay: require("./bg_selected_highlight_play.png"),
+  btnSelectedClose: require("./btn_selected_close.png"),
+  btnAddHighlighPlay: require("./btn_add_highligh_play.png"),
+  icSelectedHighlightPlay: require("./ic_selected_highlight_play.png"),
+  bgSelectedEmptyHighlight: require("./bg_selected_empty_highlight.png")
 };
 export default images;

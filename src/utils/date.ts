@@ -1,3 +1,4 @@
+import _ from "lodash";
 import Moment, { duration, MomentInput } from "moment";
 import moment from "moment/min/moment-with-locales";
 
@@ -116,4 +117,11 @@ export const transformKoreanFormat = (date: string) => {
   }
 
   return date;
+};
+
+export const toTimeMMSS = (seconds: number) => {
+  const secondTimes = _.floor(seconds);
+  return `${String(_.floor(secondTimes / 60)).padStart(2, "0")}:${String(
+    secondTimes % 60
+  ).padStart(2, "0")}`;
 };

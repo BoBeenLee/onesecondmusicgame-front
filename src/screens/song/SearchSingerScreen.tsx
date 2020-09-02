@@ -41,7 +41,7 @@ import images from "src/images";
 import withDisabled, { DisabledProps } from "src/hocs/withDisabled";
 import { logEvent } from "src/configs/analytics";
 import { getTrackToPlayStreamUri } from "src/apis/soundcloud/playStream";
-import RegisterSongScreen from "./RegisterSongScreen";
+import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
 
 interface IInject {
   singerStore: ISingerStore;
