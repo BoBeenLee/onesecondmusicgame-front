@@ -42,6 +42,7 @@ import withDisabled, { DisabledProps } from "src/hocs/withDisabled";
 import { logEvent } from "src/configs/analytics";
 import { getTrackToPlayStreamUri } from "src/apis/soundcloud/playStream";
 import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
+import { LoadingProps } from "src/hocs/withLoading";
 
 interface IInject {
   singerStore: ISingerStore;
@@ -52,7 +53,7 @@ interface IParams {
   componentId: string;
 }
 
-interface IProps extends IParams, IInject, DisabledProps {}
+interface IProps extends IParams, IInject, DisabledProps, LoadingProps {}
 
 interface IStates {
   showSearchTrack: boolean;
@@ -198,6 +199,9 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     this.singers.initialize({ q: "" });
     this.tracks = Tracks.create();
     this.appendTrack = props.disabledProps.wrapperDisabled(this.appendTrack);
+    this.onSelectedSong =
+      props.loadingProps.wrapperLoading?.(this.onSelectedSong) ??
+      this.onSelectedSong;
 
     this.playbackStateListener = addEventListener(
       "playback-state",
@@ -297,7 +301,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
       <SearchSingerCardView
         name={singerName}
         searchWord={q}
-        onPress={_.partial(this.onSelectedItem, item)}
+        onPress={_.partial(this.onSelectedSinger, item)}
       />
     );
   };
@@ -346,7 +350,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
               ? "play"
               : "stop"
           }
-          onSelected={_.partial(this.onSelected, item)}
+          onSelected={_.partial(this.onSelectedSong, item)}
           onPlayToggle={_.partial(this.onPlayToggle, item)}
         />
       </SearchTrackView>
@@ -370,9 +374,9 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     });
   };
 
-  private onSelected = (item: ISong) => {
+  private onSelectedSong = async (item: ISong) => {
     const { componentId } = this.props;
-    RegisterSongScreen.open({
+    await RegisterSongScreen.open({
       componentId,
       song: () => item
     });
@@ -412,7 +416,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
     return `${item.trackId}${index}`;
   };
 
-  private onSelectedItem = (item: ISinger) => {
+  private onSelectedSinger = (item: ISinger) => {
     this.setState({ showSearchTrack: true, selectedSinger: item }, () => {
       this.tracks.search({ q: item.singerName });
     });

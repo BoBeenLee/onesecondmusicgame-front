@@ -36,13 +36,13 @@ interface IParams {
 
 interface IProps extends IInject, IParams {
   parentComponentId: string;
+  waveformUrl: string;
+  duration: number;
 }
 
 interface IStates {
   selectedPosition: number;
   playState: "play" | "pause";
-  waveformUrl: string;
-  duration: number;
   highlightSeconds: Record<number, number>;
 }
 
@@ -190,14 +190,33 @@ const MAX_SELECTED_COUNT = 3;
 )
 @observer
 class RegisterSongScreen extends Component<IProps, IStates> {
-  public static open(params: IParams) {
+  public static async open(params: IParams) {
     const { componentId, song } = params;
+    const selectedSong = song();
+    const { trackId, title, singer, artworkUrl } = selectedSong;
+    const [trackResponse, streamUri] = await Promise.all([
+      tracksById({ id: trackId }),
+      getTrackToPlayStreamUri(trackId)
+    ]);
+    if (!streamUri) {
+      return;
+    }
+    await TrackPlayer.reset();
+    await TrackPlayer.add({
+      id: String(trackId),
+      url: streamUri,
+      title: title,
+      artist: singer,
+      artwork: artworkUrl
+    });
     push({
       componentId,
       nextComponentId: SCREEN_IDS.RegisterSongScreen,
       params: {
         parentComponentId: params.componentId,
-        song
+        song,
+        waveformUrl: trackResponse.waveform_url,
+        duration: trackResponse.duration / 1000
       }
     });
   }
@@ -221,40 +240,14 @@ class RegisterSongScreen extends Component<IProps, IStates> {
     }
     this.state = {
       selectedPosition: 0,
-      waveformUrl: "",
-      duration: 0,
       highlightSeconds: {},
       playState: "pause"
     };
   }
 
-  public async componentDidMount() {
-    const { trackId, title, singer, artworkUrl } = this.song;
-    const trackResponse = await tracksById({ id: trackId });
-    this.setState({
-      waveformUrl: trackResponse.waveform_url,
-      duration: trackResponse.duration / 1000
-    });
-    const streamUri = await getTrackToPlayStreamUri(trackId);
-    if (!streamUri) {
-      return;
-    }
-    await TrackPlayer.add({
-      id: String(trackId),
-      url: streamUri,
-      title: title,
-      artist: singer,
-      artwork: artworkUrl
-    });
-  }
-
   public render() {
-    const {
-      selectedPosition,
-      waveformUrl,
-      duration,
-      highlightSeconds
-    } = this.state;
+    const { waveformUrl, duration } = this.props;
+    const { selectedPosition, highlightSeconds } = this.state;
     const { title, singer } = this.song;
     return (
       <Container>
@@ -330,7 +323,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
   }
 
   private onSelected = async (percentage: number) => {
-    const { duration } = this.state;
+    const { duration } = this.props;
     await TrackPlayer.seekTo(percentage * duration);
     this.setState({
       selectedPosition: percentage * duration
@@ -394,7 +387,8 @@ class RegisterSongScreen extends Component<IProps, IStates> {
   }
 
   private onPlaybackForward = async () => {
-    const { selectedPosition, duration } = this.state;
+    const { duration } = this.props;
+    const { selectedPosition } = this.state;
     if (selectedPosition + 1 >= duration) {
       return;
     }
