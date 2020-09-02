@@ -51,7 +51,12 @@ const Container = styled(ContainerWithStatusBar)`
   flex-direction: column;
 `;
 
+const ScrollView = styled.ScrollView``;
+
 const Header = styled.View`
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   margin-top: 40px;
   margin-bottom: 40px;
   padding-left: 30px;
@@ -59,14 +64,11 @@ const Header = styled.View`
 `;
 
 const SongTitle = styled(Bold18)`
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   color: ${colors.lavender};
+  text-align: center;
 `;
 
 const Content = styled.View`
-  flex: 1;
   flex-direction: column;
   justify-content: space-between;
   padding-top: 30px;
@@ -160,6 +162,8 @@ const Footer = styled.View`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding-top: 60px;
+  padding-bottom: 30px;
 `;
 
 const RegisterSongButtonLoading = styled(ButtonLoading)``;
@@ -255,70 +259,72 @@ class RegisterSongScreen extends Component<IProps, IStates> {
     return (
       <Container>
         <BackTopBar title="노래 구간선택" onBackPress={this.back} />
-        <Header>
-          <SongTitle>
-            {singer} - {title}
-          </SongTitle>
-        </Header>
-        <Content>
-          {waveformUrl ? (
-            <SoundCloudWaveProgress
-              selectedPosition={selectedPosition}
-              waveformUrl={waveformUrl}
-              duration={duration}
-              width={getDeviceWidth()}
-              height={100}
-              onSelected={this.onSelected}
-              onRegisterHighlightPlay={this.onRegisterHighlightPlay}
-            />
-          ) : null}
-        </Content>
-        <Footer>
-          <SelectedHighlightGroup>
-            {_.times(MAX_SELECTED_COUNT, index => {
-              if (!_.isNil(highlightSeconds[index])) {
+        <ScrollView>
+          <Header>
+            <SongTitle>
+              {singer} - {title}
+            </SongTitle>
+          </Header>
+          <Content>
+            {waveformUrl ? (
+              <SoundCloudWaveProgress
+                selectedPosition={selectedPosition}
+                waveformUrl={waveformUrl}
+                duration={duration}
+                width={getDeviceWidth()}
+                height={100}
+                onSelected={this.onSelected}
+                onRegisterHighlightPlay={this.onRegisterHighlightPlay}
+              />
+            ) : null}
+          </Content>
+          <Footer>
+            <SelectedHighlightGroup>
+              {_.times(MAX_SELECTED_COUNT, index => {
+                if (!_.isNil(highlightSeconds[index])) {
+                  return (
+                    <SelectedHighlightItem key={`selected${index}`}>
+                      <SelectedHighlightBackground
+                        source={images.bgSelectedHighlightPlay}
+                      />
+                      <SelectedHighlightPlayIcon
+                        source={images.icSelectedHighlightPlay}
+                      />
+                      <SelectedHighlightText>
+                        {toTimeMMSS(highlightSeconds[index])}
+                      </SelectedHighlightText>
+                      <SelectedHighlightCancelButton
+                        source={images.btnSelectedClose}
+                        onPress={_.partial(this.onRemoveHighlightPlay, index)}
+                      />
+                    </SelectedHighlightItem>
+                  );
+                }
                 return (
-                  <SelectedHighlightItem key={`selected${index}`}>
-                    <SelectedHighlightBackground
-                      source={images.bgSelectedHighlightPlay}
-                    />
-                    <SelectedHighlightPlayIcon
-                      source={images.icSelectedHighlightPlay}
-                    />
-                    <SelectedHighlightText>
-                      {toTimeMMSS(highlightSeconds[index])}
-                    </SelectedHighlightText>
-                    <SelectedHighlightCancelButton
-                      source={images.btnSelectedClose}
-                      onPress={_.partial(this.onRemoveHighlightPlay, index)}
-                    />
-                  </SelectedHighlightItem>
+                  <SelectedEmptyHightlightItem
+                    key={`selected${index}`}
+                    source={images.bgSelectedEmptyHighlight}
+                  />
                 );
-              }
-              return (
-                <SelectedEmptyHightlightItem
-                  key={`selected${index}`}
-                  source={images.bgSelectedEmptyHighlight}
-                />
-              );
-            })}
-          </SelectedHighlightGroup>
-          <PlayerButtonGroup>
-            <PlaybackButton onPress={this.onPlaybackBackward}>
-              <PlaybackIcon source={images.btnRegisterBackward} />
-              <PlaybackText>1s</PlaybackText>
-            </PlaybackButton>
-            <PlayButton
-              source={images.btnRegisterPlay}
-              onPress={this.onPlayToggle}
-            />
-            <PlaybackButton onPress={this.onPlaybackForward}>
-              <PlaybackIcon source={images.btnRegisterForward} />
-              <PlaybackText>1s</PlaybackText>
-            </PlaybackButton>
-          </PlayerButtonGroup>
-          {this.renderRegisterSongButton}
-        </Footer>
+              })}
+            </SelectedHighlightGroup>
+            <PlayerButtonGroup>
+              <PlaybackButton onPress={this.onPlaybackBackward}>
+                <PlaybackIcon source={images.btnRegisterBackward} />
+                <PlaybackText>1s</PlaybackText>
+              </PlaybackButton>
+              <PlayButton
+                source={images.btnRegisterPlay}
+                onPress={this.onPlayToggle}
+              />
+              <PlaybackButton onPress={this.onPlaybackForward}>
+                <PlaybackIcon source={images.btnRegisterForward} />
+                <PlaybackText>1s</PlaybackText>
+              </PlaybackButton>
+            </PlayerButtonGroup>
+            {this.renderRegisterSongButton}
+          </Footer>
+        </ScrollView>
       </Container>
     );
   }
