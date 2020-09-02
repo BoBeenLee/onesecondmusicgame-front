@@ -6,14 +6,13 @@
 
 ## 폴더 구조
 
-
     onesecondmusicgame-front
     ├── src
     ├──── apis           # rest api 요청들
     ├──── components     # 컴포넌트 단위 분리
     ├──── configs        # firebase, 내부환경..etc 설정 관련 파일들
     ├──── decorators     # 추상화된 데코레이터
-    ├──── hocs           # higher order component   
+    ├──── hocs           # higher order component
     ├──── hooks          # react hooks 함수들
     ├──── images         # 이미지 저장소
     ├──── interfaces     # ts 공통인터페이스
@@ -91,6 +90,7 @@ We can maybe use [SemVer](http://semver.org/) for versioning. For the versions a
 ## Configuration
 
 config.json 파일 환경 설정
+
 - development
 - staging
 - production
@@ -110,3 +110,4 @@ stylelint, eslint
 
 - http://34.84.5.51:8888/swagger-ui.html#/music45user45controller
 
+https://github.com/pritishvaidya/react-native-soundcloud-waveform

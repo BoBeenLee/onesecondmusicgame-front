@@ -13,6 +13,7 @@ interface IProps extends TextInputProps {
   style?: ViewProps["style"];
   onChangeInput: (text: string) => void;
   onSearch: (text: string) => void;
+  onFocus?: () => void;
 }
 
 const Container = styled.View`
@@ -41,7 +42,7 @@ const SearchIcon = styled(XEIconButton).attrs({
 })``;
 
 function SearchTextInput(props: IProps) {
-  const { style, onSearch, ...rest } = props;
+  const { style, onSearch, onFocus, ...rest } = props;
   const [text, setText] = useState("");
 
   const onChangeInput = useDebouncedCallback(props.onChangeInput, 500);
@@ -53,7 +54,12 @@ function SearchTextInput(props: IProps) {
 
   return (
     <Container style={style}>
-      <Input {...rest} value={text} onChangeText={onChangeText} />
+      <Input
+        {...rest}
+        value={text}
+        onChangeText={onChangeText}
+        onFocus={onFocus}
+      />
       <SearchIcon onPress={_.partial(onSearch, text)} />
     </Container>
   );

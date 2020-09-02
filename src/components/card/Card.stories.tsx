@@ -7,6 +7,7 @@ import SearchTrackCard from "src/components/card/SearchTrackCard";
 import GameRankCard from "src/components/card/GameRankCard";
 import GameTopRankCard from "src/components/card/GameTopRankCard";
 import SearchSingerCard from "src/components/card/SearchSingerCard";
+import SearchThumnailSingerCard from "src/components/card/SearchThumnailSingerCard";
 import UserItemCard from "src/components/card/UserItemCard";
 import PreviousSeasonTop3Card from "src/components/card/PreviousSeasonTop3Card";
 
@@ -23,7 +24,7 @@ const Container = styled.View`
 
 storiesOf("Card", module)
   .addDecorator((getStory: any) => <CenterView>{getStory()}</CenterView>)
-  .add("SearchTrackCard", () => {
+  .add("SearchThumnailSingerCards", () => {
     return (
       <Container>
         <SearchTrackCard
@@ -31,10 +32,8 @@ storiesOf("Card", module)
           title="Hello World"
           author="Hello"
           isRegistered={false}
-          isLike={true}
-          likeCount={10}
-          onLikePress={action("onLikePress")}
           audioType="play"
+          onSelected={action("onSelected")}
           onPlayToggle={action("onPlayToggle")}
         />
         <SearchTrackCard
@@ -42,10 +41,8 @@ storiesOf("Card", module)
           title="Hello World"
           author="Hello"
           isRegistered={true}
-          isLike={true}
-          likeCount={1}
-          onLikePress={action("onLikePress")}
           audioType="play"
+          onSelected={action("onSelected")}
           onPlayToggle={action("onPlayToggle")}
         />
       </Container>
@@ -75,6 +72,15 @@ storiesOf("Card", module)
   .add("SearchSingerCard", () => {
     return (
       <SearchSingerCard
+        name="jasmin"
+        searchWord=""
+        onPress={action("onPress")}
+      />
+    );
+  })
+  .add("SearchThumnailSingerCard", () => {
+    return (
+      <SearchThumnailSingerCard
         selected={true}
         image="https://via.placeholder.com/350x350"
         name="jasmin"

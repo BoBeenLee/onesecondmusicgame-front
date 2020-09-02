@@ -11,9 +11,6 @@ interface IVariables {
   q: string;
 }
 
-const TRACKS_LIMIT = 100;
-const COMMENT_COUNT_LIMIT = 10;
-
 const Tracks = types
   .model("Tracks", {
     from: types.optional(types.number, 0),

@@ -1330,11 +1330,17 @@ export interface Song {
      */
     refinedTitle?: string;
     /**
-     * 이 노래의 주인인 가수 정보.
+     * 이 노래의 주인인 가수 이름.
      * @type {string}
      * @memberof Song
      */
-    singer?: string;
+    singerName?: string;
+    /**
+     * 
+     * @type {Singer}
+     * @memberof Song
+     */
+    singer?: Singer;
     /**
      * true : 사용자들에게 출제 되고 있는 문제임 / false : 사용자들에게 출제 되고 있지 않은 노래임.
      * @type {boolean}
@@ -1359,6 +1365,12 @@ export interface Song {
      * @memberof Song
      */
     songHighlight?: Array<SongHighlight>;
+    /**
+     * 노래의 길이(milliseconds)
+     * @type {number}
+     * @memberof Song
+     */
+    duration?: number;
 }
 /**
  * 특정 Song에 등록된 Highlight들. 해당 객체의 정보를 바탕으로 문제가 출제된다.
