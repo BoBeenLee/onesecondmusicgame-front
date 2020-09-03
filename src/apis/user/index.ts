@@ -23,7 +23,7 @@ export const signUpUsingPOST = async (request: UserSignUpRequest) => {
 };
 
 export const myInfoChangeUsingPUT = async (request: NicknameChangeRequest) => {
-  const response = await userControllerApi().myInfoChange(request);
+  const response = await userControllerApi().myInfoChange1(request);
   return response.data.body!;
 };
 
