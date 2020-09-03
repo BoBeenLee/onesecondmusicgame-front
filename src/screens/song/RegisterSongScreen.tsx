@@ -13,7 +13,6 @@ import { push, popTo, pop } from "src/utils/navigator";
 import BackTopBar from "src/components/topbar/BackTopBar";
 import colors from "src/styles/colors";
 import { IToastStore } from "src/stores/ToastStore";
-import { addNewSongUsingPOST } from "src/apis/song";
 import ButtonLoading from "src/components/loading/ButtonLoading";
 import Song, { ISong } from "src/stores/model/Song";
 import { tracksById } from "src/apis/soundcloud/tracks";
@@ -24,6 +23,7 @@ import IconButton from "src/components/button/IconButton";
 import SoundCloudWaveProgress from "src/components/progress/SoundCloudWaveProgress";
 import { toTimeMMSS } from "src/utils/date";
 import { filterEmpty } from "src/utils/common";
+import { addSongHighlight } from "src/apis/songHighlight";
 
 interface IInject {
   toastStore: IToastStore;
@@ -447,8 +447,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
       return;
     }
     try {
-      await addNewSongUsingPOST({
-        singerName: singer,
+      await addSongHighlight({
         url: uri ?? "",
         highlightSeconds: filterEmpty(_.values(highlightSeconds))
       });

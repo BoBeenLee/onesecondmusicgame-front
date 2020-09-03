@@ -30,13 +30,13 @@ export interface AbstractScore {
      * @type {number}
      * @memberof AbstractScore
      */
-    point?: number;
+    id?: number;
     /**
      * 
      * @type {number}
      * @memberof AbstractScore
      */
-    id?: number;
+    point?: number;
 }
 /**
  * 사용자가 1개의 문제를 풀었을 때 1개의 GameAnswer 객체를 제출해야 한다.
@@ -586,12 +586,6 @@ export interface PageSongResponse {
     totalElements?: number;
     /**
      * 
-     * @type {Sort}
-     * @memberof PageSongResponse
-     */
-    sort?: Sort;
-    /**
-     * 
      * @type {boolean}
      * @memberof PageSongResponse
      */
@@ -604,16 +598,10 @@ export interface PageSongResponse {
     last?: boolean;
     /**
      * 
-     * @type {number}
+     * @type {Sort}
      * @memberof PageSongResponse
      */
-    numberOfElements?: number;
-    /**
-     * 
-     * @type {Pageable}
-     * @memberof PageSongResponse
-     */
-    pageable?: Pageable;
+    sort?: Sort;
     /**
      * 
      * @type {number}
@@ -632,6 +620,18 @@ export interface PageSongResponse {
      * @memberof PageSongResponse
      */
     number?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PageSongResponse
+     */
+    numberOfElements?: number;
+    /**
+     * 
+     * @type {Pageable}
+     * @memberof PageSongResponse
+     */
+    pageable?: Pageable;
     /**
      * 
      * @type {boolean}
@@ -1417,10 +1417,10 @@ export interface SongHighlight {
 export interface SongHighlightAddRequest {
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof SongHighlightAddRequest
      */
-    songId: number;
+    url: string;
     /**
      * 
      * @type {Array<number>}
@@ -3078,14 +3078,48 @@ export const MusicUserControllerApiAxiosParamCreator = function (configuration?:
     return {
         /**
          * 
+         * @param {InlineObject} [inlineObject] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        myInfoChange: async (inlineObject?: InlineObject, options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/user/profile/dp`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof inlineObject !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(inlineObject !== undefined ? inlineObject : {}) : (inlineObject || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {NicknameChangeRequest} nicknameChangeRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        myInfoChange: async (nicknameChangeRequest: NicknameChangeRequest, options: any = {}): Promise<RequestArgs> => {
+        myInfoChange1: async (nicknameChangeRequest: NicknameChangeRequest, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'nicknameChangeRequest' is not null or undefined
             if (nicknameChangeRequest === null || nicknameChangeRequest === undefined) {
-                throw new RequiredError('nicknameChangeRequest','Required parameter nicknameChangeRequest was null or undefined when calling myInfoChange.');
+                throw new RequiredError('nicknameChangeRequest','Required parameter nicknameChangeRequest was null or undefined when calling myInfoChange1.');
             }
             const localVarPath = `/user/profile/nickname`;
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
@@ -3108,40 +3142,6 @@ export const MusicUserControllerApiAxiosParamCreator = function (configuration?:
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             const needsSerialization = (typeof nicknameChangeRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
             localVarRequestOptions.data =  needsSerialization ? JSON.stringify(nicknameChangeRequest !== undefined ? nicknameChangeRequest : {}) : (nicknameChangeRequest || "");
-
-            return {
-                url: globalImportUrl.format(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {InlineObject} [inlineObject] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        myInfoChange1: async (inlineObject?: InlineObject, options: any = {}): Promise<RequestArgs> => {
-            const localVarPath = `/user/profile/dp`;
-            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
-            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
-            delete localVarUrlObj.search;
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof inlineObject !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(inlineObject !== undefined ? inlineObject : {}) : (inlineObject || "");
 
             return {
                 url: globalImportUrl.format(localVarUrlObj),
@@ -3302,12 +3302,12 @@ export const MusicUserControllerApiFp = function(configuration?: Configuration) 
     return {
         /**
          * 
-         * @param {NicknameChangeRequest} nicknameChangeRequest 
+         * @param {InlineObject} [inlineObject] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async myInfoChange(nicknameChangeRequest: NicknameChangeRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOBoolean>> {
-            const localVarAxiosArgs = await MusicUserControllerApiAxiosParamCreator(configuration).myInfoChange(nicknameChangeRequest, options);
+        async myInfoChange(inlineObject?: InlineObject, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOString>> {
+            const localVarAxiosArgs = await MusicUserControllerApiAxiosParamCreator(configuration).myInfoChange(inlineObject, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -3315,12 +3315,12 @@ export const MusicUserControllerApiFp = function(configuration?: Configuration) 
         },
         /**
          * 
-         * @param {InlineObject} [inlineObject] 
+         * @param {NicknameChangeRequest} nicknameChangeRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async myInfoChange1(inlineObject?: InlineObject, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOString>> {
-            const localVarAxiosArgs = await MusicUserControllerApiAxiosParamCreator(configuration).myInfoChange1(inlineObject, options);
+        async myInfoChange1(nicknameChangeRequest: NicknameChangeRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOBoolean>> {
+            const localVarAxiosArgs = await MusicUserControllerApiAxiosParamCreator(configuration).myInfoChange1(nicknameChangeRequest, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -3388,21 +3388,21 @@ export const MusicUserControllerApiFactory = function (configuration?: Configura
     return {
         /**
          * 
-         * @param {NicknameChangeRequest} nicknameChangeRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        myInfoChange(nicknameChangeRequest: NicknameChangeRequest, options?: any): AxiosPromise<ResponseDTOBoolean> {
-            return MusicUserControllerApiFp(configuration).myInfoChange(nicknameChangeRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @param {InlineObject} [inlineObject] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        myInfoChange1(inlineObject?: InlineObject, options?: any): AxiosPromise<ResponseDTOString> {
-            return MusicUserControllerApiFp(configuration).myInfoChange1(inlineObject, options).then((request) => request(axios, basePath));
+        myInfoChange(inlineObject?: InlineObject, options?: any): AxiosPromise<ResponseDTOString> {
+            return MusicUserControllerApiFp(configuration).myInfoChange(inlineObject, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {NicknameChangeRequest} nicknameChangeRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        myInfoChange1(nicknameChangeRequest: NicknameChangeRequest, options?: any): AxiosPromise<ResponseDTOBoolean> {
+            return MusicUserControllerApiFp(configuration).myInfoChange1(nicknameChangeRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3451,24 +3451,24 @@ export const MusicUserControllerApiFactory = function (configuration?: Configura
 export class MusicUserControllerApi extends BaseAPI {
     /**
      * 
-     * @param {NicknameChangeRequest} nicknameChangeRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof MusicUserControllerApi
-     */
-    public myInfoChange(nicknameChangeRequest: NicknameChangeRequest, options?: any) {
-        return MusicUserControllerApiFp(this.configuration).myInfoChange(nicknameChangeRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @param {InlineObject} [inlineObject] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MusicUserControllerApi
      */
-    public myInfoChange1(inlineObject?: InlineObject, options?: any) {
-        return MusicUserControllerApiFp(this.configuration).myInfoChange1(inlineObject, options).then((request) => request(this.axios, this.basePath));
+    public myInfoChange(inlineObject?: InlineObject, options?: any) {
+        return MusicUserControllerApiFp(this.configuration).myInfoChange(inlineObject, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {NicknameChangeRequest} nicknameChangeRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MusicUserControllerApi
+     */
+    public myInfoChange1(nicknameChangeRequest: NicknameChangeRequest, options?: any) {
+        return MusicUserControllerApiFp(this.configuration).myInfoChange1(nicknameChangeRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
