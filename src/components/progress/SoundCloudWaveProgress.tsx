@@ -11,13 +11,14 @@ import IconButton from "src/components/button/IconButton";
 import SoundCloudWave from "src/components/wave/SoundCloudWave";
 
 type Props = {
-  selectedPosition: number;
+  currentPosition: number;
   waveformUrl: string;
   duration: number;
   width: number;
   height: number;
   onSelected: (percentage: number) => void;
   onRegisterHighlightPlay: (highlighSeconds: number) => void;
+  onChangeCurrentPosition: (currentPosition: number) => void;
 };
 
 const Container = styled.View`
@@ -87,25 +88,21 @@ const chunkTimes = (duration: number) => {
 
 const SoundCloudWaveProgress = (props: Props) => {
   const {
-    selectedPosition,
+    currentPosition,
     waveformUrl,
     width,
     height,
+    duration,
     onSelected,
     onRegisterHighlightPlay,
-    duration
+    onChangeCurrentPosition
   } = props;
-  const [currentPosition, setCurrentPosition] = useState(selectedPosition);
   const { position, bufferedPosition } = useTrackPlayerProgress();
   const layoutWidth = width - 50;
 
   useEffect(() => {
-    setCurrentPosition(selectedPosition);
-  }, [selectedPosition]);
-
-  useEffect(() => {
-    setCurrentPosition(position);
-  }, [position]);
+    onChangeCurrentPosition(position);
+  }, [onChangeCurrentPosition, position]);
 
   const onRegister = useCallback(() => {
     onRegisterHighlightPlay(currentPosition);

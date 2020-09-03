@@ -42,7 +42,7 @@ interface IProps extends IInject, IParams {
 }
 
 interface IStates {
-  selectedPosition: number;
+  currentPosition: number;
   playState: "play" | "pause";
   highlightSeconds: Record<number, number>;
 }
@@ -240,7 +240,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
       this.song = props.song();
     }
     this.state = {
-      selectedPosition: 0,
+      currentPosition: 0,
       highlightSeconds: {},
       playState: "pause"
     };
@@ -248,7 +248,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
 
   public render() {
     const { waveformUrl, duration } = this.props;
-    const { selectedPosition, highlightSeconds } = this.state;
+    const { currentPosition, highlightSeconds } = this.state;
     const { title, singer } = this.song;
     return (
       <Container>
@@ -262,13 +262,14 @@ class RegisterSongScreen extends Component<IProps, IStates> {
           <Content>
             {waveformUrl ? (
               <SoundCloudWaveProgress
-                selectedPosition={selectedPosition}
+                currentPosition={currentPosition}
                 waveformUrl={waveformUrl}
                 duration={duration}
                 width={getDeviceWidth()}
                 height={100}
                 onSelected={this.onSelected}
                 onRegisterHighlightPlay={this.onRegisterHighlightPlay}
+                onChangeCurrentPosition={this.onChangeCurrentPosition}
               />
             ) : null}
           </Content>
@@ -327,7 +328,7 @@ class RegisterSongScreen extends Component<IProps, IStates> {
     const { duration } = this.props;
     await TrackPlayer.seekTo(percentage * duration);
     this.setState({
-      selectedPosition: percentage * duration
+      currentPosition: percentage * duration
     });
   };
 
@@ -387,26 +388,32 @@ class RegisterSongScreen extends Component<IProps, IStates> {
     );
   }
 
+  private onChangeCurrentPosition = (currentPosition: number) => {
+    this.setState({
+      currentPosition: currentPosition
+    });
+  };
+
   private onPlaybackForward = async () => {
     const { duration } = this.props;
-    const { selectedPosition } = this.state;
-    if (selectedPosition + 1 >= duration) {
+    const { currentPosition } = this.state;
+    if (currentPosition + 1 >= duration) {
       return;
     }
-    await TrackPlayer.seekTo(selectedPosition + 1);
+    await TrackPlayer.seekTo(currentPosition + 1);
     this.setState({
-      selectedPosition: selectedPosition + 1
+      currentPosition: currentPosition + 1
     });
   };
 
   private onPlaybackBackward = async () => {
-    const { selectedPosition } = this.state;
-    if (selectedPosition - 1 < 0) {
+    const { currentPosition } = this.state;
+    if (currentPosition - 1 < 0) {
       return;
     }
-    await TrackPlayer.seekTo(selectedPosition - 1);
+    await TrackPlayer.seekTo(currentPosition - 1);
     this.setState({
-      selectedPosition: selectedPosition - 1
+      currentPosition: currentPosition - 1
     });
   };
 
