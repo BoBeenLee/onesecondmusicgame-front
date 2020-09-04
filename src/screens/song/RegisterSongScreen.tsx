@@ -467,11 +467,13 @@ class RegisterSongScreen extends Component<IProps, IStates> {
 
   private back = () => {
     const { componentId } = this.props;
+    TrackPlayer.reset();
     pop(componentId);
   };
 
   private goHome = () => {
     const { parentComponentId } = this.props;
+    TrackPlayer.reset();
     popTo(parentComponentId);
   };
 }
