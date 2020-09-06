@@ -33,8 +33,8 @@ const MonthlyRanks = types
 
     const fetch = flow(function*() {
       const response: RetrieveAsyncFunc<typeof getRankingInfoOfMonthsUsingGET> = yield getRankingInfoOfMonthsUsingGET();
-      self.time = (response?.time ?? 0) * 1000;
-      self.ranks.replace(response?.rankViewList ?? []);
+      self.time = (response?.currentMonthlyRanking?.time ?? 0) * 1000;
+      self.ranks.replace(response?.currentMonthlyRanking?.rankViewList ?? []);
     });
 
     const initialize = flow(function*() {

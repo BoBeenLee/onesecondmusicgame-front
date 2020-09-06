@@ -488,6 +488,31 @@ export interface LoggedInMusicUser {
 /**
  * 
  * @export
+ * @interface MonthlyRankingView
+ */
+export interface MonthlyRankingView {
+    /**
+     * 
+     * @type {RankViewModel}
+     * @memberof MonthlyRankingView
+     */
+    currentMonthlyRanking?: RankViewModel;
+    /**
+     * 
+     * @type {MyRankView}
+     * @memberof MonthlyRankingView
+     */
+    myRank?: MyRankView;
+    /**
+     * 이번 달 끝날 때 까지 남은 시간
+     * @type {number}
+     * @memberof MonthlyRankingView
+     */
+    timeToFinishThisMonth?: number;
+}
+/**
+ * 
+ * @export
  * @interface MusicUser
  */
 export interface MusicUser {
@@ -979,6 +1004,25 @@ export interface ResponseDTOLoggedInMusicUser {
      * @memberof ResponseDTOLoggedInMusicUser
      */
     body?: LoggedInMusicUser;
+}
+/**
+ * 
+ * @export
+ * @interface ResponseDTOMonthlyRankingView
+ */
+export interface ResponseDTOMonthlyRankingView {
+    /**
+     * 
+     * @type {number}
+     * @memberof ResponseDTOMonthlyRankingView
+     */
+    status?: number;
+    /**
+     * 
+     * @type {MonthlyRankingView}
+     * @memberof ResponseDTOMonthlyRankingView
+     */
+    body?: MonthlyRankingView;
 }
 /**
  * 
@@ -1495,6 +1539,18 @@ export interface SongResponse {
      * @memberof SongResponse
      */
     like?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof SongResponse
+     */
+    duration?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof SongResponse
+     */
+    waveformUrl?: string;
     /**
      * 
      * @type {boolean}
@@ -3636,7 +3692,7 @@ export const RankingControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getRankingInfoOfMonths(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTORankViewModel>> {
+        async getRankingInfoOfMonths(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOMonthlyRankingView>> {
             const localVarAxiosArgs = await RankingControllerApiAxiosParamCreator(configuration).getRankingInfoOfMonths(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -3677,7 +3733,7 @@ export const RankingControllerApiFactory = function (configuration?: Configurati
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRankingInfoOfMonths(options?: any): AxiosPromise<ResponseDTORankViewModel> {
+        getRankingInfoOfMonths(options?: any): AxiosPromise<ResponseDTOMonthlyRankingView> {
             return RankingControllerApiFp(configuration).getRankingInfoOfMonths(options).then((request) => request(axios, basePath));
         },
         /**
