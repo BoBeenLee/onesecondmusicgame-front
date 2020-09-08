@@ -48,7 +48,7 @@ interface IProps extends IInject, IParams, PopupProps, DisabledProps {
 }
 
 interface IStates {
-  adStatus: "open" | "close" | null;
+  adStatus: "open" | "close" | "loading";
 }
 
 const Container = styled(ContainerWithStatusBar)`
@@ -131,7 +131,7 @@ class UserGameItemScreen extends Component<IProps, IStates> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      adStatus: null
+      adStatus: "loading"
     };
     this.userGameItemMap = {
       [ItemItemTypeEnum.SKIP]: {
@@ -151,7 +151,8 @@ class UserGameItemScreen extends Component<IProps, IStates> {
     const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
     this.admobUnit = loadAD(AdmobUnitID.HeartReward, keywords, {
       onRewarded: this.onRewarded,
-      onAdClosed: this.onAdClosed
+      onAdClosed: this.onAdClosed,
+      onAdLoaded: this.onAdLoaded
     });
   }
 
@@ -249,7 +250,11 @@ class UserGameItemScreen extends Component<IProps, IStates> {
   private requestHeartRewardAD = async () => {
     const { adStatus } = this.state;
     const todayAdmobUnitCount = await storage().todayAdmobUnitCount();
-    if (adStatus === "open") {
+    if (["loading"].some(status => status === adStatus)) {
+      Alert.alert("광고 로딩중입니다.");
+      return;
+    }
+    if (["open"].some(status => status === adStatus)) {
       Alert.alert("좀있다 다시 재시도해보세요.");
       return;
     }
@@ -285,19 +290,6 @@ class UserGameItemScreen extends Component<IProps, IStates> {
     }
   };
 
-  private onAdClosed = () => {
-    const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
-    setTimeout(() => {
-      this.admobUnit = loadAD(AdmobUnitID.HeartReward, keywords, {
-        onRewarded: this.onRewarded,
-        onAdClosed: this.onAdClosed
-      });
-      this.setState({
-        adStatus: "close"
-      });
-    }, 3000);
-  };
-
   private onRewarded = async () => {
     const { closePopup } = this.props.popupProps;
     const { updateUserReward } = this.props.authStore;
@@ -310,6 +302,26 @@ class UserGameItemScreen extends Component<IProps, IStates> {
     } catch (error) {
       showToast(error.message);
     }
+  };
+
+  private onAdLoaded = () => {
+    this.setState({
+      adStatus: "close"
+    });
+  };
+
+  private onAdClosed = () => {
+    const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
+    setTimeout(() => {
+      this.admobUnit = loadAD(AdmobUnitID.HeartReward, keywords, {
+        onRewarded: this.onRewarded,
+        onAdClosed: this.onAdClosed,
+        onAdLoaded: this.onAdLoaded
+      });
+      this.setState({
+        adStatus: "loading"
+      });
+    }, 3000);
   };
 
   private onGainFullHeartPopup = () => {

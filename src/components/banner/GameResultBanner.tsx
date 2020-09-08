@@ -35,7 +35,7 @@ const GameResultBanner = (props: IProps) => {
       size={"SMART_BANNER"}
       requestOptions={{
         requestNonPersonalizedAdsOnly: true,
-        keywords
+        keywords: Array.from(keywords)
       }}
       onAdClosed={onClose}
     />

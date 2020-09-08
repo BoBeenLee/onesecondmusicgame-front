@@ -333,6 +333,7 @@ class GameResultScreen extends Component<IProps, IStates> {
   }
 
   public render() {
+    const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
     const heart = this.props.authStore.user?.heart;
     const nickname = this.props.authStore.user?.nickname ?? "";
     const { gainPointOfThisGame, resultComment } = this.state.gameResult;
@@ -341,6 +342,7 @@ class GameResultScreen extends Component<IProps, IStates> {
     return (
       <Container>
         <ScrollView>
+          <GameResultBanner keywords={keywords} />
           <Header>
             <Title>게임 종료</Title>
             <GamePlayStep circles={gamePlayStepResultStatuses} />
