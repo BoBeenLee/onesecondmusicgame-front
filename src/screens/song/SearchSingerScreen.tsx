@@ -271,15 +271,6 @@ class SearchSingerScreen extends Component<IProps, IStates> {
           ListEmptyComponent={
             <ResultEmpty>
               <ResultEmptyTitle>검색결과가 없습니다.</ResultEmptyTitle>
-              <ResultEmptyDescription>
-                음원 등록에서 찾으시는 곡을 검색해
-              </ResultEmptyDescription>
-              <ResultEmptyDescriptionRow>
-                <ResultEmptyDescriptionHeart source={images.miniHeart} />
-                <ResultEmptyDescription>
-                  를 눌러주시면 곡을 등록하실 수 있습니다.
-                </ResultEmptyDescription>
-              </ResultEmptyDescriptionRow>
             </ResultEmpty>
           }
         />
