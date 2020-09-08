@@ -16,7 +16,7 @@ const SeasonRanks = types
     isRefresh: types.optional(types.boolean, false),
     ranks: types.optional(types.array(types.frozen<RankView>()), []),
     lastSeasonTop3: types.optional(types.array(types.frozen<RankView>()), []),
-    timeToFinishThisSeason: types.optional(types.number, 0),
+    timeToFinishThisSeasonMilliSeconds: types.optional(types.number, 0),
     myRank: types.frozen<RankView | null>(null)
   })
   .views(self => {
@@ -35,10 +35,7 @@ const SeasonRanks = types
         );
       },
       get finishThisSeasonFormat() {
-        const remainSeconds = secondsDuration(
-          today(),
-          self.timeToFinishThisSeason
-        );
+        const remainSeconds = self.timeToFinishThisSeasonMilliSeconds / 1000;
         const minutes = _.ceil(remainSeconds / 60);
         const hours = _.ceil(minutes / 60);
         const days = _.ceil(hours / 24);
@@ -55,8 +52,8 @@ const SeasonRanks = types
 
     const fetch = flow(function*() {
       const response: RetrieveAsyncFunc<typeof getRankingInfoOfSeasonUsingGET> = yield getRankingInfoOfSeasonUsingGET();
-      self.timeToFinishThisSeason =
-        (response?.timeToFinishThisSeason ?? 0) * 1000;
+      self.timeToFinishThisSeasonMilliSeconds =
+        response?.timeToFinishThisSeason ?? 0;
       self.myRank = response?.myRank ?? null;
       self.ranks.replace(response?.currentSeasonRanking?.rankViewList ?? []);
       self.lastSeasonTop3.replace(
