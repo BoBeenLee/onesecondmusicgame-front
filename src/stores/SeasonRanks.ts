@@ -16,6 +16,7 @@ const SeasonRanks = types
     isRefresh: types.optional(types.boolean, false),
     ranks: types.optional(types.array(types.frozen<RankView>()), []),
     lastSeasonTop3: types.optional(types.array(types.frozen<RankView>()), []),
+    currentSeason: types.optional(types.number, 0),
     timeToFinishThisSeasonSeconds: types.optional(types.number, 0),
     myRank: types.frozen<RankView | null>(null)
   })
@@ -52,6 +53,7 @@ const SeasonRanks = types
 
     const fetch = flow(function*() {
       const response: RetrieveAsyncFunc<typeof getRankingInfoOfSeasonUsingGET> = yield getRankingInfoOfSeasonUsingGET();
+      self.currentSeason = response?.currentSeason ?? 0;
       self.timeToFinishThisSeasonSeconds =
         response?.timeToFinishThisSeason ?? 0;
       self.myRank = response?.myRank ?? null;

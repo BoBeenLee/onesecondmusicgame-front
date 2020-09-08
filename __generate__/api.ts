@@ -611,6 +611,12 @@ export interface PageSongResponse {
     totalElements?: number;
     /**
      * 
+     * @type {Sort}
+     * @memberof PageSongResponse
+     */
+    sort?: Sort;
+    /**
+     * 
      * @type {boolean}
      * @memberof PageSongResponse
      */
@@ -621,12 +627,6 @@ export interface PageSongResponse {
      * @memberof PageSongResponse
      */
     last?: boolean;
-    /**
-     * 
-     * @type {Sort}
-     * @memberof PageSongResponse
-     */
-    sort?: Sort;
     /**
      * 
      * @type {number}
@@ -1269,6 +1269,12 @@ export enum ScoreViewModelScoreTypeEnum {
  * @interface SeasonRankingView
  */
 export interface SeasonRankingView {
+    /**
+     * 현재 시즌 번호 ( 분기 번호로 사용중 )
+     * @type {number}
+     * @memberof SeasonRankingView
+     */
+    currentSeason?: number;
     /**
      * 
      * @type {RankViewModel}

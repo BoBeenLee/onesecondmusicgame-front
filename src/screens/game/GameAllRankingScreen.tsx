@@ -19,7 +19,8 @@ import { IStore } from "src/stores/Store";
 import {
   transformTimeToString,
   todayFormat,
-  DATE_FORMAT1
+  DATE_FORMAT1,
+  DATE_FORMAT2
 } from "src/utils/date";
 import images from "src/images";
 import RankTabItem from "src/components/tab/item/RankTabItem";
@@ -322,7 +323,8 @@ class GameAllRankingScreen extends Component<Props, States> {
             myRank,
             lastSeasonTop3,
             isMyRankIncludeRanks,
-            finishThisSeasonFormat
+            finishThisSeasonFormat,
+            currentSeason
           } = this.seasonRanks;
           const [firstRank, secondRank, thirdRank, ...restRank] = rankViews;
 
@@ -336,9 +338,10 @@ class GameAllRankingScreen extends Component<Props, States> {
                       <TitleBombRight source={images.bgRankTitleBomb} />
                       <TitleBackground>
                         <TitleBackgroundImage source={images.bgRankTitle} />
-                        <Title>{todayFormat(DATE_FORMAT1)}의 음잘알</Title>
+                        <Title>
+                          {todayFormat(DATE_FORMAT2)} 시즌{currentSeason} 음잘알
+                        </Title>
                       </TitleBackground>
-                      <Title>{todayFormat(DATE_FORMAT1)}의 음잘알</Title>
                     </TitleGroup>
                     <PreviousSeasonTop3
                       title="지난 시즌 TOP 3 음잘알"
