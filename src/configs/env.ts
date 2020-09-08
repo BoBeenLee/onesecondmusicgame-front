@@ -32,28 +32,28 @@ const REACT_ENV = _.defaultTo(
 
 const SOUNDCLOUD_API_URL = "https://api.soundcloud.com";
 
+const admobAppId = isIOS()
+  ? "ca-app-pub-1012769206894788~2782168364"
+  : "ca-app-pub-1012769206894788~7052585860";
+
 const buildTestAdEnv = () => ({
-  APP_ID: isIOS()
-    ? "ca-app-pub-8725491575270284~8101981332"
-    : "ca-app-pub-8725491575270284~4676713978",
+  APP_ID: admobAppId,
   HEART_REWARD: "ca-app-pub-3940256099942544/5224354917",
   HEART_SCREEN: "ca-app-pub-3940256099942544/8691691433",
   GAME_RESULT: "ca-app-pub-3940256099942544/6300978111"
 });
 
 const buildProdAdEnv = () => ({
-  APP_ID: isIOS()
-    ? "ca-app-pub-8725491575270284~8101981332"
-    : "ca-app-pub-8725491575270284~4676713978",
+  APP_ID: admobAppId,
   HEART_REWARD: isIOS()
-    ? "ca-app-pub-8725491575270284/9747424862"
-    : "ca-app-pub-8725491575270284/6929689833",
+    ? "ca-app-pub-1012769206894788/2669809105"
+    : "ca-app-pub-1012769206894788/9931569062",
   HEART_SCREEN: isIOS()
-    ? "ca-app-pub-8725491575270284/3439653928"
-    : "ca-app-pub-8725491575270284/8691980606",
+    ? "ca-app-pub-1012769206894788/7922329304"
+    : "ca-app-pub-1012769206894788/7305405722",
   GAME_RESULT: isIOS()
-    ? "ca-app-pub-8725491575270284/6361609978"
-    : "ca-app-pub-8725491575270284/2748849786"
+    ? "ca-app-pub-1012769206894788/4833616632"
+    : "ca-app-pub-1012769206894788/2473200697"
 });
 
 const STAGING_ENV_ENTRY: IEnvironmentEntry = {
