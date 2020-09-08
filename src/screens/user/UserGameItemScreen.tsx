@@ -249,7 +249,11 @@ class UserGameItemScreen extends Component<IProps, IStates> {
   private requestHeartRewardAD = async () => {
     const { adStatus } = this.state;
     const todayAdmobUnitCount = await storage().todayAdmobUnitCount();
-    if (this.admobUnit.isLoaded() && adStatus !== "open") {
+    if (adStatus === "open") {
+      Alert.alert("좀있다 다시 재시도해보세요.");
+      return;
+    }
+    if (this.admobUnit.isLoaded()) {
       this.setState({
         adStatus: "open"
       });
@@ -283,13 +287,15 @@ class UserGameItemScreen extends Component<IProps, IStates> {
 
   private onAdClosed = () => {
     const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
-    loadAD(AdmobUnitID.HeartReward, keywords, {
-      onRewarded: this.onRewarded,
-      onAdClosed: this.onAdClosed
-    });
-    this.setState({
-      adStatus: "close"
-    });
+    setTimeout(() => {
+      this.admobUnit = loadAD(AdmobUnitID.HeartReward, keywords, {
+        onRewarded: this.onRewarded,
+        onAdClosed: this.onAdClosed
+      });
+      this.setState({
+        adStatus: "close"
+      });
+    }, 3000);
   };
 
   private onRewarded = async () => {
