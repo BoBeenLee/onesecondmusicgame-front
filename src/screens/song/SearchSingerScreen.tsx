@@ -91,7 +91,7 @@ const Description = styled(Regular14)`
 `;
 
 const SearchView = styled.View`
-  margin-top: 39px;
+  margin-top: 25px;
   width: 100%;
   flex-direction: row;
   align-items: center;

@@ -76,16 +76,16 @@ const Header = styled.View`
 
 const Title = styled(Bold18)`
   color: ${colors.lightGrey};
-  margin-top: 35px;
+  margin-top: 25px;
 `;
 
 const Description = styled(Regular14)`
   color: ${colors.lightGrey};
-  margin-top: 16px;
+  margin-top: 5px;
 `;
 
 const SearchView = styled.View`
-  margin-top: 50px;
+  margin-top: 25px;
   margin-horizontal: 44px;
 `;
 
@@ -181,14 +181,12 @@ const HighlightGameSingerName = styled(Bold14)`
 `;
 
 const GameSingerBadgeGroup = styled.View`
-  width: 100%;
+  width: 330px;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
   margin-top: 7px;
   margin-bottom: 24px;
-  padding-left: 10px;
-  padding-right: 10px;
 `;
 
 const GameSingerBadgeView = styled(GameSingerBadge)`
