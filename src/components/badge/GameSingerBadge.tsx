@@ -43,8 +43,10 @@ const Container = styled.TouchableOpacity<{ type: SingerBadgeType }>`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  min-width: 100px;
+  width: 100px;
   height: 33px;
+  padding-left: 19px;
+  padding-right: 19px;
   border-radius: 17px;
   ${({ type }) => containerByType[type]}
 `;
@@ -64,7 +66,9 @@ const GameSingerBadge = (props: Props) => {
   const { style, type, name, onClose } = props;
   return (
     <Container style={style} type={type} onPress={onClose}>
-      <Name type={type}>{name}</Name>
+      <Name type={type} numberOfLines={1}>
+        {name}
+      </Name>
       {type === "selected" ? (
         <CloseButton source={images.icGameSingerClose} />
       ) : null}

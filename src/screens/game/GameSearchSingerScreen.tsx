@@ -31,6 +31,7 @@ import BackTopBar from "src/components/topbar/BackTopBar";
 import XEIcon from "src/components/icon/XEIcon";
 import { logEvent } from "src/configs/analytics";
 import withLoading, { LoadingProps } from "src/hocs/withLoading";
+import GameSingerBadge from "src/components/badge/GameSingerBadge";
 
 interface IInject {
   singerStore: ISingerStore;
@@ -101,7 +102,7 @@ const ResultText = styled(Bold12)`
 
 const Result = styled<ComponentClass<FlatListProps<ISinger>>>(FlatList).attrs({
   contentContainerStyle: {
-    paddingBottom: 95
+    paddingBottom: 235
   }
 })`
   flex: 1;
@@ -167,9 +168,34 @@ const Bottom = styled.View`
   border-top-right-radius: 24px;
   background-color: ${colors.darkTwo};
   padding-horizontal: 41px;
-  padding-bottom: 31px;
+  padding-bottom: 10px;
   padding-top: 20px;
 `;
+
+const GameSingerName = styled(Bold14)`
+  color: ${colors.white};
+`;
+
+const HighlightGameSingerName = styled(Bold14)`
+  color: ${colors.lightMagenta};
+`;
+
+const GameSingerBadgeGroup = styled.View`
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 7px;
+  margin-bottom: 24px;
+  padding-left: 10px;
+  padding-right: 10px;
+`;
+
+const GameSingerBadgeView = styled(GameSingerBadge)`
+  margin-top: 7px;
+`;
+
+const GameSingerEmptyView = styled.View``;
 
 const SubmitButton = styled.TouchableOpacity`
   width: 100%;
@@ -181,7 +207,7 @@ const SubmitButton = styled.TouchableOpacity`
   background-color: ${colors.pinkyPurple};
 `;
 
-const BadgeView = styled.View`
+const SubmitBadgeView = styled.View`
   position: absolute;
   top: -10px;
   left: 0px;
@@ -190,7 +216,7 @@ const BadgeView = styled.View`
   align-items: center;
 `;
 
-const Badge = styled.View`
+const SubmitBadge = styled.View`
   width: 82px;
   height: 19px;
   justify-content: center;
@@ -200,7 +226,7 @@ const Badge = styled.View`
   background-color: #a83bab;
 `;
 
-const BadgeText = styled(Regular12)`
+const SubmitBadgeText = styled(Regular12)`
   color: ${colors.white};
 `;
 
@@ -318,17 +344,56 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
       2: "NORMAL",
       3: "EASY"
     };
+    const selectedSingers = this.selectedSingers;
     return (
       <Bottom>
+        <GameSingerName>
+          {`선택한 가수의 노래 `}
+          <HighlightGameSingerName>
+            {selectedSingers.length}곡
+          </HighlightGameSingerName>
+          {`, 랜덤 가수의 노래 `}
+          <HighlightGameSingerName>
+            {SINGER_COUMNS_LENGTH - selectedSingers.length}곡
+          </HighlightGameSingerName>
+          {` 출제`}
+        </GameSingerName>
+        <GameSingerBadgeGroup>
+          {_.times(SINGER_COUMNS_LENGTH, index => {
+            const selected = selectedSingers[index];
+            if (selected) {
+              return (
+                <GameSingerBadgeView
+                  key={`singerBadge${index}`}
+                  type={"selected"}
+                  name={selected.singerName}
+                  onClose={_.partial(this.onSelectedItem, selected)}
+                />
+              );
+            }
+            return (
+              <GameSingerBadgeView
+                key={`singerBadge${index}`}
+                type={
+                  SELECTED_SINGERS_MAX_LENGTH > index ? "unselected" : "random"
+                }
+                name="랜덤"
+              />
+            );
+          })}
+          <GameSingerEmptyView />
+        </GameSingerBadgeGroup>
         <SubmitButton
           onPress={_.partial(this.submit, level[this.selectedSingers.length])}
         >
           <SubmitButtonText>시작하기</SubmitButtonText>
-          <BadgeView>
-            <Badge>
-              <BadgeText>{level[this.selectedSingers.length]}</BadgeText>
-            </Badge>
-          </BadgeView>
+          <SubmitBadgeView>
+            <SubmitBadge>
+              <SubmitBadgeText>
+                {level[this.selectedSingers.length]}
+              </SubmitBadgeText>
+            </SubmitBadge>
+          </SubmitBadgeView>
         </SubmitButton>
       </Bottom>
     );
