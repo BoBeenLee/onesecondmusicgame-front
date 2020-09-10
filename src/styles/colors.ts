@@ -1,5 +1,7 @@
 // tslint:disable:object-literal-sort-keys
 const colors = {
+  pastelBlue: "#a7a5ff",
+  duskyBlue: "#5552aa",
   straw: "#ffef77",
   pinkyPurple: "#c342c1",
   pinkyPurple03: "rgba(195, 66, 193, 0.3)",

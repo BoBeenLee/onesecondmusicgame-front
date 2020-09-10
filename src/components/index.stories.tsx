@@ -1,4 +1,5 @@
 import "src/components/button/Button.stories";
+import "src/components/badge/Badge.stories";
 import "src/components/text/Text.stories";
 import "src/components/card/Card.stories";
 import "src/components/player/Player.stories";

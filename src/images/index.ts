@@ -48,6 +48,7 @@ const images = {
   btnSelectedClose: require("./btn_selected_close.png"),
   btnAddHighlighPlay: require("./btn_add_highligh_play.png"),
   icSelectedHighlightPlay: require("./ic_selected_highlight_play.png"),
-  bgSelectedEmptyHighlight: require("./bg_selected_empty_highlight.png")
+  bgSelectedEmptyHighlight: require("./bg_selected_empty_highlight.png"),
+  icGameSingerClose: require("./ic_game_singer_close.png")
 };
 export default images;
