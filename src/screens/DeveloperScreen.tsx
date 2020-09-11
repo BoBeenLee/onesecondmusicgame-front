@@ -3,8 +3,9 @@ import iid from "@react-native-firebase/iid";
 import _ from "lodash";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Clipboard } from "react-native";
+import { Clipboard, Alert } from "react-native";
 import styled from "styled-components/native";
+import Rate, { AndroidMarket } from "react-native-rate";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
 import {
@@ -196,6 +197,9 @@ class DeveloperScreen extends Component<IProps, IStates> {
               링크 공유(스토어 등록되어야 정상적으로 동작함)
             </ButtonText>
           </ADButton>
+          <ADButton onPress={this.requestRate}>
+            <ButtonText>별점 주기</ButtonText>
+          </ADButton>
           <Title>asyncStorage</Title>
           <DevelopInfoText onPress={_.partial(this.setContent, storages)}>
             {storages}
@@ -284,6 +288,24 @@ class DeveloperScreen extends Component<IProps, IStates> {
     const shortLink = await makeAppShareLink(accessId);
     Clipboard.setString(shortLink);
     showToast("공유 링크 복사 완료");
+  };
+
+  private requestRate = () => {
+    const options = {
+      AppleAppID: "1493107650",
+      GooglePackageName: "kr.nexters.onesecondmusicgame",
+      AmazonPackageName: "kr.nexters.onesecondmusicgame",
+      OtherAndroidURL: "http://www.randomappstore.com/app/47172391",
+      preferredAndroidMarket: AndroidMarket.Google,
+      preferInApp: false,
+      openAppStoreIfInAppFails: true,
+      fallbackPlatformURL: "http://www.mywebsite.com/myapp.html"
+    };
+    Rate.rate(options, success => {
+      if (success) {
+        Alert.alert("Success");
+      }
+    });
   };
 
   private back = () => {

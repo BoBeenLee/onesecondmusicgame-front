@@ -520,7 +520,7 @@ PODS:
     - React
   - RNPermissions (2.0.6):
     - React
-  - RNRate (1.1.10):
+  - RNRate (1.2.4):
     - React
   - RNReanimated (1.4.0):
     - React
@@ -857,7 +857,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 946a7691e41df61e2c4b1884deab41a4cdc3afff
   RNGoogleSignin: a10b849c165088c737d4465de6c2062f24d06002
   RNPermissions: 3944d2574eca469ca5dcc3fa945271468c67483d
-  RNRate: d44a8bca6ee08f5d890ecccddaec2810955ffbb3
+  RNRate: 2b31dad120cd1b78e33c6034808561c386a3dddf
   RNReanimated: b2ab0b693dddd2339bd2f300e770f6302d2e960c
   RNSentry: 2bae4ffee2e66376ef42cb845a494c3bde17bc56
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
