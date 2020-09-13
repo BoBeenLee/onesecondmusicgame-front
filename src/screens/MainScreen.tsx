@@ -47,6 +47,10 @@ import { IAppStore } from "src/stores/AppStore";
 import OnlyConfirmPopup from "src/components/popup/OnlyConfirmPopup";
 import { LoadingProps } from "src/hocs/withLoading";
 import GameAllRankingScreen from "src/screens/game/GameAllRankingScreen";
+import { requestRating } from "src/configs/rating";
+import UserRatingConfirmPopup from "src/components/popup/rating/UserRatingConfirmPopup";
+import ThanksRatingCompletePopup from "src/components/popup/rating/ThanksRatingCompletePopup";
+import FeedbackRatingPopup from "src/components/popup/rating/FeedbackRatingPopup";
 
 interface IInject {
   store: IStore;
@@ -237,7 +241,11 @@ const MainBackground = styled(AutoHeightImage)`
   resize-mode: contain;
 `;
 
-const DevelopButton = styled.TouchableOpacity``;
+const DevelopButton = styled.TouchableOpacity`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+`;
 
 const DeveloperButtonView = styled.View`
   position: absolute;
@@ -294,6 +302,7 @@ class MainScreen extends Component<IProps, IStates> {
       storage().getDoNotShowRegisterSongTooltip()
     ]);
     this.setState({ isNotTooltipShow });
+    this.initializeFirstRating();
   }
 
   public render() {
@@ -400,6 +409,53 @@ class MainScreen extends Component<IProps, IStates> {
       </RegisterSongTooltipButtonView>
     );
   }
+
+  private initializeFirstRating = async () => {
+    const isFirstRating = await storage().getFirstRating();
+    const isLackHeartCount = this.props.authStore.user?.heart.isLackHeartCount;
+    const nickname = this.props.authStore.user?.nickname ?? "";
+    const { showPopup } = this.props.popupProps;
+
+    if (isFirstRating && isLackHeartCount) {
+      showPopup(
+        <UserRatingConfirmPopup
+          nickname={nickname}
+          onConfirm={this.onRequestRating}
+          onCancel={this.onShowFeedbackPopup}
+        />,
+        false
+      );
+    }
+  };
+
+  private onRequestRating = async () => {
+    await requestRating();
+    this.onShowThanksRatingCompletePopup();
+  };
+
+  private onShowThanksRatingCompletePopup = () => {
+    const { showPopup, closePopup } = this.props.popupProps;
+
+    showPopup(<ThanksRatingCompletePopup onConfirm={closePopup} />, false);
+  };
+
+  private onShowFeedbackPopup = () => {
+    const { showPopup, closePopup } = this.props.popupProps;
+
+    showPopup(
+      <FeedbackRatingPopup
+        onConfirm={this.onSubmitFeedback}
+        onCancel={closePopup}
+      />,
+      false
+    );
+  };
+
+  private onSubmitFeedback = () => {
+    // TODO;
+    const { closePopup } = this.props.popupProps;
+    closePopup();
+  };
 
   private chargeTime = async () => {
     const heart = this.props.authStore.user?.heart;
