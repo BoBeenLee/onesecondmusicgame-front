@@ -36,6 +36,7 @@ import { storage } from "src/utils/storage";
 import { ILinkingStore } from "src/stores/LinkingStore";
 import { IPushNotificationStore } from "src/stores/PushNotificationStore";
 import { getBuildNumber, getVersion, getUniqueID } from "src/configs/device";
+import { requestRating } from "src/configs/rating";
 
 interface IInject {
   store: IStore;
@@ -290,22 +291,9 @@ class DeveloperScreen extends Component<IProps, IStates> {
     showToast("공유 링크 복사 완료");
   };
 
-  private requestRate = () => {
-    const options = {
-      AppleAppID: "1493107650",
-      GooglePackageName: "kr.nexters.onesecondmusicgame",
-      AmazonPackageName: "kr.nexters.onesecondmusicgame",
-      OtherAndroidURL: "http://www.randomappstore.com/app/47172391",
-      preferredAndroidMarket: AndroidMarket.Google,
-      preferInApp: false,
-      openAppStoreIfInAppFails: true,
-      fallbackPlatformURL: "http://www.mywebsite.com/myapp.html"
-    };
-    Rate.rate(options, success => {
-      if (success) {
-        Alert.alert("Success");
-      }
-    });
+  private requestRate = async () => {
+    await requestRating();
+    Alert.alert("success");
   };
 
   private back = () => {

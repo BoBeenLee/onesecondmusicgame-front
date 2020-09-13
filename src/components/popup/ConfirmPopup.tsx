@@ -3,11 +3,11 @@ import styled from "styled-components/native";
 
 import colors from "src/styles/colors";
 import { ViewProps } from "react-native";
-import { Bold12, Bold17, Bold20 } from "src/components/text/Typographies";
+import { Bold17, Bold20 } from "src/components/text/Typographies";
 
 interface IProps {
   style?: ViewProps["style"];
-  message: string;
+  message: React.ReactNode;
   confirmText: string;
   onConfirm: () => void;
   cancelText: string;

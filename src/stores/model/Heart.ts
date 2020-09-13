@@ -12,6 +12,9 @@ const Heart = types
   })
   .views(self => {
     return {
+      get isLackHeartCount() {
+        return self.heartCount === 0;
+      },
       get leftTimeSeconds() {
         if (self.leftTime === null) {
           return 0;

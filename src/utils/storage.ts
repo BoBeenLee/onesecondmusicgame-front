@@ -15,7 +15,8 @@ export type StorageType =
   | "SHARED_ACCESS_ID"
   | "DO_NOT_SHOW_GAME_PLAY"
   | "DO_NOT_SHOW_REGISTER_SONG_TOOLTIP"
-  | "ADMOB_UNITS_BY_DATE";
+  | "ADMOB_UNITS_BY_DATE"
+  | "FIRST_RATING";
 
 export function storageFactory(
   setItem: (key: string, value: string) => Promise<any>,
@@ -79,6 +80,9 @@ export function storageFactory(
   };
 
   const setStorages = {
+    saveFirstRating: async () => {
+      await setStorageItem("FIRST_RATING", "false");
+    },
     saveDoNotShowRegisterSongTooltip: async (
       doNotShowRegisterSongTooltip: boolean
     ) => {
@@ -129,6 +133,9 @@ export function storageFactory(
   };
 
   const getStorages = {
+    getFirstRating: () => {
+      return getBooleanWithDefault("FIRST_RATING", true);
+    },
     getDoNotShowRegisterSongTooltip: () => {
       return getBooleanWithDefault("DO_NOT_SHOW_REGISTER_SONG_TOOLTIP", false);
     },

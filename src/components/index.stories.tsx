@@ -7,6 +7,7 @@ import "src/components/topbar/TopBar.stories";
 import "src/components/carousel/Carousel.stories";
 import "src/components/webview/Webview.stories";
 import "src/components/popup/Popup.stories";
+import "src/components/popup/rating/Popup.Rating.stories";
 import "src/components/icon/Icon.stories";
 import "src/components/input/Input.stories";
 import "src/components/backdrop/BackDrop.stories";

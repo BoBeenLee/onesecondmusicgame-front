@@ -1,10 +1,13 @@
 import React from "react";
+import { ViewProps, TextProps } from "react-native";
 import styled from "styled-components/native";
 
 import { Bold16, Bold15 } from "src/components/text/Typographies";
 import colors from "src/styles/colors";
 
 interface IProps {
+  style?: ViewProps["style"];
+  TextComponent?: React.ElementType;
   count: number;
 }
 
@@ -25,10 +28,10 @@ const BadgeText = styled(Bold15)`
 `;
 
 const CountBadge = (props: IProps) => {
-  const { count } = props;
+  const { style, TextComponent = BadgeText, count } = props;
   return (
-    <BadgeView>
-      <BadgeText>{count}</BadgeText>
+    <BadgeView style={style}>
+      <TextComponent>{count}</TextComponent>
     </BadgeView>
   );
 };
