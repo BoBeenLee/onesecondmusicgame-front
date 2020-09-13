@@ -29,8 +29,9 @@ const Title = styled(Bold20)`
   margin-bottom: 14px;
 `;
 
-const Description = styled(Bold15)`
+const Description = styled(Regular15)`
   color: ${colors.black};
+  text-align: center;
 `;
 
 const UserRatingConfirmPopup = (props: Props) => {

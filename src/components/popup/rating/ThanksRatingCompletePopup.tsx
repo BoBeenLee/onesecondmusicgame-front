@@ -4,11 +4,11 @@ import styled from "styled-components/native";
 import { ViewProps } from "react-native";
 
 import {
-  Bold12,
   Bold13,
   Bold15,
   Bold20,
   Bold24,
+  Regular15,
   Regular17,
   Regular24
 } from "src/components/text/Typographies";
@@ -21,7 +21,6 @@ import images from "src/images";
 interface IProps {
   style?: ViewProps["style"];
   onConfirm: () => void;
-  onCancel: () => void;
 }
 
 const OuterContainer = styled(OnlyConfirmPopup)`
@@ -40,7 +39,7 @@ const Title = styled(Bold24)`
   margin-top: 48px;
 `;
 
-const Description = styled(Bold15)`
+const Description = styled(Regular15)`
   text-align: center;
   color: ${colors.slateGrey};
   margin-top: 14px;
@@ -68,7 +67,7 @@ const HeartCountText = styled(Bold13)`
 `;
 
 const ThanksRatingCompletePopup = (props: IProps) => {
-  const { style, onConfirm, onCancel } = props;
+  const { style, onConfirm } = props;
   return (
     <OuterContainer
       style={style}
@@ -88,7 +87,6 @@ const ThanksRatingCompletePopup = (props: IProps) => {
       }
       confirmText={"확인"}
       onConfirm={onConfirm}
-      onCancel={onCancel}
     />
   );
 };
