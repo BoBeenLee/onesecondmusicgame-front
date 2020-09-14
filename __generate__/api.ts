@@ -259,6 +259,19 @@ export interface GameStartResponse {
 /**
  * 
  * @export
+ * @interface GrantedAuthority
+ */
+export interface GrantedAuthority {
+    /**
+     * 
+     * @type {string}
+     * @memberof GrantedAuthority
+     */
+    authority?: string;
+}
+/**
+ * 
+ * @export
  * @interface HeartResponse
  */
 export interface HeartResponse {
@@ -546,6 +559,48 @@ export interface MusicUser {
      * @memberof MusicUser
      */
     role?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MusicUser
+     */
+    enabled?: boolean;
+    /**
+     * 
+     * @type {Array<GrantedAuthority>}
+     * @memberof MusicUser
+     */
+    authorities?: Array<GrantedAuthority>;
+    /**
+     * 
+     * @type {string}
+     * @memberof MusicUser
+     */
+    username?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MusicUser
+     */
+    password?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MusicUser
+     */
+    accountNonExpired?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MusicUser
+     */
+    accountNonLocked?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MusicUser
+     */
+    credentialsNonExpired?: boolean;
 }
 /**
  * 현재 내 랭킹
@@ -602,31 +657,25 @@ export interface PageSongResponse {
      * @type {number}
      * @memberof PageSongResponse
      */
+    totalElements?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PageSongResponse
+     */
     totalPages?: number;
     /**
      * 
      * @type {number}
      * @memberof PageSongResponse
      */
-    totalElements?: number;
+    number?: number;
     /**
      * 
      * @type {Sort}
      * @memberof PageSongResponse
      */
     sort?: Sort;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageSongResponse
-     */
-    first?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof PageSongResponse
-     */
-    last?: boolean;
     /**
      * 
      * @type {number}
@@ -641,10 +690,16 @@ export interface PageSongResponse {
     content?: Array<SongResponse>;
     /**
      * 
-     * @type {number}
+     * @type {boolean}
      * @memberof PageSongResponse
      */
-    number?: number;
+    first?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof PageSongResponse
+     */
+    last?: boolean;
     /**
      * 
      * @type {number}
@@ -1427,7 +1482,23 @@ export interface Song {
      * @memberof Song
      */
     waveformUrl?: string;
+    /**
+     * 노래 제안을 사용자가 했는지, 어드민이 했는지에 대한 타입
+     * @type {string}
+     * @memberof Song
+     */
+    suggestionType?: SongSuggestionTypeEnum;
 }
+
+/**
+    * @export
+    * @enum {string}
+    */
+export enum SongSuggestionTypeEnum {
+    ADMIN = 'ADMIN',
+    USER = 'USER'
+}
+
 /**
  * 특정 Song에 등록된 Highlight들. 해당 객체의 정보를 바탕으로 문제가 출제된다.
  * @export
