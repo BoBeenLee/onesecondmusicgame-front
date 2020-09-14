@@ -451,8 +451,9 @@ class MainScreen extends Component<IProps, IStates> {
     );
   };
 
-  private onSubmitFeedback = () => {
+  private onSubmitFeedback = async () => {
     // TODO;
+    await this.chargeTime();
     const { closePopup } = this.props.popupProps;
     closePopup();
   };
