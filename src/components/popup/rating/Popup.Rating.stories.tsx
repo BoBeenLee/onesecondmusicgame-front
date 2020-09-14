@@ -24,12 +24,7 @@ storiesOf("Popup/Rating", module)
     );
   })
   .add("ThanksRatingCompletePopup", () => {
-    return (
-      <ThanksRatingCompletePopup
-        onCancel={action("onCancel")}
-        onConfirm={action("onConfirm")}
-      />
-    );
+    return <ThanksRatingCompletePopup onConfirm={action("onConfirm")} />;
   })
   .add("UserRatingConfirmPopup", () => {
     return (
