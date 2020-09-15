@@ -1667,12 +1667,6 @@ export interface Sort {
  */
 export interface StoreReviewWriteRequest {
     /**
-     * 스토어에 남긴 별점
-     * @type {number}
-     * @memberof StoreReviewWriteRequest
-     */
-    star?: number;
-    /**
      * 사용자가 작성한 피드백
      * @type {string}
      * @memberof StoreReviewWriteRequest
