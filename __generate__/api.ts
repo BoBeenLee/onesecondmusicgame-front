@@ -567,6 +567,12 @@ export interface MusicUser {
     enabled?: boolean;
     /**
      * 
+     * @type {string}
+     * @memberof MusicUser
+     */
+    password?: string;
+    /**
+     * 
      * @type {Array<GrantedAuthority>}
      * @memberof MusicUser
      */
@@ -577,12 +583,6 @@ export interface MusicUser {
      * @memberof MusicUser
      */
     username?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MusicUser
-     */
-    password?: string;
     /**
      * 
      * @type {boolean}
@@ -657,13 +657,13 @@ export interface PageSongResponse {
      * @type {number}
      * @memberof PageSongResponse
      */
-    totalElements?: number;
+    totalPages?: number;
     /**
      * 
      * @type {number}
      * @memberof PageSongResponse
      */
-    totalPages?: number;
+    totalElements?: number;
     /**
      * 
      * @type {number}
@@ -1659,6 +1659,25 @@ export interface Sort {
      * @memberof Sort
      */
     empty?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface StoreReviewWriteRequest
+ */
+export interface StoreReviewWriteRequest {
+    /**
+     * 스토어에 남긴 별점
+     * @type {number}
+     * @memberof StoreReviewWriteRequest
+     */
+    star?: number;
+    /**
+     * 사용자가 작성한 피드백
+     * @type {string}
+     * @memberof StoreReviewWriteRequest
+     */
+    feedback?: string;
 }
 /**
  * 
@@ -4781,6 +4800,173 @@ export class SongHighlightControllerApi extends BaseAPI {
      */
     public makeHighlight(trackId: number, options?: any) {
         return SongHighlightControllerApiFp(this.configuration).makeHighlight(trackId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+}
+
+
+/**
+ * StoreReviewControllerApi - axios parameter creator
+ * @export
+ */
+export const StoreReviewControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        hasWritenReviewBefore: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/store/review`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {StoreReviewWriteRequest} storeReviewWriteRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        writeFeedback: async (storeReviewWriteRequest: StoreReviewWriteRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'storeReviewWriteRequest' is not null or undefined
+            if (storeReviewWriteRequest === null || storeReviewWriteRequest === undefined) {
+                throw new RequiredError('storeReviewWriteRequest','Required parameter storeReviewWriteRequest was null or undefined when calling writeFeedback.');
+            }
+            const localVarPath = `/v1/store/review`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof storeReviewWriteRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(storeReviewWriteRequest !== undefined ? storeReviewWriteRequest : {}) : (storeReviewWriteRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * StoreReviewControllerApi - functional programming interface
+ * @export
+ */
+export const StoreReviewControllerApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async hasWritenReviewBefore(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOBoolean>> {
+            const localVarAxiosArgs = await StoreReviewControllerApiAxiosParamCreator(configuration).hasWritenReviewBefore(options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @param {StoreReviewWriteRequest} storeReviewWriteRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async writeFeedback(storeReviewWriteRequest: StoreReviewWriteRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOBoolean>> {
+            const localVarAxiosArgs = await StoreReviewControllerApiAxiosParamCreator(configuration).writeFeedback(storeReviewWriteRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+    }
+};
+
+/**
+ * StoreReviewControllerApi - factory interface
+ * @export
+ */
+export const StoreReviewControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        hasWritenReviewBefore(options?: any): AxiosPromise<ResponseDTOBoolean> {
+            return StoreReviewControllerApiFp(configuration).hasWritenReviewBefore(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {StoreReviewWriteRequest} storeReviewWriteRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        writeFeedback(storeReviewWriteRequest: StoreReviewWriteRequest, options?: any): AxiosPromise<ResponseDTOBoolean> {
+            return StoreReviewControllerApiFp(configuration).writeFeedback(storeReviewWriteRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * StoreReviewControllerApi - object-oriented interface
+ * @export
+ * @class StoreReviewControllerApi
+ * @extends {BaseAPI}
+ */
+export class StoreReviewControllerApi extends BaseAPI {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof StoreReviewControllerApi
+     */
+    public hasWritenReviewBefore(options?: any) {
+        return StoreReviewControllerApiFp(this.configuration).hasWritenReviewBefore(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {StoreReviewWriteRequest} storeReviewWriteRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof StoreReviewControllerApi
+     */
+    public writeFeedback(storeReviewWriteRequest: StoreReviewWriteRequest, options?: any) {
+        return StoreReviewControllerApiFp(this.configuration).writeFeedback(storeReviewWriteRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
 }
