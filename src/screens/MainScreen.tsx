@@ -417,7 +417,7 @@ class MainScreen extends Component<IProps, IStates> {
     const nickname = this.props.authStore.user?.nickname ?? "";
     const { showPopup } = this.props.popupProps;
 
-    if (true) {
+    if (isFirstRating && isLackHeartCount) {
       showPopup(
         <UserRatingConfirmPopup
           nickname={nickname}
