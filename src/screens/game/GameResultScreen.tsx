@@ -26,8 +26,7 @@ import { MainScreenStatic } from "src/screens/MainScreen";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
-import GameRankingScreen from "src/screens/game/GameRankingScreen";
-import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
+import GameAllRankingScreen from "src/screens/game/GameAllRankingScreen";
 import { PopupProps } from "src/hocs/withPopup";
 import { AdmobUnitID, loadAD, AdmobUnit } from "src/configs/admob";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
@@ -568,7 +567,7 @@ class GameResultScreen extends Component<IProps, IStates> {
 
   private navigateToRanking = () => {
     const { componentId } = this.props;
-    GameRankingScreen.open({ componentId });
+    GameAllRankingScreen.open({ componentId });
   };
 
   private home = () => {
