@@ -19,6 +19,7 @@ import MockButton from "src/components/button/MockButton";
 import ProfileImage from "src/components/image/ProfileImage";
 import { myInfoChangeUsingPOST } from "src/apis/user";
 import { LoadingProps } from "src/hocs/withLoading";
+import { logEvent } from "src/configs/analytics";
 
 interface IInject {
   authStore: IAuthStore;
@@ -132,6 +133,7 @@ class UserProfileEditScreen extends Component<IProps, IStates> {
             profileImage: response.uri
           });
           showToast("이미지 변경 완료");
+          logEvent.changeUserProfileImage();
         } catch (error) {
           showToast(error.message);
         }
@@ -154,6 +156,7 @@ class UserProfileEditScreen extends Component<IProps, IStates> {
     const { nickname } = data;
     const { updateUser } = this.props.authStore;
     await updateUser({ nickname });
+    logEvent.changeUserNickname();
     showToast("닉네임 변경완료");
   };
 

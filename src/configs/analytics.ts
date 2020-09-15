@@ -5,6 +5,8 @@ import { traverseObjectKeys, traverseObjectSliceStr } from "src/utils/string";
 
 export type EventType =
   | "sign_in"
+  | "change_user_profile_image"
+  | "change_user_nickname"
   | "game_start"
   | "game_selected_singer"
   | "correct_answer"
@@ -58,6 +60,16 @@ export const logEvent = {
     firebaseLogEvent({
       eventType: "sign_in",
       provider
+    });
+  },
+  changeUserProfileImage: () => {
+    firebaseLogEvent({
+      eventType: "change_user_profile_image"
+    });
+  },
+  changeUserNickname: () => {
+    firebaseLogEvent({
+      eventType: "change_user_nickname"
     });
   },
   gameStart: (level: "RANDOM" | "HARD" | "NORMAL" | "EASY") => {

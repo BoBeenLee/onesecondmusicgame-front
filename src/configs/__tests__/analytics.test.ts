@@ -4,6 +4,7 @@ import { EventType } from "../analytics";
 // tslint:disable:object-literal-sort-keys
 const events: { [key in EventType]: EventType } = {
   sign_in: "sign_in",
+  change_user_profile_image: "change_user_profile_image",
   game_start: "game_start",
   game_selected_singer: "game_selected_singer",
   correct_answer: "correct_answer",
