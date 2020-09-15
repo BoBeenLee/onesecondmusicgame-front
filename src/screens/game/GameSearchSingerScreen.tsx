@@ -26,7 +26,7 @@ import { IToastStore } from "src/stores/ToastStore";
 import withScrollDirection, {
   IScrollDirectionProps
 } from "src/hocs/withScrollDirection";
-import SearchSingerScreen from "src/screens/song/SearchSingerScreen";
+import RegisterSearchSingerScreen from "src/screens/game/register/RegisterSearchSingerScreen";
 import BackTopBar from "src/components/topbar/BackTopBar";
 import XEIcon from "src/components/icon/XEIcon";
 import { logEvent } from "src/configs/analytics";
@@ -458,7 +458,7 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
       () => {
         const selected = Boolean(this.state.selectedSingers[item.singerName]);
         if (selected) {
-          logEvent.selectedSinger(item.singerName);
+          logEvent.gameSelectedSinger(item.singerName);
         }
       }
     );
@@ -477,7 +477,7 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
 
   private navigateToRegisterSong = () => {
     const { componentId } = this.props;
-    SearchSingerScreen.open({
+    RegisterSearchSingerScreen.open({
       componentId
     });
   };

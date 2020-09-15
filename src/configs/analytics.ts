@@ -6,9 +6,11 @@ import { traverseObjectKeys, traverseObjectSliceStr } from "src/utils/string";
 export type EventType =
   | "sign_in"
   | "game_start"
-  | "selected_singer"
+  | "game_selected_singer"
   | "correct_answer"
   | "wrong_answer"
+  | "register_song_highlight"
+  | "register_selected_singer"
   | "click_ad";
 
 export interface IEventResult {
@@ -64,9 +66,9 @@ export const logEvent = {
       level
     });
   },
-  selectedSinger: (singerName: string) => {
+  gameSelectedSinger: (singerName: string) => {
     firebaseLogEvent({
-      eventType: "selected_singer",
+      eventType: "game_selected_singer",
       singerName
     });
   },
@@ -80,6 +82,25 @@ export const logEvent = {
     firebaseLogEvent({
       eventType: "wrong_answer",
       trackId: String(trackId)
+    });
+  },
+  registerSongHighlight: ({
+    title,
+    singerName
+  }: {
+    title: string;
+    singerName: string;
+  }) => {
+    firebaseLogEvent({
+      eventType: "register_song_highlight",
+      title,
+      singerName
+    });
+  },
+  registerSelectedSinger: (singerName: string) => {
+    firebaseLogEvent({
+      eventType: "register_selected_singer",
+      singerName
     });
   },
   clickAD: (popupType: "SKIP" | "FULLHEART") => {
