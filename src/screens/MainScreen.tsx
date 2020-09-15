@@ -435,9 +435,12 @@ class MainScreen extends Component<IProps, IStates> {
   };
 
   private onShowThanksRatingCompletePopup = () => {
-    const { showPopup, closePopup } = this.props.popupProps;
+    const { showPopup } = this.props.popupProps;
 
-    showPopup(<ThanksRatingCompletePopup onConfirm={closePopup} />, false);
+    showPopup(
+      <ThanksRatingCompletePopup onConfirm={this.onSubmitFeedback} />,
+      false
+    );
   };
 
   private onShowFeedbackPopup = () => {
@@ -452,7 +455,7 @@ class MainScreen extends Component<IProps, IStates> {
     );
   };
 
-  private onSubmitFeedback = async (feedback: string) => {
+  private onSubmitFeedback = async (feedback?: string) => {
     await writeFeedback({
       feedback
     });
