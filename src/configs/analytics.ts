@@ -5,7 +5,13 @@ import { traverseObjectKeys, traverseObjectSliceStr } from "src/utils/string";
 
 export type EventType =
   | "sign_in"
+  | "change_user_profile_image"
+  | "change_user_nickname"
   | "game_start"
+  | "game_end"
+  | "game_restart"
+  | "game_skip_item"
+  | "game_wrong_pass"
   | "game_selected_singer"
   | "correct_answer"
   | "wrong_answer"
@@ -60,10 +66,40 @@ export const logEvent = {
       provider
     });
   },
+  changeUserProfileImage: () => {
+    firebaseLogEvent({
+      eventType: "change_user_profile_image"
+    });
+  },
+  changeUserNickname: () => {
+    firebaseLogEvent({
+      eventType: "change_user_nickname"
+    });
+  },
   gameStart: (level: "RANDOM" | "HARD" | "NORMAL" | "EASY") => {
     firebaseLogEvent({
       eventType: "game_start",
       level
+    });
+  },
+  gameEnd: () => {
+    firebaseLogEvent({
+      eventType: "game_end"
+    });
+  },
+  gameRestart: () => {
+    firebaseLogEvent({
+      eventType: "game_restart"
+    });
+  },
+  gameSkipItem: () => {
+    firebaseLogEvent({
+      eventType: "game_skip_item"
+    });
+  },
+  gameWrongPass: () => {
+    firebaseLogEvent({
+      eventType: "game_wrong_pass"
     });
   },
   gameSelectedSinger: (singerName: string) => {

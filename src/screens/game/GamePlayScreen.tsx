@@ -80,6 +80,7 @@ interface IInject {
 
 interface IParams {
   componentId: string;
+  selectedSingers: ISinger[];
   heartCount: number;
 }
 
@@ -384,15 +385,16 @@ const PLAY_SECONDS = 2100;
 @observer
 class GamePlayScreen extends Component<IProps, IStates> {
   public static async open(params: IParams) {
-    if (params.heartCount === 0) {
+    const { heartCount, selectedSingers, componentId } = params;
+    if (heartCount === 0) {
       throw new Error("하트가 부족합니다.");
     }
-    const gamePlayHighlights = await makeGamePlayHighlights([]);
+    const gamePlayHighlights = await makeGamePlayHighlights(selectedSingers);
     return push({
-      componentId: params.componentId,
+      componentId,
       nextComponentId: SCREEN_IDS.GamePlayScreen,
       params: {
-        selectedSingers: [],
+        selectedSingers,
         gamePlayHighlights: () => gamePlayHighlights
       },
       options: {
@@ -401,26 +403,18 @@ class GamePlayScreen extends Component<IProps, IStates> {
     });
   }
 
-  public static openSelectedSingers(params: IParams) {
-    if (params.heartCount === 0) {
+  public static openSelectedSingers(params: Omit<IParams, "selectedSingers">) {
+    const { heartCount } = params;
+    if (heartCount === 0) {
       throw new Error("하트가 부족합니다.");
     }
     GameSearchSingerScreen.open({
       componentId: params.componentId,
       onResult: async (selectedSingers: ISinger[]) => {
-        const gamePlayHighlights = await makeGamePlayHighlights(
-          selectedSingers
-        );
-        push({
+        await this.open({
           componentId: getCurrentComponentId(),
-          nextComponentId: SCREEN_IDS.GamePlayScreen,
-          params: {
-            selectedSingers,
-            gamePlayHighlights: () => gamePlayHighlights
-          },
-          options: {
-            popGesture: false
-          }
+          heartCount,
+          selectedSingers
         });
       }
     });
@@ -845,12 +839,14 @@ class GamePlayScreen extends Component<IProps, IStates> {
     });
     answer(true, "", 0);
     await this.beforeNextStep();
+    logEvent.gameSkipItem();
   };
 
   private wrongPass = async () => {
     const { answer } = this.gamePlayHighlights;
     answer(false, "", 0);
     await this.beforeNextStep();
+    logEvent.gameWrongPass();
   };
 
   private submitAnswer = async () => {

@@ -26,8 +26,7 @@ import { MainScreenStatic } from "src/screens/MainScreen";
 import { IAuthStore } from "src/stores/AuthStore";
 import { IToastStore } from "src/stores/ToastStore";
 import { IStore } from "src/stores/Store";
-import GameRankingScreen from "src/screens/game/GameRankingScreen";
-import InviteFriendsPopup from "src/components/popup/InviteFriendsPopup";
+import GameAllRankingScreen from "src/screens/game/GameAllRankingScreen";
 import { PopupProps } from "src/hocs/withPopup";
 import { AdmobUnitID, loadAD, AdmobUnit } from "src/configs/admob";
 import { rewardForWatchingAdUsingPOST, RewardType } from "src/apis/reward";
@@ -52,6 +51,7 @@ import GainFullHeartPopup from "src/components/popup/GainFullHeartPopup";
 import images from "src/images";
 import GameResultBanner from "src/components/banner/GameResultBanner";
 import withLoading, { LoadingProps } from "src/hocs/withLoading";
+import { logEvent } from "src/configs/analytics";
 
 interface IInject {
   authStore: IAuthStore;
@@ -292,7 +292,7 @@ const RetryPlayButtonText = styled(Bold20)`
 class GameResultScreen extends Component<IProps, IStates> {
   public static open(params: IParams) {
     const { componentId, ...restParams } = params;
-    return setStackRoot({
+    setStackRoot({
       componentId,
       nextComponentId: SCREEN_IDS.GameResultScreen,
       params: restParams,
@@ -300,6 +300,7 @@ class GameResultScreen extends Component<IProps, IStates> {
         popGesture: false
       }
     });
+    logEvent.gameEnd();
   }
 
   public gamePlayHighlights: IGamePlayHighlights;
@@ -548,23 +549,6 @@ class GameResultScreen extends Component<IProps, IStates> {
     );
   };
 
-  private onInvitePopup = () => {
-    const { showPopup, closePopup } = this.props.popupProps;
-    showPopup(
-      <InviteFriendsPopup onConfirm={this.invite} onCancel={closePopup} />
-    );
-  };
-
-  private invite = async () => {
-    const { closePopup } = this.props.popupProps;
-    const { showToast } = this.props.toastStore;
-    const { accessId } = this.props.authStore;
-    const shortLink = await makeAppShareLink(accessId);
-    Clipboard.setString(shortLink);
-    showToast("공유 링크 복사 완료");
-    closePopup();
-  };
-
   private navigateToGamePlay = async () => {
     const { componentId } = this.props;
     const { showToast } = this.props.toastStore;
@@ -572,8 +556,10 @@ class GameResultScreen extends Component<IProps, IStates> {
     try {
       await GamePlayScreenStatic.open({
         componentId,
-        heartCount: heart?.heartCount ?? 0
+        heartCount: heart?.heartCount ?? 0,
+        selectedSingers: this.gamePlayHighlights.selectedSingers
       });
+      logEvent.gameRestart();
     } catch (error) {
       showToast(error.message);
     }
@@ -581,7 +567,7 @@ class GameResultScreen extends Component<IProps, IStates> {
 
   private navigateToRanking = () => {
     const { componentId } = this.props;
-    GameRankingScreen.open({ componentId });
+    GameAllRankingScreen.open({ componentId });
   };
 
   private home = () => {
