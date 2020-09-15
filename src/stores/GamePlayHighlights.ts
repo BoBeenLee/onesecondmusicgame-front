@@ -18,6 +18,7 @@ const GAME_ROUND_NUM = 5;
 
 const GamePlayHighlights = types
   .model("GameHighlights", {
+    selectedSingers: types.frozen<ISinger[]>([]),
     currentStep: types.optional(types.number, 0),
     gameHighlights: types.optional(
       types.array(types.frozen<IGamePlayHighlightItem>()),
@@ -130,6 +131,7 @@ const GamePlayHighlights = types
       }
       self.gameHighlights.replace(result);
       self.playToken = response.playToken ?? "";
+      self.selectedSingers = selectedSingers;
     });
 
     const isAnswer = flow(function*(userAnswer: string) {

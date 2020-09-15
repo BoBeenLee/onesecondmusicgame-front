@@ -495,7 +495,8 @@ class MainScreen extends Component<IProps, IStates> {
     try {
       await GamePlayScreenStatic.open({
         componentId,
-        heartCount: heart?.heartCount ?? 0
+        heartCount: heart?.heartCount ?? 0,
+        selectedSingers: []
       });
       logEvent.gameStart("RANDOM");
     } catch (error) {

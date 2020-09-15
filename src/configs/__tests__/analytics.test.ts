@@ -7,6 +7,8 @@ const events: { [key in EventType]: EventType } = {
   change_user_profile_image: "change_user_profile_image",
   change_user_nickname: "change_user_nickname",
   game_start: "game_start",
+  game_end: "game_end",
+  game_restart: "game_restart",
   game_skip_item: "game_skip_item",
   game_wrong_pass: "game_wrong_pass",
   game_selected_singer: "game_selected_singer",
