@@ -8,7 +8,7 @@ export const requestRating = () => {
       AmazonPackageName: "kr.nexters.onesecondmusicgame",
       OtherAndroidURL: "http://www.randomappstore.com/app/47172391",
       preferredAndroidMarket: AndroidMarket.Google,
-      preferInApp: false,
+      preferInApp: true,
       openAppStoreIfInAppFails: true,
       fallbackPlatformURL: "http://www.mywebsite.com/myapp.html"
     };
