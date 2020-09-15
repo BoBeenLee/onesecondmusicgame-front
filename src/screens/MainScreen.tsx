@@ -417,7 +417,7 @@ class MainScreen extends Component<IProps, IStates> {
     const nickname = this.props.authStore.user?.nickname ?? "";
     const { showPopup } = this.props.popupProps;
 
-    if (isFirstRating && isLackHeartCount) {
+    if (true) {
       showPopup(
         <UserRatingConfirmPopup
           nickname={nickname}
@@ -430,6 +430,8 @@ class MainScreen extends Component<IProps, IStates> {
   };
 
   private onRequestRating = async () => {
+    const { closePopup } = this.props.popupProps;
+    closePopup();
     await requestRating();
     this.onShowThanksRatingCompletePopup();
   };
@@ -438,7 +440,9 @@ class MainScreen extends Component<IProps, IStates> {
     const { showPopup } = this.props.popupProps;
 
     showPopup(
-      <ThanksRatingCompletePopup onConfirm={this.onSubmitFeedback} />,
+      <ThanksRatingCompletePopup
+        onConfirm={_.partial(this.onSubmitFeedback, undefined)}
+      />,
       false
     );
   };
