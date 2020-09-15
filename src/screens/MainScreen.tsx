@@ -51,6 +51,7 @@ import { requestRating } from "src/configs/rating";
 import UserRatingConfirmPopup from "src/components/popup/rating/UserRatingConfirmPopup";
 import ThanksRatingCompletePopup from "src/components/popup/rating/ThanksRatingCompletePopup";
 import FeedbackRatingPopup from "src/components/popup/rating/FeedbackRatingPopup";
+import { writeFeedback } from "src/apis/storeReview";
 
 interface IInject {
   store: IStore;
@@ -451,8 +452,10 @@ class MainScreen extends Component<IProps, IStates> {
     );
   };
 
-  private onSubmitFeedback = async () => {
-    // TODO;
+  private onSubmitFeedback = async (feedback: string) => {
+    await writeFeedback({
+      feedback
+    });
     await this.chargeTime();
     const { closePopup } = this.props.popupProps;
     closePopup();

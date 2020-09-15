@@ -32,8 +32,8 @@ const Title = styled(Bold20)`
 `;
 
 const FeedbackInputView = styled.View`
-  width: 100%;
-  min-height: 87px;
+  min-width: 100%;
+  height: 87px;
   padding: 10px;
   background-color: ${colors.paleLavender};
 `;
