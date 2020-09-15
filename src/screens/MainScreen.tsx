@@ -25,7 +25,7 @@ import { ICodePushStore } from "src/stores/CodePushStore";
 import withPopup, { PopupProps } from "src/hocs/withPopup";
 import HeartGroup from "src/components/icon/HeartGroup";
 import TimerText from "src/components/text/TimerText";
-import SearchSingerScreen from "src/screens/song/SearchSingerScreen";
+import RegisterSearchSingerScreen from "src/screens/game/register/RegisterSearchSingerScreen";
 import GameRankingScreen from "src/screens/game/GameRankingScreen";
 import LevelBadge from "src/components/badge/LevelBadge";
 import XEIconButton from "src/components/button/XEIconButton";
@@ -524,7 +524,7 @@ class MainScreen extends Component<IProps, IStates> {
 
   private navigateToRegisterSong = () => {
     const { componentId } = this.props;
-    SearchSingerScreen.open({
+    RegisterSearchSingerScreen.open({
       componentId
     });
   };

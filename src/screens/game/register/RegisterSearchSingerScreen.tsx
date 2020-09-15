@@ -41,7 +41,7 @@ import images from "src/images";
 import withDisabled, { DisabledProps } from "src/hocs/withDisabled";
 import { logEvent } from "src/configs/analytics";
 import { getTrackToPlayStreamUri } from "src/apis/soundcloud/playStream";
-import RegisterSongScreen from "src/screens/song/RegisterSongScreen";
+import RegisterSongScreen from "src/screens/game/register/RegisterSongScreen";
 import { LoadingProps } from "src/hocs/withLoading";
 
 interface IInject {
@@ -130,20 +130,6 @@ const ResultEmptyTitle = styled(Bold12)`
   margin-bottom: 21px;
 `;
 
-const ResultEmptyDescriptionRow = styled.View`
-  flex-direction: row;
-  align-items: center;
-`;
-
-const ResultEmptyDescriptionHeart = styled.Image`
-  width: 11px;
-  height: 10px;
-`;
-
-const ResultEmptyDescription = styled(Regular12)`
-  color: ${colors.lightGreyTwo};
-`;
-
 const TrackTotal = styled(Bold12)`
   width: 353px;
   color: ${colors.lightGreyTwo};
@@ -175,12 +161,12 @@ const SearchTrackItem = styled(SearchTrackCard)`
   })
 )
 @observer
-class SearchSingerScreen extends Component<IProps, IStates> {
+class RegisterSearchSingerScreen extends Component<IProps, IStates> {
   public static open(params: IParams) {
     const { componentId, ...restParams } = params;
     return push({
       componentId,
-      nextComponentId: SCREEN_IDS.SearchSingerScreen,
+      nextComponentId: SCREEN_IDS.RegisterSearchSingerScreen,
       params: restParams
     });
   }
@@ -414,7 +400,7 @@ class SearchSingerScreen extends Component<IProps, IStates> {
   private onSelectedSinger = async (item: ISinger) => {
     await this.tracks.search({ q: item.singerName });
     this.setState({ showSearchTrack: true, selectedSinger: item });
-    logEvent.selectedSinger(item.singerName);
+    logEvent.registerSelectedSinger(item.singerName);
   };
 
   private back = async () => {
@@ -423,4 +409,4 @@ class SearchSingerScreen extends Component<IProps, IStates> {
   };
 }
 
-export default withDisabled(SearchSingerScreen);
+export default withDisabled(RegisterSearchSingerScreen);

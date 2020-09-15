@@ -5,10 +5,12 @@ import { EventType } from "../analytics";
 const events: { [key in EventType]: EventType } = {
   sign_in: "sign_in",
   game_start: "game_start",
-  selected_singer: "selected_singer",
+  game_selected_singer: "game_selected_singer",
   correct_answer: "correct_answer",
   wrong_answer: "wrong_answer",
-  click_ad: "click_ad"
+  click_ad: "click_ad",
+  register_song_highlight: "register_song_highlight",
+  register_selected_singer: "register_selected_singer"
 };
 
 const eventsArray = Object.values(events);
