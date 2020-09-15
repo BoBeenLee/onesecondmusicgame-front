@@ -8,6 +8,8 @@ export type EventType =
   | "change_user_profile_image"
   | "change_user_nickname"
   | "game_start"
+  | "game_skip_item"
+  | "game_wrong_pass"
   | "game_selected_singer"
   | "correct_answer"
   | "wrong_answer"
@@ -76,6 +78,16 @@ export const logEvent = {
     firebaseLogEvent({
       eventType: "game_start",
       level
+    });
+  },
+  gameSkipItem: () => {
+    firebaseLogEvent({
+      eventType: "game_skip_item"
+    });
+  },
+  gameWrongPass: () => {
+    firebaseLogEvent({
+      eventType: "game_wrong_pass"
     });
   },
   gameSelectedSinger: (singerName: string) => {

@@ -845,12 +845,14 @@ class GamePlayScreen extends Component<IProps, IStates> {
     });
     answer(true, "", 0);
     await this.beforeNextStep();
+    logEvent.gameSkipItem();
   };
 
   private wrongPass = async () => {
     const { answer } = this.gamePlayHighlights;
     answer(false, "", 0);
     await this.beforeNextStep();
+    logEvent.gameWrongPass();
   };
 
   private submitAnswer = async () => {
