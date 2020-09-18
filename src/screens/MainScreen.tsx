@@ -426,6 +426,7 @@ class MainScreen extends Component<IProps, IStates> {
         />,
         false
       );
+      await storage().saveFirstRating();
     }
   };
 
