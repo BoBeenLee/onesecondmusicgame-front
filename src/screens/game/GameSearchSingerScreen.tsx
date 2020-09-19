@@ -182,18 +182,22 @@ const HighlightGameSingerName = styled(Bold14)`
 
 const GameSingerBadgeGroup = styled.View`
   width: 330px;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
+  flex-direction: column;
   margin-top: 7px;
   margin-bottom: 24px;
 `;
 
-const GameSingerBadgeView = styled(GameSingerBadge)`
-  margin-top: 7px;
+const GameSingerBadgeRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 `;
 
-const GameSingerEmptyView = styled.View``;
+const GameSingerBadgeView = styled(GameSingerBadge)`
+  margin-top: 7px;
+  margin-left: 5px;
+  margin-right: 5px;
+`;
 
 const SubmitButton = styled.TouchableOpacity`
   width: 100%;
@@ -343,6 +347,7 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
       3: "EASY"
     };
     const selectedSingers = this.selectedSingers;
+    const chunkSingers = _.chunk(_.times(SINGER_COUMNS_LENGTH, _.identity), 3);
     return (
       <Bottom>
         <GameSingerName>
@@ -357,29 +362,36 @@ class GameSearchSingerScreen extends Component<IProps, IStates> {
           {` 출제`}
         </GameSingerName>
         <GameSingerBadgeGroup>
-          {_.times(SINGER_COUMNS_LENGTH, index => {
-            const selected = selectedSingers[index];
-            if (selected) {
-              return (
-                <GameSingerBadgeView
-                  key={`singerBadge${index}`}
-                  type={"selected"}
-                  name={selected.singerName}
-                  onClose={_.partial(this.onSelectedItem, selected)}
-                />
-              );
-            }
+          {_.map(chunkSingers, (singers, chunkIndex: number) => {
             return (
-              <GameSingerBadgeView
-                key={`singerBadge${index}`}
-                type={
-                  SELECTED_SINGERS_MAX_LENGTH > index ? "unselected" : "random"
-                }
-                name="랜덤"
-              />
+              <GameSingerBadgeRow key={chunkIndex}>
+                {_.map(singers, (index: number) => {
+                  const selected = selectedSingers[index];
+                  if (selected) {
+                    return (
+                      <GameSingerBadgeView
+                        key={`singerBadge${index}`}
+                        type={"selected"}
+                        name={selected.singerName}
+                        onClose={_.partial(this.onSelectedItem, selected)}
+                      />
+                    );
+                  }
+                  return (
+                    <GameSingerBadgeView
+                      key={`singerBadge${index}`}
+                      type={
+                        SELECTED_SINGERS_MAX_LENGTH > index
+                          ? "unselected"
+                          : "random"
+                      }
+                      name="랜덤"
+                    />
+                  );
+                })}
+              </GameSingerBadgeRow>
             );
           })}
-          <GameSingerEmptyView />
         </GameSingerBadgeGroup>
         <SubmitButton
           onPress={_.partial(this.submit, level[this.selectedSingers.length])}
