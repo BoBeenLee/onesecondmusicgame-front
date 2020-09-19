@@ -233,7 +233,7 @@ const SubmitButtonText = styled(Bold18)`
 `;
 
 const SELECTED_SINGERS_MAX_LENGTH = 3;
-const SINGER_COUMNS_LENGTH = 4;
+const SINGER_COUMNS_LENGTH = 5;
 const MOCK_ISINGER: ISinger = {
   singerName: "MOCK"
 };
