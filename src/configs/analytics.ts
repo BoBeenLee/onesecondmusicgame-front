@@ -1,3 +1,4 @@
+// eslint-disable @typescript-eslint/camelcase
 import _ from "lodash";
 import rnFirebaseAnalytics from "@react-native-firebase/analytics";
 
@@ -156,5 +157,8 @@ export function setUserID(userId: string) {
 }
 
 export function setCurrentScreen(componentName: string) {
-  rnFirebaseAnalytics().setCurrentScreen(componentName);
+  rnFirebaseAnalytics().logScreenView({
+    screen_name: componentName,
+    screen_class: componentName
+  });
 }

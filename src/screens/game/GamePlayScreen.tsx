@@ -2,11 +2,11 @@ import {
   Animated,
   AppStateStatus,
   InteractionManager,
-  Clipboard,
   TouchableOpacity,
   ListRenderItem,
   Alert
 } from "react-native";
+import Clipboard from "@react-native-community/clipboard";
 import { Item, ItemItemTypeEnum } from "__generate__/api";
 import _ from "lodash";
 import React, { Component, ComponentClass } from "react";

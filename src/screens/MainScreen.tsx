@@ -2,7 +2,7 @@ import { Item } from "__generate__/api";
 import _ from "lodash";
 import React, { Component } from "react";
 import { inject, observer, Observer } from "mobx-react";
-import { InteractionManager, Clipboard } from "react-native";
+import { InteractionManager } from "react-native";
 import styled from "styled-components/native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";

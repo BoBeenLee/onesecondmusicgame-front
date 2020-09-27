@@ -1,12 +1,7 @@
 import _ from "lodash";
 import React, { Component, ComponentClass } from "react";
-import {
-  FlatListProps,
-  FlatList,
-  ListRenderItem,
-  Clipboard,
-  Alert
-} from "react-native";
+import { FlatListProps, FlatList, ListRenderItem, Alert } from "react-native";
+import Clipboard from "@react-native-community/clipboard";
 import { inject, observer, Observer } from "mobx-react";
 import styled from "styled-components/native";
 

@@ -3,7 +3,8 @@ import iid from "@react-native-firebase/iid";
 import _ from "lodash";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Clipboard, Alert } from "react-native";
+import { Alert } from "react-native";
+import Clipboard from "@react-native-community/clipboard";
 import styled from "styled-components/native";
 import Rate, { AndroidMarket } from "react-native-rate";
 

@@ -1,7 +1,6 @@
 import _ from "lodash";
 import React, { Component } from "react";
 import { inject, observer } from "mobx-react";
-import { Clipboard } from "react-native";
 import styled, { css } from "styled-components/native";
 
 import ContainerWithStatusBar from "src/components/ContainerWithStatusBar";
