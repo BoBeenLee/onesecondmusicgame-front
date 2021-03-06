@@ -28,7 +28,7 @@ import { LoggedInMusicUser } from "__generate__/api";
 
 export type AUTH_PROVIDER = "APPLE" | "KAKAO" | "GOOGLE" | "FACEBOOK" | "NONE";
 
-const DEFAULT_SOUND_CLIEND_ID = "a281614d7f34dc30b665dfcaa3ed7505";
+const DEFAULT_SOUND_CLIEND_ID = "8VYpK2wS7aOYHwRFi4wZE1P51Z00WaeR";
 
 const AuthStore = types
   .model("AuthStore", {
@@ -232,7 +232,7 @@ const AuthStore = types
       );
       updateUserAccessToken(signInResponse);
       updateUserInfo(signInResponse);
-      updateAuthInfo();
+      updateAuthInfo(signInResponse);
     });
 
     const signUp = flow(function*({ nickname }: { nickname: string }) {
@@ -253,7 +253,7 @@ const AuthStore = types
       );
       updateUserAccessToken(signInResponse);
       updateUserInfo(signInResponse);
-      updateAuthInfo();
+      updateAuthInfo(signInResponse);
     });
 
     const updateUserAccessToken = (
@@ -283,9 +283,9 @@ const AuthStore = types
       self.user?.setUserItems(response);
     });
 
-    const updateAuthInfo = () => {
-      // self.soundCloudCliendId =
-      //   signInResponse.clientId ?? DEFAULT_SOUND_CLIEND_ID;
+    const updateAuthInfo = (signInResponse: LoggedInMusicUser | null) => {
+      self.soundCloudCliendId =
+        signInResponse?.clientId ?? DEFAULT_SOUND_CLIEND_ID;
       storage().saveToken({
         provider: self.provider,
         accessId: self.accessId,
@@ -296,7 +296,7 @@ const AuthStore = types
 
     const signOut = () => {
       clear();
-      updateAuthInfo();
+      updateAuthInfo(null);
     };
 
     return {
