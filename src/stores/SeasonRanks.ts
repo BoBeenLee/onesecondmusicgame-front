@@ -53,14 +53,13 @@ const SeasonRanks = types
 
     const fetch = flow(function*() {
       const response: RetrieveAsyncFunc<typeof getRankingInfoOfSeasonUsingGET> = yield getRankingInfoOfSeasonUsingGET();
+
       self.currentSeason = response?.currentSeason ?? 0;
       self.timeToFinishThisSeasonSeconds =
         response?.timeToFinishThisSeason ?? 0;
       self.myRank = response?.myRank ?? null;
       self.ranks.replace(response?.currentSeasonRanking?.rankViewList ?? []);
-      self.lastSeasonTop3.replace(
-        response?.currentSeasonRanking?.rankViewList ?? []
-      );
+      self.lastSeasonTop3.replace(response?.lastSeasonTop3 ?? []);
     });
 
     const initialize = flow(function*() {

@@ -567,12 +567,6 @@ export interface MusicUser {
     enabled?: boolean;
     /**
      * 
-     * @type {string}
-     * @memberof MusicUser
-     */
-    password?: string;
-    /**
-     * 
      * @type {Array<GrantedAuthority>}
      * @memberof MusicUser
      */
@@ -583,6 +577,12 @@ export interface MusicUser {
      * @memberof MusicUser
      */
     username?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MusicUser
+     */
+    password?: string;
     /**
      * 
      * @type {boolean}
@@ -812,25 +812,6 @@ export interface ResponseBodyWrapperListString {
      * @memberof ResponseBodyWrapperListString
      */
     errorMsg?: string;
-}
-/**
- * 
- * @export
- * @interface ResponseDTO
- */
-export interface ResponseDTO {
-    /**
-     * 
-     * @type {number}
-     * @memberof ResponseDTO
-     */
-    status?: number;
-    /**
-     * 
-     * @type {object}
-     * @memberof ResponseDTO
-     */
-    body?: object;
 }
 /**
  * 
@@ -2804,7 +2785,7 @@ export const ItemControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async useItem(itemUseRequest: ItemUseRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTO>> {
+        async useItem(itemUseRequest: ItemUseRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOResponseStatusType>> {
             const localVarAxiosArgs = await ItemControllerApiAxiosParamCreator(configuration).useItem(itemUseRequest, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -2835,7 +2816,7 @@ export const ItemControllerApiFactory = function (configuration?: Configuration,
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        useItem(itemUseRequest: ItemUseRequest, options?: any): AxiosPromise<ResponseDTO> {
+        useItem(itemUseRequest: ItemUseRequest, options?: any): AxiosPromise<ResponseDTOResponseStatusType> {
             return ItemControllerApiFp(configuration).useItem(itemUseRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -3516,7 +3497,7 @@ export const MusicUserControllerApiFp = function(configuration?: Configuration) 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async signUp(userSignUpRequest: UserSignUpRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTO>> {
+        async signUp(userSignUpRequest: UserSignUpRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOResponseStatusType>> {
             const localVarAxiosArgs = await MusicUserControllerApiAxiosParamCreator(configuration).signUp(userSignUpRequest, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -3582,7 +3563,7 @@ export const MusicUserControllerApiFactory = function (configuration?: Configura
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        signUp(userSignUpRequest: UserSignUpRequest, options?: any): AxiosPromise<ResponseDTO> {
+        signUp(userSignUpRequest: UserSignUpRequest, options?: any): AxiosPromise<ResponseDTOResponseStatusType> {
             return MusicUserControllerApiFp(configuration).signUp(userSignUpRequest, options).then((request) => request(axios, basePath));
         },
     };
