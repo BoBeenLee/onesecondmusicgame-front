@@ -3,7 +3,6 @@ import RNFetchBlob from "rn-fetch-blob";
 import env from "src/configs/env";
 import { getRootStore } from "src/stores/Store";
 import { OSMGError } from "src/configs/error";
-import { ResponseDTO } from "__generate__/api";
 
 type ImageExtensionType = "JPG" | "JPEG" | "PNG";
 type VideoExtensionType = "MP4" | "M4V" | "MKV" | "AVI" | "MOV";
