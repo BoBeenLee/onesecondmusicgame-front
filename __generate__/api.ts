@@ -39,6 +39,56 @@ export interface AbstractScore {
     point?: number;
 }
 /**
+ * 
+ * @export
+ * @interface Advertisement
+ */
+export interface Advertisement {
+    /**
+     * 
+     * @type {string}
+     * @memberof Advertisement
+     */
+    imageUrl?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Advertisement
+     */
+    redirectUrl?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof Advertisement
+     */
+    displayType?: Array<AdvertisementDisplayTypeEnum>;
+    /**
+     * 
+     * @type {string}
+     * @memberof Advertisement
+     */
+    imageType?: AdvertisementImageTypeEnum;
+}
+
+/**
+    * @export
+    * @enum {string}
+    */
+export enum AdvertisementDisplayTypeEnum {
+    HOME = 'HOME',
+    GAMEEND = 'GAME_END',
+    ITEMLISTPAGE = 'ITEM_LIST_PAGE'
+}
+/**
+    * @export
+    * @enum {string}
+    */
+export enum AdvertisementImageTypeEnum {
+    THINBANNER = 'THIN_BANNER',
+    WHOLEBANNER = 'WHOLE_BANNER'
+}
+
+/**
  * 사용자가 1개의 문제를 풀었을 때 1개의 GameAnswer 객체를 제출해야 한다.
  * @export
  * @interface GameAnswer
@@ -567,6 +617,12 @@ export interface MusicUser {
     enabled?: boolean;
     /**
      * 
+     * @type {string}
+     * @memberof MusicUser
+     */
+    password?: string;
+    /**
+     * 
      * @type {Array<GrantedAuthority>}
      * @memberof MusicUser
      */
@@ -579,12 +635,6 @@ export interface MusicUser {
     username?: string;
     /**
      * 
-     * @type {string}
-     * @memberof MusicUser
-     */
-    password?: string;
-    /**
-     * 
      * @type {boolean}
      * @memberof MusicUser
      */
@@ -594,13 +644,13 @@ export interface MusicUser {
      * @type {boolean}
      * @memberof MusicUser
      */
-    accountNonLocked?: boolean;
+    credentialsNonExpired?: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof MusicUser
      */
-    credentialsNonExpired?: boolean;
+    accountNonLocked?: boolean;
 }
 /**
  * 현재 내 랭킹
@@ -1798,10 +1848,10 @@ export interface UserSignUpRequest {
 }
 
 /**
- * AdvertiseKeywordControllerApi - axios parameter creator
+ * AdvertiseControllerApi - axios parameter creator
  * @export
  */
-export const AdvertiseKeywordControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+export const AdvertiseControllerApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -1832,14 +1882,43 @@ export const AdvertiseKeywordControllerApiAxiosParamCreator = function (configur
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAdvertisement: async (options: any = {}): Promise<RequestArgs> => {
+            const localVarPath = `/advertise`;
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
 /**
- * AdvertiseKeywordControllerApi - functional programming interface
+ * AdvertiseControllerApi - functional programming interface
  * @export
  */
-export const AdvertiseKeywordControllerApiFp = function(configuration?: Configuration) {
+export const AdvertiseControllerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
@@ -1847,7 +1926,19 @@ export const AdvertiseKeywordControllerApiFp = function(configuration?: Configur
          * @throws {RequiredError}
          */
         async getAdvertiseKeyword(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ResponseDTOListString>> {
-            const localVarAxiosArgs = await AdvertiseKeywordControllerApiAxiosParamCreator(configuration).getAdvertiseKeyword(options);
+            const localVarAxiosArgs = await AdvertiseControllerApiAxiosParamCreator(configuration).getAdvertiseKeyword(options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAdvertisement(options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Advertisement>>> {
+            const localVarAxiosArgs = await AdvertiseControllerApiAxiosParamCreator(configuration).getAdvertisement(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1857,10 +1948,10 @@ export const AdvertiseKeywordControllerApiFp = function(configuration?: Configur
 };
 
 /**
- * AdvertiseKeywordControllerApi - factory interface
+ * AdvertiseControllerApi - factory interface
  * @export
  */
-export const AdvertiseKeywordControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const AdvertiseControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
          * 
@@ -1868,26 +1959,44 @@ export const AdvertiseKeywordControllerApiFactory = function (configuration?: Co
          * @throws {RequiredError}
          */
         getAdvertiseKeyword(options?: any): AxiosPromise<ResponseDTOListString> {
-            return AdvertiseKeywordControllerApiFp(configuration).getAdvertiseKeyword(options).then((request) => request(axios, basePath));
+            return AdvertiseControllerApiFp(configuration).getAdvertiseKeyword(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAdvertisement(options?: any): AxiosPromise<Array<Advertisement>> {
+            return AdvertiseControllerApiFp(configuration).getAdvertisement(options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * AdvertiseKeywordControllerApi - object-oriented interface
+ * AdvertiseControllerApi - object-oriented interface
  * @export
- * @class AdvertiseKeywordControllerApi
+ * @class AdvertiseControllerApi
  * @extends {BaseAPI}
  */
-export class AdvertiseKeywordControllerApi extends BaseAPI {
+export class AdvertiseControllerApi extends BaseAPI {
     /**
      * 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof AdvertiseKeywordControllerApi
+     * @memberof AdvertiseControllerApi
      */
     public getAdvertiseKeyword(options?: any) {
-        return AdvertiseKeywordControllerApiFp(this.configuration).getAdvertiseKeyword(options).then((request) => request(this.axios, this.basePath));
+        return AdvertiseControllerApiFp(this.configuration).getAdvertiseKeyword(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof AdvertiseControllerApi
+     */
+    public getAdvertisement(options?: any) {
+        return AdvertiseControllerApiFp(this.configuration).getAdvertisement(options).then((request) => request(this.axios, this.basePath));
     }
 
 }

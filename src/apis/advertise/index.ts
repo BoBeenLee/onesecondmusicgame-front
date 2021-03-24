@@ -1,10 +1,15 @@
-import { AdvertiseKeywordControllerApiFactory } from "__generate__/api";
+import { AdvertiseControllerApiFactory } from "__generate__/api";
 import { requestAPI } from "src/configs/requestAPI";
 
-const advertiseKeywordControllerApi = () =>
-  AdvertiseKeywordControllerApiFactory(undefined, "", requestAPI());
+const advertiseControllerApi = () =>
+  AdvertiseControllerApiFactory(undefined, "", requestAPI());
 
 export const getAdvertiseKeywordUsingGET = async () => {
-  const response = await advertiseKeywordControllerApi().getAdvertiseKeyword();
+  const response = await advertiseControllerApi().getAdvertiseKeyword();
   return response.data.body!;
+};
+
+export const getAdvertisementsUsingGET = async () => {
+  const response = await advertiseControllerApi().getAdvertisement();
+  return response.data;
 };

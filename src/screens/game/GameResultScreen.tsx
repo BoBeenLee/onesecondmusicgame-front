@@ -51,6 +51,7 @@ import images from "src/images";
 import GameResultBanner from "src/components/banner/GameResultBanner";
 import withLoading, { LoadingProps } from "src/hocs/withLoading";
 import { logEvent } from "src/configs/analytics";
+import GameResultImageBanner from "src/components/banner/GameResultImageBanner";
 
 interface IInject {
   authStore: IAuthStore;
@@ -333,7 +334,8 @@ class GameResultScreen extends Component<IProps, IStates> {
   }
 
   public render() {
-    const keywords = this.props.authStore.user?.advertise?.keywords ?? [];
+    const resultAdvertise = this.props.authStore.user?.advertise
+      ?.resultAdvertise;
     const heart = this.props.authStore.user?.heart;
     const nickname = this.props.authStore.user?.nickname ?? "";
     const { gainPointOfThisGame, resultComment } = this.state.gameResult;
@@ -342,7 +344,9 @@ class GameResultScreen extends Component<IProps, IStates> {
     return (
       <Container>
         <ScrollView>
-          <GameResultBanner keywords={keywords} />
+          {resultAdvertise ? (
+            <GameResultImageBanner advertise={resultAdvertise} />
+          ) : null}
           <Header>
             <Title>게임 종료</Title>
             <GamePlayStep circles={gamePlayStepResultStatuses} />

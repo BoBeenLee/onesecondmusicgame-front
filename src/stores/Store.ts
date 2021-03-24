@@ -57,7 +57,8 @@ const Store = types
       yield Promise.all([
         self.singerStore.initializeSingers(),
         self.authStore.user?.heart?.fetchHeart(),
-        self.authStore.user?.advertise?.fetchKeywords()
+        self.authStore.user?.advertise?.fetchKeywords(),
+        self.authStore.user?.advertise?.fetchImages()
       ]);
     });
 
