@@ -22,6 +22,16 @@ const Advertise = types
           )
         );
         return item;
+      },
+      get homeAdvertise() {
+        const item = self.images.find(image =>
+          Boolean(
+            image.displayType?.some?.(
+              displayType => displayType === AdvertisementDisplayTypeEnum.HOME
+            )
+          )
+        );
+        return item;
       }
     };
   })

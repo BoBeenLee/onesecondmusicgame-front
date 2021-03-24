@@ -51,7 +51,7 @@ import images from "src/images";
 import GameResultBanner from "src/components/banner/GameResultBanner";
 import withLoading, { LoadingProps } from "src/hocs/withLoading";
 import { logEvent } from "src/configs/analytics";
-import GameResultImageBanner from "src/components/banner/GameResultImageBanner";
+import GameImageThinBanner from "src/components/banner/GameImageThinBanner";
 
 interface IInject {
   authStore: IAuthStore;
@@ -345,7 +345,7 @@ class GameResultScreen extends Component<IProps, IStates> {
       <Container>
         <ScrollView>
           {resultAdvertise ? (
-            <GameResultImageBanner advertise={resultAdvertise} />
+            <GameImageThinBanner advertise={resultAdvertise} />
           ) : null}
           <Header>
             <Title>게임 종료</Title>

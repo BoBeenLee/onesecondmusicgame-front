@@ -52,6 +52,7 @@ import UserRatingConfirmPopup from "src/components/popup/rating/UserRatingConfir
 import ThanksRatingCompletePopup from "src/components/popup/rating/ThanksRatingCompletePopup";
 import FeedbackRatingPopup from "src/components/popup/rating/FeedbackRatingPopup";
 import { writeFeedback } from "src/apis/storeReview";
+import GameImageThinBanner from "src/components/banner/GameImageThinBanner";
 
 interface IInject {
   store: IStore;
@@ -309,6 +310,7 @@ class MainScreen extends Component<IProps, IStates> {
   public render() {
     const heart = this.props.authStore.user?.heart;
     const user = this.props.authStore.user;
+    const homeAdvertise = this.props.authStore.user?.advertise?.homeAdvertise;
     return (
       <Container>
         <MainMirrorBallBackground source={images.mainMirrorBall} />
@@ -318,7 +320,9 @@ class MainScreen extends Component<IProps, IStates> {
           heightRatio={228}
           source={images.bgMain}
         />
-
+        {homeAdvertise ? (
+          <GameImageThinBanner advertise={homeAdvertise} />
+        ) : null}
         <Header>
           <HeartStatus>
             <HeartGroup
@@ -334,6 +338,9 @@ class MainScreen extends Component<IProps, IStates> {
               />
             </HeartRemain>
           </HeartStatus>
+          <GameItemButton onPress={this.navigateToUserItem}>
+            <GameItemButtonText>보유 아이템</GameItemButtonText>
+          </GameItemButton>
         </Header>
         <Content>
           <Profile>
@@ -386,9 +393,6 @@ class MainScreen extends Component<IProps, IStates> {
             <FooterButtonText>개인 랭킹</FooterButtonText>
           </FooterButtonGroup>
         </Footer>
-        <GameItemButton onPress={this.navigateToUserItem}>
-          <GameItemButtonText>보유 아이템</GameItemButtonText>
-        </GameItemButton>
         <DevelopButton onPress={DeveloperScreen.open}>
           <DeveloperButtonView />
         </DevelopButton>

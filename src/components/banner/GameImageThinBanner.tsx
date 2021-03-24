@@ -19,7 +19,7 @@ const Icon = styled(AutoHeightImage)`
   width: 100%;
 `;
 
-const GameResultImageBanner = (props: IProps) => {
+const GameImageThinBanner = (props: IProps) => {
   const { style, advertise } = props;
   const { imageUrl, redirectUrl } = advertise;
 
@@ -33,4 +33,4 @@ const GameResultImageBanner = (props: IProps) => {
   );
 };
 
-export default GameResultImageBanner;
+export default GameImageThinBanner;
