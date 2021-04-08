@@ -7,7 +7,7 @@ import { ITracks } from "src/apis/soundcloud/interface";
 
 export const getTrackToPlayStreamUri = async (trackId: string) => {
   const response: AxiosResponse<ITracks> = await axios({
-    url: `https://api-v2.soundcloud.com/tracks/${trackId}`,
+    url: `${env.SOUNDCLOUD_API_URL}/tracks/${trackId}`,
     params: {
       // eslint-disable-next-line @typescript-eslint/camelcase
       client_id: getRootStore().authStore.soundCloudCliendId

@@ -30,7 +30,7 @@ const REACT_ENV = _.defaultTo(
   "staging"
 ) as keyof IEnvironment;
 
-const SOUNDCLOUD_API_URL = "https://api.soundcloud.com";
+const SOUNDCLOUD_API_URL = "https://api-v2.soundcloud.com";
 
 const admobAppId = isIOS()
   ? "ca-app-pub-1012769206894788~2782168364"
