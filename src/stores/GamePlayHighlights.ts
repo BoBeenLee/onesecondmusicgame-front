@@ -5,6 +5,7 @@ import { getHighlightListUsingPOST, isAnswerUsingPOST } from "src/apis/game";
 import { ISinger } from "src/apis/singer";
 import { ICircleCheckItem } from "src/components/icon/CircleCheckGroup";
 import { getPlayStreamUri } from "src/apis/soundcloud/playStream";
+import * as Sentry from "@sentry/react-native";
 
 export interface IGamePlayHighlightItem extends GamePlayHighlightDTO {
   streamUri: string;
@@ -122,12 +123,20 @@ const GamePlayHighlights = types
         if (!item) {
           continue;
         }
-        const streamUri = yield getPlayStreamUri(item.progressiveUrl ?? "");
-        result.push({
-          ...item,
-          streamUri,
-          gameStep: index
-        });
+        try {
+          const streamUri = yield getPlayStreamUri(item.progressiveUrl ?? "");
+          result.push({
+            ...item,
+            streamUri,
+            gameStep: index
+          });
+        } catch (error) {
+          Sentry.setExtras({
+            ...item,
+            status: error.status
+          });
+          Sentry.captureMessage(error.message);
+        }
       }
       self.gameHighlights.replace(result);
       self.playToken = response.playToken ?? "";
