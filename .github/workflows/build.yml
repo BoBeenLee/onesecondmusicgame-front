@@ -10,7 +10,15 @@ jobs:
   build: # make sure build/ci work properly
     runs-on: ubuntu-latest
     steps:
+      - name: Check out
       - uses: actions/checkout@v1
+
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "10"
+
+      - name: Build And Test
       - run: |
           npm install --legacy-peer-deps
           npm run test && npm run type-check
