@@ -12,8 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: |
-          npm install
+          npm install --legacy-peer-deps
           npm run test && npm run type-check
           cd web
-          npm install
+          npm install --legacy-peer-deps
           npm run test && npm run type-check
